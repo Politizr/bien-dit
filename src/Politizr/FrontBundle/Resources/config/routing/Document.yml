@@ -1,14 +1,3 @@
-
-#           IMAGES MANAGEMENT
-# Test
-# TestDropzone:
-#     pattern:  /test/upload
-#     defaults: { _controller: PolitizrFrontBundle:Document:testUpload }
-
-DocImageDelete:
-    pattern:  /delete/document/image
-    defaults: { _controller: PolitizrFrontBundle:Document:deleteDocumentImage }
-
 ################################################################################
 #               PUBLIC
 ################################################################################
@@ -93,3 +82,7 @@ BookmarksE:
     pattern:  /espace/elu/mes-favoris
     defaults: { _controller: PolitizrFrontBundle:Document:bookmarks }
 
+
+DocImageDelete:
+    pattern:  /-w/delete/document/image
+    defaults: { _controller: PolitizrFrontBundle:Document:deleteDocumentImage }

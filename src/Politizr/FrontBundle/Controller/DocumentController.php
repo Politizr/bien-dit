@@ -40,16 +40,6 @@ use Politizr\FrontBundle\Form\Type\PDDebateLocalizationType;
  */
 class DocumentController extends Controller
 {
-//     /**
-//      * Détail débat
-//      * beta
-//      */
-//     public function testUploadAction()
-//     {
-//         return $this->render('PolitizrFrontBundle:Debate:testUpload.html.twig', array(
-//         ));
-//     }
-
     /**
      * Common document "check" validity
      * beta
@@ -103,12 +93,12 @@ class DocumentController extends Controller
 
     /**
      * Build-in Medium editor delete image XHR action
+     *
+     * @return JsonResponse
      */
     public function deleteDocumentImageAction(Request $request)
     {
-        // @todo waiting for https://github.com/orthes/medium-editor-insert-plugin/pull/428 to be merged
-        // in stable tag version to manage media uuid actually used as "alt" image attribute.
-        
+        // @todo cf https://github.com/orthes/medium-editor-insert-plugin/pull/428
         // retrieve media by filename
         // example: http://politizr.beta/uploads/documents/5a391ed0c25a7.jpg
         $file = $request->get('file');

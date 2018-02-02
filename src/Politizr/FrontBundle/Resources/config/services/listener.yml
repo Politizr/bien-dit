@@ -112,6 +112,7 @@ services:
         class: Politizr\FrontBundle\Listener\UploadListener
         arguments:
             - @security.token_storage
+            - @validator
             - @politizr.functional.document
             - @politizr.tools.global
             - @logger

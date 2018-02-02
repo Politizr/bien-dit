@@ -5,8 +5,13 @@ use Oneup\UploaderBundle\Event\PostPersistEvent;
 
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 
+use Symfony\Component\Validator\Constraints\Image;
+
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\DocumentConstants;
+
+use StudioEcho\Lib\StudioEchoUtils;
+
 
 /**
  *
@@ -16,6 +21,7 @@ use Politizr\Constant\DocumentConstants;
 class UploadListener
 {
     private $securityTokenStorage;
+    private $validator;
     private $documentService;
     private $globalTools;
     private $logger;
@@ -23,13 +29,19 @@ class UploadListener
     /**
      *
      * @param @security.token_storage
+     * @param @validator
      * @param @politizr.functional.document
      * @param @politizr.tools.global
      * @param @logger
      */
-    public function __construct($securityTokenStorage, $documentService, $globalTools, $logger)
-    {
+    public function __construct(
+        $securityTokenStorage,
+        $validator,
+        $documentService,
+        $globalTools, $logger
+    ) {
         $this->securityTokenStorage = $securityTokenStorage;
+        $this->validator = $validator;
 
         $this->documentService = $documentService;
 
@@ -49,42 +61,50 @@ class UploadListener
         
         $file = $event->getFile();
 
-        // // error tests
-        // throw new UploadException('Oooh no, error occurs');
-        // 
-        // $response = $event->getResponse();
-        // $response = [[
-        //     "error" => "Image must be in JPG format",
-        //     "url" => "", 
-        //     "thumbnail_url" => "", 
-        //     "delete_url" => "", 
-        //     "delete_type" => "DELETE", 
-        //     "name" => "broken_image.jpg", 
-        //     "size" => 78191
-        // ]];
-        // return $response;
+        // SF image validator
+        $mimeTypes = 'image/*';
+        $imageConstraint = new Image(array(
+            'mimeTypes' => $mimeTypes
+        ));
+        $errors = $this->validator->validateValue(
+            $file,
+            $imageConstraint
+        );
+
+        $msgErrors = array();
+        foreach ($errors as $error) {
+            $msgErrors['error'] = $error->getMessage();
+        }
+
+        if (!empty($msgErrors)) {
+            return $this->manageError($event, $msgErrors);
+        }
 
         // resize image max width and/or max height
-        $image = $this->globalTools->resizeImage(
-            $file->getRealPath(),
-            1200,
-            1200
-        );
+        try {
+            $image = $this->globalTools->resizeImage(
+                $file->getRealPath(),
+                1200,
+                1200
+            );
 
-        // create thumbnail
-        $thumbnailRealPath = $file->getPath() . '/' . DocumentConstants::DOC_THUMBNAIL_PREFIX . $file->getFilename();
-        $this->globalTools->copyFile(
-            $file->getRealPath(),
-            $thumbnailRealPath
-        );
-        $this->globalTools->resizeImage(
-            $thumbnailRealPath,
-            150,
-            150
-        );
+            // create thumbnail
+            $thumbnailRealPath = $file->getPath() . '/' . DocumentConstants::DOC_THUMBNAIL_PREFIX . $file->getFilename();
+            $this->globalTools->copyFile(
+                $file->getRealPath(),
+                $thumbnailRealPath
+            );
+            $this->globalTools->resizeImage(
+                $thumbnailRealPath,
+                150,
+                150
+            );
 
-        // persist media
-        $media = $this->documentService->createMediaFromSimpleImageByDocUuid($image, $uuid, $type);
+            // persist media
+            $media = $this->documentService->createMediaFromSimpleImageByDocUuid($image, $uuid, $type);
+        } catch (\Exception $e) {
+            return $this->manageError($event, 'Désolé, une erreur s\'est produite pendant le traitement de votre image.');
+        }
 
         // everything went fine
         $response = $event->getResponse();
@@ -97,6 +117,27 @@ class UploadListener
         ]];
         $response['media_uuid'] = $media->getUuid();
 
+        return $response;
+    }
+
+    /**
+     *
+     * @param PostPersistEvent $event
+     * @param array|string $msgErrors
+     * @return Response
+     */
+    public function manageError(PostPersistEvent $event, $msgErrors)
+    {
+        // error response
+        $request = $event->getRequest();
+        $response = $event->getResponse();
+        $response['files'] = [[
+            'url' => $request->getSchemeAndHttpHost() . PathConstants::DEBATE_UPLOAD_WEB_PATH . DocumentConstants::DOC_IMAGE_UPLOAD_FAILED,
+            'thumbnail_url'=> $request->getSchemeAndHttpHost() . PathConstants::DEBATE_UPLOAD_WEB_PATH . DocumentConstants::DOC_IMAGE_UPLOAD_FAILED,
+            'name'=> DocumentConstants::DOC_IMAGE_UPLOAD_FAILED,
+        ]];
+        
+        $response['error'] = StudioEchoUtils::multiImplode($msgErrors, ' <br/> ');
         return $response;
     }
 }

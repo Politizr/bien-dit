@@ -23,16 +23,6 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/selection-sharer.css') }}" />
-
-    {#
-    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/medium-editor-insert-plugin.min.css') }}">
-    <style>
-        #cardPostText img {
-            max-width:100%;
-            max-height:100%;
-        }
-    </style>
-    #}
 {% endblock %}
 
 {% block bodyClass %}
@@ -99,7 +89,7 @@
                     {% for paragraph in paragraphs %}
                         <div id="p-{{ loop.index }}" class="paragraph">
                             {% include 'PolitizrFrontBundle:Comment:_paragraph.html.twig' with { 'document': debate, 'noParagraph': loop.index } only %}
-                            {{ paragraph|raw }}
+                            {{ paragraph | purify }}
                         </div>
                     {% endfor %}
                     {% if not app.user %}

@@ -280,22 +280,36 @@ class GlobalTools
         $nodes = $crawler->filter($rule);
 
         // manage medium left / right thumbnail to not create new paragraph
-        $nodeToConcat = null;
+        $nodesToConcat = null;
         foreach ($nodes as $node) {
             if (
                 strpos($node->getAttribute('class'), 'medium-insert-images-left') !== false
                 || strpos($node->getAttribute('class'), 'medium-insert-images-right') !== false
+                || strpos($node->getAttribute('class'), 'medium-insert-embeds-left') !== false
+                || strpos($node->getAttribute('class'), 'medium-insert-embeds-right') !== false
             ) {
-                $nodeToConcat = $node;
+                $nodesToConcat[] = $node;
             } else {
-                if ($nodeToConcat) {
-                    $paragraphs[] = $nodeToConcat->ownerDocument->saveHtml($nodeToConcat) . $node->ownerDocument->saveHtml($node);
-                    $nodeToConcat = null;
+                if ($nodesToConcat && !empty($nodesToConcat)) {
+                    $concatenedNodes = null;
+                    foreach ($nodesToConcat as $nodeToConcat) {
+                        $concatenedNodes .= $nodeToConcat->ownerDocument->saveHtml($nodeToConcat);
+                    }
+                    $paragraphs[] = $concatenedNodes . $node->ownerDocument->saveHtml($node);
+                    $nodesToConcat = null;
                 } else {
                     // cf. https://github.com/symfony/symfony/issues/18609#issuecomment-212952371
                     $paragraphs[] = $node->ownerDocument->saveHtml($node);
                 }
             }
+        }
+
+        // medium left / right in last position
+        if ($nodesToConcat && !empty($nodesToConcat)) {
+            foreach ($nodesToConcat as $nodeToConcat) {
+                $concatenedNodes .= $nodeToConcat->ownerDocument->saveHtml($nodeToConcat);
+            }
+            $paragraphs[] = $concatenedNodes;
         }
 
         return $paragraphs;

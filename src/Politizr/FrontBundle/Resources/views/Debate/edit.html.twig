@@ -1,34 +1,6 @@
 {# beta #}
 {% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-
-    {#
-    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/medium-editor-insert-plugin.min.css') }}">
-    #}
-
-    {# needed > /!\ medium plugin not compatible with imgLiquid #}
-    {#
-    <style>
-        #postText img {
-            max-width:100%;
-            max-height:100%;
-        }
-    </style>
-    #}
-{% endblock %}
-
-{% block javascriptHeader %}
-    {{ parent() }}
-
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/handlebars-v4.0.11.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-sortable-min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.ui.widget.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.iframe-transport.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.fileupload.js') }}"></script>
-{% endblock %}
-
 {% block title %}Éditer un sujet de discussion - {{ parent() }}{% endblock title %}
 
 {% block bodyClass %}
@@ -130,7 +102,7 @@
                     <div id="postText" path="{{ oneup_uploader_endpoint('document') }}" delete="{{ path('DocImageDelete') }}">
                         <div class="paragraph">
                             <div class="editable description">
-                                {{ debate.description|raw }}
+                                {{ debate.description | purify }}
                             </div>
                         </div>
                     </div>
@@ -166,6 +138,11 @@
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/handlebars-v4.0.11.js'
+        '@PolitizrFrontBundle/Resources/public/js/jquery-sortable-min.js'
+        '@PolitizrFrontBundle/Resources/public/js/jquery.ui.widget.js'
+        '@PolitizrFrontBundle/Resources/public/js/jquery.iframe-transport.js'
+        '@PolitizrFrontBundle/Resources/public/js/jquery.fileupload.js'
         '@PolitizrFrontBundle/Resources/public/js/medium-editor.min.js'
         '@PolitizrFrontBundle/Resources/public/js/medium-editor-insert-plugin.min.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/medium.js'

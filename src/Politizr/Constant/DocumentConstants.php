@@ -49,4 +49,5 @@ class DocumentConstants
     // ******************************************************** //
     const DOC_THUMBNAIL_PREFIX = 'thb-';
     const DOC_MAIN_IMAGE_MIN_WIDTH = 250;
+    const DOC_IMAGE_UPLOAD_FAILED = 'broken_image.jpg';
 }

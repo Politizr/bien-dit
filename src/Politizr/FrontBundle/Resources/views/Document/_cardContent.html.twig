@@ -12,17 +12,19 @@
 {% set imgPath = document | mainImagePath() %}
 
 {# image #}
-{% if withImg and imgPath %}
-    {% set imgClass = 'postImg' %}
-    {% if mini %}
-        {% set imgClass = 'miniPostImg' %}
-    {% endif %}
+{% set imgClass = 'postImg' %}
+{% if mini %}
+    {% set imgClass = 'miniPostImg' %}
+{% endif %}
 
+{% if withImg and imgPath %}
     <div class="{{ imgClass }}">
         <a href="{{ detailPath }}">
             <img src="{{ asset(imgPath) | imagine_filter('document_header') }}" alt="{{ document.title }}">
         </a>
     </div>
+{% elseif withImg and not imgPath %}
+    <div class="{{ imgClass }} noImg"></div>
 {% endif %}
 
 {# document link #}

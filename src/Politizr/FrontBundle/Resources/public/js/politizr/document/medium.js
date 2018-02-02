@@ -31,6 +31,7 @@ $(function () {
         editor: descriptionEditor,
         addons: {
             images: {
+                preview: false,
                 deleteScript: $('#postText').attr('delete'),
                 fileUploadOptions: { // (object) File upload configuration. See https://github.com/blueimp/jQuery-File-Upload/wiki/Options
                     url: $('#postText').attr('path'),
@@ -87,7 +88,7 @@ $(function () {
                     remove: {
                         label: '<span class="fa fa-times"></span>',
                         clicked: function (el) {
-                            console.log('actions.remove.clicked');
+                            // console.log('actions.remove.clicked');
 
                             var $event = $.Event('keydown');
                             $event.which = 8;
@@ -103,17 +104,26 @@ $(function () {
                     maxFileSizeError: 'Ce fichier est trop gros: '
                 },
                 uploadCompleted: function (el, data) {
-                    console.log('uploadCompleted');
-                    console.log(el);
-                    console.log(data);
+                    // console.log('uploadCompleted');
+                    // console.log(el);
+                    // console.log(data);
+                    // console.log(data.result);
 
-                    el.find("img").attr('uuid', data.result['media_uuid']);
-                    triggerSaveDocument();
+                    if ('error' in data.result) {
+                        // console.log('Error occurs');
+                        el.closest(".medium-insert-images").remove();
+
+                        $('#infoBoxHolder .boxError .notifBoxText').html(data.result['error']);
+                        $('#infoBoxHolder .boxError').show();
+                    } else {
+                        el.find("img").attr('uuid', data.result['media_uuid']);
+                        triggerSaveDocument();
+                    }
                 },
                 uploadFailed: function (uploadErrors, data) {
-                    console.log('uploadFailed');
-                    console.log(uploadErrors);
-                    console.log(data);
+                    // console.log('uploadFailed');
+                    // console.log(uploadErrors);
+                    // console.log(data);
 
                     $('#infoBoxHolder .boxError .notifBoxText').html(uploadErrors);
                     $('#infoBoxHolder .boxError').show();
