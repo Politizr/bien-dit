@@ -137,7 +137,11 @@ class UploadListener
             'name'=> DocumentConstants::DOC_IMAGE_UPLOAD_FAILED,
         ]];
         
-        $response['error'] = StudioEchoUtils::multiImplode($msgErrors, ' <br/> ');
+        if (is_array($msgErrors)) {
+            $response['error'] = StudioEchoUtils::multiImplode($msgErrors, ' <br/> ');
+        } else {
+            $response['error'] = $msgErrors;
+        }
         return $response;
     }
 }
