@@ -94,6 +94,7 @@ class PDDebateTableMap extends TableMap
         $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDReactions');
         $this->addRelation('PDDComment', 'Politizr\\Model\\PDDComment', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDDComments');
         $this->addRelation('PDDTaggedT', 'Politizr\\Model\\PDDTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDDTaggedTs');
+        $this->addRelation('PDMedia', 'Politizr\\Model\\PDMedia', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDMedias');
         $this->addRelation('PMDebateHistoric', 'Politizr\\Model\\PMDebateHistoric', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'SET NULL', 'CASCADE', 'PMDebateHistorics');
         $this->addRelation('PuFollowDdPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuFollowDdPUsers');
         $this->addRelation('PuBookmarkDdPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuBookmarkDdPUsers');

@@ -14,6 +14,7 @@ use Politizr\Model\PDDCommentPeer;
 use Politizr\Model\PDDTaggedTPeer;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebatePeer;
+use Politizr\Model\PDMediaPeer;
 use Politizr\Model\PDReactionPeer;
 use Politizr\Model\PEOperationPeer;
 use Politizr\Model\PLCityPeer;
@@ -542,6 +543,9 @@ abstract class BasePDDebatePeer
         // Invalidate objects in PDDTaggedTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDDTaggedTPeer::clearInstancePool();
+        // Invalidate objects in PDMediaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDMediaPeer::clearInstancePool();
         // Invalidate objects in PMDebateHistoricPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PMDebateHistoricPeer::clearInstancePool();

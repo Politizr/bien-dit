@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6a7ed056455ba349940f3bdbeb95229a",
-    "content-hash": "2f077ca660a7c0592a851cd515de9f1e",
+    "hash": "4ba4dc47051544c6fecee8697cbac663",
+    "content-hash": "c7912ee5a14896dbcae28651e0d56caf",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -729,7 +729,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/befa5280d2b9a01587404e219b02af4f9272c6bf",
+                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/7a51d4844c137880eee69287a6484ce48411cf57",
                 "reference": "befa5280d2b9a01587404e219b02af4f9272c6bf",
                 "shasum": ""
             },
@@ -2702,7 +2702,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipUrlAutoConverterBundle/zipball/d198822d5d343eba80f2e2989861b3f8c340bc1a",
+                "url": "https://api.github.com/repos/liip/LiipUrlAutoConverterBundle/zipball/7541a13d3db406a45b6e1a02c51f50805ffa378f",
                 "reference": "d198822d5d343eba80f2e2989861b3f8c340bc1a",
                 "shasum": ""
             },
@@ -2889,6 +2889,142 @@
                 "psr-3"
             ],
             "time": "2017-06-19 01:22:40"
+        },
+        {
+            "name": "nelmio/security-bundle",
+            "version": "2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nelmio/NelmioSecurityBundle.git",
+                "reference": "d0d7b151eda5f0ebe80562528f78b56954c1aec7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nelmio/NelmioSecurityBundle/zipball/d0d7b151eda5f0ebe80562528f78b56954c1aec7",
+                "reference": "d0d7b151eda5f0ebe80562528f78b56954c1aec7",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/random_compat": "~1.0|~2.0",
+                "symfony/framework-bundle": "~2.3|~3.0",
+                "symfony/security": "~2.3|~3.0",
+                "ua-parser/uap-php": "^3.4.4"
+            },
+            "require-dev": {
+                "doctrine/cache": "^1.0",
+                "psr/cache": "^1.0",
+                "symfony/phpunit-bridge": "^3.2",
+                "symfony/yaml": "~2.3|~3.0",
+                "twig/twig": "^1.24"
+            },
+            "suggest": {
+                "ua-parser/uap-php": "To allow adapt CSP directives given the user-agent"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nelmio\\SecurityBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nelmio",
+                    "homepage": "http://nelm.io"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/nelmio/NelmioSecurityBundle/contributors"
+                }
+            ],
+            "description": "Extra security-related features for Symfony: signed/encrypted cookies, HTTPS/SSL/HSTS handling, cookie session storage, ...",
+            "keywords": [
+                "security"
+            ],
+            "time": "2017-06-22 08:11:46"
+        },
+        {
+            "name": "oneup/uploader-bundle",
+            "version": "1.9.2",
+            "target-dir": "Oneup/UploaderBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/1up-lab/OneupUploaderBundle.git",
+                "reference": "a32bc98019abfd51531d08cc79be19f849d87b84"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/a32bc98019abfd51531d08cc79be19f849d87b84",
+                "reference": "a32bc98019abfd51531d08cc79be19f849d87b84",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/random_compat": "^1.1|^2.0",
+                "php": ">=5.4",
+                "symfony/asset": "^2.4|^3.0",
+                "symfony/finder": "^2.4|^3.0",
+                "symfony/framework-bundle": "^2.4|^3.0",
+                "symfony/templating": "^2.4|^3.0",
+                "symfony/translation": "^2.4|^3.0"
+            },
+            "require-dev": {
+                "amazonwebservices/aws-sdk-for-php": "1.5.*",
+                "knplabs/gaufrette": "0.2.*@dev",
+                "oneup/flysystem-bundle": "^1.2",
+                "phpunit/phpunit": "^4.4",
+                "sensio/framework-extra-bundle": "2.*|^3.0",
+                "symfony/browser-kit": "2.*|^3.0",
+                "symfony/class-loader": "2.*|^3.0",
+                "symfony/security-bundle": "2.*|^3.0",
+                "twistor/flysystem-stream-wrapper": "^1.0"
+            },
+            "suggest": {
+                "knplabs/knp-gaufrette-bundle": "0.1.*",
+                "oneup/flysystem-bundle": "^1.2",
+                "twistor/flysystem-stream-wrapper": "^1.0 (Required when using Flysystem)"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Oneup\\UploaderBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jim Schmid",
+                    "email": "js@1up.io",
+                    "homepage": "http://1up.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Handles multi file uploads in Symfony2. Features included: Chunked upload, Orphans management, Gaufrette support.",
+            "homepage": "http://1up.io",
+            "keywords": [
+                "FancyUpload",
+                "FineUploader",
+                "MooUpload",
+                "Uploadify",
+                "YUI3 Uploader",
+                "blueimp",
+                "dropzone",
+                "fileupload",
+                "jQuery File Uploader",
+                "plupload",
+                "upload"
+            ],
+            "time": "2017-12-18 12:41:59"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -5069,7 +5205,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensionsBundle/zipball/46e0fc9440c13cb0e4efc95f09a24aff67d8e467",
+                "url": "https://api.github.com/repos/symfony2admingenerator/FormExtensionsBundle/zipball/7820eeaa4b54f23fa3c5b9ca74a5d668b8a4ee34",
                 "reference": "46e0fc9440c13cb0e4efc95f09a24aff67d8e467",
                 "shasum": ""
             },
@@ -5111,7 +5247,7 @@
                 }
             ],
             "description": "Add additional form types to symfony2",
-            "time": "2017-08-31 21:04:48"
+            "time": "2016-07-25 11:02:01"
         },
         {
             "name": "symfony2admingenerator/generator-bundle",
@@ -5352,6 +5488,56 @@
                 "templating"
             ],
             "time": "2017-07-04 13:19:31"
+        },
+        {
+            "name": "ua-parser/uap-php",
+            "version": "v3.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ua-parser/uap-php.git",
+                "reference": "c8b31e5b8215a0c6dab4dd304050526a1907b17c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ua-parser/uap-php/zipball/c8b31e5b8215a0c6dab4dd304050526a1907b17c",
+                "reference": "c8b31e5b8215a0c6dab4dd304050526a1907b17c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "symfony/console": "^2.0 || ^3.0 || ^4.0",
+                "symfony/filesystem": "^2.0 || ^3.0 || ^4.0",
+                "symfony/finder": "^2.0 || ^3.0 || ^4.0",
+                "symfony/yaml": "^2.0 || ^3.0 || ^4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0 || ^5.0"
+            },
+            "bin": [
+                "bin/uaparser"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "UAParser\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lars Strojny",
+                    "email": "lars@strojny.net"
+                },
+                {
+                    "name": "Dave Olsen",
+                    "email": "dmolsen@gmail.com"
+                }
+            ],
+            "description": "A multi-language port of Browserscope's user agent parser.",
+            "time": "2017-12-13 11:03:50"
         },
         {
             "name": "white-october/pagerfanta-bundle",

@@ -332,6 +332,11 @@ liip_imagine:
             filters:
                 thumbnail:         { size: [500, 500], mode: inbound }
 
+        document_header:
+            quality:              80
+            filters:
+                relative_resize:  { widen: 700 }
+
         debate_header:
             quality:              80
             filters:
@@ -650,10 +655,12 @@ hwi_oauth:
 exercise_html_purifier:
     default:
         Cache.SerializerPath: "%kernel.root_dir%/cache/htmlpurifier"
-    custom:
+    html5:
         Cache.SerializerPath: "%kernel.root_dir%/cache/htmlpurifier"
         HTML.SafeIframe: true
         URI.SafeIframeRegexp: "#^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)#"
+        HTML.DefinitionID: html5-definitions
+        HTML.DefinitionRev: 1
 
 # Liip URL autoconverter
 liip_url_auto_converter:
@@ -708,3 +715,128 @@ eko_feed:
                 # route_params: {id: 2} # necessary if route cantains required parameters
             encoding:    'utf-8'
             author:      'Politizr'
+
+# File upload JS
+# cf. https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/index.md
+oneup_uploader:
+    mappings:
+        document:
+            frontend: blueimp
+            root_folder: true
+            error_handler: oneup_uploader.error_handler.blueimp
+            storage:
+                directory: "%kernel.root_dir%/../web/uploads/documents"
+            route_prefix: /-w
+
+# cf. https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/configuration_reference.md
+#     chunks:
+#         maxage:               604800
+#         storage:
+#             type:               filesystem
+#             directory:          ~
+#             filesystem:         ~
+#             sync_buffer_size:   100K
+#             stream_wrapper:     ~
+#             prefix:             'chunks'
+#         load_distribution:    true
+#     orphanage:
+#         maxage:               604800
+#         directory:            ~
+#     twig:                 true
+#     mappings:             # Required
+# 
+#         # Prototype
+#         id:
+#             frontend:             fineuploader
+#             custom_frontend:
+#                 name:                 ~
+#                 class:                ~
+#             storage:
+#                 service:              ~
+#                 type:                 filesystem
+#                 filesystem:           ~
+#                 directory:            ~
+#                 stream_wrapper:       ~
+#                 sync_buffer_size:     100K
+#             route_prefix:
+#             endpoints:
+#                 upload: ~
+#                 progress: ~
+#                 cancel: ~
+#             allowed_mimetypes:     []
+#             disallowed_mimetypes:  []
+#             error_handler:        oneup_uploader.error_handler.noop
+#             root_folder:          false
+# 
+#             # Set max_size to -1 for gracefully downgrade this number to the systems max upload size.
+#             max_size:             9223372036854775807
+#             use_orphanage:        false
+#             enable_progress:      false
+#             enable_cancelation:   false
+#             namer:                oneup_uploader.namer.uniqid
+
+# # https://github.com/nelmio/NelmioSecurityBundle
+# # @todo plug this bundle!
+# nelmio_security:
+#     # signs/verifies all cookies
+#     signed_cookie:
+#         names: ['*']
+#     # prevents framing of the entire site
+#     clickjacking:
+#         paths:
+#             '^/.*': DENY
+#     # prevents redirections outside the website's domain
+#     external_redirects:
+#         abort: true
+#         log: true
+# 
+#     # prevents inline scripts, unsafe eval, external scripts/images/styles/frames, etc
+#     csp:
+#         hosts: []
+#         content_types: []
+#         enforce:
+#             level1_fallback: false
+#             browser_adaptive:
+#                 enabled: false
+#             report-uri: %router.request_context.base_url%/nelmio/csp/report
+#             default-src:
+#                 - 'self'
+#                 - 'unsafe-inline'
+#             script-src:
+#                 - 'self'
+#             block-all-mixed-content: true # defaults to false, blocks HTTP content over HTTPS transport
+#             # upgrade-insecure-requests: true # defaults to false, upgrades HTTP requests to HTTPS transport
+# 
+#     # disables content type sniffing for script resources
+#     content_type:
+#         nosniff: true
+# 
+#     # forces Microsoft's XSS-Protection with
+#     # its block mode
+#     xss_protection:
+#         enabled: true
+#         mode_block: true
+# 
+#     # Send a full URL in the `Referer` header when performing a same-origin request,
+#     # only send the origin of the document to secure destination (HTTPS->HTTPS),
+#     # and send no header to a less secure destination (HTTPS->HTTP).
+#     # If `strict-origin-when-cross-origin` is not supported, use `no-referrer` policy,
+#     # no referrer information is sent along with requests.
+#     referrer_policy:
+#         enabled: true
+#         policies:
+#             - 'no-referrer'
+#             - 'strict-origin-when-cross-origin'
+# 
+#     # forces HTTPS handling, don't combine with flexible mode
+#     # and make sure you have SSL working on your site before enabling this
+# #    forced_ssl:
+# #        hsts_max_age: 2592000 # 30 days
+# #        hsts_subdomains: true
+# #        redirect_status_code: 302 # default, switch to 301 for permanent redirects
+# 
+#     # flexible HTTPS handling, read the detailed config info
+#     # and make sure you have SSL working on your site before enabling this
+# #    flexible_ssl:
+# #        cookie_name: auth
+# #        unsecured_logout: false

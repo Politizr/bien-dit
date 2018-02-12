@@ -2,9 +2,8 @@
 namespace Politizr\FrontBundle\Lib\Tools;
 
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\Filesystem\Filesystem;
-
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Validator\Constraints\Image;
 
 use GuzzleHttp;
@@ -160,7 +159,7 @@ class GlobalTools
      */
     public function uploadXhrImage(Request $request, $inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 20971520, $mimeTypes = 'image/*')
     {
-        $this->logger->info('*** uploadXhrImage');
+        // $this->logger->info('*** uploadXhrImage');
 
         $myRequestedFile = $request->files->get($inputName);
         if ($myRequestedFile === null) {
@@ -192,13 +191,31 @@ class GlobalTools
 
             //move the uploaded file to uploads folder;
             $movedFile = $myRequestedFile->move($destPath, $fileName);
-            $this->logger->info('$movedFile = '.print_r($movedFile, true));
+            // $this->logger->info('$movedFile = '.print_r($movedFile, true));
         }
+
+        // Resize de la photo
+        $resized = $this->resizeImage($destPath . $fileName, $maxWidth, $maxHeight);
+
+        return $fileName;
+    }
+
+    /**
+     * Resize an image
+     *
+     * @param string $absolutePath
+     * @param int $maxWidth
+     * @param int $maxHeight
+     * @return SimpleImage
+     */
+    public function resizeImage($absolutePath, $maxWidth, $maxHeight)
+    {
+        // $this->logger->info('*** resizeImage');
 
         // Resize de la photo
         $resized = false;
         $image = new SimpleImage();
-        $image->load($destPath . $fileName);
+        $image->load($absolutePath);
         if ($width = $image->getWidth() > $maxWidth) {
             $image->resizeToWidth($maxWidth);
             $resized = true;
@@ -208,10 +225,10 @@ class GlobalTools
             $resized = true;
         }
         if ($resized) {
-            $image->save($destPath . $fileName);
+            $image->save($absolutePath);
         }
 
-        return $fileName;
+        return $image;
     }
 
     /**
@@ -221,7 +238,7 @@ class GlobalTools
      * @param string $destFile folder & file name
      * @param $force true to override if destFile already exists
      */
-    public function copyFile($file, $force = true)
+    public function copyFile($file, $destFile = null, $force = true)
     {
         $fileInfo = pathinfo($file);
         $orgDirname = $fileInfo['dirname'];
@@ -229,7 +246,9 @@ class GlobalTools
 
         $newFileName = uniqid();
 
-        $destFile = $orgDirname . '/' . $newFileName . '.' . $orgExtension;
+        if(!$destFile) {
+            $destFile = $orgDirname . '/' . $newFileName . '.' . $orgExtension;
+        }
 
         $fs = new Filesystem();
         $fs->copy($file, $destFile, $force);
@@ -239,8 +258,6 @@ class GlobalTools
 
     /**
      * Explode HTML text in an array of containing all the paragraphs
-     * http://stackoverflow.com/questions/8757826/i-need-to-split-text-delimited-by-paragraph-tag
-     * http://stackoverflow.com/questions/7509774/php-explode-string-by-html-tag
      *
      * @param string $htmlText
      * @param boolean $onlyP Extract only <p></p> elements
@@ -248,36 +265,51 @@ class GlobalTools
      */
     public function explodeParagraphs($htmlText, $onlyP = false)
     {
-        // $htmlText = str_replace('</p>', '', $htmlText);
-        // $paragraphs = explode('<p>', $htmlText);
-        // array_shift($paragraphs);
-
         if (empty($htmlText)) {
             return array();
         }
 
-        // // $dom = new \DOMDocument('1.0', 'UTF-8');
-        // $dom = new \DOMDocument("4.0", "utf-8");
-        // // $dom->loadHTML($htmlText);
-        // $dom->loadHTML(mb_convert_encoding($htmlText, 'HTML-ENTITIES', 'UTF-8'));
-        // $xPath = new \DOMXPath($dom);
-        // $entries = $xPath->evaluate("//p|//h1|//h2|//blockquote|//ul//li");
-        // $paragraphs = array();
-        // foreach ($entries as $entry) {
-        //     dump($entry->nodeValue);
-        //     $paragraphs[] = '<' . $entry->tagName . '>' . $entry->nodeValue .  '</' . $entry->tagName . '>';
-        // }
-
         $paragraphs = array();
-        $count = preg_match_all('/<p[^>]*>(.*?)<\/p>|<h\d[^>]*>(.*?)<\/h\d>|<ul[^>]*>(.*?)<\/ul>|<blockquote[^>]*>(.*?)<\/blockquote>|<iframe[^>]*>(.*?)<\/iframe>/is', $htmlText, $matches);
-        for ($i = 0; $i < $count; ++$i) {
-            if (!$onlyP) {
-                $paragraphs[] = $matches[0][$i];
+        $crawler = new Crawler('<meta charset="utf-8">' . $htmlText);
+
+        $rule = 'body > *';
+        if ($onlyP) {
+            $rule = 'body > p';
+        }
+
+        $nodes = $crawler->filter($rule);
+
+        // manage medium left / right thumbnail to not create new paragraph
+        $nodesToConcat = null;
+        foreach ($nodes as $node) {
+            if (
+                strpos($node->getAttribute('class'), 'medium-insert-images-left') !== false
+                || strpos($node->getAttribute('class'), 'medium-insert-images-right') !== false
+                || strpos($node->getAttribute('class'), 'medium-insert-embeds-left') !== false
+                || strpos($node->getAttribute('class'), 'medium-insert-embeds-right') !== false
+            ) {
+                $nodesToConcat[] = $node;
             } else {
-                if (!empty($matches[1][$i])) {
-                    $paragraphs[] = '<p>'.$matches[1][$i].'</p>';
+                if ($nodesToConcat && !empty($nodesToConcat)) {
+                    $concatenedNodes = null;
+                    foreach ($nodesToConcat as $nodeToConcat) {
+                        $concatenedNodes .= $nodeToConcat->ownerDocument->saveHtml($nodeToConcat);
+                    }
+                    $paragraphs[] = $concatenedNodes . $node->ownerDocument->saveHtml($node);
+                    $nodesToConcat = null;
+                } else {
+                    // cf. https://github.com/symfony/symfony/issues/18609#issuecomment-212952371
+                    $paragraphs[] = $node->ownerDocument->saveHtml($node);
                 }
             }
+        }
+
+        // medium left / right in last position
+        if ($nodesToConcat && !empty($nodesToConcat)) {
+            foreach ($nodesToConcat as $nodeToConcat) {
+                $concatenedNodes .= $nodeToConcat->ownerDocument->saveHtml($nodeToConcat);
+            }
+            $paragraphs[] = $concatenedNodes;
         }
 
         return $paragraphs;

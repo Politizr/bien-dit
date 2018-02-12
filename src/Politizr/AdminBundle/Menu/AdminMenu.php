@@ -62,33 +62,32 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $users = $this->addLinkRoute($menu, 'Utilisateur', 'Politizr_AdminBundle_PUser_list');
 
         // Document
-        $reputation = $this->addDropdown($menu, 'Document');
+        $document = $this->addDropdown($menu, 'Document');
         $this->addLinkRoute(
-            $reputation,
+            $document,
             'Sujet',
             'Politizr_AdminBundle_PDDebate_list'
         );
         $this->addLinkRoute(
-            $reputation,
+            $document,
             'Réponse',
             'Politizr_AdminBundle_PDReaction_list'
         );
         $this->addLinkRoute(
-            $reputation,
-            'Message direct',
-            'Politizr_AdminBundle_PDDirect_list'
+            $document,
+            'Média',
+            'Politizr_AdminBundle_PDMedia_list'
         );
 
-
         // Commentaires
-        $reputation = $this->addDropdown($menu, 'Commentaire');
+        $comment = $this->addDropdown($menu, 'Commentaire');
         $this->addLinkRoute(
-            $reputation,
+            $comment,
             'Sujet',
             'Politizr_AdminBundle_PDDComment_list'
         );
         $this->addLinkRoute(
-            $reputation,
+            $comment,
             'Réponse',
             'Politizr_AdminBundle_PDRComment_list'
         );
@@ -139,6 +138,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             $monitoring,
             'Emailing',
             'Politizr_AdminBundle_PMEmailing_list'
+        );
+        $this->addLinkRoute(
+            $reputation,
+            'Message direct',
+            'Politizr_AdminBundle_PDDirect_list'
         );
         $this->addLinkRoute(
             $monitoring,

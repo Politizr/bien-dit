@@ -25,8 +25,11 @@ class SimpleImage
     private $image;
     private $imageType;
 
+    private $filename;
+
     public function load($filename)
     {
+        $this->filename = $filename;
         $image_info = getimagesize($filename);
         $this->imageType = $image_info[2];
         if ($this->imageType == IMAGETYPE_JPEG) {
@@ -60,6 +63,7 @@ class SimpleImage
 
     public function save($filename, $imageType = IMAGETYPE_JPEG, $compression = 90, $permissions = null)
     {
+        $this->filename = $filename;
         if ($imageType == IMAGETYPE_JPEG) {
             imagejpeg($this->image, $filename, $compression);
         } elseif ($imageType == IMAGETYPE_GIF) {
@@ -74,6 +78,7 @@ class SimpleImage
     
     public function saveWithDefaultImagetype($filename, $compression = 90, $permissions = null)
     {
+        $this->filename = $filename;
         if ($this->imageType == IMAGETYPE_JPEG) {
             imagejpeg($this->image, $filename, $compression);
         } elseif ($this->imageType == IMAGETYPE_GIF) {
@@ -105,6 +110,38 @@ class SimpleImage
     public function getHeight()
     {
         return imagesy($this->image);
+    }
+
+    public function getSize()
+    {
+        return filesize($this->filename);
+    }
+
+    public function getBasename()
+    {
+        $pathInfo = pathinfo($this->filename);
+        if ($pathInfo['basename']) {
+            return $pathInfo['basename'];
+        }
+        return null;
+    }
+
+    public function getPath()
+    {
+        $pathInfo = pathinfo($this->filename);
+        if ($pathInfo['dirname']) {
+            return $pathInfo['dirname'];
+        }
+        return null;
+    }
+
+    public function getExtension()
+    {
+        $pathInfo = pathinfo($this->filename);
+        if ($pathInfo['extension']) {
+            return $pathInfo['extension'];
+        }
+        return null;
     }
 
     public function resizeToHeight($height, $upscale = false)

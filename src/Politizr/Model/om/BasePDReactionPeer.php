@@ -11,6 +11,7 @@ use \PropelException;
 use \PropelPDO;
 use Politizr\Model\PCTopicPeer;
 use Politizr\Model\PDDebatePeer;
+use Politizr\Model\PDMediaPeer;
 use Politizr\Model\PDRCommentPeer;
 use Politizr\Model\PDRTaggedTPeer;
 use Politizr\Model\PDReaction;
@@ -576,6 +577,9 @@ abstract class BasePDReactionPeer
         // Invalidate objects in PDRTaggedTPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PDRTaggedTPeer::clearInstancePool();
+        // Invalidate objects in PDMediaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PDMediaPeer::clearInstancePool();
         // Invalidate objects in PMReactionHistoricPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PMReactionHistoricPeer::clearInstancePool();

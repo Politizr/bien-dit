@@ -1,0 +1,9 @@
+{% extends_admingenerated "PolitizrAdminBundle:PDMediaEdit:form.html.twig" %}
+
+{# Bloc tags #}
+{% block form_row_uploadedfilename %}
+    {% if PDMedia.fileName %}
+        <img src="{{ asset('/uploads/documents/'~PDMedia.fileName) | imagine_filter('admin_banner_thumb') }}" alt="{{ PDMedia.fileName }}">
+    {% endif %}
+{% endblock %}
+

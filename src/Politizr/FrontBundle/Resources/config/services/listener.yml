@@ -107,3 +107,19 @@ services:
         scope: request
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
+
+    oneup_uploader.listener.upload:
+        class: Politizr\FrontBundle\Listener\UploadListener
+        arguments:
+            - @security.token_storage
+            - @validator
+            - @politizr.functional.document
+            - @politizr.tools.global
+            - @logger
+        tags:
+            - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
+
+    oneup_uploader.listener.validation:
+        class: Politizr\FrontBundle\Listener\DocumentValidationListener
+        tags:
+            - { name: kernel.event_listener, event: oneup_uploader.validation.document, method: onValidate }

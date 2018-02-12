@@ -15,6 +15,7 @@ use \PropelObjectCollection;
 use \PropelPDO;
 use Politizr\Model\PCTopic;
 use Politizr\Model\PDDebate;
+use Politizr\Model\PDMedia;
 use Politizr\Model\PDRComment;
 use Politizr\Model\PDRTaggedT;
 use Politizr\Model\PDReaction;
@@ -150,6 +151,10 @@ use Politizr\Model\PUser;
  * @method PDReactionQuery leftJoinPDRTaggedT($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDRTaggedT relation
  * @method PDReactionQuery rightJoinPDRTaggedT($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDRTaggedT relation
  * @method PDReactionQuery innerJoinPDRTaggedT($relationAlias = null) Adds a INNER JOIN clause to the query using the PDRTaggedT relation
+ *
+ * @method PDReactionQuery leftJoinPDMedia($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDMedia relation
+ * @method PDReactionQuery rightJoinPDMedia($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDMedia relation
+ * @method PDReactionQuery innerJoinPDMedia($relationAlias = null) Adds a INNER JOIN clause to the query using the PDMedia relation
  *
  * @method PDReactionQuery leftJoinPMReactionHistoric($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMReactionHistoric relation
  * @method PDReactionQuery rightJoinPMReactionHistoric($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMReactionHistoric relation
@@ -2549,6 +2554,80 @@ abstract class BasePDReactionQuery extends ModelCriteria
         return $this
             ->joinPDRTaggedT($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PDRTaggedT', '\Politizr\Model\PDRTaggedTQuery');
+    }
+
+    /**
+     * Filter the query by a related PDMedia object
+     *
+     * @param   PDMedia|PropelObjectCollection $pDMedia  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PDReactionQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPDMedia($pDMedia, $comparison = null)
+    {
+        if ($pDMedia instanceof PDMedia) {
+            return $this
+                ->addUsingAlias(PDReactionPeer::ID, $pDMedia->getPDReactionId(), $comparison);
+        } elseif ($pDMedia instanceof PropelObjectCollection) {
+            return $this
+                ->usePDMediaQuery()
+                ->filterByPrimaryKeys($pDMedia->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPDMedia() only accepts arguments of type PDMedia or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PDMedia relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PDReactionQuery The current query, for fluid interface
+     */
+    public function joinPDMedia($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PDMedia');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PDMedia');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PDMedia relation PDMedia object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PDMediaQuery A secondary query class using the current class as primary query
+     */
+    public function usePDMediaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPDMedia($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PDMedia', '\Politizr\Model\PDMediaQuery');
     }
 
     /**
