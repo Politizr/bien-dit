@@ -94,6 +94,12 @@ class HtmlPurifierConfig extends Config {
             $def->addAttribute('tr', 'height', 'Text');
             $def->addAttribute('tr', 'border', 'Text');
 
+            // Others
+            $def->addAttribute('div', 'data-embed-code', 'Text');
+            $def->addAttribute('div', 'data-href', 'Text');
+            $def->addAttribute('div', 'fb-xfbml-state', 'Text');
+            $def->addAttribute('div', 'fb-iframe-plugin-query', 'Text');
+
             // Politizr custom
             $def->addAttribute('img', 'uuid', 'Text');
         }

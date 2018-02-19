@@ -17,6 +17,7 @@ use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PQOrganizationQuery;
+use Politizr\Model\PMCguQuery;
 
 use Politizr\FrontBundle\Form\Type\PDDirectType;
 
@@ -262,6 +263,22 @@ class PublicController extends Controller
         $logger->info('*** conceptAction');
 
         return $this->render('PolitizrFrontBundle:Public:concept.html.twig', array(
+        ));
+    }
+
+    /**
+     * Qui sommes nous
+     * code beta
+     */
+    public function cguAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** cguAction');
+
+        $legal = PMCguQuery::create()->filterByOnline(true)->orderByCreatedAt('desc')->findOne();
+
+        return $this->render('PolitizrFrontBundle:Public:cgu.html.twig', array(
+            'legal' => $legal,
         ));
     }
 

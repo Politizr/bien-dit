@@ -22,7 +22,7 @@ var xhrUrlPrefix = '/xhr';
 
 // Modal show / hide
 $('body').on('click', "[action='openModalPublish']", function(e){
-    console.log('*** click open modal publish');
+    // console.log('*** click open modal publish');
 
     $.when(triggerSaveDocument()).done(function(r1) {
         $('body').addClass('noScroll');
@@ -31,7 +31,7 @@ $('body').on('click', "[action='openModalPublish']", function(e){
 });
 
 $('body').on('click', "[action='closeModalPublish'], .modalPublishBg", function(e){
-    console.log('*** click close modal publish');
+    // console.log('*** click close modal publish');
 
     updateDebateTagsZone(uuid);
 
@@ -42,27 +42,27 @@ $('body').on('click', "[action='closeModalPublish'], .modalPublishBg", function(
 // Modal doc loc management
 // change checkbox type event
 $('#formDocLoc :radio').on('change', function() {
-    console.log('*** formDocLoc change');
+    // console.log('*** formDocLoc change');
     locShowHideAttr();
     saveDocumentAttr();
 });
 
 // change checkbox type event
 $('#formTagType :checkbox, #formTagFamily :checkbox').on('change', function() {
-    console.log('*** formTagType change');
+    // console.log('*** formTagType change');
     saveDocumentAttr();
 });
 
 // Save debate
 $("body").on("click", "[action='debateSave']", function(e) {
-    console.log('*** click debate save');
+    // console.log('*** click debate save');
 
     return saveDebate();
 });
 
 // Delete debate
 $('body').on('click', "[action='debateDelete']", function(e){
-    console.log('*** click delete debate');
+    // console.log('*** click delete debate');
 
     var confirmMsg = "Êtes-vous sûr de vouloir supprimer votre brouillon?";
     smoke.confirm(confirmMsg, function(e) {
@@ -79,7 +79,7 @@ $('body').on('click', "[action='debateDelete']", function(e){
 
 // Publish debate from attr > final publication
 $('body').on('click', "[action='debatePublish']", function(e){
-    console.log('*** click publish debate');
+    // console.log('*** click publish debate');
 
     $.when(saveDocumentAttr()).done(function(r1) {
         return publishDebate(uuid);
