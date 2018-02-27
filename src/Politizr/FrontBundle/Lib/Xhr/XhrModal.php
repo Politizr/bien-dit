@@ -63,6 +63,26 @@ class XhrModal
     }
 
     /**
+     * Getting started
+     * beta
+     */
+    public function gettingStarted(Request $request)
+    {
+        $this->logger->info('*** gettingStarted');
+        
+        $request->getSession()->remove('gettingStarted');
+        $request->getSession()->set('helpUs', true);
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Navigation\\Helper:_gettingStarted.html.twig'
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+    /**
      * Help us
      * beta
      */

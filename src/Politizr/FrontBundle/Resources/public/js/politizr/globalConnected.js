@@ -299,6 +299,37 @@ function modalHelpUs() {
     });
 };
 
+
+/**
+ * Modal getting started
+ */
+function modalGettingStarted() {
+    // console.log('*** modalGettingStarted');
+
+    $('body').addClass('noScroll');
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_GETTING_STARTED,
+        'modal',
+        'gettingStarted',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        null,
+        xhrPath
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#modalContainer').html(data['html']);
+        }
+    });
+};
+
+
 // ******************************************************************* //
 //                   LOCALIZATION ALERT BOX                            //
 // ******************************************************************* //

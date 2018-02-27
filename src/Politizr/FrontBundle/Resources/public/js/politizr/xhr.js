@@ -83,6 +83,7 @@ var ROUTE_BADGES_COUNTER = '-w/reputation/badges';
 
 // MODAL
 var ROUTE_MODAL_HELP_US = 'politizr-needs-you';
+var ROUTE_MODAL_GETTING_STARTED = '-w/getting-started';
 var ROUTE_MODAL_CREATE_ACCOUNT_TO_COMMNET = 'commentaires/creer-un-compte';
 var ROUTE_MODAL_CGU = 'conditions-generales-d-utilisation';
 var ROUTE_MODAL_CGV = 'conditions-generales-de-vente';

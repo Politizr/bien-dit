@@ -20,6 +20,9 @@
             {% if isGrantedE() %}
                 <i class="icon-info"></i>
                 Nous proposons aux collectivités un ensemble de services favorisant l’expression citoyenne, pour leur permettre d’avoir des retours de leurs habitants: <a href="mailto: support@politizr.com">contactez-nous</a> pour recevoir la documentation complète!<br/><br/>
+            {% else %}
+                <i class="icon-info"></i>
+                Des collectivités de votre territoire souhaitent connaître votre avis sur des sujets qu'elles portent? Rendez-vous dans vos <a href="{{ path('MenuCircle') }}">groupes</a> pour participer!<br/><br/>
             {% endif %}
             Pour plus d'informations, consultez notre <a href="http://www.politizr.help" target="_blank">site d'aide</a> ou <a href="mailto: support@politizr.com">envoyez vos questions au support</a>.<br>
             Au plaisir de vous lire,<br>

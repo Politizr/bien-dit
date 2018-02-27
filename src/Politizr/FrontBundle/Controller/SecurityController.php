@@ -236,6 +236,8 @@ class SecurityController extends Controller
             // Inscription done
             $request->getSession()->getFlashBag()->add('inscription/success', true);
 
+            $this->get('session')->set('gettingStarted', true);
+
             // Redirect to page before inscription
             $refererUrl = $this->get('politizr.tools.global')->getRefererUrl();
             if ($refererUrl) {
@@ -567,6 +569,8 @@ class SecurityController extends Controller
 
         // Inscription done
         $request->getSession()->getFlashBag()->add('inscription/success', true);
+
+        $this->get('session')->set('gettingStarted', true);
 
         // Redirect to page before inscription
         $refererUrl = $this->get('politizr.tools.global')->getRefererUrl();
