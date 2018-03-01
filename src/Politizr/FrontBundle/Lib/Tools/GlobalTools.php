@@ -17,6 +17,7 @@ use Politizr\FrontBundle\Lib\InteractedPublication;
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 use Politizr\Constant\QualificationConstants;
+use Politizr\Constant\ObjectTypeConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PUser;
@@ -827,7 +828,7 @@ class GlobalTools
      *
      * @param $visitor PUser current connected user
      * @param PDocumentInterface Document
-     * @param $mode public|private|we|<nb of days>
+     * @param $mode public|private|debate|we|<nb of days>
      * @return boolean
      */
     public function isPrivateMode($visitor, PDocumentInterface $document, $mode, $userIds)
@@ -835,6 +836,7 @@ class GlobalTools
         $publishedAt = $document->getPublishedAt();
         $author =  $document->getPUser();
         $topic = $document->getPCTopic();
+        $type = $document->getType();
 
         // public if
         if ($visitor) {
@@ -848,6 +850,9 @@ class GlobalTools
             return false;
         } elseif ($document && $document->isWithPrivateTag() && $topic == null) {
             // document has private tag
+            return false;
+        } elseif ($mode == 'debate' && $type == ObjectTypeConstants::TYPE_DEBATE && $topic == null) {
+            // app in public mode
             return false;
         } elseif ($mode == 'public' && $topic == null) {
             // app in public mode
