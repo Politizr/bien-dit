@@ -2,20 +2,22 @@
 <div id="header">
     <div class="center">
         <div id="headerLeft">
-            <div id="logo"><a href="{{ path('Homepage'~profileSuffix()) }}"><i class="icon-pltzr-logo"></i><span>politizr</span></a></div>
-            <div id="headerMenu">
-                {#<a href="{{ path('Homepage'~profileSuffix()) }}"{% if homepage is defined and homepage %} class="currentPage"{% endif %}>accueil</a>#}
-                {#<a href="{{ path('ListingByRecommend') }}"{% if top is defined and top %} class="currentPage"{% endif %}>top</a>#}
-                <a href="{{ path('ListingSearchPublications') }}"{% if searchPublications is defined and searchPublications %} class="currentPage"{% endif %}>publications</a>
-                <a href="{{ path('ListingSearchUsers'~profileSuffix()) }}"{% if searchUsers is defined and searchUsers %} class="currentPage"{% endif %}>{% if (isGrantedE()) %}les élus{% else %}mes élus{% endif %}</a>
-            </div>
-            <div id="searchInput">
-                <i class="icon-search"></i><input id="searchInputAlgolia" type="text" placeholder="Rechercher">
-            </div>
+            {% block topLeftMenu %}
+                <div id="logo"><a href="{{ path('Homepage'~profileSuffix()) }}"><i class="icon-pltzr-logo"></i><span>politizr</span></a></div>
+                <div id="headerMenu">
+                    {#<a href="{{ path('Homepage'~profileSuffix()) }}"{% if homepage is defined and homepage %} class="currentPage"{% endif %}>accueil</a>#}
+                    {#<a href="{{ path('ListingByRecommend') }}"{% if top is defined and top %} class="currentPage"{% endif %}>top</a>#}
+                    <a href="{{ path('ListingSearchPublications') }}"{% if searchPublications is defined and searchPublications %} class="currentPage"{% endif %}>publications</a>
+                    <a href="{{ path('ListingSearchUsers'~profileSuffix()) }}"{% if searchUsers is defined and searchUsers %} class="currentPage"{% endif %}>{% if (isGrantedE()) %}les élus{% else %}mes élus{% endif %}</a>
+                </div>
+                <div id="searchInput">
+                    <i class="icon-search"></i><input id="searchInputAlgolia" type="text" placeholder="Rechercher">
+                </div>
+            {% endblock topLeftMenu %}
         </div>
         <div id="headerRight">
             {% block newSubject %}
-                {% include 'PolitizrFrontBundle:Document:_newSubject.html.twig' with { 'display': true, 'url': path('DebateDraftNew') } %}
+                {% include 'PolitizrFrontBundle:Document:_newSubject.html.twig' with { 'display': true, 'url': path('DebateDraftNew'), 'label': "Je m'exprime" } %}
             {% endblock %}
             <div id="notifCounter">
                 <i class="icon-notif" action="toggleNotifBox">

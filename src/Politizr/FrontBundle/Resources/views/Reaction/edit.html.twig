@@ -15,6 +15,14 @@
 
 {% block header %}
     {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+        {% block topLeftMenu %}
+            {% if reaction.PCTopicId %}
+                {% set circle = reaction.circle %}
+                {% include 'PolitizrFrontBundle:Navigation\\Menu:_topLeftMenu.html.twig' with { 'circle': circle } only %}
+            {% else %}
+                {{ parent() }}
+            {% endif %}
+        {% endblock %}
         {% block newSubject %}
         {% endblock %}
     {% endembed %}

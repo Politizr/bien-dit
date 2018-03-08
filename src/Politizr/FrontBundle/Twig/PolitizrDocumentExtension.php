@@ -1279,6 +1279,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $display = true;
         $url = null;
+        $label = "je m'exprime";
 
         if ($subject instanceof PDocumentInterface) {
             $topic = $subject->getPCTopic();
@@ -1294,6 +1295,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 $display = false;
             } else {
                 $url = $this->router->generate('DebateDraftNew', array('topic' => $topic->getUuid()));
+                $label = "je m'exprime sur \"".$topic->getTitle()."\"";
             }
         } else {
             $url = $this->router->generate('DebateDraftNew');
@@ -1304,6 +1306,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
             array(
                 'display' => $display,
                 'url' => $url,
+                'label' => $label,
             )
         );
 

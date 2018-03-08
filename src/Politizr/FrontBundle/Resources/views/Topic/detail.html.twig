@@ -32,6 +32,10 @@
 {% block header %}
     {% if (isGrantedE() or isGrantedC()) %}
         {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+            {% block topLeftMenu %}
+                {% set circle = topic.PCircle %}
+                {% include 'PolitizrFrontBundle:Navigation\\Menu:_topLeftMenu.html.twig' with { 'circle': circle } only %}
+            {% endblock %}
             {% block newSubject %}
                 {{ topic | newSubject }}
             {% endblock %}
