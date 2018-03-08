@@ -42,7 +42,7 @@ class DocumentConstants
     const NOTATION_REASON_CIRCLE_READ_ONLY = 6;
 
     // ******************************************************* //
-    const PRIVATE_DOC_LENGTH = 500;
+    const PRIVATE_DOC_LENGTH = 150;
 
     // ******************************************************** //
     //                      DOC MEDIAS                          //
