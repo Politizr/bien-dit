@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Politizr\Constant\ListingConstants;
+use Politizr\Constant\GlobalConstants;
 
 use Politizr\Model\PDDirect;
 
@@ -18,6 +19,7 @@ use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PQOrganizationQuery;
 use Politizr\Model\PMCguQuery;
+use Politizr\Model\PMCharteQuery;
 
 use Politizr\FrontBundle\Form\Type\PDDirectType;
 
@@ -267,8 +269,7 @@ class PublicController extends Controller
     }
 
     /**
-     * Qui sommes nous
-     * code beta
+     * CGU
      */
     public function cguAction()
     {
@@ -279,6 +280,21 @@ class PublicController extends Controller
 
         return $this->render('PolitizrFrontBundle:Public:cgu.html.twig', array(
             'legal' => $legal,
+        ));
+    }
+
+    /**
+     * Charte publique
+     */
+    public function charteAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** charteAction');
+
+        $charte = PMCharteQuery::create()->findPk(GlobalConstants::GLOBAL_CHARTE_ID);
+
+        return $this->render('PolitizrFrontBundle:Public:charte.html.twig', array(
+            'charte' => $charte,
         ));
     }
 
