@@ -156,6 +156,9 @@ $("body").on("click", "[action='followDebate']", function(e) {
             // scoreCounter();
             // badgesCounter();
 
+            // refresh followers
+            refreshDebateFollowers();
+
             // refresh timeline
             refreshTimeline();
             stickySidebar();
@@ -186,6 +189,9 @@ $("body").on("click", "[action='followUser']", function(e) {
             // update reputation counter
             // scoreCounter();
             // badgesCounter();
+
+            // update followers listing
+            refreshUserFollowers();
 
             // refresh timeline
             refreshTimeline();
@@ -257,13 +263,16 @@ $("body").on("click", "[action='note']", function(e) {
     var uuid = $(this).attr('uuid');
     var type = $(this).attr('type');
     var way = $(this).attr('way');
-
-    $.when(
-        noteDocument($(this), localLoader, uuid, type, way)
-    ).done(function(data) {
-        // follow debate
+    
+    noteDocument(
+        $(this), localLoader, uuid, type, way
+    ).then(
+        // automatic following
         followRelativeDebate(uuid, type)
-    });
+    ).then(
+        // update followers listing
+        refreshDebateFollowers()
+    );
 });
 
 // ******************************************************************* //

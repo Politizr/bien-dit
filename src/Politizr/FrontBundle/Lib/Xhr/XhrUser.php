@@ -912,7 +912,7 @@ class XhrUser
     }
 
     /**
-     * Last 12 user followers
+     * Last X user followers
      * code beta
      */
     public function lastUserFollowers(Request $request)
@@ -929,7 +929,9 @@ class XhrUser
         }
 
         $query = PUserQuery::create()
-            ->joinPUFollowURelatedByPUserFollowerId()
+            ->usePUFollowURelatedByPUserFollowerIdQuery()
+                ->filterByPUserId($user->getId())
+            ->endUse()
             ->setDistinct()
             ->orderBy('PUFollowURelatedByPUserFollowerId.CreatedAt', 'desc');
             
@@ -973,8 +975,10 @@ class XhrUser
         }
 
         $query = PUserQuery::create()
-            ->joinPUFollowURelatedByPUserFollowerId()
-            ->setDistinct()
+            ->distinct()
+            ->usePUFollowURelatedByPUserFollowerIdQuery()
+                ->filterByPUserId($user->getId())
+            ->endUse()
             ->orderBy('PUFollowURelatedByPUserFollowerId.CreatedAt', 'desc')
             ->limit(ListingConstants::LISTING_CLASSIC_PAGINATION)
             ->offset($offset);
@@ -1028,6 +1032,9 @@ class XhrUser
 
         $query = PUserQuery::create()
             ->joinPUFollowURelatedByPUserId()
+            ->usePUFollowURelatedByPUserIdQuery()
+                ->filterByPUserFollowerId($user->getId())
+            ->endUse()
             ->setDistinct()
             ->orderBy('PUFollowURelatedByPUserId.CreatedAt', 'desc');
             
@@ -1071,7 +1078,9 @@ class XhrUser
         }
 
         $query = PUserQuery::create()
-            ->joinPUFollowURelatedByPUserId()
+            ->usePUFollowURelatedByPUserIdQuery()
+                ->filterByPUserFollowerId($user->getId())
+            ->endUse()
             ->setDistinct()
             ->orderBy('PUFollowURelatedByPUserId.CreatedAt', 'desc')
             ->limit(ListingConstants::LISTING_CLASSIC_PAGINATION)

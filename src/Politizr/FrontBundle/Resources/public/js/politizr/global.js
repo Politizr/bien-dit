@@ -173,13 +173,49 @@ $("body").on("mouseout", "[action='confidentialToggle']", function() {
     $(this).next('.confidentialInfo').hide();   
 });
 
-// refresh timeline
+// ******************************************************************* //
+//                             REFRESH                                 //
+// ******************************************************************* //
+
+/**
+ * Refresh timeline
+ */
 function refreshTimeline() {
     if ($('.myfeed').length) {
         Waypoint.destroyAll();
         timelineList();
     }
 }
+
+/**
+ * Refresh debate followers infos
+ */
+function refreshDebateFollowers() {
+    if ($('#subjectFollowers').length) {
+        lastDebateFollowersListing(
+            $('.sidebarSubjectFollowers').find('#subjectFollowers').first(),
+            $('.sidebarSubjectFollowers').find('.ajaxLoader').first(),
+            $('#subjectFollowers').attr('uuid')
+        );
+    }
+}
+
+/**
+ * Refresh user followers infos
+ */
+function refreshUserFollowers() {
+    if ($('#userFollowers').length) {
+        lastUserFollowersListing(
+            $('.sidebarUserFollowers').find('#userFollowers').first(),
+            $('.sidebarUserFollowers').find('.ajaxLoader').first(),
+            $('#userFollowers').attr('uuid')
+        );
+    }
+}
+
+// ******************************************************************* //
+//                              STICKY                                 //
+// ******************************************************************* //
 
 // global sticky instance
 var stickyWaypoint;
