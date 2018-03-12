@@ -1,3 +1,15 @@
 imports:
     - { resource: config.yml }
 
+
+# app/config/config.yml
+fos_http_cache:
+    proxy_client:
+        symfony:
+            http:
+                servers: [ 127.0.0.1 ]
+                base_url: politizr.beta
+
+    user_context:
+        enabled: true
+        role_provider: true

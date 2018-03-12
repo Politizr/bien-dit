@@ -20,3 +20,12 @@ monolog:
 
 swiftmailer:
     disable_delivery: true
+
+
+# app/config/config.yml
+fos_http_cache:
+    proxy_client:
+        symfony:
+            http:
+                servers: [ 127.0.0.1 ]
+                base_url: demo.politizr.com

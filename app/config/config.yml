@@ -855,13 +855,13 @@ fos_http_cache:
                 headers:
                     cache_control:
                         public: true
-                        max_age: 15
-                        s_maxage: 30
-                    last_modified: "-1 hour"
+                        max_age: 900
+                        s_maxage: 900
+                    last_modified: "-1 day"
+
             # match everything to set defaults
             -
                 match:
-                    host: ^politizr.beta$
                     path: ^/
                 headers:
                     cache_control:
@@ -874,7 +874,7 @@ fos_http_cache:
         symfony:
             http:
                 servers: [ 127.0.0.1 ]
-                base_url: politizr.beta
+                base_url: www.politizr.com
 
     user_context:
         enabled: true

@@ -28,8 +28,8 @@ use Symfony\Component\HttpKernel\HttpCache\Store;
 $kernel = new AppKernel('dev', true);
 $kernel->loadClassCache();
 
-$store = new Store(__DIR__.'/../app/cache');
-$kernel = new AppCache($kernel, $store);
+// $store = new Store(__DIR__.'/../app/cache');
+// $kernel = new AppCache($kernel, $store);
 
 Request::enableHttpMethodParameterOverride();
 
