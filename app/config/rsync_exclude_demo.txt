@@ -34,13 +34,10 @@ reload-bdd.sh
 
 /web/.htaccess
 /web/app.php
-/web/app_stage.php
-/web/app_debug.php
-/web/app_debug.php.org
-/web/app.php.org
-/web/app.php.temp
 /web/index.php
 /web/robots.txt
+/web/*_dev.php
+/web/*_cache.php
 /web/*_dev.php
 /web/*_re7.php
 
@@ -48,5 +45,4 @@ reload-bdd.sh
 /web/static/
 
 /web/js/
-/web/assetic/
 /web/assetic/

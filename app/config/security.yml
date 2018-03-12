@@ -91,6 +91,7 @@ security:
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY, host: "%host.admin%" }
+        - { path: ^/_fos_user_context_hash, host: "%host.admin%", roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: ^/, role: ROLE_ADMIN, host: "%host.admin%" }                                # Espace ADMIN
         - { path: ^/-u, role: ROLE_CITIZEN_INSCRIPTION, host: "%host.public%" }               # Process d'inscription citoyen
         - { path: ^/-v, role: ROLE_ELECTED_INSCRIPTION, host: "%host.public%" }               # Process d'inscription elu

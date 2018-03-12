@@ -68,7 +68,10 @@
 
         "oneup/uploader-bundle": "^1.9",
         
-        "nelmio/security-bundle": "^2.4"
+        "nelmio/security-bundle": "^2.4",
+        "friendsofsymfony/http-cache-bundle": "^2.1",
+        "guzzlehttp/psr7": "^1.4",
+        "php-http/guzzle6-adapter": "^1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

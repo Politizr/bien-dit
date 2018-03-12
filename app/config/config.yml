@@ -840,3 +840,42 @@ oneup_uploader:
 # #    flexible_ssl:
 # #        cookie_name: auth
 # #        unsecured_logout: false
+
+
+# app/config/config.yml
+fos_http_cache:
+    cache_control:
+        defaults:
+            overwrite: false
+        rules:
+            # match all actions of a public controller
+            -
+                match:
+                    attributes: { _controller: ^Politizr\\FrontBundle\\Controller\\PublicController::.* }
+                headers:
+                    cache_control:
+                        public: true
+                        max_age: 15
+                        s_maxage: 30
+                    last_modified: "-1 hour"
+            # match everything to set defaults
+            -
+                match:
+                    host: ^politizr.beta$
+                    path: ^/
+                headers:
+                    cache_control:
+                        public: false
+                        max_age: 0
+                        s_maxage: 0
+                    etag: true
+
+    proxy_client:
+        symfony:
+            http:
+                servers: [ 127.0.0.1 ]
+                base_url: politizr.beta
+
+    user_context:
+        enabled: true
+        role_provider: true
