@@ -51,43 +51,7 @@
         <div class="center">
             {{ circle | circleMenuTop }}
             {{ circleBreadcrumb(circle = circle) }}
-            <div class="grpCard">
-                <div class="grpGlobalIntro">
-                    {{ circle.description | raw }}
-                </div>
-                <div class="grpAnswersBy">
-                    <div class="grpAnswersByTitle">
-                        <h1>Les élus en charge de ces sujets</h1>
-                        <div class="grpAnswersByTitleNotice">
-                            <i class="icon-info"></i>
-                            <p>Tous les élus ci-contre peuvent répondre à vos questions.</p>
-                        </div>
-                        
-                    </div>
-                    {{ circle | authorizedReactionUsers() }}
-                </div>
-                <div class="grpChaptersList">
-                    <h1>La liste des sujets</h1>
-                    <h2>sur laquelle vos élus souhaitent connaître votre opinion</h2>
-                    {% for topic in topics %}
-                        <div class="grpChaptersListItem">
-                            <div class="grpCharterImg">
-                                <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">
-                                    <span>{{ topic.title }}</span>
-                                    {% if topic.fileName %}
-                                        <img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ topic.fileName) | imagine_filter('topic_list') }}" alt="{{ topic.title }}">
-                                    {% endif %}
-                                </a>
-                            </div>
-                            {{ topic | topicStats }}
-                            <p>
-                                {# topic.summary | striptags | truncate(70, true) | purify #}
-                                <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}" class="grpKnowMore">En savoir plus</a>
-                            </p>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+            {{ circle | circleDetail(topics) }}
             {{ circle | circleFooter }}
         </div>
     </div>

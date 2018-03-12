@@ -1342,6 +1342,14 @@
         </unique>
     </table>
 
+    <table name="p_circle_type">
+        <behavior name="timestampable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="title" type="varchar" size="100" />
+        <column name="summary" type="longvarchar" />
+    </table>
+
     <table name="p_circle">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
@@ -1361,6 +1369,7 @@
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="uuid" type="varchar" size="50" />
         <column name="p_c_owner_id" type="integer" required="true" />
+        <column name="p_circle_type_id" type="integer" required="false" />
 
         <column name="title" type="varchar" size="100" />
 
@@ -1377,6 +1386,9 @@
 
         <foreign-key foreignTable="p_c_owner" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_c_owner_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_circle_type" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_circle_type_id" foreign="id" />
         </foreign-key>
 
         <unique>

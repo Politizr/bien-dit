@@ -9,93 +9,58 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Politizr\Model\PCircleArchive;
-use Politizr\Model\PCircleArchivePeer;
-use Politizr\Model\map\PCircleArchiveTableMap;
+use Politizr\Model\PCirclePeer;
+use Politizr\Model\PCircleType;
+use Politizr\Model\PCircleTypePeer;
+use Politizr\Model\map\PCircleTypeTableMap;
 
-abstract class BasePCircleArchivePeer
+abstract class BasePCircleTypePeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'default';
 
     /** the table name for this class */
-    const TABLE_NAME = 'p_circle_archive';
+    const TABLE_NAME = 'p_circle_type';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Politizr\\Model\\PCircleArchive';
+    const OM_CLASS = 'Politizr\\Model\\PCircleType';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'Politizr\\Model\\map\\PCircleArchiveTableMap';
+    const TM_CLASS = 'Politizr\\Model\\map\\PCircleTypeTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 17;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 17;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the id field */
-    const ID = 'p_circle_archive.id';
-
-    /** the column name for the uuid field */
-    const UUID = 'p_circle_archive.uuid';
-
-    /** the column name for the p_c_owner_id field */
-    const P_C_OWNER_ID = 'p_circle_archive.p_c_owner_id';
-
-    /** the column name for the p_circle_type_id field */
-    const P_CIRCLE_TYPE_ID = 'p_circle_archive.p_circle_type_id';
+    const ID = 'p_circle_type.id';
 
     /** the column name for the title field */
-    const TITLE = 'p_circle_archive.title';
+    const TITLE = 'p_circle_type.title';
 
     /** the column name for the summary field */
-    const SUMMARY = 'p_circle_archive.summary';
-
-    /** the column name for the description field */
-    const DESCRIPTION = 'p_circle_archive.description';
-
-    /** the column name for the logo_file_name field */
-    const LOGO_FILE_NAME = 'p_circle_archive.logo_file_name';
-
-    /** the column name for the url field */
-    const URL = 'p_circle_archive.url';
-
-    /** the column name for the online field */
-    const ONLINE = 'p_circle_archive.online';
-
-    /** the column name for the read_only field */
-    const READ_ONLY = 'p_circle_archive.read_only';
-
-    /** the column name for the only_elected field */
-    const ONLY_ELECTED = 'p_circle_archive.only_elected';
+    const SUMMARY = 'p_circle_type.summary';
 
     /** the column name for the created_at field */
-    const CREATED_AT = 'p_circle_archive.created_at';
+    const CREATED_AT = 'p_circle_type.created_at';
 
     /** the column name for the updated_at field */
-    const UPDATED_AT = 'p_circle_archive.updated_at';
-
-    /** the column name for the slug field */
-    const SLUG = 'p_circle_archive.slug';
-
-    /** the column name for the sortable_rank field */
-    const SORTABLE_RANK = 'p_circle_archive.sortable_rank';
-
-    /** the column name for the archived_at field */
-    const ARCHIVED_AT = 'p_circle_archive.archived_at';
+    const UPDATED_AT = 'p_circle_type.updated_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of PCircleArchive objects.
+     * An identity map to hold any loaded instances of PCircleType objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array PCircleArchive[]
+     * @var        array PCircleType[]
      */
     public static $instances = array();
 
@@ -104,30 +69,30 @@ abstract class BasePCircleArchivePeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. PCircleArchivePeer::$fieldNames[PCircleArchivePeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. PCircleTypePeer::$fieldNames[PCircleTypePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PCOwnerId', 'PCircleTypeId', 'Title', 'Summary', 'Description', 'LogoFileName', 'Url', 'Online', 'ReadOnly', 'OnlyElected', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pCOwnerId', 'pCircleTypeId', 'title', 'summary', 'description', 'logoFileName', 'url', 'online', 'readOnly', 'onlyElected', 'createdAt', 'updatedAt', 'slug', 'sortableRank', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PCircleArchivePeer::ID, PCircleArchivePeer::UUID, PCircleArchivePeer::P_C_OWNER_ID, PCircleArchivePeer::P_CIRCLE_TYPE_ID, PCircleArchivePeer::TITLE, PCircleArchivePeer::SUMMARY, PCircleArchivePeer::DESCRIPTION, PCircleArchivePeer::LOGO_FILE_NAME, PCircleArchivePeer::URL, PCircleArchivePeer::ONLINE, PCircleArchivePeer::READ_ONLY, PCircleArchivePeer::ONLY_ELECTED, PCircleArchivePeer::CREATED_AT, PCircleArchivePeer::UPDATED_AT, PCircleArchivePeer::SLUG, PCircleArchivePeer::SORTABLE_RANK, PCircleArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_C_OWNER_ID', 'P_CIRCLE_TYPE_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'LOGO_FILE_NAME', 'URL', 'ONLINE', 'READ_ONLY', 'ONLY_ELECTED', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_c_owner_id', 'p_circle_type_id', 'title', 'summary', 'description', 'logo_file_name', 'url', 'online', 'read_only', 'only_elected', 'created_at', 'updated_at', 'slug', 'sortable_rank', 'archived_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Summary', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'summary', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PCircleTypePeer::ID, PCircleTypePeer::TITLE, PCircleTypePeer::SUMMARY, PCircleTypePeer::CREATED_AT, PCircleTypePeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'SUMMARY', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'summary', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. PCircleArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. PCircleTypePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PCOwnerId' => 2, 'PCircleTypeId' => 3, 'Title' => 4, 'Summary' => 5, 'Description' => 6, 'LogoFileName' => 7, 'Url' => 8, 'Online' => 9, 'ReadOnly' => 10, 'OnlyElected' => 11, 'CreatedAt' => 12, 'UpdatedAt' => 13, 'Slug' => 14, 'SortableRank' => 15, 'ArchivedAt' => 16, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pCOwnerId' => 2, 'pCircleTypeId' => 3, 'title' => 4, 'summary' => 5, 'description' => 6, 'logoFileName' => 7, 'url' => 8, 'online' => 9, 'readOnly' => 10, 'onlyElected' => 11, 'createdAt' => 12, 'updatedAt' => 13, 'slug' => 14, 'sortableRank' => 15, 'archivedAt' => 16, ),
-        BasePeer::TYPE_COLNAME => array (PCircleArchivePeer::ID => 0, PCircleArchivePeer::UUID => 1, PCircleArchivePeer::P_C_OWNER_ID => 2, PCircleArchivePeer::P_CIRCLE_TYPE_ID => 3, PCircleArchivePeer::TITLE => 4, PCircleArchivePeer::SUMMARY => 5, PCircleArchivePeer::DESCRIPTION => 6, PCircleArchivePeer::LOGO_FILE_NAME => 7, PCircleArchivePeer::URL => 8, PCircleArchivePeer::ONLINE => 9, PCircleArchivePeer::READ_ONLY => 10, PCircleArchivePeer::ONLY_ELECTED => 11, PCircleArchivePeer::CREATED_AT => 12, PCircleArchivePeer::UPDATED_AT => 13, PCircleArchivePeer::SLUG => 14, PCircleArchivePeer::SORTABLE_RANK => 15, PCircleArchivePeer::ARCHIVED_AT => 16, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_C_OWNER_ID' => 2, 'P_CIRCLE_TYPE_ID' => 3, 'TITLE' => 4, 'SUMMARY' => 5, 'DESCRIPTION' => 6, 'LOGO_FILE_NAME' => 7, 'URL' => 8, 'ONLINE' => 9, 'READ_ONLY' => 10, 'ONLY_ELECTED' => 11, 'CREATED_AT' => 12, 'UPDATED_AT' => 13, 'SLUG' => 14, 'SORTABLE_RANK' => 15, 'ARCHIVED_AT' => 16, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_c_owner_id' => 2, 'p_circle_type_id' => 3, 'title' => 4, 'summary' => 5, 'description' => 6, 'logo_file_name' => 7, 'url' => 8, 'online' => 9, 'read_only' => 10, 'only_elected' => 11, 'created_at' => 12, 'updated_at' => 13, 'slug' => 14, 'sortable_rank' => 15, 'archived_at' => 16, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Summary' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'summary' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
+        BasePeer::TYPE_COLNAME => array (PCircleTypePeer::ID => 0, PCircleTypePeer::TITLE => 1, PCircleTypePeer::SUMMARY => 2, PCircleTypePeer::CREATED_AT => 3, PCircleTypePeer::UPDATED_AT => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'SUMMARY' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'summary' => 2, 'created_at' => 3, 'updated_at' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -142,10 +107,10 @@ abstract class BasePCircleArchivePeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = PCircleArchivePeer::getFieldNames($toType);
-        $key = isset(PCircleArchivePeer::$fieldKeys[$fromType][$name]) ? PCircleArchivePeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = PCircleTypePeer::getFieldNames($toType);
+        $key = isset(PCircleTypePeer::$fieldKeys[$fromType][$name]) ? PCircleTypePeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PCircleArchivePeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PCircleTypePeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -162,11 +127,11 @@ abstract class BasePCircleArchivePeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, PCircleArchivePeer::$fieldNames)) {
+        if (!array_key_exists($type, PCircleTypePeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return PCircleArchivePeer::$fieldNames[$type];
+        return PCircleTypePeer::$fieldNames[$type];
     }
 
     /**
@@ -178,12 +143,12 @@ abstract class BasePCircleArchivePeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. PCircleArchivePeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. PCircleTypePeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(PCircleArchivePeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(PCircleTypePeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -201,41 +166,17 @@ abstract class BasePCircleArchivePeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PCircleArchivePeer::ID);
-            $criteria->addSelectColumn(PCircleArchivePeer::UUID);
-            $criteria->addSelectColumn(PCircleArchivePeer::P_C_OWNER_ID);
-            $criteria->addSelectColumn(PCircleArchivePeer::P_CIRCLE_TYPE_ID);
-            $criteria->addSelectColumn(PCircleArchivePeer::TITLE);
-            $criteria->addSelectColumn(PCircleArchivePeer::SUMMARY);
-            $criteria->addSelectColumn(PCircleArchivePeer::DESCRIPTION);
-            $criteria->addSelectColumn(PCircleArchivePeer::LOGO_FILE_NAME);
-            $criteria->addSelectColumn(PCircleArchivePeer::URL);
-            $criteria->addSelectColumn(PCircleArchivePeer::ONLINE);
-            $criteria->addSelectColumn(PCircleArchivePeer::READ_ONLY);
-            $criteria->addSelectColumn(PCircleArchivePeer::ONLY_ELECTED);
-            $criteria->addSelectColumn(PCircleArchivePeer::CREATED_AT);
-            $criteria->addSelectColumn(PCircleArchivePeer::UPDATED_AT);
-            $criteria->addSelectColumn(PCircleArchivePeer::SLUG);
-            $criteria->addSelectColumn(PCircleArchivePeer::SORTABLE_RANK);
-            $criteria->addSelectColumn(PCircleArchivePeer::ARCHIVED_AT);
+            $criteria->addSelectColumn(PCircleTypePeer::ID);
+            $criteria->addSelectColumn(PCircleTypePeer::TITLE);
+            $criteria->addSelectColumn(PCircleTypePeer::SUMMARY);
+            $criteria->addSelectColumn(PCircleTypePeer::CREATED_AT);
+            $criteria->addSelectColumn(PCircleTypePeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.uuid');
-            $criteria->addSelectColumn($alias . '.p_c_owner_id');
-            $criteria->addSelectColumn($alias . '.p_circle_type_id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.summary');
-            $criteria->addSelectColumn($alias . '.description');
-            $criteria->addSelectColumn($alias . '.logo_file_name');
-            $criteria->addSelectColumn($alias . '.url');
-            $criteria->addSelectColumn($alias . '.online');
-            $criteria->addSelectColumn($alias . '.read_only');
-            $criteria->addSelectColumn($alias . '.only_elected');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
-            $criteria->addSelectColumn($alias . '.slug');
-            $criteria->addSelectColumn($alias . '.sortable_rank');
-            $criteria->addSelectColumn($alias . '.archived_at');
         }
     }
 
@@ -255,21 +196,21 @@ abstract class BasePCircleArchivePeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PCircleArchivePeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(PCircleTypePeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PCircleArchivePeer::addSelectColumns($criteria);
+            PCircleTypePeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(PCircleArchivePeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(PCircleTypePeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(PCircleArchivePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PCircleTypePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -288,7 +229,7 @@ abstract class BasePCircleArchivePeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return PCircleArchive
+     * @return PCircleType
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -296,7 +237,7 @@ abstract class BasePCircleArchivePeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = PCircleArchivePeer::doSelect($critcopy, $con);
+        $objects = PCircleTypePeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -314,7 +255,7 @@ abstract class BasePCircleArchivePeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return PCircleArchivePeer::populateObjects(PCircleArchivePeer::doSelectStmt($criteria, $con));
+        return PCircleTypePeer::populateObjects(PCircleTypePeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -332,16 +273,16 @@ abstract class BasePCircleArchivePeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PCircleArchivePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PCircleTypePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            PCircleArchivePeer::addSelectColumns($criteria);
+            PCircleTypePeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PCircleArchivePeer::DATABASE_NAME);
+        $criteria->setDbName(PCircleTypePeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -355,7 +296,7 @@ abstract class BasePCircleArchivePeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param PCircleArchive $obj A PCircleArchive object.
+     * @param PCircleType $obj A PCircleType object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -364,7 +305,7 @@ abstract class BasePCircleArchivePeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            PCircleArchivePeer::$instances[$key] = $obj;
+            PCircleTypePeer::$instances[$key] = $obj;
         }
     }
 
@@ -376,7 +317,7 @@ abstract class BasePCircleArchivePeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A PCircleArchive object or a primary key value.
+     * @param      mixed $value A PCircleType object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -384,17 +325,17 @@ abstract class BasePCircleArchivePeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof PCircleArchive) {
+            if (is_object($value) && $value instanceof PCircleType) {
                 $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PCircleArchive object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or PCircleType object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(PCircleArchivePeer::$instances[$key]);
+            unset(PCircleTypePeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -405,14 +346,14 @@ abstract class BasePCircleArchivePeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return PCircleArchive Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return PCircleType Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(PCircleArchivePeer::$instances[$key])) {
-                return PCircleArchivePeer::$instances[$key];
+            if (isset(PCircleTypePeer::$instances[$key])) {
+                return PCircleTypePeer::$instances[$key];
             }
         }
 
@@ -427,19 +368,22 @@ abstract class BasePCircleArchivePeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (PCircleArchivePeer::$instances as $instance) {
+        foreach (PCircleTypePeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        PCircleArchivePeer::$instances = array();
+        PCircleTypePeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to p_circle_archive
+     * Method to invalidate the instance pool of all tables related to p_circle_type
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in PCirclePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PCirclePeer::clearInstancePool();
     }
 
     /**
@@ -489,11 +433,11 @@ abstract class BasePCircleArchivePeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = PCircleArchivePeer::getOMClass();
+        $cls = PCircleTypePeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = PCircleArchivePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = PCircleArchivePeer::getInstanceFromPool($key))) {
+            $key = PCircleTypePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = PCircleTypePeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -502,7 +446,7 @@ abstract class BasePCircleArchivePeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PCircleArchivePeer::addInstanceToPool($obj, $key);
+                PCircleTypePeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -516,21 +460,21 @@ abstract class BasePCircleArchivePeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (PCircleArchive object, last column rank)
+     * @return array (PCircleType object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = PCircleArchivePeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = PCircleArchivePeer::getInstanceFromPool($key))) {
+        $key = PCircleTypePeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = PCircleTypePeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + PCircleArchivePeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + PCircleTypePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PCircleArchivePeer::OM_CLASS;
+            $cls = PCircleTypePeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            PCircleArchivePeer::addInstanceToPool($obj, $key);
+            PCircleTypePeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -545,7 +489,7 @@ abstract class BasePCircleArchivePeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(PCircleArchivePeer::DATABASE_NAME)->getTable(PCircleArchivePeer::TABLE_NAME);
+        return Propel::getDatabaseMap(PCircleTypePeer::DATABASE_NAME)->getTable(PCircleTypePeer::TABLE_NAME);
     }
 
     /**
@@ -553,9 +497,9 @@ abstract class BasePCircleArchivePeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BasePCircleArchivePeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BasePCircleArchivePeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \Politizr\Model\map\PCircleArchiveTableMap());
+      $dbMap = Propel::getDatabaseMap(BasePCircleTypePeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BasePCircleTypePeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \Politizr\Model\map\PCircleTypeTableMap());
       }
     }
 
@@ -567,13 +511,13 @@ abstract class BasePCircleArchivePeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return PCircleArchivePeer::OM_CLASS;
+        return PCircleTypePeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a PCircleArchive or Criteria object.
+     * Performs an INSERT on the database, given a PCircleType or Criteria object.
      *
-     * @param      mixed $values Criteria or PCircleArchive object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or PCircleType object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -582,18 +526,22 @@ abstract class BasePCircleArchivePeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PCircleArchivePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PCircleTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from PCircleArchive object
+            $criteria = $values->buildCriteria(); // build Criteria from PCircleType object
+        }
+
+        if ($criteria->containsKey(PCircleTypePeer::ID) && $criteria->keyContainsValue(PCircleTypePeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PCircleTypePeer::ID.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(PCircleArchivePeer::DATABASE_NAME);
+        $criteria->setDbName(PCircleTypePeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -610,9 +558,9 @@ abstract class BasePCircleArchivePeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a PCircleArchive or Criteria object.
+     * Performs an UPDATE on the database, given a PCircleType or Criteria object.
      *
-     * @param      mixed $values Criteria or PCircleArchive object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or PCircleType object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -621,35 +569,35 @@ abstract class BasePCircleArchivePeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PCircleArchivePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PCircleTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(PCircleArchivePeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(PCircleTypePeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(PCircleArchivePeer::ID);
-            $value = $criteria->remove(PCircleArchivePeer::ID);
+            $comparison = $criteria->getComparison(PCircleTypePeer::ID);
+            $value = $criteria->remove(PCircleTypePeer::ID);
             if ($value) {
-                $selectCriteria->add(PCircleArchivePeer::ID, $value, $comparison);
+                $selectCriteria->add(PCircleTypePeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(PCircleArchivePeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(PCircleTypePeer::TABLE_NAME);
             }
 
-        } else { // $values is PCircleArchive object
+        } else { // $values is PCircleType object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(PCircleArchivePeer::DATABASE_NAME);
+        $criteria->setDbName(PCircleTypePeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the p_circle_archive table.
+     * Deletes all rows from the p_circle_type table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -658,19 +606,19 @@ abstract class BasePCircleArchivePeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PCircleArchivePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PCircleTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(PCircleArchivePeer::TABLE_NAME, $con, PCircleArchivePeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(PCircleTypePeer::TABLE_NAME, $con, PCircleTypePeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            PCircleArchivePeer::clearInstancePool();
-            PCircleArchivePeer::clearRelatedInstancePool();
+            PCircleTypePeer::clearInstancePool();
+            PCircleTypePeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -681,9 +629,9 @@ abstract class BasePCircleArchivePeer
     }
 
     /**
-     * Performs a DELETE on the database, given a PCircleArchive or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a PCircleType or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or PCircleArchive object or primary key or array of primary keys
+     * @param      mixed $values Criteria or PCircleType object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -694,32 +642,32 @@ abstract class BasePCircleArchivePeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(PCircleArchivePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PCircleTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            PCircleArchivePeer::clearInstancePool();
+            PCircleTypePeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof PCircleArchive) { // it's a model object
+        } elseif ($values instanceof PCircleType) { // it's a model object
             // invalidate the cache for this single object
-            PCircleArchivePeer::removeInstanceFromPool($values);
+            PCircleTypePeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PCircleArchivePeer::DATABASE_NAME);
-            $criteria->add(PCircleArchivePeer::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PCircleTypePeer::DATABASE_NAME);
+            $criteria->add(PCircleTypePeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                PCircleArchivePeer::removeInstanceFromPool($singleval);
+                PCircleTypePeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PCircleArchivePeer::DATABASE_NAME);
+        $criteria->setDbName(PCircleTypePeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -729,7 +677,7 @@ abstract class BasePCircleArchivePeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            PCircleArchivePeer::clearRelatedInstancePool();
+            PCircleTypePeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -740,13 +688,13 @@ abstract class BasePCircleArchivePeer
     }
 
     /**
-     * Validates all modified columns of given PCircleArchive object.
+     * Validates all modified columns of given PCircleType object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param PCircleArchive $obj The object to validate.
+     * @param PCircleType $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -756,8 +704,8 @@ abstract class BasePCircleArchivePeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(PCircleArchivePeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(PCircleArchivePeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(PCircleTypePeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(PCircleTypePeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -773,7 +721,7 @@ abstract class BasePCircleArchivePeer
 
         }
 
-        return BasePeer::doValidate(PCircleArchivePeer::DATABASE_NAME, PCircleArchivePeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(PCircleTypePeer::DATABASE_NAME, PCircleTypePeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -781,23 +729,23 @@ abstract class BasePCircleArchivePeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return PCircleArchive
+     * @return PCircleType
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = PCircleArchivePeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = PCircleTypePeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PCircleArchivePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PCircleTypePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(PCircleArchivePeer::DATABASE_NAME);
-        $criteria->add(PCircleArchivePeer::ID, $pk);
+        $criteria = new Criteria(PCircleTypePeer::DATABASE_NAME);
+        $criteria->add(PCircleTypePeer::ID, $pk);
 
-        $v = PCircleArchivePeer::doSelect($criteria, $con);
+        $v = PCircleTypePeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -807,31 +755,31 @@ abstract class BasePCircleArchivePeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return PCircleArchive[]
+     * @return PCircleType[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PCircleArchivePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PCircleTypePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(PCircleArchivePeer::DATABASE_NAME);
-            $criteria->add(PCircleArchivePeer::ID, $pks, Criteria::IN);
-            $objs = PCircleArchivePeer::doSelect($criteria, $con);
+            $criteria = new Criteria(PCircleTypePeer::DATABASE_NAME);
+            $criteria->add(PCircleTypePeer::ID, $pks, Criteria::IN);
+            $objs = PCircleTypePeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BasePCircleArchivePeer
+} // BasePCircleTypePeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BasePCircleArchivePeer::buildTableMap();
+BasePCircleTypePeer::buildTableMap();
 

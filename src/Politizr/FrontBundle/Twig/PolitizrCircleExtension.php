@@ -74,6 +74,11 @@ class PolitizrCircleExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter(
+                'circleDetail',
+                array($this, 'circleDetail'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
                 'circleActions',
                 array($this, 'circleActions'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
@@ -144,6 +149,45 @@ class PolitizrCircleExtension extends \Twig_Extension
     /* ######################################################################################################## */
     /*                                             FILTRES                                                      */
     /* ######################################################################################################## */
+
+    /**
+     * Compute right interact links between user and circle: join or consult/quit
+     *
+     * @param PCircle $circle
+     * @return html
+     */
+    public function circleDetail(\Twig_Environment $env, PCircle $circle, $topics)
+    {
+        // $this->logger->info('*** circleDetail');
+        // $this->logger->info('$circle = '.print_r($circle, true));
+
+        // get template path > generic or dedicated
+        $templatePath = 'Circle';
+        if ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_FREE) {
+            $templatePath = 'Circle\\free';
+        } elseif ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_MEDIUM) {
+            $templatePath = 'Circle\\medium';
+        } elseif ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_FULL) {
+            $templatePath = 'Circle\\full';
+        } elseif ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_SPECIFIC && $circle->getId() == CircleConstants::CD09_ID_CIRCLE) {
+            $templatePath = 'Circle\\cd09';
+        } elseif ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_SPECIFIC && $circle->getId() == CircleConstants::LHOSPI_ID_CIRCLE) {
+            $templatePath = 'Circle\\lhospi';
+        } else {
+            $templatePath = 'Circle';
+        }
+
+        // Construction du rendu du tag
+        $html = $env->render(
+            'PolitizrFrontBundle:'.$templatePath.':_detail.html.twig',
+            array(
+                'circle' => $circle,
+                'topics' => $topics,
+            )
+        );
+
+        return $html;
+    }
 
     /**
      * Compute right interact links between user and circle: join or consult/quit

@@ -109,8 +109,8 @@ builders:
                         attr:                   { class : tinymce }
                 description:
                     grid_class:                 "col-md-12"
-                    # addFormOptions:
-                    #     attr:                   { class : tinymce }
+                    addFormOptions:
+                        attr:                   { rows: 25 }
                 id:
                     addFormOptions:
                         read_only:              true

@@ -247,6 +247,11 @@ Politizr_AdminBundle_POPaymentType:
     type:     admingenerator
     prefix:   /POPaymentType
 
+Politizr_AdminBundle_PCircleType:
+    resource: "@PolitizrAdminBundle/Controller/PCircleType/"
+    type:     admingenerator
+    prefix:   /PCircleType
+
 Politizr_AdminBundle_POPaymentState:
     resource: "@PolitizrAdminBundle/Controller/POPaymentState/"
     type:     admingenerator

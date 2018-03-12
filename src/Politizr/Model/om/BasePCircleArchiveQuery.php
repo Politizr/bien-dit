@@ -18,6 +18,7 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchiveQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PCircleArchiveQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PCircleArchiveQuery orderByPCOwnerId($order = Criteria::ASC) Order by the p_c_owner_id column
+ * @method PCircleArchiveQuery orderByPCircleTypeId($order = Criteria::ASC) Order by the p_circle_type_id column
  * @method PCircleArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PCircleArchiveQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PCircleArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
@@ -35,6 +36,7 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchiveQuery groupById() Group by the id column
  * @method PCircleArchiveQuery groupByUuid() Group by the uuid column
  * @method PCircleArchiveQuery groupByPCOwnerId() Group by the p_c_owner_id column
+ * @method PCircleArchiveQuery groupByPCircleTypeId() Group by the p_circle_type_id column
  * @method PCircleArchiveQuery groupByTitle() Group by the title column
  * @method PCircleArchiveQuery groupBySummary() Group by the summary column
  * @method PCircleArchiveQuery groupByDescription() Group by the description column
@@ -58,6 +60,7 @@ use Politizr\Model\PCircleArchiveQuery;
  *
  * @method PCircleArchive findOneByUuid(string $uuid) Return the first PCircleArchive filtered by the uuid column
  * @method PCircleArchive findOneByPCOwnerId(int $p_c_owner_id) Return the first PCircleArchive filtered by the p_c_owner_id column
+ * @method PCircleArchive findOneByPCircleTypeId(int $p_circle_type_id) Return the first PCircleArchive filtered by the p_circle_type_id column
  * @method PCircleArchive findOneByTitle(string $title) Return the first PCircleArchive filtered by the title column
  * @method PCircleArchive findOneBySummary(string $summary) Return the first PCircleArchive filtered by the summary column
  * @method PCircleArchive findOneByDescription(string $description) Return the first PCircleArchive filtered by the description column
@@ -75,6 +78,7 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method array findById(int $id) Return PCircleArchive objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PCircleArchive objects filtered by the uuid column
  * @method array findByPCOwnerId(int $p_c_owner_id) Return PCircleArchive objects filtered by the p_c_owner_id column
+ * @method array findByPCircleTypeId(int $p_circle_type_id) Return PCircleArchive objects filtered by the p_circle_type_id column
  * @method array findByTitle(string $title) Return PCircleArchive objects filtered by the title column
  * @method array findBySummary(string $summary) Return PCircleArchive objects filtered by the summary column
  * @method array findByDescription(string $description) Return PCircleArchive objects filtered by the description column
@@ -193,7 +197,7 @@ abstract class BasePCircleArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `only_elected`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_circle_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `only_elected`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_circle_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -393,6 +397,48 @@ abstract class BasePCircleArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCircleArchivePeer::P_C_OWNER_ID, $pCOwnerId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_circle_type_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPCircleTypeId(1234); // WHERE p_circle_type_id = 1234
+     * $query->filterByPCircleTypeId(array(12, 34)); // WHERE p_circle_type_id IN (12, 34)
+     * $query->filterByPCircleTypeId(array('min' => 12)); // WHERE p_circle_type_id >= 12
+     * $query->filterByPCircleTypeId(array('max' => 12)); // WHERE p_circle_type_id <= 12
+     * </code>
+     *
+     * @param     mixed $pCircleTypeId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPCircleTypeId($pCircleTypeId = null, $comparison = null)
+    {
+        if (is_array($pCircleTypeId)) {
+            $useMinMax = false;
+            if (isset($pCircleTypeId['min'])) {
+                $this->addUsingAlias(PCircleArchivePeer::P_CIRCLE_TYPE_ID, $pCircleTypeId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pCircleTypeId['max'])) {
+                $this->addUsingAlias(PCircleArchivePeer::P_CIRCLE_TYPE_ID, $pCircleTypeId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PCircleArchivePeer::P_CIRCLE_TYPE_ID, $pCircleTypeId, $comparison);
     }
 
     /**

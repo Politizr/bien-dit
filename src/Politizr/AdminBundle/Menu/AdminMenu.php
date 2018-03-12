@@ -174,6 +174,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $regulations,
+            'Groupe',
+            'Politizr_AdminBundle_PCircleType_list'
+        );
+        $this->addLinkRoute(
+            $regulations,
             'Organisation',
             'Politizr_AdminBundle_PQOrganization_list'
         );

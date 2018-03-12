@@ -12,6 +12,10 @@ params:
             label:          ID Client
         p_c_owner:
             label:          Client
+        p_circle_type_id:
+            label:          ID Type
+        p_circle_type:
+            label:          Type
         uuid:
             label:          UUID
         slug:
@@ -46,9 +50,9 @@ builders:
             title:                              Liste des groupes
             max_per_page:                       50
             sort:                               [ sortable_rank, ASC ]
-            display:                            [ logo_file_name, title, p_c_owner, online, created_at ]
+            display:                            [ logo_file_name, title, p_c_owner, p_circle_type, online, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, p_c_owner, uuid, title, online, created_at ]
+            filters:                            [ id, p_c_owner, p_circle_type, uuid, title, online, created_at ]
             object_actions:
                 show:                           ~
                 edit:                           ~
@@ -62,7 +66,7 @@ builders:
         params:
             title:                              "Création d'un groupe"
             display:
-                "Champs principaux":            [ p_c_owner, title ]
+                "Champs principaux":            [ p_c_owner, p_circle_type, title ]
             fields:
                 p_c_owner:
                     dbType:                     model
@@ -84,6 +88,7 @@ builders:
                     "Texte":                    [ title, summary, description ]
                 "Objets":
                     "Client":                   [ p_c_owner ]
+                    "Offre":                    [ p_circle_type ]
                 "Options":
                     "Adresse":                  [ url ]
                     "Restrictions":             [ only_elected ]
@@ -105,8 +110,8 @@ builders:
                         attr:                   { class : tinymce }
                 description:
                     grid_class:                 "col-md-12"
-                    # addFormOptions:
-                    #     attr:                   { class : tinymce }
+                    addFormOptions:
+                        attr:                   { rows: 25 }
                 id:
                     addFormOptions:
                         read_only:              true
@@ -133,6 +138,7 @@ builders:
                     "Texte":                    [ title, summary, description ]
                 "Objets":
                     "Client":                   [ block_p_c_owner ]
+                    "Offre":                    [ p_circle_type ]
                 "Options":
                     "Adresse":                  [ url ]
                     "Restrictions":             [ only_elected ]

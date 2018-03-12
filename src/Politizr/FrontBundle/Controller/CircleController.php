@@ -72,19 +72,9 @@ class CircleController extends Controller
                     ->orderByRank()
                     ->find();
 
-        // get users authorized reactions list > generic or dedicated
-        $authorizedUsers = $this->get('politizr.functional.circle')->getAuthorizedReactionUsersByCircle($circle);
-
-        // get template path > generic or dedicated
-        $templatePath = 'Circle';
-        if ($circle->getId() == CircleConstants::CD09_ID_CIRCLE) {
-            $templatePath = 'Circle\\cd09';
-        }
-
-        return $this->render('PolitizrFrontBundle:'.$templatePath.':detail.html.twig', array(
+        return $this->render('PolitizrFrontBundle:Circle:detail.html.twig', array(
             'circle' => $circle,
             'topics' => $topics,
-            'authorizedUsers' => $authorizedUsers,
         ));
     }
 

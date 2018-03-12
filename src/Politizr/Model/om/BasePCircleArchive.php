@@ -57,6 +57,12 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     protected $p_c_owner_id;
 
     /**
+     * The value for the p_circle_type_id field.
+     * @var        int
+     */
+    protected $p_circle_type_id;
+
+    /**
      * The value for the title field.
      * @var        string
      */
@@ -185,6 +191,17 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     {
 
         return $this->p_c_owner_id;
+    }
+
+    /**
+     * Get the [p_circle_type_id] column value.
+     *
+     * @return int
+     */
+    public function getPCircleTypeId()
+    {
+
+        return $this->p_circle_type_id;
     }
 
     /**
@@ -479,6 +496,27 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
 
         return $this;
     } // setPCOwnerId()
+
+    /**
+     * Set the value of [p_circle_type_id] column.
+     *
+     * @param  int $v new value
+     * @return PCircleArchive The current object (for fluent API support)
+     */
+    public function setPCircleTypeId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->p_circle_type_id !== $v) {
+            $this->p_circle_type_id = $v;
+            $this->modifiedColumns[] = PCircleArchivePeer::P_CIRCLE_TYPE_ID;
+        }
+
+
+        return $this;
+    } // setPCircleTypeId()
 
     /**
      * Set the value of [title] column.
@@ -818,19 +856,20 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->p_c_owner_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->summary = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->logo_file_name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->url = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->online = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
-            $this->read_only = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->only_elected = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
-            $this->created_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->updated_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->slug = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->sortable_rank = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-            $this->archived_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->p_circle_type_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->title = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->summary = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->description = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->logo_file_name = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->url = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->online = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->read_only = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
+            $this->only_elected = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
+            $this->created_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->updated_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->slug = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->sortable_rank = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->archived_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -840,7 +879,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 16; // 16 = PCircleArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 17; // 17 = PCircleArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PCircleArchive object", $e);
@@ -1057,6 +1096,9 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCircleArchivePeer::P_C_OWNER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_c_owner_id`';
         }
+        if ($this->isColumnModified(PCircleArchivePeer::P_CIRCLE_TYPE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`p_circle_type_id`';
+        }
         if ($this->isColumnModified(PCircleArchivePeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
@@ -1115,6 +1157,9 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                         break;
                     case '`p_c_owner_id`':
                         $stmt->bindValue($identifier, $this->p_c_owner_id, PDO::PARAM_INT);
+                        break;
+                    case '`p_circle_type_id`':
+                        $stmt->bindValue($identifier, $this->p_circle_type_id, PDO::PARAM_INT);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -1218,42 +1263,45 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                 return $this->getPCOwnerId();
                 break;
             case 3:
-                return $this->getTitle();
+                return $this->getPCircleTypeId();
                 break;
             case 4:
-                return $this->getSummary();
+                return $this->getTitle();
                 break;
             case 5:
-                return $this->getDescription();
+                return $this->getSummary();
                 break;
             case 6:
-                return $this->getLogoFileName();
+                return $this->getDescription();
                 break;
             case 7:
-                return $this->getUrl();
+                return $this->getLogoFileName();
                 break;
             case 8:
-                return $this->getOnline();
+                return $this->getUrl();
                 break;
             case 9:
-                return $this->getReadOnly();
+                return $this->getOnline();
                 break;
             case 10:
-                return $this->getOnlyElected();
+                return $this->getReadOnly();
                 break;
             case 11:
-                return $this->getCreatedAt();
+                return $this->getOnlyElected();
                 break;
             case 12:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 13:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 14:
-                return $this->getSortableRank();
+                return $this->getSlug();
                 break;
             case 15:
+                return $this->getSortableRank();
+                break;
+            case 16:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1287,19 +1335,20 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getUuid(),
             $keys[2] => $this->getPCOwnerId(),
-            $keys[3] => $this->getTitle(),
-            $keys[4] => $this->getSummary(),
-            $keys[5] => $this->getDescription(),
-            $keys[6] => $this->getLogoFileName(),
-            $keys[7] => $this->getUrl(),
-            $keys[8] => $this->getOnline(),
-            $keys[9] => $this->getReadOnly(),
-            $keys[10] => $this->getOnlyElected(),
-            $keys[11] => $this->getCreatedAt(),
-            $keys[12] => $this->getUpdatedAt(),
-            $keys[13] => $this->getSlug(),
-            $keys[14] => $this->getSortableRank(),
-            $keys[15] => $this->getArchivedAt(),
+            $keys[3] => $this->getPCircleTypeId(),
+            $keys[4] => $this->getTitle(),
+            $keys[5] => $this->getSummary(),
+            $keys[6] => $this->getDescription(),
+            $keys[7] => $this->getLogoFileName(),
+            $keys[8] => $this->getUrl(),
+            $keys[9] => $this->getOnline(),
+            $keys[10] => $this->getReadOnly(),
+            $keys[11] => $this->getOnlyElected(),
+            $keys[12] => $this->getCreatedAt(),
+            $keys[13] => $this->getUpdatedAt(),
+            $keys[14] => $this->getSlug(),
+            $keys[15] => $this->getSortableRank(),
+            $keys[16] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1349,42 +1398,45 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                 $this->setPCOwnerId($value);
                 break;
             case 3:
-                $this->setTitle($value);
+                $this->setPCircleTypeId($value);
                 break;
             case 4:
-                $this->setSummary($value);
+                $this->setTitle($value);
                 break;
             case 5:
-                $this->setDescription($value);
+                $this->setSummary($value);
                 break;
             case 6:
-                $this->setLogoFileName($value);
+                $this->setDescription($value);
                 break;
             case 7:
-                $this->setUrl($value);
+                $this->setLogoFileName($value);
                 break;
             case 8:
-                $this->setOnline($value);
+                $this->setUrl($value);
                 break;
             case 9:
-                $this->setReadOnly($value);
+                $this->setOnline($value);
                 break;
             case 10:
-                $this->setOnlyElected($value);
+                $this->setReadOnly($value);
                 break;
             case 11:
-                $this->setCreatedAt($value);
+                $this->setOnlyElected($value);
                 break;
             case 12:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 13:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 14:
-                $this->setSortableRank($value);
+                $this->setSlug($value);
                 break;
             case 15:
+                $this->setSortableRank($value);
+                break;
+            case 16:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1414,19 +1466,20 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setPCOwnerId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setSummary($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setLogoFileName($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setUrl($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setOnline($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setReadOnly($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setOnlyElected($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setCreatedAt($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setUpdatedAt($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setSlug($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setSortableRank($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setArchivedAt($arr[$keys[15]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPCircleTypeId($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setTitle($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setSummary($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setDescription($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setLogoFileName($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setUrl($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setOnline($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setReadOnly($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setOnlyElected($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setCreatedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setUpdatedAt($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setSlug($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setSortableRank($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setArchivedAt($arr[$keys[16]]);
     }
 
     /**
@@ -1441,6 +1494,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCircleArchivePeer::ID)) $criteria->add(PCircleArchivePeer::ID, $this->id);
         if ($this->isColumnModified(PCircleArchivePeer::UUID)) $criteria->add(PCircleArchivePeer::UUID, $this->uuid);
         if ($this->isColumnModified(PCircleArchivePeer::P_C_OWNER_ID)) $criteria->add(PCircleArchivePeer::P_C_OWNER_ID, $this->p_c_owner_id);
+        if ($this->isColumnModified(PCircleArchivePeer::P_CIRCLE_TYPE_ID)) $criteria->add(PCircleArchivePeer::P_CIRCLE_TYPE_ID, $this->p_circle_type_id);
         if ($this->isColumnModified(PCircleArchivePeer::TITLE)) $criteria->add(PCircleArchivePeer::TITLE, $this->title);
         if ($this->isColumnModified(PCircleArchivePeer::SUMMARY)) $criteria->add(PCircleArchivePeer::SUMMARY, $this->summary);
         if ($this->isColumnModified(PCircleArchivePeer::DESCRIPTION)) $criteria->add(PCircleArchivePeer::DESCRIPTION, $this->description);
@@ -1519,6 +1573,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     {
         $copyObj->setUuid($this->getUuid());
         $copyObj->setPCOwnerId($this->getPCOwnerId());
+        $copyObj->setPCircleTypeId($this->getPCircleTypeId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setSummary($this->getSummary());
         $copyObj->setDescription($this->getDescription());
@@ -1586,6 +1641,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         $this->id = null;
         $this->uuid = null;
         $this->p_c_owner_id = null;
+        $this->p_circle_type_id = null;
         $this->title = null;
         $this->summary = null;
         $this->description = null;

@@ -19,6 +19,7 @@ use Politizr\Model\PCTopic;
 use Politizr\Model\PCircle;
 use Politizr\Model\PCirclePeer;
 use Politizr\Model\PCircleQuery;
+use Politizr\Model\PCircleType;
 use Politizr\Model\PLCity;
 use Politizr\Model\PMCharte;
 use Politizr\Model\PUInPC;
@@ -28,6 +29,7 @@ use Politizr\Model\PUser;
  * @method PCircleQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PCircleQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method PCircleQuery orderByPCOwnerId($order = Criteria::ASC) Order by the p_c_owner_id column
+ * @method PCircleQuery orderByPCircleTypeId($order = Criteria::ASC) Order by the p_circle_type_id column
  * @method PCircleQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PCircleQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PCircleQuery orderByDescription($order = Criteria::ASC) Order by the description column
@@ -44,6 +46,7 @@ use Politizr\Model\PUser;
  * @method PCircleQuery groupById() Group by the id column
  * @method PCircleQuery groupByUuid() Group by the uuid column
  * @method PCircleQuery groupByPCOwnerId() Group by the p_c_owner_id column
+ * @method PCircleQuery groupByPCircleTypeId() Group by the p_circle_type_id column
  * @method PCircleQuery groupByTitle() Group by the title column
  * @method PCircleQuery groupBySummary() Group by the summary column
  * @method PCircleQuery groupByDescription() Group by the description column
@@ -64,6 +67,10 @@ use Politizr\Model\PUser;
  * @method PCircleQuery leftJoinPCOwner($relationAlias = null) Adds a LEFT JOIN clause to the query using the PCOwner relation
  * @method PCircleQuery rightJoinPCOwner($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PCOwner relation
  * @method PCircleQuery innerJoinPCOwner($relationAlias = null) Adds a INNER JOIN clause to the query using the PCOwner relation
+ *
+ * @method PCircleQuery leftJoinPCircleType($relationAlias = null) Adds a LEFT JOIN clause to the query using the PCircleType relation
+ * @method PCircleQuery rightJoinPCircleType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PCircleType relation
+ * @method PCircleQuery innerJoinPCircleType($relationAlias = null) Adds a INNER JOIN clause to the query using the PCircleType relation
  *
  * @method PCircleQuery leftJoinPCTopic($relationAlias = null) Adds a LEFT JOIN clause to the query using the PCTopic relation
  * @method PCircleQuery rightJoinPCTopic($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PCTopic relation
@@ -86,6 +93,7 @@ use Politizr\Model\PUser;
  *
  * @method PCircle findOneByUuid(string $uuid) Return the first PCircle filtered by the uuid column
  * @method PCircle findOneByPCOwnerId(int $p_c_owner_id) Return the first PCircle filtered by the p_c_owner_id column
+ * @method PCircle findOneByPCircleTypeId(int $p_circle_type_id) Return the first PCircle filtered by the p_circle_type_id column
  * @method PCircle findOneByTitle(string $title) Return the first PCircle filtered by the title column
  * @method PCircle findOneBySummary(string $summary) Return the first PCircle filtered by the summary column
  * @method PCircle findOneByDescription(string $description) Return the first PCircle filtered by the description column
@@ -102,6 +110,7 @@ use Politizr\Model\PUser;
  * @method array findById(int $id) Return PCircle objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PCircle objects filtered by the uuid column
  * @method array findByPCOwnerId(int $p_c_owner_id) Return PCircle objects filtered by the p_c_owner_id column
+ * @method array findByPCircleTypeId(int $p_circle_type_id) Return PCircle objects filtered by the p_circle_type_id column
  * @method array findByTitle(string $title) Return PCircle objects filtered by the title column
  * @method array findBySummary(string $summary) Return PCircle objects filtered by the summary column
  * @method array findByDescription(string $description) Return PCircle objects filtered by the description column
@@ -225,7 +234,7 @@ abstract class BasePCircleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `only_elected`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_circle` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `only_elected`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_circle` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -427,6 +436,50 @@ abstract class BasePCircleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCirclePeer::P_C_OWNER_ID, $pCOwnerId, $comparison);
+    }
+
+    /**
+     * Filter the query on the p_circle_type_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPCircleTypeId(1234); // WHERE p_circle_type_id = 1234
+     * $query->filterByPCircleTypeId(array(12, 34)); // WHERE p_circle_type_id IN (12, 34)
+     * $query->filterByPCircleTypeId(array('min' => 12)); // WHERE p_circle_type_id >= 12
+     * $query->filterByPCircleTypeId(array('max' => 12)); // WHERE p_circle_type_id <= 12
+     * </code>
+     *
+     * @see       filterByPCircleType()
+     *
+     * @param     mixed $pCircleTypeId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function filterByPCircleTypeId($pCircleTypeId = null, $comparison = null)
+    {
+        if (is_array($pCircleTypeId)) {
+            $useMinMax = false;
+            if (isset($pCircleTypeId['min'])) {
+                $this->addUsingAlias(PCirclePeer::P_CIRCLE_TYPE_ID, $pCircleTypeId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pCircleTypeId['max'])) {
+                $this->addUsingAlias(PCirclePeer::P_CIRCLE_TYPE_ID, $pCircleTypeId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PCirclePeer::P_CIRCLE_TYPE_ID, $pCircleTypeId, $comparison);
     }
 
     /**
@@ -886,6 +939,82 @@ abstract class BasePCircleQuery extends ModelCriteria
         return $this
             ->joinPCOwner($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PCOwner', '\Politizr\Model\PCOwnerQuery');
+    }
+
+    /**
+     * Filter the query by a related PCircleType object
+     *
+     * @param   PCircleType|PropelObjectCollection $pCircleType The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PCircleQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPCircleType($pCircleType, $comparison = null)
+    {
+        if ($pCircleType instanceof PCircleType) {
+            return $this
+                ->addUsingAlias(PCirclePeer::P_CIRCLE_TYPE_ID, $pCircleType->getId(), $comparison);
+        } elseif ($pCircleType instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PCirclePeer::P_CIRCLE_TYPE_ID, $pCircleType->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByPCircleType() only accepts arguments of type PCircleType or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PCircleType relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function joinPCircleType($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PCircleType');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PCircleType');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PCircleType relation PCircleType object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PCircleTypeQuery A secondary query class using the current class as primary query
+     */
+    public function usePCircleTypeQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPCircleType($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PCircleType', '\Politizr\Model\PCircleTypeQuery');
     }
 
     /**

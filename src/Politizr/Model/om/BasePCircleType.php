@@ -15,26 +15,24 @@ use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Politizr\Model\PCOwner;
-use Politizr\Model\PCOwnerArchive;
-use Politizr\Model\PCOwnerArchiveQuery;
-use Politizr\Model\PCOwnerPeer;
-use Politizr\Model\PCOwnerQuery;
 use Politizr\Model\PCircle;
 use Politizr\Model\PCircleQuery;
+use Politizr\Model\PCircleType;
+use Politizr\Model\PCircleTypePeer;
+use Politizr\Model\PCircleTypeQuery;
 
-abstract class BasePCOwner extends BaseObject implements Persistent
+abstract class BasePCircleType extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Politizr\\Model\\PCOwnerPeer';
+    const PEER = 'Politizr\\Model\\PCircleTypePeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        PCOwnerPeer
+     * @var        PCircleTypePeer
      */
     protected static $peer;
 
@@ -51,12 +49,6 @@ abstract class BasePCOwner extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the uuid field.
-     * @var        string
-     */
-    protected $uuid;
-
-    /**
      * The value for the title field.
      * @var        string
      */
@@ -69,12 +61,6 @@ abstract class BasePCOwner extends BaseObject implements Persistent
     protected $summary;
 
     /**
-     * The value for the description field.
-     * @var        string
-     */
-    protected $description;
-
-    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -85,12 +71,6 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      * @var        string
      */
     protected $updated_at;
-
-    /**
-     * The value for the slug field.
-     * @var        string
-     */
-    protected $slug;
 
     /**
      * @var        PropelObjectCollection|PCircle[] Collection to store aggregation of PCircle objects.
@@ -118,9 +98,6 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      */
     protected $alreadyInClearAllReferencesDeep = false;
 
-    // archivable behavior
-    protected $archiveOnDelete = true;
-
     /**
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
@@ -136,17 +113,6 @@ abstract class BasePCOwner extends BaseObject implements Persistent
     {
 
         return $this->id;
-    }
-
-    /**
-     * Get the [uuid] column value.
-     *
-     * @return string
-     */
-    public function getUuid()
-    {
-
-        return $this->uuid;
     }
 
     /**
@@ -169,17 +135,6 @@ abstract class BasePCOwner extends BaseObject implements Persistent
     {
 
         return $this->summary;
-    }
-
-    /**
-     * Get the [description] column value.
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-
-        return $this->description;
     }
 
     /**
@@ -263,21 +218,10 @@ abstract class BasePCOwner extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [slug] column value.
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-
-        return $this->slug;
-    }
-
-    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return PCOwner The current object (for fluent API support)
+     * @return PCircleType The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -287,7 +231,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = PCOwnerPeer::ID;
+            $this->modifiedColumns[] = PCircleTypePeer::ID;
         }
 
 
@@ -295,31 +239,10 @@ abstract class BasePCOwner extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [uuid] column.
-     *
-     * @param  string $v new value
-     * @return PCOwner The current object (for fluent API support)
-     */
-    public function setUuid($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->uuid !== $v) {
-            $this->uuid = $v;
-            $this->modifiedColumns[] = PCOwnerPeer::UUID;
-        }
-
-
-        return $this;
-    } // setUuid()
-
-    /**
      * Set the value of [title] column.
      *
      * @param  string $v new value
-     * @return PCOwner The current object (for fluent API support)
+     * @return PCircleType The current object (for fluent API support)
      */
     public function setTitle($v)
     {
@@ -329,7 +252,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
 
         if ($this->title !== $v) {
             $this->title = $v;
-            $this->modifiedColumns[] = PCOwnerPeer::TITLE;
+            $this->modifiedColumns[] = PCircleTypePeer::TITLE;
         }
 
 
@@ -340,7 +263,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      * Set the value of [summary] column.
      *
      * @param  string $v new value
-     * @return PCOwner The current object (for fluent API support)
+     * @return PCircleType The current object (for fluent API support)
      */
     public function setSummary($v)
     {
@@ -350,7 +273,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
 
         if ($this->summary !== $v) {
             $this->summary = $v;
-            $this->modifiedColumns[] = PCOwnerPeer::SUMMARY;
+            $this->modifiedColumns[] = PCircleTypePeer::SUMMARY;
         }
 
 
@@ -358,32 +281,11 @@ abstract class BasePCOwner extends BaseObject implements Persistent
     } // setSummary()
 
     /**
-     * Set the value of [description] column.
-     *
-     * @param  string $v new value
-     * @return PCOwner The current object (for fluent API support)
-     */
-    public function setDescription($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->description !== $v) {
-            $this->description = $v;
-            $this->modifiedColumns[] = PCOwnerPeer::DESCRIPTION;
-        }
-
-
-        return $this;
-    } // setDescription()
-
-    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PCOwner The current object (for fluent API support)
+     * @return PCircleType The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -393,7 +295,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = PCOwnerPeer::CREATED_AT;
+                $this->modifiedColumns[] = PCircleTypePeer::CREATED_AT;
             }
         } // if either are not null
 
@@ -406,7 +308,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return PCOwner The current object (for fluent API support)
+     * @return PCircleType The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -416,34 +318,13 @@ abstract class BasePCOwner extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = PCOwnerPeer::UPDATED_AT;
+                $this->modifiedColumns[] = PCircleTypePeer::UPDATED_AT;
             }
         } // if either are not null
 
 
         return $this;
     } // setUpdatedAt()
-
-    /**
-     * Set the value of [slug] column.
-     *
-     * @param  string $v new value
-     * @return PCOwner The current object (for fluent API support)
-     */
-    public function setSlug($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->slug !== $v) {
-            $this->slug = $v;
-            $this->modifiedColumns[] = PCOwnerPeer::SLUG;
-        }
-
-
-        return $this;
-    } // setSlug()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -478,13 +359,10 @@ abstract class BasePCOwner extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->uuid = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->summary = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->slug = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->summary = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -494,10 +372,10 @@ abstract class BasePCOwner extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 8; // 8 = PCOwnerPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PCircleTypePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating PCOwner object", $e);
+            throw new PropelException("Error populating PCircleType object", $e);
         }
     }
 
@@ -540,13 +418,13 @@ abstract class BasePCOwner extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PCOwnerPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(PCircleTypePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = PCOwnerPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = PCircleTypePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -578,24 +456,14 @@ abstract class BasePCOwner extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PCOwnerPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PCircleTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = PCOwnerQuery::create()
+            $deleteQuery = PCircleTypeQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
-            // archivable behavior
-            if ($ret) {
-                if ($this->archiveOnDelete) {
-                    // do nothing yet. The object will be archived later when calling PCOwnerQuery::delete().
-                } else {
-                    $deleteQuery->setArchiveOnDelete(false);
-                    $this->archiveOnDelete = true;
-                }
-            }
-
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
@@ -631,35 +499,26 @@ abstract class BasePCOwner extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PCOwnerPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(PCircleTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         $isInsert = $this->isNew();
         try {
             $ret = $this->preSave($con);
-            // sluggable behavior
-
-            if ($this->isColumnModified(PCOwnerPeer::SLUG) && $this->getSlug()) {
-                $this->setSlug($this->makeSlugUnique($this->getSlug()));
-            } elseif ($this->isColumnModified(PCOwnerPeer::TITLE)) {
-                $this->setSlug($this->createSlug());
-            } elseif (!$this->getSlug()) {
-                $this->setSlug($this->createSlug());
-            }
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(PCOwnerPeer::CREATED_AT)) {
+                if (!$this->isColumnModified(PCircleTypePeer::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(PCOwnerPeer::UPDATED_AT)) {
+                if (!$this->isColumnModified(PCircleTypePeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(PCOwnerPeer::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(PCircleTypePeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -671,7 +530,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                PCOwnerPeer::addInstanceToPool($this);
+                PCircleTypePeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -749,39 +608,30 @@ abstract class BasePCOwner extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = PCOwnerPeer::ID;
+        $this->modifiedColumns[] = PCircleTypePeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PCOwnerPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PCircleTypePeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PCOwnerPeer::ID)) {
+        if ($this->isColumnModified(PCircleTypePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PCOwnerPeer::UUID)) {
-            $modifiedColumns[':p' . $index++]  = '`uuid`';
-        }
-        if ($this->isColumnModified(PCOwnerPeer::TITLE)) {
+        if ($this->isColumnModified(PCircleTypePeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
-        if ($this->isColumnModified(PCOwnerPeer::SUMMARY)) {
+        if ($this->isColumnModified(PCircleTypePeer::SUMMARY)) {
             $modifiedColumns[':p' . $index++]  = '`summary`';
         }
-        if ($this->isColumnModified(PCOwnerPeer::DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = '`description`';
-        }
-        if ($this->isColumnModified(PCOwnerPeer::CREATED_AT)) {
+        if ($this->isColumnModified(PCircleTypePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
-        if ($this->isColumnModified(PCOwnerPeer::UPDATED_AT)) {
+        if ($this->isColumnModified(PCircleTypePeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`updated_at`';
-        }
-        if ($this->isColumnModified(PCOwnerPeer::SLUG)) {
-            $modifiedColumns[':p' . $index++]  = '`slug`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `p_c_owner` (%s) VALUES (%s)',
+            'INSERT INTO `p_circle_type` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -793,26 +643,17 @@ abstract class BasePCOwner extends BaseObject implements Persistent
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`uuid`':
-                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
-                        break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
                     case '`summary`':
                         $stmt->bindValue($identifier, $this->summary, PDO::PARAM_STR);
                         break;
-                    case '`description`':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
-                        break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
                         break;
                     case '`updated_at`':
                         $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
-                        break;
-                    case '`slug`':
-                        $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -858,7 +699,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PCOwnerPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PCircleTypePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -878,25 +719,16 @@ abstract class BasePCOwner extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getUuid();
-                break;
-            case 2:
                 return $this->getTitle();
                 break;
-            case 3:
+            case 2:
                 return $this->getSummary();
                 break;
-            case 4:
-                return $this->getDescription();
-                break;
-            case 5:
+            case 3:
                 return $this->getCreatedAt();
                 break;
-            case 6:
+            case 4:
                 return $this->getUpdatedAt();
-                break;
-            case 7:
-                return $this->getSlug();
                 break;
             default:
                 return null;
@@ -921,20 +753,17 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PCOwner'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['PCircleType'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PCOwner'][$this->getPrimaryKey()] = true;
-        $keys = PCOwnerPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['PCircleType'][$this->getPrimaryKey()] = true;
+        $keys = PCircleTypePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getUuid(),
-            $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getSummary(),
-            $keys[4] => $this->getDescription(),
-            $keys[5] => $this->getCreatedAt(),
-            $keys[6] => $this->getUpdatedAt(),
-            $keys[7] => $this->getSlug(),
+            $keys[1] => $this->getTitle(),
+            $keys[2] => $this->getSummary(),
+            $keys[3] => $this->getCreatedAt(),
+            $keys[4] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -963,7 +792,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PCOwnerPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = PCircleTypePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -983,25 +812,16 @@ abstract class BasePCOwner extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setUuid($value);
-                break;
-            case 2:
                 $this->setTitle($value);
                 break;
-            case 3:
+            case 2:
                 $this->setSummary($value);
                 break;
-            case 4:
-                $this->setDescription($value);
-                break;
-            case 5:
+            case 3:
                 $this->setCreatedAt($value);
                 break;
-            case 6:
+            case 4:
                 $this->setUpdatedAt($value);
-                break;
-            case 7:
-                $this->setSlug($value);
                 break;
         } // switch()
     }
@@ -1025,16 +845,13 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = PCOwnerPeer::getFieldNames($keyType);
+        $keys = PCircleTypePeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setUuid($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setSummary($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setSlug($arr[$keys[7]]);
+        if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setSummary($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
     }
 
     /**
@@ -1044,16 +861,13 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PCOwnerPeer::DATABASE_NAME);
+        $criteria = new Criteria(PCircleTypePeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PCOwnerPeer::ID)) $criteria->add(PCOwnerPeer::ID, $this->id);
-        if ($this->isColumnModified(PCOwnerPeer::UUID)) $criteria->add(PCOwnerPeer::UUID, $this->uuid);
-        if ($this->isColumnModified(PCOwnerPeer::TITLE)) $criteria->add(PCOwnerPeer::TITLE, $this->title);
-        if ($this->isColumnModified(PCOwnerPeer::SUMMARY)) $criteria->add(PCOwnerPeer::SUMMARY, $this->summary);
-        if ($this->isColumnModified(PCOwnerPeer::DESCRIPTION)) $criteria->add(PCOwnerPeer::DESCRIPTION, $this->description);
-        if ($this->isColumnModified(PCOwnerPeer::CREATED_AT)) $criteria->add(PCOwnerPeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(PCOwnerPeer::UPDATED_AT)) $criteria->add(PCOwnerPeer::UPDATED_AT, $this->updated_at);
-        if ($this->isColumnModified(PCOwnerPeer::SLUG)) $criteria->add(PCOwnerPeer::SLUG, $this->slug);
+        if ($this->isColumnModified(PCircleTypePeer::ID)) $criteria->add(PCircleTypePeer::ID, $this->id);
+        if ($this->isColumnModified(PCircleTypePeer::TITLE)) $criteria->add(PCircleTypePeer::TITLE, $this->title);
+        if ($this->isColumnModified(PCircleTypePeer::SUMMARY)) $criteria->add(PCircleTypePeer::SUMMARY, $this->summary);
+        if ($this->isColumnModified(PCircleTypePeer::CREATED_AT)) $criteria->add(PCircleTypePeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(PCircleTypePeer::UPDATED_AT)) $criteria->add(PCircleTypePeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1068,8 +882,8 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(PCOwnerPeer::DATABASE_NAME);
-        $criteria->add(PCOwnerPeer::ID, $this->id);
+        $criteria = new Criteria(PCircleTypePeer::DATABASE_NAME);
+        $criteria->add(PCircleTypePeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1110,20 +924,17 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of PCOwner (or compatible) type.
+     * @param object $copyObj An object of PCircleType (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setUuid($this->getUuid());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setSummary($this->getSummary());
-        $copyObj->setDescription($this->getDescription());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
-        $copyObj->setSlug($this->getSlug());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1157,7 +968,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return PCOwner Clone of current object.
+     * @return PCircleType Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1177,12 +988,12 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return PCOwnerPeer
+     * @return PCircleTypePeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new PCOwnerPeer();
+            self::$peer = new PCircleTypePeer();
         }
 
         return self::$peer;
@@ -1210,7 +1021,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return PCOwner The current object (for fluent API support)
+     * @return PCircleType The current object (for fluent API support)
      * @see        addPCircles()
      */
     public function clearPCircles()
@@ -1258,7 +1069,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this PCOwner is new, it will return
+     * If this PCircleType is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
@@ -1275,7 +1086,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
                 $this->initPCircles();
             } else {
                 $collPCircles = PCircleQuery::create(null, $criteria)
-                    ->filterByPCOwner($this)
+                    ->filterByPCircleType($this)
                     ->find($con);
                 if (null !== $criteria) {
                     if (false !== $this->collPCirclesPartial && count($collPCircles)) {
@@ -1319,7 +1130,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      *
      * @param PropelCollection $pCircles A Propel collection.
      * @param PropelPDO $con Optional connection object
-     * @return PCOwner The current object (for fluent API support)
+     * @return PCircleType The current object (for fluent API support)
      */
     public function setPCircles(PropelCollection $pCircles, PropelPDO $con = null)
     {
@@ -1329,7 +1140,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
         $this->pCirclesScheduledForDeletion = $pCirclesToDelete;
 
         foreach ($pCirclesToDelete as $pCircleRemoved) {
-            $pCircleRemoved->setPCOwner(null);
+            $pCircleRemoved->setPCircleType(null);
         }
 
         $this->collPCircles = null;
@@ -1369,7 +1180,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
             }
 
             return $query
-                ->filterByPCOwner($this)
+                ->filterByPCircleType($this)
                 ->count($con);
         }
 
@@ -1381,7 +1192,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      * through the PCircle foreign key attribute.
      *
      * @param    PCircle $l PCircle
-     * @return PCOwner The current object (for fluent API support)
+     * @return PCircleType The current object (for fluent API support)
      */
     public function addPCircle(PCircle $l)
     {
@@ -1407,12 +1218,12 @@ abstract class BasePCOwner extends BaseObject implements Persistent
     protected function doAddPCircle($pCircle)
     {
         $this->collPCircles[]= $pCircle;
-        $pCircle->setPCOwner($this);
+        $pCircle->setPCircleType($this);
     }
 
     /**
      * @param	PCircle $pCircle The pCircle object to remove.
-     * @return PCOwner The current object (for fluent API support)
+     * @return PCircleType The current object (for fluent API support)
      */
     public function removePCircle($pCircle)
     {
@@ -1422,8 +1233,8 @@ abstract class BasePCOwner extends BaseObject implements Persistent
                 $this->pCirclesScheduledForDeletion = clone $this->collPCircles;
                 $this->pCirclesScheduledForDeletion->clear();
             }
-            $this->pCirclesScheduledForDeletion[]= clone $pCircle;
-            $pCircle->setPCOwner(null);
+            $this->pCirclesScheduledForDeletion[]= $pCircle;
+            $pCircle->setPCircleType(null);
         }
 
         return $this;
@@ -1433,23 +1244,23 @@ abstract class BasePCOwner extends BaseObject implements Persistent
     /**
      * If this collection has already been initialized with
      * an identical criteria, it returns the collection.
-     * Otherwise if this PCOwner is new, it will return
-     * an empty collection; or if this PCOwner has previously
+     * Otherwise if this PCircleType is new, it will return
+     * an empty collection; or if this PCircleType has previously
      * been saved, it will retrieve related PCircles from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
-     * actually need in PCOwner.
+     * actually need in PCircleType.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|PCircle[] List of PCircle objects
      */
-    public function getPCirclesJoinPCircleType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPCirclesJoinPCOwner($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PCircleQuery::create(null, $criteria);
-        $query->joinWith('PCircleType', $join_behavior);
+        $query->joinWith('PCOwner', $join_behavior);
 
         return $this->getPCircles($query, $con);
     }
@@ -1460,13 +1271,10 @@ abstract class BasePCOwner extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->uuid = null;
         $this->title = null;
         $this->summary = null;
-        $this->description = null;
         $this->created_at = null;
         $this->updated_at = null;
-        $this->slug = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1511,7 +1319,7 @@ abstract class BasePCOwner extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PCOwnerPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PCircleTypePeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -1529,278 +1337,13 @@ abstract class BasePCOwner extends BaseObject implements Persistent
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     PCOwner The current object (for fluent API support)
+     * @return     PCircleType The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[] = PCOwnerPeer::UPDATED_AT;
+        $this->modifiedColumns[] = PCircleTypePeer::UPDATED_AT;
 
         return $this;
-    }
-
-    // sluggable behavior
-
-    /**
-     * Create a unique slug based on the object
-     *
-     * @return string The object slug
-     */
-    protected function createSlug()
-    {
-        $slug = $this->createRawSlug();
-        $slug = $this->limitSlugSize($slug);
-        $slug = $this->makeSlugUnique($slug);
-
-        return $slug;
-    }
-
-    /**
-     * Create the slug from the appropriate columns
-     *
-     * @return string
-     */
-    protected function createRawSlug()
-    {
-        return '' . $this->cleanupSlugPart($this->gettitle()) . '';
-    }
-
-    /**
-     * Cleanup a string to make a slug of it
-     * Removes special characters, replaces blanks with a separator, and trim it
-     *
-     * @param     string $slug        the text to slugify
-     * @param     string $replacement the separator used by slug
-     * @return    string               the slugified text
-     */
-    protected static function cleanupSlugPart($slug, $replacement = '-')
-    {
-        // transliterate
-        if (function_exists('iconv')) {
-            $slug = iconv('utf-8', 'us-ascii//TRANSLIT', $slug);
-        }
-
-        // lowercase
-        if (function_exists('mb_strtolower')) {
-            $slug = mb_strtolower($slug);
-        } else {
-            $slug = strtolower($slug);
-        }
-
-        // remove accents resulting from OSX's iconv
-        $slug = str_replace(array('\'', '`', '^'), '', $slug);
-
-        // replace non letter or digits with separator
-        $slug = preg_replace('/\W+/', $replacement, $slug);
-
-        // trim
-        $slug = trim($slug, $replacement);
-
-        if (empty($slug)) {
-            return 'n-a';
-        }
-
-        return $slug;
-    }
-
-
-    /**
-     * Make sure the slug is short enough to accommodate the column size
-     *
-     * @param    string $slug                   the slug to check
-     * @param    int    $incrementReservedSpace the number of characters to keep empty
-     *
-     * @return string                            the truncated slug
-     */
-    protected static function limitSlugSize($slug, $incrementReservedSpace = 3)
-    {
-        // check length, as suffix could put it over maximum
-        if (strlen($slug) > (255 - $incrementReservedSpace)) {
-            $slug = substr($slug, 0, 255 - $incrementReservedSpace);
-        }
-
-        return $slug;
-    }
-
-
-    /**
-     * Get the slug, ensuring its uniqueness
-     *
-     * @param    string $slug            the slug to check
-     * @param    string $separator       the separator used by slug
-     * @param    int    $alreadyExists   false for the first try, true for the second, and take the high count + 1
-     * @return   string                   the unique slug
-     */
-    protected function makeSlugUnique($slug, $separator = '-', $alreadyExists = false)
-    {
-        if (!$alreadyExists) {
-            $slug2 = $slug;
-        } else {
-            $slug2 = $slug . $separator;
-        }
-
-         $query = PCOwnerQuery::create('q')
-        ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)->prune($this)
-        ;
-
-        if (!$alreadyExists) {
-            $count = $query->count();
-            if ($count > 0) {
-                return $this->makeSlugUnique($slug, $separator, true);
-            }
-
-            return $slug2;
-        }
-
-        // Already exists
-        $object = $query
-            ->addDescendingOrderByColumn('LENGTH(slug)')
-            ->addDescendingOrderByColumn('slug')
-        ->findOne();
-
-        // First duplicate slug
-        if (null == $object) {
-            return $slug2 . '1';
-        }
-
-        $slugNum = substr($object->getSlug(), strlen($slug) + 1);
-        if ('0' === $slugNum[0]) {
-            $slugNum[0] = 1;
-        }
-
-        return $slug2 . ($slugNum + 1);
-    }
-
-    // uuid behavior
-    /**
-    * Create UUID if is NULL Uuid*/
-    public function preInsert(PropelPDO $con = NULL) {
-
-        if(is_null($this->getUuid())) {
-            $this->setUuid(\Ramsey\Uuid\Uuid::uuid4()->__toString());
-        } else {
-            $uuid = $this->getUuid();
-            if(!\Ramsey\Uuid\Uuid::isValid($uuid)) {
-                throw new \InvalidArgumentException('UUID: ' . $uuid . ' in not valid');
-                return false;
-            }
-        }
-        return true;
-    }
-    /**
-    * If permanent UUID, throw exception p_c_owner.uuid*/
-    public function preUpdate(PropelPDO $con = NULL) {
-            $uuid = $this->getUuid();
-        if(!is_null($uuid) && !\Ramsey\Uuid\Uuid::isValid($uuid)) {
-            throw new \InvalidArgumentException("UUID: $uuid in not valid");
-        }
-            return true;
-    }
-
-    // archivable behavior
-
-    /**
-     * Get an archived version of the current object.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return     PCOwnerArchive An archive object, or null if the current object was never archived
-     */
-    public function getArchive(PropelPDO $con = null)
-    {
-        if ($this->isNew()) {
-            return null;
-        }
-        $archive = PCOwnerArchiveQuery::create()
-            ->filterByPrimaryKey($this->getPrimaryKey())
-            ->findOne($con);
-
-        return $archive;
-    }
-    /**
-     * Copy the data of the current object into a $archiveTablePhpName archive object.
-     * The archived object is then saved.
-     * If the current object has already been archived, the archived object
-     * is updated and not duplicated.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @throws PropelException If the object is new
-     *
-     * @return     PCOwnerArchive The archive object based on this object
-     */
-    public function archive(PropelPDO $con = null)
-    {
-        if ($this->isNew()) {
-            throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
-        }
-        if (!$archive = $this->getArchive($con)) {
-            $archive = new PCOwnerArchive();
-            $archive->setPrimaryKey($this->getPrimaryKey());
-        }
-        $this->copyInto($archive, $deepCopy = false, $makeNew = false);
-        $archive->setArchivedAt(time());
-        $archive->save($con);
-
-        return $archive;
-    }
-
-    /**
-     * Revert the the current object to the state it had when it was last archived.
-     * The object must be saved afterwards if the changes must persist.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @throws PropelException If the object has no corresponding archive.
-     *
-     * @return PCOwner The current object (for fluent API support)
-     */
-    public function restoreFromArchive(PropelPDO $con = null)
-    {
-        if (!$archive = $this->getArchive($con)) {
-            throw new PropelException('The current object has never been archived and cannot be restored');
-        }
-        $this->populateFromArchive($archive);
-
-        return $this;
-    }
-
-    /**
-     * Populates the the current object based on a $archiveTablePhpName archive object.
-     *
-     * @param      PCOwnerArchive $archive An archived object based on the same class
-      * @param      Boolean $populateAutoIncrementPrimaryKeys
-     *               If true, autoincrement columns are copied from the archive object.
-     *               If false, autoincrement columns are left intact.
-      *
-     * @return     PCOwner The current object (for fluent API support)
-     */
-    public function populateFromArchive($archive, $populateAutoIncrementPrimaryKeys = false) {
-        if ($populateAutoIncrementPrimaryKeys) {
-            $this->setId($archive->getId());
-        }
-        $this->setUuid($archive->getUuid());
-        $this->setTitle($archive->getTitle());
-        $this->setSummary($archive->getSummary());
-        $this->setDescription($archive->getDescription());
-        $this->setCreatedAt($archive->getCreatedAt());
-        $this->setUpdatedAt($archive->getUpdatedAt());
-        $this->setSlug($archive->getSlug());
-
-        return $this;
-    }
-
-    /**
-     * Removes the object from the database without archiving it.
-     *
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return     PCOwner The current object (for fluent API support)
-     */
-    public function deleteWithoutArchive(PropelPDO $con = null)
-    {
-        $this->archiveOnDelete = false;
-
-        return $this->delete($con);
     }
 
 }
