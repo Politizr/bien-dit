@@ -12,5 +12,5 @@ SET `p_circle_type_id` = 4
 WHERE id = 1;
 
 UPDATE `p_circle`
-SET `p_circle_type_id` = 4
+SET `p_circle_type_id` = 2
 WHERE id = 2;
