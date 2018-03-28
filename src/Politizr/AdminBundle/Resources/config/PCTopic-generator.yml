@@ -46,13 +46,13 @@ builders:
             title:                              Liste des discussions
             max_per_page:                       50
             sort:                               [ sortable_rank, ASC ]
-            scopes:
-                group_1: 
-                    "Tous":                     ~
-                    "[CD09] Budget Primitif 2017":
-                        default:                1
-                        filters:
-                            p_circle_id:        1
+#             scopes:
+#                 group_1: 
+#                     "Tous":                     ~
+#                     "[CD09] Budget Primitif 2017":
+#                         default:                1
+#                         filters:
+#                             p_circle_id:        1
             display:                            [ file_name, title, id, p_circle, online, created_at ]
             filtersMode:                        modal
             filters:                            [ p_circle, uuid, title, online, created_at ]

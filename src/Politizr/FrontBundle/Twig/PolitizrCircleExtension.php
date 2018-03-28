@@ -264,7 +264,9 @@ class PolitizrCircleExtension extends \Twig_Extension
 
         // get template path > generic or dedicated
         $templatePath = 'Circle';
-        if ($circle->getId() == CircleConstants::CD09_ID_CIRCLE) {
+        if ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_FREE) {
+            $templatePath = 'Circle\\free';
+        } elseif ($circle->getId() == CircleConstants::CD09_ID_CIRCLE) {
             $templatePath = 'Circle\\cd09';
         }
 
