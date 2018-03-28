@@ -11,7 +11,7 @@
                 {#<a href="{{ path('LandingPage', { 'theme': 'democratie-participative'}) }}">Démocratie Participative</a>#}
                 {#<a href="{{ path('LandingPage', { 'theme': 'offre-candidat-senatoriales-2017'}) }}">Sénatoriales 2017</a>#}
                 {#<a href="https://blog.politizr.com" target="_blank">Notre blog</a>#}
-                {#<a href="https://territoires.politizr.com" target="_blank">Services aux collectivités</a>#}
+                <a href="{{ path('LandingPage', { 'theme': 'offres-collectivites'}) }}" target="_blank">Services aux collectivités</a>
                 {#<a href="https://business.politizr.com" target="_blank">Services aux entreprises</a>#}
 
                 <a class="publicFooterHelpLink" href="http://politizr.help" target="_blank"><i class="icon-info"></i>Support et assistance</a>       
@@ -20,7 +20,6 @@
             <div class="footerColumn">
                 <div class="footerColumnTitle">Pour nous contacter</div>
                 <span>
-                    POLITIZR<br>
                     32, av. du Gal De Gaulle<br>
                     09000 Foix<br>
                 </span>
@@ -50,7 +49,9 @@
                 <div class="fb-like" data-href="https://www.facebook.com/Politizr" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
             </div>
             <div id="publicPartners">
-                <span>Politizr est membre de</span><a href="http://democratieouverte.org" target="_blank"><img src="{{ asset('bundles/politizrfront/images/f-DO.png') }}"></a><a href="http://www.debatlab.org" target="_blank"><img src="{{ asset('bundles/politizrfront/images/f-debatlab.png') }}"></a>
+                <span>Politizr est membre de</span>{#<a href="http://democratieouverte.org" target="_blank"><img src="{{ asset('bundles/politizrfront/images/f-DO.png') }}"></a><a href="http://www.debatlab.org" target="_blank"><img src="{{ asset('bundles/politizrfront/images/f-debatlab.png') }}"></a>#}
+                <a href="http://www.mouves.org" target="_blank"><img src="{{ asset('bundles/politizrfront/images/f-mouves.jpg') }}" title="Mouvement des Entrepreneurs Sociaux"></a>
+                <a href="#" target="_blank"><img src="{{ asset('bundles/politizrfront/images/f-frenchimpact.png') }}" title="French Impact"/></a>
             </div>
         </div>
     </div>

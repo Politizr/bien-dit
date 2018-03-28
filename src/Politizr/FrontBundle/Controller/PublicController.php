@@ -231,6 +231,8 @@ class PublicController extends Controller
             $template = 'offreCandidat.html.twig';
         } elseif ($theme == 'offre-candidat-senatoriales-2017')  {
             $template = 'offreCandidatSenatoriales.html.twig';
+        } elseif ($theme == 'offres-collectivites')  {
+            $template = 'offresCollectivites.html.twig';
         } else {
             return $this->redirect($this->generateUrl('Homepage'));
         }
