@@ -84,16 +84,6 @@
         </div>
     </div>
     <div id="content">
-        <div id="modalNoEdition">
-            <div class="noEdition">
-                <div class="alertNoEdition">
-                    <i class="icon-info"></i> L'édition d'un sujet n'est pas disponible sur mobile.
-                </div>
-                <p>Un brouillon a été sauvegardé. Vous pourrez le modifier ultérieurement.</p>
-                <a href="javascript: history.go(-1)">Retour page précédente</a>
-                <a href="{{ path('Homepage'~profileSuffix()) }}">Retour page d'accueil</a>
-            </div>
-        </div>
         <div class="editionPostCard">
             <form method="POST" name="debate" id="formDebateUpdate" class="autoSubmitForm" uuid="{{ debate.uuid }}" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') }}">
                 <div class="formBlock">
