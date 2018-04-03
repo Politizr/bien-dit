@@ -153,7 +153,7 @@ class CircleService
      */
     public function getAuthorizedOwnersByUser(PUser $user = null)
     {
-        // $this->logger->info('*** getAuthorizedCirclesByUser');
+        // $this->logger->info('*** getAuthorizedOwnersByUser');
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$user->getPLCityId = '.print_r($user->getPLCityId(), true));
 
