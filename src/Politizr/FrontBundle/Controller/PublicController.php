@@ -82,144 +82,41 @@ class PublicController extends Controller
             ->orderByMostActive()
             ;
 
+        /*
+            $documents = $documentsQuery
+                ->usePDDTaggedTQuery()
+                    ->usePTagQuery()
+                        ->filterBySlug('democratie-participative')
+                    ->endUse()
+                ->endUse()
+                ->find();
+            $users = $usersQuery
+                ->usePuTaggedTPUserQuery()
+                    ->usePuTaggedTPTagQuery()
+                        ->filterBySlug('democratie-participative')
+                    ->endUse()
+                ->endUse()
+                ->find();
+        */
+
         $directMessage = new PDDirect();
         $form = $this->createForm(new PDDirectType(), $directMessage);
 
         if ($theme == 'civic-tech') {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('civic-tech')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('civic-tech')
-                    ->endUse()
-                ->endUse()
-                ->find();
             $template = 'civictech.html.twig';
-        } elseif ($theme == 'elu-local')  {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('elus-locaux')
-                        ->_or()
-                        ->filterBySlug('statut-de-l-elu')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('elus-locaux')
-                        ->_or()
-                        ->filterBySlug('statut-de-l-elu')
-                    ->endUse()
-                ->endUse()
-                ->find();
+        } elseif ($theme == 'elus-locaux')  {
             $template = 'eluLocal.html.twig';
         } elseif ($theme == 'dialogue-citoyen')  {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('citoyen')
-                        ->_or()
-                        ->filterBySlug('citoyenneté')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('citoyen')
-                        ->_or()
-                        ->filterBySlug('citoyenneté')
-                    ->endUse()
-                ->endUse()
-                ->find();
             $template = 'dialogueCitoyen.html.twig';
         } elseif ($theme == 'democratie-locale')  {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('democratie-locale')
-                    ->endUse()
-                ->endUse()
-                ->find();
-
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('democratie-participative')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            
             $template = 'democratieLocale.html.twig';
         } elseif ($theme == 'democratie-participative')  {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('democratie-participative')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('democratie-participative')
-                    ->endUse()
-                ->endUse()
-                ->find();
             $template = 'democratieParticipative.html.twig';
         } elseif ($theme == 'reseau-social-politique')  {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('%democratie%')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('%democratie%')
-                    ->endUse()
-                ->endUse()
-                ->find();
             $template = 'reseauSocial.html.twig';
         } elseif ($theme == 'primaires-presidentielle-2017')  {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('presidentielle-2017')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('presidentielle-2017')
-                    ->endUse()
-                ->endUse()
-                ->find();
             $template = 'presidentielle.html.twig';
         } elseif ($theme == 'charlotte-marchandise')  {
-            $documents = PDDebateQuery::create()
-                ->limit(9)
-                ->online()
-                ->orderByPublishedAt('desc')
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('presidentielle-2017')
-                    ->endUse()
-                ->endUse()
-                // ->orderByMostViews()
-                ->filterByPUserId(315)
-                ->find();
             $template = 'charlotte.html.twig';
         } elseif ($theme == 'concertation-publique')  {
             $template = 'concertationPublique.html.twig';
@@ -227,12 +124,18 @@ class PublicController extends Controller
             $template = 'budgetParticipatif.html.twig';
         } elseif ($theme == 'entreprise-liberee')  {
             $template = 'entrepriseLiberee.html.twig';
+        } elseif ($theme == 'dialogue-entreprise-public')  {
+            $template = 'dialogueEntreprisePublic.html.twig';
         } elseif ($theme == 'offre-candidat-legislatives-2017')  {
             $template = 'offreCandidat.html.twig';
         } elseif ($theme == 'offre-candidat-senatoriales-2017')  {
             $template = 'offreCandidatSenatoriales.html.twig';
         } elseif ($theme == 'offres-collectivites')  {
             $template = 'offresCollectivites.html.twig';
+        } elseif ($theme == 'actus-ariege')  {
+            $template = 'actusAriege.html.twig';
+        } elseif ($theme == 'actus-toulouse')  {
+            $template = 'actusToulouse.html.twig';
         } else {
             return $this->redirect($this->generateUrl('Homepage'));
         }

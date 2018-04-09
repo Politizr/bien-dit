@@ -2,8 +2,8 @@
 {% extends layout %}
 {% set headerRight = false %}
 
-{% set metaTitle = 'Démocratie Locale' %}
-{% set metaDescription = 'Politizr est un site web de démocratie participative qui réinvente le dialogue entre élus et citoyens.' %}
+{% set metaTitle = 'Dialogue Entreprise et Grand Public' %}
+{% set metaDescription = 'POLITIZR est un outil de dialogue à destination du grand public pour les entreprises désireuses d\'engager un dialogue constructif et de long terme.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -14,51 +14,50 @@
 {% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
 {% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
 
-{% block bodyClass %} class="public visitor"{% endblock %}
+{% block bodyClass %} class="public visitor noHeaderTrigger"{% endblock %}
 
 {% block main %}
     <div id="lpGeneric">
         <div id="lpHero">
             <div class="center">
-                <h1>Il est temps pour les collectivités de renforcer leur démocratie participative...</h1>
-                <div id="f-display"><img src="{{ asset('bundles/politizrfront/images/f-display.png') }}" alt="Démocratie participative"></div>
+                <h1>En 2018, vous pouvez engager une consultation constructive avec le grand public...</h1>
+                <div id="f-display"><img src="{{ asset('bundles/politizrfront/images/f-display.png ') }}" alt="Entreprise et grand public"></div>
                 <div id="f-accessories"><img src="{{ asset('bundles/politizrfront/images/f-accessories.png') }}"></div>
             </div>
             <div id="lpHeroFader"></div>
         </div>
         <div id="lpUnderHero">
             <div class="center">
-                Communiquez autour de vos projets et faîtes réagir vos administré.e.s sur les sujets de votre choix, de façon ponctuelle ou sur le long terme. Quelle que soit la taille de votre collectivité, nos services de démocratie participative vous permettront d'associer plus de citoyen.ne.s aux décisions qui façonnent votre territoire.<br/><br/><b>Disponible à partir d’une ​offre gratuite et sans engagement!</b>
+                Expert de la Civic Tech et du dialogue citoyen, POLITIZR propose une solution qui vous aidera à engager un dialogue direct et constructif avec le grand public, que ce soit des parties prenantes en rapport avec vos projets ou tout simplement vos clients. Construit comme un réseau social et articulé autour de valeurs de légitimité, de durée et d'échanges constructifs, notre plateforme contribuera à construire une communauté active et impliqué autour de vos projets, loin des écueils des réseaux sociaux tradtionnels.
             </div>
         </div>
         <div id="lpArgu">
             <div class="center">
                 <div class="lpLeftCol">
                     <p>
-                        POLITIZR propose aux collectivités son service numérique de démocratie participative pour leur permettre de diffuser de l’information et d’associer leurs
-                        concitoyennes et concitoyens aux projets qui façonnent leur territoire.
+                        Notre plateforme se déploie en "marque blanche" et favorise des échanges constructifs, basés sur la transparence, le respect et la bienveillance.
+                    </p>
+                    <p>
+                        Ils nous font confiance: Actia, Caisse d'Epargne, ENEDIS, Véolia, CEVIPOF / Sciences Po Paris...
                     </p>
                     <img src="{{ asset('bundles/politizrfront/images/f-illustr01.jpg') }}">
                 </div>
                 <div class="lpRightCol">
-                    <h3>Fonctionnalités clefs</h3>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Réseau social de démocratie participative</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Espace privatif pour votre collectivité et vos administré.e.s</div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Interface favorisant des échanges constructifs</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Charte​ assurant un cadre ​convivial et respectueux</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Modération effectuée par nos services</p></div>
-                    <h3>Pourquoi utiliser notre service?</h3>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Effectuez de la ​ communication et de la pédagogie autour de vos actions​ et permettez ​ à vos administrés de s’exprimer ​ dans un cadre adapté​ .</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Touchez un plus grand nombre de vos administrés, en particulier des publics moins habitués à participer à la décision publique (jeunes, actifs).</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Renforcez la confiance et l’adhésion de vos administré.e.s envers votre collectivité et les projets qu’elle porte.</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Profitez de nos conseils et d’un suivi dans la durée pour renforcer l’engagement de vos administré.e.s autour de vos projets.</p></div>
-                    <h3>Vous êtes un citoye.nn.e ou un élu.e désireux de vous impliquer individuellement?</h3>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Découvrez <a href="https://www.politizr.com/">notre réseau global et gratuit</a>, conçu spécialement pour favoriser les échanges constructifs partout en France.</p></div>
-                    <h3>&nbsp;</h3>
+                    <h3>Vous êtes une société désireuse d'impliquer ses clients ou d'autres parties prenantes?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Une plateforme adaptée et sur mesure</div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Un dialogue horizontal... et vertical!</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Favorisez vos projets</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Des collaborateurs engagés et force de propositions</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Suivi des décisions</p></div>
                 </div>
             </div>
         </div>
 
+        <div id="lpCTA">
+            <div class="center">
+                <a href="https://business.politizr.com">Découvrir toutes les fonctionnalités</a>
+            </div>
+        </div>
 
         <div id="lpContact">
             <div class="center">
@@ -90,19 +89,19 @@
             </div>
         </div>
     </div>
+    
 {% endblock main %}
 
 {% block postMain %}
     {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
 {% endblock postMain %}
 
-
 {% block javascriptFooter %}
     {{ parent() }}
 
     {% if (app.environment == 'prod') %}
         <script type="text/javascript">
-            mixpanel.track("LP élu local");
+            mixpanel.track("LP Concertation Publique");
         </script>
     {% endif %}
 
