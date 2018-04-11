@@ -132,6 +132,8 @@ class PublicController extends Controller
             $template = 'offreCandidatSenatoriales.html.twig';
         } elseif ($theme == 'offres-collectivites')  {
             $template = 'offresCollectivites.html.twig';
+        } elseif ($theme == 'boite-a-idees-numerique')  {
+            $template = 'boiteAIdees.html.twig';
         } elseif ($theme == 'actus-ariege')  {
             $template = 'actusAriege.html.twig';
         } elseif ($theme == 'actus-toulouse')  {
