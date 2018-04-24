@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\GlobalConstants;
+use Politizr\Constant\LocalizationConstants;
 
 use Politizr\Model\PDDirect;
 
@@ -83,13 +84,6 @@ class PublicController extends Controller
             ;
 
         /*
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('democratie-participative')
-                    ->endUse()
-                ->endUse()
-                ->find();
             $users = $usersQuery
                 ->usePuTaggedTPUserQuery()
                     ->usePuTaggedTPTagQuery()
@@ -135,9 +129,167 @@ class PublicController extends Controller
         } elseif ($theme == 'boite-a-idees-numerique')  {
             $template = 'boiteAIdees.html.twig';
         } elseif ($theme == 'actus-ariege')  {
+            $documents = $this->get('politizr.functional.document')->getPublicationsByFilters(
+                null,
+                '0ee7c5fc-cd8a-4089-92d4-f1caf8751c0d',
+                LocalizationConstants::TYPE_DEPARTMENT,
+                null,
+                ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_LAST,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                0,
+                6
+            );
+
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                '0ee7c5fc-cd8a-4089-92d4-f1caf8751c0d',
+                LocalizationConstants::TYPE_DEPARTMENT,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
             $template = 'actusAriege.html.twig';
         } elseif ($theme == 'actus-toulouse')  {
+            $documents = $this->get('politizr.functional.document')->getPublicationsByFilters(
+                null,
+                '06813a50-839a-48b7-98d6-c9f3606894ce',
+                LocalizationConstants::TYPE_DEPARTMENT,
+                null,
+                ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_LAST,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                0,
+                6
+            );
+
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                '06813a50-839a-48b7-98d6-c9f3606894ce',
+                LocalizationConstants::TYPE_DEPARTMENT,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
             $template = 'actusToulouse.html.twig';
+        } elseif ($theme == 'actus-paris')  {
+            $documents = $this->get('politizr.functional.document')->getPublicationsByFilters(
+                null,
+                'e423798f-7ed5-4c08-82d1-ddc41a5e0b91',
+                LocalizationConstants::TYPE_REGION,
+                null,
+                ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_LAST,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                0,
+                6
+            );
+
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                'e423798f-7ed5-4c08-82d1-ddc41a5e0b91',
+                LocalizationConstants::TYPE_REGION,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_FOLLOWED,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
+            $template = 'actusParis.html.twig';
+        } elseif ($theme == 'actus-bordeaux')  {
+            $documents = $this->get('politizr.functional.document')->getPublicationsByFilters(
+                null,
+                '836f7d34-f836-44e9-89b2-6e6932d735c3',
+                LocalizationConstants::TYPE_REGION,
+                null,
+                ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_LAST,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                0,
+                6
+            );
+
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                '836f7d34-f836-44e9-89b2-6e6932d735c3',
+                LocalizationConstants::TYPE_REGION,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
+            $template = 'actusBordeaux.html.twig';
+        } elseif ($theme == 'actus-bretagne')  {
+            $documents = $this->get('politizr.functional.document')->getPublicationsByFilters(
+                null,
+                '8c9e3199-9cef-462e-bc48-0850b91fdf1d',
+                LocalizationConstants::TYPE_REGION,
+                null,
+                ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+                ListingConstants::FILTER_KEYWORD_CITIZEN,
+                ListingConstants::ORDER_BY_KEYWORD_LAST,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                0,
+                6
+            );
+
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                '8c9e3199-9cef-462e-bc48-0850b91fdf1d',
+                LocalizationConstants::TYPE_REGION,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
+            $template = 'actusBretagne.html.twig';
+        } elseif ($theme == 'actus-normandie')  {
+            $documents = $this->get('politizr.functional.document')->getPublicationsByFilters(
+                null,
+                '6703c4ab-c59c-4de4-9945-4ba0c8e41f68',
+                LocalizationConstants::TYPE_REGION,
+                null,
+                ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_LAST,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                0,
+                6
+            );
+
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                '6703c4ab-c59c-4de4-9945-4ba0c8e41f68',
+                LocalizationConstants::TYPE_REGION,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
+            $template = 'actusNormandie.html.twig';
+        } elseif ($theme == 'actus-hauts-de-france')  {
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                'fb8cd4a1-ae02-45ab-90a2-25aaa7494abb',
+                LocalizationConstants::TYPE_REGION,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
+            $template = 'actusHautsDeFrance.html.twig';
         } else {
             return $this->redirect($this->generateUrl('Homepage'));
         }

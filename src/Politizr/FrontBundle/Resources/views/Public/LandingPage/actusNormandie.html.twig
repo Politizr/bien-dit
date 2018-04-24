@@ -2,8 +2,8 @@
 {% extends layout %}
 {% set headerRight = false %}
 
-{% set metaTitle = 'Actualités Politique en Ariège' %}
-{% set metaDescription = 'Retrouvez l\'actualité politique en Ariège remontée par vos concitoyens et exprimez-vous avec vos élus.' %}
+{% set metaTitle = 'Actualités Politique en Normandie' %}
+{% set metaDescription = 'Retrouvez l\'actualité politique en Normandie remontée par vos concitoyens et exprimez-vous avec vos élus.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -20,23 +20,23 @@
     <div id="lpGeneric">
         <div id="lpHero">
             <div class="center">
-                <h1>Devenez acteur de l'actualité en Ariège</h1>
+                <h1>Devenez acteur de l'actualité en Normandie</h1>
                 <h2>En participant à des échanges directs entre citoyens et élus</h2>
-                <div id="f-display"><img src="{{ asset('bundles/politizrfront/images/f-display.png') }}" alt="Actualités Ariège"></div>
+                <div id="f-display"><img src="{{ asset('bundles/politizrfront/images/f-display.png') }}" alt="Actualités Normandie"></div>
                 <div id="f-accessories"><img src="{{ asset('bundles/politizrfront/images/f-accessories.png') }}"></div>
             </div>
             <div id="lpHeroFader"></div>
         </div>
         <div id="lpUnderHero">
             <div class="center">
-                POLITIZR est un espace de discussion indépendant, neutre et gratuit qui renouvelle les pratiques politiques en permettant des échanges structurés et constructifs entre les citoyen.ne.s, les élu.e.s et leurs collectivités - notamment le Conseil Départemental de l'Ariège. Devenez acteur de votre territoire!<br/><br/><b>100% gratuit</b>
+                POLITIZR est un espace de discussion indépendant, neutre et gratuit qui renouvelle les pratiques politiques en permettant des échanges structurés et constructifs entre les citoyen.ne.s, les élu.e.s et leurs collectivités - en Normandie et ailleurs. Devenez acteur de votre territoire!<br/><br/><b>100% gratuit</b>
             </div>
         </div>
 
         <div id="postSelection">
             <div class="center">
-                <h1>Les sujets d'actualités en Ariège</h1>
-                <h2>Ariège, Foix, Pamiers, etc.</h2>
+                <h1>Les sujets d'actualités en Normandie</h1>
+                <h2>Caen, Le Havre, Rouen, etc.</h2>
                 
                 {% for document in documents %}
                     {% set document = document.relativeObject %}
@@ -53,7 +53,7 @@
 
         <div id="profileSelection">
             <div class="center">
-                <h1>Rejoignez la communauté Politizr déjà inscrite en Ariège</h1>
+                <h1>Rejoignez la communauté Politizr déjà inscrite en Normandie</h1>
                 <h2>&nbsp;</h2>
                 
                 {% for user in users %}
@@ -78,23 +78,23 @@
             <div class="center">
                 <div class="lpLeftCol">
                     <p>
-                        Politizr est une société basée à Foix (Ariège) qui propose un réseau social de dialogue citoyen permettant de reconnecter les citoyen.ne.s et leurs élu.e.s.
+                        Politizr propose un réseau social de dialogue citoyen permettant de reconnecter les citoyen.ne.s et leurs élu.e.s, en Normandie et partout en France.
                         <br/><br/>
                         Nous travaillons à améliorer la démocratie locale en proposant d'échanger sur l'actualité via un espace de discussion qui favorise les échanges structurées et argumentées dans un temps long propice à la qualité du débat.
                     </p>
                     <img src="{{ asset('bundles/politizrfront/images/f-illustr01.jpg') }}">
                 </div>
                 <div class="lpRightCol">
-                    <h3>Vous êtes un citoyen d'Ariège désireux d'une nouvelle politique?</h3>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Discutez directement avec les élu.e.s ariégeois.</p></div>
+                    <h3>Vous êtes un citoyen normand désireux d'une nouvelle politique?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Discutez directement avec les élu.e.s de Normandie.</p></div>
                     <div class="lpCheckLi"><i class="icon-check"></i><p>Commentez et notez toutes les discussions ouvertes.</p></div>
                     <div class="lpCheckLi"><i class="icon-check"></i><p>Partagez votre opinion sur l'actualité auprès de vos concitoyen.ne.s et élu.e.s.</p></div>
                     <div class="lpCheckLi"><i class="icon-check"></i><p>Participez à des échanges suivant vos centres d'intérêt.</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Accédez à l'ensemble des publications de l'Ariège et d'ailleurs.</p></div>
-                    <div class="lpCheckLi"><i class="icon-social-fb"></i><p>&nbsp;Visualisez l'impact Facebook de vos publications en Ariège.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Accédez à l'ensemble des publications de l'Normandie et d'ailleurs.</p></div>
+                    <div class="lpCheckLi"><i class="icon-social-fb"></i><p>&nbsp;Visualisez l'impact Facebook de vos publications en Normandie.</p></div>
                     <br/>
-                    <h3>Vous êtes un élu d'Ariège moderne?</h3>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Expliquez vos actions à vos concitoyen.ne.s ariégeois.</p></div>
+                    <h3>Vous êtes un élu normand moderne?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Expliquez vos actions à vos concitoyen.ne.s de Normandie.</p></div>
                     <div class="lpCheckLi"><i class="icon-check"></i><p>Répondez aux questions et aux opinions d'actualité de vos concitoyen.ne.s.</p></div>
                     <div class="lpCheckLi"><i class="icon-check"></i><p>Faîtes profiter d'autres élu.e.s de vos retours d'expérience.</p></div>
                     <div class="lpCheckLi"><i class="icon-check"></i><p>Participez à des échanges suivant l'actualité et vos centres d'intérêt.</p></div>
@@ -116,7 +116,7 @@
         <div id="lpContact">
             <div class="center">
                 <div class="lpLeftCol">
-                    Envie de nous remonter une opinion ou une question sur l'actualité en Ariège?<br/>
+                    Envie de nous remonter une opinion ou une question sur l'actualité en Normandie?<br/>
                     Vous pouvez aussi simplement remplir ce questionnaire!
                 </div>
                 <div class="lpRightCol">

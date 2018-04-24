@@ -1527,6 +1527,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $html = '';
         $this->timelineService->setTemplatingService($env);
 
+        // @todo refactoring w. Publication->getRelativeObject
+
         switch ($publicationRow->getType()) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 try {
