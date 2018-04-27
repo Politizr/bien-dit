@@ -42,6 +42,7 @@ services:
             - @politizr.tools.global
             - "%facebook_client_id%"
             - "%facebook_client_secret%"
+            - "%facebook_graph_version%"
             - "%twitter_api_key%"
             - "%twitter_api_secret%"
             - "%google_client_id%"

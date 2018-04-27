@@ -78,6 +78,7 @@ class SecurityService
      * @param @politizr.tools.global
      * @param "%facebook_client_id%"
      * @param "%facebook_client_secret%"
+     * @param "%facebook_graph_version%"
      * @param "%twitter_api_key%"
      * @param "%twitter_api_secret%"
      * @param "%google_client_id%"
@@ -98,6 +99,7 @@ class SecurityService
         $globalTools,
         $facebookClientId,
         $facebookClientSecret,
+        $facebookGraphVersion,
         $twitterApiKey,
         $twitterApiSecret,
         $googleClientId,
@@ -124,6 +126,8 @@ class SecurityService
 
         $this->facebookClientId = $facebookClientId;
         $this->facebookClientSecret = $facebookClientSecret;
+        $this->facebookGraphVersion = $facebookGraphVersion;
+
         $this->twitterApiKey = $twitterApiKey;
         $this->twitterApiSecret = $twitterApiSecret;
         $this->googleClientId = $googleClientId;
@@ -235,7 +239,7 @@ class SecurityService
         $facebookClient = new Facebook\Facebook([
           'app_id' => $this->facebookClientId,
           'app_secret' => $this->facebookClientSecret,
-          'default_graph_version' => 'v2.6',
+          'default_graph_version' => $this->facebookGraphVersion,
           'default_access_token' => $accessToken, // optional
         ]);
 
@@ -245,7 +249,7 @@ class SecurityService
 
             // id,name,email,birthday,picture.type(square)
             $response = $facebookClient->get(
-                sprintf('/%s?fields=gender,first_name,last_name,link,birthday,about,bio,location,website,is_verified', $providerId)
+                sprintf('/%s?fields=gender,first_name,last_name,email,link,birthday,about,location,website,is_verified', $providerId)
             );
         } catch (FacebookResponseException $e) {
             // When Graph returns an error
@@ -259,11 +263,10 @@ class SecurityService
 
         $graphUser = $response->getGraphUser();
 
-        // dump($graphUser);
-
         $gender = $graphUser->getField('gender');
         $firstName = $graphUser->getField('first_name');
         $lastName = $graphUser->getField('last_name');
+        $email = $graphUser->getField('email');
         $fbLink = $graphUser->getField('link');
         $birthday = $graphUser->getField('birthday');
         $about = $graphUser->getField('about');
@@ -287,6 +290,10 @@ class SecurityService
 
         if (null !== $lastName) {
             $user->setName($lastName);
+        }
+
+        if (null !== $email) {
+            $user->setName($email);
         }
 
         if (null !== $fbLink) {
