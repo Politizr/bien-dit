@@ -72,7 +72,7 @@
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="uuid" type="varchar" size="50" />
-        <column name="p_user_id" type="integer" required="true" />
+        <column name="p_user_id" type="integer" required="false" />
         
         <column name="title" type="varchar" size="150" />
         <column name="description" type="longvarchar" />
@@ -82,8 +82,9 @@
         <column name="geo_scoped" type="boolean" />
         <column name="online" type="boolean" />
         <column name="timeline" type="boolean" />
+        <column name="new_subject_link" type="boolean" defaultValue="true" />
 
-        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="SETNULL">
             <reference local="p_user_id" foreign="id" />
         </foreign-key>        
 
@@ -147,6 +148,8 @@
         <column name="p_r_badge_family_id" type="integer" required="true" />
         
         <column name="title" type="varchar" size="150" />
+
+        <column name="file_name" type="varchar" size="150" />
 
         <column name="online" type="boolean" />
 
@@ -642,6 +645,8 @@
         <column name="online" type="boolean" />
         <column name="homepage" type="boolean" />
 
+        <column name="support_group" type="boolean" />
+
         <column name="banned" type="boolean" />
         <column name="banned_nb_days_left" type="integer" />
         <column name="banned_nb_total" type="integer" />
@@ -945,6 +950,7 @@
         <column name="p_object_name" type="varchar" size="150" />
         <column name="p_object_id" type="integer" />
         <column name="p_author_user_id" type="integer" />
+        <column name="p_c_topic_id" type="integer" required="false" />
 
         <column name="description" type="longvarchar" />
 
@@ -1004,6 +1010,8 @@
         <column name="p_l_region_id" type="integer" required="false" />
         <column name="p_l_country_id" type="integer" required="false" />
 
+        <column name="p_c_topic_id" type="integer" required="false" />
+        
         <column name="fb_ad_id" type="varchar" size="150" />
 
         <column name="title" type="varchar" size="100" />
@@ -1017,6 +1025,8 @@
         <column name="note_neg" type="integer" defaultValue="0" />
 
         <column name="nb_views" type="integer" />
+
+        <column name="want_boost" type="integer" defaultValue="0" />
 
         <column name="published" type="boolean" />
         <column name="published_at" type="timestamp" />
@@ -1050,6 +1060,10 @@
             <reference local="p_l_country_id" foreign="id" />
         </foreign-key>
 
+        <foreign-key foreignTable="p_c_topic" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_c_topic_id" foreign="id" />
+        </foreign-key>
+        
         <foreign-key foreignTable="p_e_operation" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_e_operation_id" foreign="id" />
         </foreign-key>
@@ -1086,6 +1100,7 @@
         <column name="p_l_region_id" type="integer" required="false" />
         <column name="p_l_country_id" type="integer" required="false" />
 
+        <column name="p_c_topic_id" type="integer" required="false" />
         <column name="fb_ad_id" type="varchar" size="150" />
 
         <column name="title" type="varchar" size="100" />
@@ -1099,6 +1114,8 @@
         <column name="note_neg" type="integer" defaultValue="0" />
 
         <column name="nb_views" type="integer" />
+
+        <column name="want_boost" type="integer" defaultValue="0" />
 
         <column name="published" type="boolean" />
         <column name="published_at" type="timestamp" />
@@ -1134,6 +1151,10 @@
 
         <foreign-key foreignTable="p_l_country" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="p_l_country_id" foreign="id" />
+        </foreign-key>
+        
+        <foreign-key foreignTable="p_c_topic" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_c_topic_id" foreign="id" />
         </foreign-key>
         
         <unique>
@@ -1267,6 +1288,190 @@
         
         <column name="description" type="longvarchar" />
     </table>
+
+    <table name="p_d_media">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+        
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_d_debate_id" type="integer" required="false" />
+        <column name="p_d_reaction_id" type="integer" required="false" />
+
+        <column name="path" type="varchar" size="250" />
+        <column name="file_name" type="varchar" size="150" />
+        <column name="extension" type="varchar" size="150" />
+        <column name="size" type="integer" />
+        <column name="width" type="integer" />
+        <column name="height" type="integer" />
+
+        <foreign-key foreignTable="p_d_debate" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_debate_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_d_reaction" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_d_reaction_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
+    <table name="p_c_owner">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+        <behavior name="archivable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
+
+        <column name="title" type="varchar" size="100" />
+
+        <column name="summary" type="longvarchar" />
+        <column name="description" type="longvarchar" />
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
+    </table>
+
+    <table name="p_circle_type">
+        <behavior name="timestampable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="title" type="varchar" size="100" />
+        <column name="summary" type="longvarchar" />
+    </table>
+
+    <table name="p_circle">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+        <behavior name="sortable" >
+            <parameter name="use_scope" value="true" />
+            <parameter name="scope_column" value="p_c_owner_id" />
+        </behavior>
+        <behavior name="archivable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
+        <column name="p_c_owner_id" type="integer" required="true" />
+        <column name="p_circle_type_id" type="integer" required="false" />
+
+        <column name="title" type="varchar" size="100" />
+
+        <column name="summary" type="longvarchar" />
+        <column name="description" type="clob" />
+
+        <column name="logo_file_name" type="varchar" size="150" />
+
+        <column name="url" type="varchar" size="150" />
+
+        <column name="online" type="boolean" />
+        <column name="read_only" type="boolean" />
+        <column name="only_elected" type="boolean" />
+
+        <foreign-key foreignTable="p_c_owner" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_c_owner_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_circle_type" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_circle_type_id" foreign="id" />
+        </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
+    </table>
+
+    <table name="p_c_topic">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        <behavior name="uuid">
+            <parameter name="version" value="4" />
+            <parameter name="permanent" value="false" />
+        </behavior>
+        <behavior name="sortable" >
+            <parameter name="use_scope" value="true" />
+            <parameter name="scope_column" value="p_circle_id" />
+        </behavior>
+        <behavior name="archivable" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="uuid" type="varchar" size="50" />
+        <column name="p_circle_id" type="integer" required="true" />
+
+        <column name="title" type="varchar" size="100" />
+
+        <column name="summary" type="longvarchar" />
+        <column name="description" type="clob" />
+        <column name="file_name" type="varchar" size="150" />
+
+        <column name="online" type="boolean" />
+
+        <column name="force_geoloc_type" type="varchar" size="100" />
+        <column name="force_geoloc_id" type="integer" />
+
+        <foreign-key foreignTable="p_circle" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_circle_id" foreign="id" />
+        </foreign-key>
+
+        <unique>
+            <unique-column name="uuid"/>
+        </unique>
+    </table>
+
+    <table name="p_c_group_l_c" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_circle_id" type="integer" required="true" />
+        <column name="p_l_city_id" type="integer" required="true" />
+
+        <foreign-key foreignTable="p_circle" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_circle_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_l_city" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_l_city_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="p_u_in_p_c" isCrossRef="true">
+        <behavior name="timestampable" />
+        <behavior name="query_cache" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="p_circle_id" type="integer" required="true" />
+        <column name="p_user_id" type="integer" required="true" />
+
+        <column name="is_authorized_reaction" type="boolean" default="false" />        
+
+        <foreign-key foreignTable="p_circle" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_circle_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="p_user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
+
 
 
     <table name="p_m_moderation_type">
@@ -1523,12 +1728,18 @@
         <behavior name="timestampable" />
         
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
+        <column name="p_circle_id" type="integer" required="false" />
         
         <column name="title" type="varchar" size="100" />
         <column name="summary" type="longvarchar" />
         <column name="description" type="clob" />
 
         <column name="online" type="boolean" />
+
+        <foreign-key foreignTable="p_circle" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="p_circle_id" foreign="id" />
+        </foreign-key>        
     </table>
 
     <table name="p_l_country">

@@ -29,4 +29,18 @@ interface PDCommentInterface
      * @return ObjectTypeConstants
      */
     public function getPDocument();
+
+    /**
+     * Get associated topic id
+     *
+     * @return ObjectTypeConstants
+     */
+    public function getTopicId();
+
+    /**
+     * Get associated circle
+     *
+     * @return PCircle|null
+     */
+    public function getCircle();
 }

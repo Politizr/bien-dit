@@ -15,6 +15,8 @@ use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PCircle;
+use Politizr\Model\PCircleQuery;
 use Politizr\Model\PDDComment;
 use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDDebate;
@@ -82,6 +84,8 @@ use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUFollowUPeer;
 use Politizr\Model\PUFollowUQuery;
+use Politizr\Model\PUInPC;
+use Politizr\Model\PUInPCQuery;
 use Politizr\Model\PUMandate;
 use Politizr\Model\PUMandateQuery;
 use Politizr\Model\PUNotification;
@@ -431,6 +435,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $homepage;
 
     /**
+     * The value for the support_group field.
+     * @var        boolean
+     */
+    protected $support_group;
+
+    /**
      * The value for the banned field.
      * @var        boolean
      */
@@ -615,6 +625,12 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPDRCommentsPartial;
 
     /**
+     * @var        PropelObjectCollection|PUInPC[] Collection to store aggregation of PUInPC objects.
+     */
+    protected $collPUInPCs;
+    protected $collPUInPCsPartial;
+
+    /**
      * @var        PropelObjectCollection|PMUserModerated[] Collection to store aggregation of PMUserModerated objects.
      */
     protected $collPMUserModerateds;
@@ -770,6 +786,11 @@ abstract class BasePUser extends BaseObject implements Persistent
     protected $collPNEmails;
 
     /**
+     * @var        PropelObjectCollection|PCircle[] Collection to store aggregation of PCircle objects.
+     */
+    protected $collPCircles;
+
+    /**
      * @var        PropelObjectCollection|PMModerationType[] Collection to store aggregation of PMModerationType objects.
      */
     protected $collPMModerationTypes;
@@ -889,6 +910,12 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pNEmailsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pCirclesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1027,6 +1054,12 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pDRCommentsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pUInPCsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1928,6 +1961,17 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
 
         return $this->homepage;
+    }
+
+    /**
+     * Get the [support_group] column value.
+     *
+     * @return boolean
+     */
+    public function getSupportGroup()
+    {
+
+        return $this->support_group;
     }
 
     /**
@@ -3206,6 +3250,35 @@ abstract class BasePUser extends BaseObject implements Persistent
     } // setHomepage()
 
     /**
+     * Sets the value of the [support_group] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setSupportGroup($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->support_group !== $v) {
+            $this->support_group = $v;
+            $this->modifiedColumns[] = PUserPeer::SUPPORT_GROUP;
+        }
+
+
+        return $this;
+    } // setSupportGroup()
+
+    /**
      * Sets the value of the [banned] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -3469,13 +3542,14 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->nb_id_check = ($row[$startcol + 45] !== null) ? (int) $row[$startcol + 45] : null;
             $this->online = ($row[$startcol + 46] !== null) ? (boolean) $row[$startcol + 46] : null;
             $this->homepage = ($row[$startcol + 47] !== null) ? (boolean) $row[$startcol + 47] : null;
-            $this->banned = ($row[$startcol + 48] !== null) ? (boolean) $row[$startcol + 48] : null;
-            $this->banned_nb_days_left = ($row[$startcol + 49] !== null) ? (int) $row[$startcol + 49] : null;
-            $this->banned_nb_total = ($row[$startcol + 50] !== null) ? (int) $row[$startcol + 50] : null;
-            $this->abuse_level = ($row[$startcol + 51] !== null) ? (int) $row[$startcol + 51] : null;
-            $this->created_at = ($row[$startcol + 52] !== null) ? (string) $row[$startcol + 52] : null;
-            $this->updated_at = ($row[$startcol + 53] !== null) ? (string) $row[$startcol + 53] : null;
-            $this->slug = ($row[$startcol + 54] !== null) ? (string) $row[$startcol + 54] : null;
+            $this->support_group = ($row[$startcol + 48] !== null) ? (boolean) $row[$startcol + 48] : null;
+            $this->banned = ($row[$startcol + 49] !== null) ? (boolean) $row[$startcol + 49] : null;
+            $this->banned_nb_days_left = ($row[$startcol + 50] !== null) ? (int) $row[$startcol + 50] : null;
+            $this->banned_nb_total = ($row[$startcol + 51] !== null) ? (int) $row[$startcol + 51] : null;
+            $this->abuse_level = ($row[$startcol + 52] !== null) ? (int) $row[$startcol + 52] : null;
+            $this->created_at = ($row[$startcol + 53] !== null) ? (string) $row[$startcol + 53] : null;
+            $this->updated_at = ($row[$startcol + 54] !== null) ? (string) $row[$startcol + 54] : null;
+            $this->slug = ($row[$startcol + 55] !== null) ? (string) $row[$startcol + 55] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -3485,7 +3559,7 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 55; // 55 = PUserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 56; // 56 = PUserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUser object", $e);
@@ -3599,6 +3673,8 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             $this->collPDRComments = null;
 
+            $this->collPUInPCs = null;
+
             $this->collPMUserModerateds = null;
 
             $this->collPMUserMessages = null;
@@ -3642,6 +3718,7 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPUCurrentQOPQOrganizations = null;
             $this->collPUNotificationPNotifications = null;
             $this->collPNEmails = null;
+            $this->collPCircles = null;
             $this->collPMModerationTypes = null;
         } // if (deep)
     }
@@ -4155,6 +4232,32 @@ abstract class BasePUser extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pCirclesScheduledForDeletion !== null) {
+                if (!$this->pCirclesScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pCirclesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    PUInPCQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->pCirclesScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPCircles() as $pCircle) {
+                    if ($pCircle->isModified()) {
+                        $pCircle->save($con);
+                    }
+                }
+            } elseif ($this->collPCircles) {
+                foreach ($this->collPCircles as $pCircle) {
+                    if ($pCircle->isModified()) {
+                        $pCircle->save($con);
+                    }
+                }
+            }
+
             if ($this->pMModerationTypesScheduledForDeletion !== null) {
                 if (!$this->pMModerationTypesScheduledForDeletion->isEmpty()) {
                     $pks = array();
@@ -4556,6 +4659,23 @@ abstract class BasePUser extends BaseObject implements Persistent
 
             if ($this->collPDRComments !== null) {
                 foreach ($this->collPDRComments as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pUInPCsScheduledForDeletion !== null) {
+                if (!$this->pUInPCsScheduledForDeletion->isEmpty()) {
+                    PUInPCQuery::create()
+                        ->filterByPrimaryKeys($this->pUInPCsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pUInPCsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPUInPCs !== null) {
+                foreach ($this->collPUInPCs as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -4997,6 +5117,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::HOMEPAGE)) {
             $modifiedColumns[':p' . $index++]  = '`homepage`';
         }
+        if ($this->isColumnModified(PUserPeer::SUPPORT_GROUP)) {
+            $modifiedColumns[':p' . $index++]  = '`support_group`';
+        }
         if ($this->isColumnModified(PUserPeer::BANNED)) {
             $modifiedColumns[':p' . $index++]  = '`banned`';
         }
@@ -5172,6 +5295,9 @@ abstract class BasePUser extends BaseObject implements Persistent
                         break;
                     case '`homepage`':
                         $stmt->bindValue($identifier, (int) $this->homepage, PDO::PARAM_INT);
+                        break;
+                    case '`support_group`':
+                        $stmt->bindValue($identifier, (int) $this->support_group, PDO::PARAM_INT);
                         break;
                     case '`banned`':
                         $stmt->bindValue($identifier, (int) $this->banned, PDO::PARAM_INT);
@@ -5399,24 +5525,27 @@ abstract class BasePUser extends BaseObject implements Persistent
                 return $this->getHomepage();
                 break;
             case 48:
-                return $this->getBanned();
+                return $this->getSupportGroup();
                 break;
             case 49:
-                return $this->getBannedNbDaysLeft();
+                return $this->getBanned();
                 break;
             case 50:
-                return $this->getBannedNbTotal();
+                return $this->getBannedNbDaysLeft();
                 break;
             case 51:
-                return $this->getAbuseLevel();
+                return $this->getBannedNbTotal();
                 break;
             case 52:
-                return $this->getCreatedAt();
+                return $this->getAbuseLevel();
                 break;
             case 53:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 54:
+                return $this->getUpdatedAt();
+                break;
+            case 55:
                 return $this->getSlug();
                 break;
             default:
@@ -5496,13 +5625,14 @@ abstract class BasePUser extends BaseObject implements Persistent
             $keys[45] => $this->getNbIdCheck(),
             $keys[46] => $this->getOnline(),
             $keys[47] => $this->getHomepage(),
-            $keys[48] => $this->getBanned(),
-            $keys[49] => $this->getBannedNbDaysLeft(),
-            $keys[50] => $this->getBannedNbTotal(),
-            $keys[51] => $this->getAbuseLevel(),
-            $keys[52] => $this->getCreatedAt(),
-            $keys[53] => $this->getUpdatedAt(),
-            $keys[54] => $this->getSlug(),
+            $keys[48] => $this->getSupportGroup(),
+            $keys[49] => $this->getBanned(),
+            $keys[50] => $this->getBannedNbDaysLeft(),
+            $keys[51] => $this->getBannedNbTotal(),
+            $keys[52] => $this->getAbuseLevel(),
+            $keys[53] => $this->getCreatedAt(),
+            $keys[54] => $this->getUpdatedAt(),
+            $keys[55] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -5581,6 +5711,9 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             if (null !== $this->collPDRComments) {
                 $result['PDRComments'] = $this->collPDRComments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPUInPCs) {
+                $result['PUInPCs'] = $this->collPUInPCs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPMUserModerateds) {
                 $result['PMUserModerateds'] = $this->collPMUserModerateds->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -5814,24 +5947,27 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->setHomepage($value);
                 break;
             case 48:
-                $this->setBanned($value);
+                $this->setSupportGroup($value);
                 break;
             case 49:
-                $this->setBannedNbDaysLeft($value);
+                $this->setBanned($value);
                 break;
             case 50:
-                $this->setBannedNbTotal($value);
+                $this->setBannedNbDaysLeft($value);
                 break;
             case 51:
-                $this->setAbuseLevel($value);
+                $this->setBannedNbTotal($value);
                 break;
             case 52:
-                $this->setCreatedAt($value);
+                $this->setAbuseLevel($value);
                 break;
             case 53:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 54:
+                $this->setUpdatedAt($value);
+                break;
+            case 55:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -5906,13 +6042,14 @@ abstract class BasePUser extends BaseObject implements Persistent
         if (array_key_exists($keys[45], $arr)) $this->setNbIdCheck($arr[$keys[45]]);
         if (array_key_exists($keys[46], $arr)) $this->setOnline($arr[$keys[46]]);
         if (array_key_exists($keys[47], $arr)) $this->setHomepage($arr[$keys[47]]);
-        if (array_key_exists($keys[48], $arr)) $this->setBanned($arr[$keys[48]]);
-        if (array_key_exists($keys[49], $arr)) $this->setBannedNbDaysLeft($arr[$keys[49]]);
-        if (array_key_exists($keys[50], $arr)) $this->setBannedNbTotal($arr[$keys[50]]);
-        if (array_key_exists($keys[51], $arr)) $this->setAbuseLevel($arr[$keys[51]]);
-        if (array_key_exists($keys[52], $arr)) $this->setCreatedAt($arr[$keys[52]]);
-        if (array_key_exists($keys[53], $arr)) $this->setUpdatedAt($arr[$keys[53]]);
-        if (array_key_exists($keys[54], $arr)) $this->setSlug($arr[$keys[54]]);
+        if (array_key_exists($keys[48], $arr)) $this->setSupportGroup($arr[$keys[48]]);
+        if (array_key_exists($keys[49], $arr)) $this->setBanned($arr[$keys[49]]);
+        if (array_key_exists($keys[50], $arr)) $this->setBannedNbDaysLeft($arr[$keys[50]]);
+        if (array_key_exists($keys[51], $arr)) $this->setBannedNbTotal($arr[$keys[51]]);
+        if (array_key_exists($keys[52], $arr)) $this->setAbuseLevel($arr[$keys[52]]);
+        if (array_key_exists($keys[53], $arr)) $this->setCreatedAt($arr[$keys[53]]);
+        if (array_key_exists($keys[54], $arr)) $this->setUpdatedAt($arr[$keys[54]]);
+        if (array_key_exists($keys[55], $arr)) $this->setSlug($arr[$keys[55]]);
     }
 
     /**
@@ -5972,6 +6109,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         if ($this->isColumnModified(PUserPeer::NB_ID_CHECK)) $criteria->add(PUserPeer::NB_ID_CHECK, $this->nb_id_check);
         if ($this->isColumnModified(PUserPeer::ONLINE)) $criteria->add(PUserPeer::ONLINE, $this->online);
         if ($this->isColumnModified(PUserPeer::HOMEPAGE)) $criteria->add(PUserPeer::HOMEPAGE, $this->homepage);
+        if ($this->isColumnModified(PUserPeer::SUPPORT_GROUP)) $criteria->add(PUserPeer::SUPPORT_GROUP, $this->support_group);
         if ($this->isColumnModified(PUserPeer::BANNED)) $criteria->add(PUserPeer::BANNED, $this->banned);
         if ($this->isColumnModified(PUserPeer::BANNED_NB_DAYS_LEFT)) $criteria->add(PUserPeer::BANNED_NB_DAYS_LEFT, $this->banned_nb_days_left);
         if ($this->isColumnModified(PUserPeer::BANNED_NB_TOTAL)) $criteria->add(PUserPeer::BANNED_NB_TOTAL, $this->banned_nb_total);
@@ -6089,6 +6227,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         $copyObj->setNbIdCheck($this->getNbIdCheck());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setHomepage($this->getHomepage());
+        $copyObj->setSupportGroup($this->getSupportGroup());
         $copyObj->setBanned($this->getBanned());
         $copyObj->setBannedNbDaysLeft($this->getBannedNbDaysLeft());
         $copyObj->setBannedNbTotal($this->getBannedNbTotal());
@@ -6233,6 +6372,12 @@ abstract class BasePUser extends BaseObject implements Persistent
             foreach ($this->getPDRComments() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPDRComment($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPUInPCs() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPUInPC($relObj->copy($deepCopy));
                 }
             }
 
@@ -6556,6 +6701,9 @@ abstract class BasePUser extends BaseObject implements Persistent
         }
         if ('PDRComment' == $relationName) {
             $this->initPDRComments();
+        }
+        if ('PUInPC' == $relationName) {
+            $this->initPUInPCs();
         }
         if ('PMUserModerated' == $relationName) {
             $this->initPMUserModerateds();
@@ -7372,7 +7520,7 @@ abstract class BasePUser extends BaseObject implements Persistent
                 $this->pEOperationsScheduledForDeletion = clone $this->collPEOperations;
                 $this->pEOperationsScheduledForDeletion->clear();
             }
-            $this->pEOperationsScheduledForDeletion[]= clone $pEOperation;
+            $this->pEOperationsScheduledForDeletion[]= $pEOperation;
             $pEOperation->setPUser(null);
         }
 
@@ -11596,6 +11744,31 @@ abstract class BasePUser extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
      */
+    public function getPDDebatesJoinPCTopic($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PCTopic', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
     public function getPDDebatesJoinPEOperation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PDDebateQuery::create(null, $criteria);
@@ -11950,6 +12123,31 @@ abstract class BasePUser extends BaseObject implements Persistent
     {
         $query = PDReactionQuery::create(null, $criteria);
         $query->joinWith('PLCountry', $join_behavior);
+
+        return $this->getPDReactions($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PDReactions from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPDReactionsJoinPCTopic($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDReactionQuery::create(null, $criteria);
+        $query->joinWith('PCTopic', $join_behavior);
 
         return $this->getPDReactions($query, $con);
     }
@@ -12452,6 +12650,256 @@ abstract class BasePUser extends BaseObject implements Persistent
         $query->joinWith('PDReaction', $join_behavior);
 
         return $this->getPDRComments($query, $con);
+    }
+
+    /**
+     * Clears out the collPUInPCs collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPUInPCs()
+     */
+    public function clearPUInPCs()
+    {
+        $this->collPUInPCs = null; // important to set this to null since that means it is uninitialized
+        $this->collPUInPCsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPUInPCs collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPUInPCs($v = true)
+    {
+        $this->collPUInPCsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPUInPCs collection.
+     *
+     * By default this just sets the collPUInPCs collection to an empty array (like clearcollPUInPCs());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPUInPCs($overrideExisting = true)
+    {
+        if (null !== $this->collPUInPCs && !$overrideExisting) {
+            return;
+        }
+        $this->collPUInPCs = new PropelObjectCollection();
+        $this->collPUInPCs->setModel('PUInPC');
+    }
+
+    /**
+     * Gets an array of PUInPC objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PUInPC[] List of PUInPC objects
+     * @throws PropelException
+     */
+    public function getPUInPCs($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPUInPCsPartial && !$this->isNew();
+        if (null === $this->collPUInPCs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPUInPCs) {
+                // return empty collection
+                $this->initPUInPCs();
+            } else {
+                $collPUInPCs = PUInPCQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPUInPCsPartial && count($collPUInPCs)) {
+                      $this->initPUInPCs(false);
+
+                      foreach ($collPUInPCs as $obj) {
+                        if (false == $this->collPUInPCs->contains($obj)) {
+                          $this->collPUInPCs->append($obj);
+                        }
+                      }
+
+                      $this->collPUInPCsPartial = true;
+                    }
+
+                    $collPUInPCs->getInternalIterator()->rewind();
+
+                    return $collPUInPCs;
+                }
+
+                if ($partial && $this->collPUInPCs) {
+                    foreach ($this->collPUInPCs as $obj) {
+                        if ($obj->isNew()) {
+                            $collPUInPCs[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPUInPCs = $collPUInPCs;
+                $this->collPUInPCsPartial = false;
+            }
+        }
+
+        return $this->collPUInPCs;
+    }
+
+    /**
+     * Sets a collection of PUInPC objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pUInPCs A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPUInPCs(PropelCollection $pUInPCs, PropelPDO $con = null)
+    {
+        $pUInPCsToDelete = $this->getPUInPCs(new Criteria(), $con)->diff($pUInPCs);
+
+
+        $this->pUInPCsScheduledForDeletion = $pUInPCsToDelete;
+
+        foreach ($pUInPCsToDelete as $pUInPCRemoved) {
+            $pUInPCRemoved->setPUser(null);
+        }
+
+        $this->collPUInPCs = null;
+        foreach ($pUInPCs as $pUInPC) {
+            $this->addPUInPC($pUInPC);
+        }
+
+        $this->collPUInPCs = $pUInPCs;
+        $this->collPUInPCsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PUInPC objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PUInPC objects.
+     * @throws PropelException
+     */
+    public function countPUInPCs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPUInPCsPartial && !$this->isNew();
+        if (null === $this->collPUInPCs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPUInPCs) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPUInPCs());
+            }
+            $query = PUInPCQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPUser($this)
+                ->count($con);
+        }
+
+        return count($this->collPUInPCs);
+    }
+
+    /**
+     * Method called to associate a PUInPC object to this object
+     * through the PUInPC foreign key attribute.
+     *
+     * @param    PUInPC $l PUInPC
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPUInPC(PUInPC $l)
+    {
+        if ($this->collPUInPCs === null) {
+            $this->initPUInPCs();
+            $this->collPUInPCsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPUInPCs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPUInPC($l);
+
+            if ($this->pUInPCsScheduledForDeletion and $this->pUInPCsScheduledForDeletion->contains($l)) {
+                $this->pUInPCsScheduledForDeletion->remove($this->pUInPCsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PUInPC $pUInPC The pUInPC object to add.
+     */
+    protected function doAddPUInPC($pUInPC)
+    {
+        $this->collPUInPCs[]= $pUInPC;
+        $pUInPC->setPUser($this);
+    }
+
+    /**
+     * @param	PUInPC $pUInPC The pUInPC object to remove.
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePUInPC($pUInPC)
+    {
+        if ($this->getPUInPCs()->contains($pUInPC)) {
+            $this->collPUInPCs->remove($this->collPUInPCs->search($pUInPC));
+            if (null === $this->pUInPCsScheduledForDeletion) {
+                $this->pUInPCsScheduledForDeletion = clone $this->collPUInPCs;
+                $this->pUInPCsScheduledForDeletion->clear();
+            }
+            $this->pUInPCsScheduledForDeletion[]= clone $pUInPC;
+            $pUInPC->setPUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PUser is new, it will return
+     * an empty collection; or if this PUser has previously
+     * been saved, it will retrieve related PUInPCs from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PUser.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PUInPC[] List of PUInPC objects
+     */
+    public function getPUInPCsJoinPCircle($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PUInPCQuery::create(null, $criteria);
+        $query->joinWith('PCircle', $join_behavior);
+
+        return $this->getPUInPCs($query, $con);
     }
 
     /**
@@ -18423,6 +18871,193 @@ abstract class BasePUser extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPCircles collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PUser The current object (for fluent API support)
+     * @see        addPCircles()
+     */
+    public function clearPCircles()
+    {
+        $this->collPCircles = null; // important to set this to null since that means it is uninitialized
+        $this->collPCirclesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPCircles collection.
+     *
+     * By default this just sets the collPCircles collection to an empty collection (like clearPCircles());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPCircles()
+    {
+        $this->collPCircles = new PropelObjectCollection();
+        $this->collPCircles->setModel('PCircle');
+    }
+
+    /**
+     * Gets a collection of PCircle objects related by a many-to-many relationship
+     * to the current object by way of the p_u_in_p_c cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PCircle[] List of PCircle objects
+     */
+    public function getPCircles($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPCircles || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPCircles) {
+                // return empty collection
+                $this->initPCircles();
+            } else {
+                $collPCircles = PCircleQuery::create(null, $criteria)
+                    ->filterByPUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPCircles;
+                }
+                $this->collPCircles = $collPCircles;
+            }
+        }
+
+        return $this->collPCircles;
+    }
+
+    /**
+     * Sets a collection of PCircle objects related by a many-to-many relationship
+     * to the current object by way of the p_u_in_p_c cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pCircles A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PUser The current object (for fluent API support)
+     */
+    public function setPCircles(PropelCollection $pCircles, PropelPDO $con = null)
+    {
+        $this->clearPCircles();
+        $currentPCircles = $this->getPCircles(null, $con);
+
+        $this->pCirclesScheduledForDeletion = $currentPCircles->diff($pCircles);
+
+        foreach ($pCircles as $pCircle) {
+            if (!$currentPCircles->contains($pCircle)) {
+                $this->doAddPCircle($pCircle);
+            }
+        }
+
+        $this->collPCircles = $pCircles;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PCircle objects related by a many-to-many relationship
+     * to the current object by way of the p_u_in_p_c cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PCircle objects
+     */
+    public function countPCircles($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPCircles || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPCircles) {
+                return 0;
+            } else {
+                $query = PCircleQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPUser($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPCircles);
+        }
+    }
+
+    /**
+     * Associate a PCircle object to this object
+     * through the p_u_in_p_c cross reference table.
+     *
+     * @param  PCircle $pCircle The PUInPC object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function addPCircle(PCircle $pCircle)
+    {
+        if ($this->collPCircles === null) {
+            $this->initPCircles();
+        }
+
+        if (!$this->collPCircles->contains($pCircle)) { // only add it if the **same** object is not already associated
+            $this->doAddPCircle($pCircle);
+            $this->collPCircles[] = $pCircle;
+
+            if ($this->pCirclesScheduledForDeletion and $this->pCirclesScheduledForDeletion->contains($pCircle)) {
+                $this->pCirclesScheduledForDeletion->remove($this->pCirclesScheduledForDeletion->search($pCircle));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PCircle $pCircle The pCircle object to add.
+     */
+    protected function doAddPCircle(PCircle $pCircle)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pCircle->getPUsers()->contains($this)) { $pUInPC = new PUInPC();
+            $pUInPC->setPCircle($pCircle);
+            $this->addPUInPC($pUInPC);
+
+            $foreignCollection = $pCircle->getPUsers();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PCircle object to this object
+     * through the p_u_in_p_c cross reference table.
+     *
+     * @param PCircle $pCircle The PUInPC object to relate
+     * @return PUser The current object (for fluent API support)
+     */
+    public function removePCircle(PCircle $pCircle)
+    {
+        if ($this->getPCircles()->contains($pCircle)) {
+            $this->collPCircles->remove($this->collPCircles->search($pCircle));
+            if (null === $this->pCirclesScheduledForDeletion) {
+                $this->pCirclesScheduledForDeletion = clone $this->collPCircles;
+                $this->pCirclesScheduledForDeletion->clear();
+            }
+            $this->pCirclesScheduledForDeletion[]= $pCircle;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collPMModerationTypes collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -18663,6 +19298,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->nb_id_check = null;
         $this->online = null;
         $this->homepage = null;
+        $this->support_group = null;
         $this->banned = null;
         $this->banned_nb_days_left = null;
         $this->banned_nb_total = null;
@@ -18800,6 +19436,11 @@ abstract class BasePUser extends BaseObject implements Persistent
             }
             if ($this->collPDRComments) {
                 foreach ($this->collPDRComments as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPUInPCs) {
+                foreach ($this->collPUInPCs as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -18943,6 +19584,11 @@ abstract class BasePUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPCircles) {
+                foreach ($this->collPCircles as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPMModerationTypes) {
                 foreach ($this->collPMModerationTypes as $o) {
                     $o->clearAllReferences($deep);
@@ -19059,6 +19705,10 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPDRComments->clearIterator();
         }
         $this->collPDRComments = null;
+        if ($this->collPUInPCs instanceof PropelCollection) {
+            $this->collPUInPCs->clearIterator();
+        }
+        $this->collPUInPCs = null;
         if ($this->collPMUserModerateds instanceof PropelCollection) {
             $this->collPMUserModerateds->clearIterator();
         }
@@ -19171,6 +19821,10 @@ abstract class BasePUser extends BaseObject implements Persistent
             $this->collPNEmails->clearIterator();
         }
         $this->collPNEmails = null;
+        if ($this->collPCircles instanceof PropelCollection) {
+            $this->collPCircles->clearIterator();
+        }
+        $this->collPCircles = null;
         if ($this->collPMModerationTypes instanceof PropelCollection) {
             $this->collPMModerationTypes->clearIterator();
         }
@@ -19509,6 +20163,7 @@ abstract class BasePUser extends BaseObject implements Persistent
         $this->setNbIdCheck($archive->getNbIdCheck());
         $this->setOnline($archive->getOnline());
         $this->setHomepage($archive->getHomepage());
+        $this->setSupportGroup($archive->getSupportGroup());
         $this->setBanned($archive->getBanned());
         $this->setBannedNbDaysLeft($archive->getBannedNbDaysLeft());
         $this->setBannedNbTotal($archive->getBannedNbTotal());

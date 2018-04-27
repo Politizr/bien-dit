@@ -40,10 +40,15 @@ class NotificationManager
     }
 
     /* ######################################################################################################## */
-    /*                                            CRUD OPERATIONS                                               */
+    /*                                           USEFUL FUNCTIONS                                               */
     /* ######################################################################################################## */
 
-    private function getScreenNotifIds()
+    /**
+     * Array of screen notifications ids
+     *
+     * @return array
+     */
+    public function getScreenNotifIds()
     {
         $notifIds = array(
             NotificationConstants::ID_D_COMMENT_PUBLISH,
@@ -74,15 +79,118 @@ class NotificationManager
     /*                                                  RAW SQL                                                 */
     /* ######################################################################################################## */
 
+
+    /**
+     * Screen user notifications
+     *
+     * @see app/sql/notifications.sql
+     *
+     * @param string $inQueryNotificationIds
+     * @param string $inQueryTopicIds
+     * @return string
+     */
+    private function createScreenUserNotificationsRawSql($inQueryNotificationIds, $inQueryTopicIds)
+    {
+        // Topic subrequest
+        $subrequestTopic = "AND p_u_notification.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic = "AND (p_u_notification.p_c_topic_id is NULL OR p_u_notification.p_c_topic_id IN ($inQueryTopicIds))";
+        }
+
+        $sql = "
+SELECT *
+FROM p_u_notification 
+WHERE
+p_u_notification.p_user_id = :p_user_id
+AND (p_u_notification.created_at >= :created_at_min OR p_u_notification.checked = 0)
+AND p_u_notification.p_notification_id IN ($inQueryNotificationIds)
+$subrequestTopic
+
+ORDER BY p_u_notification.created_at DESC
+";
+
+        return $sql;
+    }
+
+    /**
+     * Count screen user notifications
+     *
+     * @see app/sql/notifications.sql
+     *
+     * @param string $inQueryNotificationIds
+     * @param string $inQueryTopicIds
+     * @return string
+     */
+    private function createCountScreenUserNotificationsRawSql($inQueryNotificationIds, $inQueryTopicIds)
+    {
+        // Topic subrequest
+        $subrequestTopic = "AND p_u_notification.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic = "AND (p_u_notification.p_c_topic_id is NULL OR p_u_notification.p_c_topic_id IN ($inQueryTopicIds))";
+        }
+
+        $sql = "
+SELECT COUNT(id) as 'nb'
+FROM p_u_notification 
+WHERE
+p_u_notification.p_user_id = :p_user_id
+AND p_u_notification.checked = 0
+AND p_u_notification.p_notification_id IN ($inQueryNotificationIds)
+$subrequestTopic
+";
+
+        return $sql;
+    }
+
+    /**
+     * User notifications used in emailing
+     *
+     * @see app/sql/notifications.sql
+     *
+     * @param string $inQueryTopicIds
+     * @return string
+     */
+    private function createUserNotificationsForEmailingRawSql($inQueryTopicIds)
+    {
+        // Topic subrequest
+        $subrequestTopic = "AND p_u_notification.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic = "AND (p_u_notification.p_c_topic_id is NULL OR p_u_notification.p_c_topic_id IN ($inQueryTopicIds))";
+        }
+
+        $sql = "
+SELECT *
+FROM p_u_notification 
+WHERE
+p_u_notification.p_user_id = :p_user_id
+AND p_u_notification.created_at >= :begin_at
+AND p_u_notification.created_at <= :end_at
+$subrequestTopic
+
+ORDER BY p_u_notification.id ASC, p_u_notification.p_object_name ASC, p_u_notification.p_object_id ASC
+";
+        return $sql;
+    }
+
+
     /**
      * Most interacted user publications (reactions/comments/note+) during period
      *
      * @see app/sql/accountNotifications.sql
      *
+     * @param string $inQueryTopicIds
      * @return string
      */
-    private function createMostInteractedUserPublicationsRawSql()
+    private function createMostInteractedUserPublicationsRawSql($inQueryTopicIds)
     {
+        // Topic subrequest
+        $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subrequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
+        }
+
         // Requête SQL
         $sql = "
 ( SELECT DISTINCT p_d_debate.id as id, p_d_debate.p_user_id as author_id, p_d_debate.title as title, p_d_debate.description as description, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, COUNT(distinct p_d_reaction_child.id) as nb_reactions, COUNT(distinct p_d_comment_child.id) as nb_comments, COUNT(distinct p_u_notification.id) as nb_notifications, p_d_debate.published_at as published_at, p_d_debate.updated_at as updated_at, 'Politizr\\\Model\\\PDDebate' as type
@@ -106,6 +214,7 @@ FROM p_d_debate
         AND p_u_notification.created_at < :end_at3
 WHERE
     p_d_debate.published = 1
+    $subrequestTopic1
     AND p_d_debate.online = 1
     AND p_d_debate.p_user_id = :p_user_id
 
@@ -138,6 +247,7 @@ WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
+    $subrequestTopic2
     AND p_d_reaction.p_user_id = :p_user_id2
 
 GROUP BY id
@@ -158,14 +268,23 @@ LIMIT :limit
      * @see app/sql/accountNotifications.sql
      *
      * @param string $inQueryUserIds
+     * @param string $inQueryTopicIds
      * @param string $inQueryNotInPDDebateIds
      * @param string $inQueryNotInPDReactionIds
      * @param string $inQueryNotInPDDCommentIds
      * @param string $inQueryNotInPDRCommentIds
      * @return string
      */
-    private function createMostInteractedFollowedUserPublicationsRawSql($inQueryUserIds, $inQueryNotInPDDebateIds, $inQueryNotInPDReactionIds, $inQueryNotInPDDCommentIds, $inQueryNotInPDRCommentIds)
+    private function createMostInteractedFollowedUserPublicationsRawSql($inQueryUserIds, $inQueryTopicIds, $inQueryNotInPDDebateIds, $inQueryNotInPDReactionIds, $inQueryNotInPDDCommentIds, $inQueryNotInPDRCommentIds)
     {
+        // Topic subrequest
+        $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subrequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
+        }
+
         // Requête SQL
         $sql = "
 ( SELECT p_d_debate.id as id, p_d_debate.p_user_id as author_id, p_d_debate.title as title, p_d_debate.description as description, p_d_debate.published_at as published_at, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, COUNT(distinct id) as nb_subjects, 0 as nb_reactions, 0 as nb_comments, 'Politizr\\\Model\\\PDDebate' as type
@@ -173,6 +292,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
+    $subrequestTopic1
     AND p_d_debate.id NOT IN ($inQueryNotInPDDebateIds)
     AND p_d_debate.p_user_id IN ($inQueryUserIds)
     AND p_d_debate.published_at > :begin_at
@@ -189,6 +309,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    $subrequestTopic2
     AND p_d_reaction.id NOT IN ($inQueryNotInPDReactionIds)
     AND p_d_reaction.p_user_id IN ($inQueryUserIds)
     AND p_d_reaction.published_at > :begin_at2
@@ -200,10 +321,15 @@ GROUP BY id
 UNION DISTINCT
 
 # Commentaires débats des users suivis
-( SELECT p_d_d_comment.id as id, p_d_d_comment.p_user_id as author_id, \"commentaire\" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct id) as nb_comments, 'Politizr\\\Model\\\PDDComment' as type
+( SELECT p_d_d_comment.id as id, p_d_d_comment.p_user_id as author_id, \"commentaire\" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct p_d_d_comment.id) as nb_comments, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    $subrequestTopic1
     AND p_d_d_comment.id NOT IN ($inQueryNotInPDDCommentIds)
     AND p_d_d_comment.p_user_id IN ($inQueryUserIds)
     AND p_d_d_comment.published_at > :begin_at3
@@ -215,10 +341,15 @@ GROUP BY id
 UNION DISTINCT
 
 # Commentaires réactions des users suivis
-( SELECT p_d_r_comment.id as id, p_d_r_comment.p_user_id as author_id, \"commentaire\" as title, p_d_r_comment.description as description, p_d_r_comment.published_at as published_at, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct id) as nb_comments, 'Politizr\\\Model\\\PDRComment' as type
+( SELECT p_d_r_comment.id as id, p_d_r_comment.p_user_id as author_id, \"commentaire\" as title, p_d_r_comment.description as description, p_d_r_comment.published_at as published_at, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct p_d_r_comment.id) as nb_comments, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
+    LEFT JOIN p_d_reaction
+        ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    $subrequestTopic2
     AND p_d_r_comment.id NOT IN ($inQueryNotInPDRCommentIds)
     AND p_d_r_comment.p_user_id IN ($inQueryUserIds)
     AND p_d_r_comment.published_at > :begin_at4
@@ -241,10 +372,19 @@ LIMIT :limit
      * @see app/sql/accountNotifications.sql
      *
      * @param string $inQueryDebateIds
+     * @param string $inQueryTopicIds
      * @return string
      */
-    private function createMostInteractedFollowedDebatesPublicationsRawSql($inQueryDebateIds)
+    private function createMostInteractedFollowedDebatesPublicationsRawSql($inQueryDebateIds, $inQueryTopicIds)
     {
+        // Topic subrequest
+        $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subrequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
+        }
+
         // Requête SQL
         $sql = "
 ( SELECT p_d_reaction.id as id, p_d_reaction.p_user_id as author_id, p_d_reaction.title as title, p_d_reaction.description as description, p_d_reaction.published_at as published_at, p_d_reaction.note_pos as note_pos, p_d_reaction.note_neg as note_neg, 0 as nb_subjects, COUNT(distinct p_d_reaction.id) as nb_reactions, 0 as nb_comments, 'Politizr\\\Model\\\PDReaction' as type
@@ -254,6 +394,7 @@ WHERE
     AND p_d_reaction.online = 1
     AND p_d_reaction.p_d_debate_id IN ($inQueryDebateIds)
     AND p_d_reaction.tree_level > 0
+    $subrequestTopic2
     AND p_d_reaction.p_user_id <> :p_user_id
     AND p_d_reaction.published_at > :begin_at
     AND p_d_reaction.published_at < :end_at
@@ -265,8 +406,13 @@ UNION DISTINCT
 
 ( SELECT p_d_d_comment.id as id, p_d_d_comment.p_user_id as author_id, \"commentaire\" as title, p_d_d_comment.description as description, p_d_d_comment.published_at as published_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 0 as nb_subjects, 0 as nb_reactions, COUNT(distinct p_d_d_comment.id) as nb_comments, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    $subrequestTopic1
     AND p_d_d_comment.p_d_debate_id IN ($inQueryDebateIds)
     AND p_d_d_comment.p_user_id <> :p_user_id2
     AND p_d_d_comment.published_at > :begin_at2
@@ -283,6 +429,9 @@ FROM p_d_r_comment
         ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    $subrequestTopic2
     AND p_d_reaction.p_d_debate_id IN ($inQueryDebateIds)
     AND p_d_r_comment.p_user_id <> :p_user_id3
     AND p_d_r_comment.published_at > :begin_at3
@@ -379,10 +528,17 @@ LIMIT :limit
      * @param string $inQueryDebateIds
      * @param string $inQueryUserIds
      * @param string $inQueryTagIds
+     * @param string $inQueryTopicIds
      * @return string
      */
-    private function createNearestDebatesRawSql($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds)
+    private function createNearestDebatesRawSql($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds, $inQueryTopicIds)
     {
+        // Topic subrequest
+        $subrequestTopic = "AND p_d_debate.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+        }
+
         // Requête SQL
         $sql = "
 SELECT DISTINCT
@@ -397,6 +553,7 @@ WHERE
     p_d_debate.p_l_city_id = :p_l_city_id
     AND p_d_debate.online = 1
     AND p_d_debate.published = 1
+    $subrequestTopic
     AND p_d_debate.created_at > :begin_at
     AND p_d_debate.created_at < :end_at
     AND p_d_debate.id NOT IN ($inQueryDebateIds)
@@ -415,6 +572,7 @@ WHERE
     p_d_debate.p_l_department_id = :p_l_department_id
     AND p_d_debate.online = 1
     AND p_d_debate.published = 1
+    $subrequestTopic
     AND p_d_debate.created_at > :begin_at2
     AND p_d_debate.created_at < :end_at2
     AND p_d_debate.id NOT IN ($inQueryDebateIds)
@@ -434,6 +592,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.online = 1 
     AND p_d_debate.published = 1
+    $subrequestTopic
     AND p_d_debate.created_at > :begin_at3
     AND p_d_debate.created_at < :end_at3
     AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)
@@ -453,6 +612,7 @@ WHERE
     p_d_debate.p_l_region_id = :p_l_region_id
     AND p_d_debate.online = 1
     AND p_d_debate.published = 1
+    $subrequestTopic
     AND p_d_debate.created_at > :begin_at4
     AND p_d_debate.created_at < :end_at4
     AND p_d_debate.id NOT IN ($inQueryDebateIds)
@@ -470,6 +630,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.online = 1
     AND p_d_debate.published = 1
+    $subrequestTopic
     AND p_d_debate.created_at > :begin_at5
     AND p_d_debate.created_at < :end_at5
     AND p_d_debate.id NOT IN ($inQueryDebateIds)
@@ -499,15 +660,17 @@ LIMIT :limit
     /**
      * Interacted user documents listing
      *
+     * @param string $inQueryTopicIds
      * @param int $userId
      * @param string $beginAt
      * @param string $endAt
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generateMostInteractedUserPublications($userId, $beginAt, $endAt, $limit)
+    public function generateMostInteractedUserPublications($inQueryTopicIds, $userId, $beginAt, $endAt, $limit)
     {
         $this->logger->info('*** generateMostInteractedUserPublications');
+        $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
         $this->logger->info('$userId = ' . print_r($userId, true));
         $this->logger->info('$beginAt = ' . print_r($beginAt, true));
         $this->logger->info('$endAt = ' . print_r($endAt, true));
@@ -515,7 +678,7 @@ LIMIT :limit
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
-        $stmt = $con->prepare($this->createMostInteractedUserPublicationsRawSql());
+        $stmt = $con->prepare($this->createMostInteractedUserPublicationsRawSql($inQueryTopicIds));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
@@ -548,6 +711,7 @@ LIMIT :limit
      * Most interacted followed user documents listing
      *
      * @param string $inQueryUserIds
+     * @param string $inQueryTopicIds
      * @param string $inQueryNotInPDDebateIds
      * @param string $inQueryNotInPDReactionIds
      * @param string $inQueryNotInPDDCommentIds
@@ -557,17 +721,22 @@ LIMIT :limit
      * @param integer $limit
      * @return array[InteractedPublication]
      */
-    public function generateMostInteractedFollowedUserPublications($inQueryUserIds, $inQueryNotInPDDebateIds, $inQueryNotInPDReactionIds, $inQueryNotInPDDCommentIds, $inQueryNotInPDRCommentIds, $beginAt, $endAt, $limit)
+    public function generateMostInteractedFollowedUserPublications($inQueryUserIds, $inQueryTopicIds, $inQueryNotInPDDebateIds, $inQueryNotInPDReactionIds, $inQueryNotInPDDCommentIds, $inQueryNotInPDRCommentIds, $beginAt, $endAt, $limit)
     {
         $this->logger->info('*** generateMostFollowedUserPublications');
         $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
+        $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryUserIds, true));
+        $this->logger->info('$inQueryNotInPDDebateIds = ' . print_r($inQueryUserIds, true));
+        $this->logger->info('$inQueryNotInPDReactionIds = ' . print_r($inQueryUserIds, true));
+        $this->logger->info('$inQueryNotInPDDCommentIds = ' . print_r($inQueryUserIds, true));
+        $this->logger->info('$inQueryNotInPDRCommentIds = ' . print_r($inQueryUserIds, true));
         $this->logger->info('$beginAt = ' . print_r($beginAt, true));
         $this->logger->info('$endAt = ' . print_r($endAt, true));
         $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
-        $stmt = $con->prepare($this->createMostInteractedFollowedUserPublicationsRawSql($inQueryUserIds, $inQueryNotInPDDebateIds, $inQueryNotInPDReactionIds, $inQueryNotInPDDCommentIds, $inQueryNotInPDRCommentIds));
+        $stmt = $con->prepare($this->createMostInteractedFollowedUserPublicationsRawSql($inQueryUserIds, $inQueryTopicIds, $inQueryNotInPDDebateIds, $inQueryNotInPDReactionIds, $inQueryNotInPDDCommentIds, $inQueryNotInPDRCommentIds));
 
         $stmt->bindValue(':begin_at', $beginAt, \PDO::PARAM_STR);
         $stmt->bindValue(':begin_at2', $beginAt, \PDO::PARAM_STR);
@@ -592,16 +761,18 @@ LIMIT :limit
      * Most interacted followed debates publications documents listing
      *
      * @param int $inQueryDebateIds
+     * @param string $inQueryTopicIds
      * @param int $userId
      * @param string $beginAt
      * @param string $endAt
      * @param integer $limit
      * @return array[InteractedPublication]
      */
-    public function generateMostInteractedFollowedDebatesPublications($inQueryDebateIds, $userId, $beginAt, $endAt, $limit)
+    public function generateMostInteractedFollowedDebatesPublications($inQueryDebateIds, $inQueryTopicIds, $userId, $beginAt, $endAt, $limit)
     {
         $this->logger->info('*** generateMostInteractedFollowedDebatesPublications');
         $this->logger->info('$inQueryDebateIds = ' . print_r($inQueryDebateIds, true));
+        $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
         $this->logger->info('$userId = ' . print_r($userId, true));
         $this->logger->info('$beginAt = ' . print_r($beginAt, true));
         $this->logger->info('$endAt = ' . print_r($endAt, true));
@@ -609,7 +780,7 @@ LIMIT :limit
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
-        $stmt = $con->prepare($this->createMostInteractedFollowedDebatesPublicationsRawSql($inQueryDebateIds));
+        $stmt = $con->prepare($this->createMostInteractedFollowedDebatesPublicationsRawSql($inQueryDebateIds, $inQueryTopicIds));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
@@ -693,6 +864,7 @@ LIMIT :limit
      * @param string $inQueryDebateIds
      * @param string $inQueryUserIds
      * @param string $inQueryTagIds
+     * @param string $inQueryTopicIds
      * @param int $userId
      * @param int $cityId
      * @param int $departmentId
@@ -702,12 +874,13 @@ LIMIT :limit
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generateNearestDebates($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds, $userId, $cityId, $departmentId, $regionId, $beginAt, $endAt, $limit)
+    public function generateNearestDebates($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds, $inQueryTopicIds, $userId, $cityId, $departmentId, $regionId, $beginAt, $endAt, $limit)
     {
         $this->logger->info('*** generateNearestQualifiedUsers');
         $this->logger->info('$inQueryDebateIds = ' . print_r($inQueryDebateIds, true));
         $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
         $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
+        $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
         $this->logger->info('$userId = ' . print_r($userId, true));
         $this->logger->info('$cityId = ' . print_r($cityId, true));
         $this->logger->info('$departmentId = ' . print_r($departmentId, true));
@@ -718,7 +891,7 @@ LIMIT :limit
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
-        $stmt = $con->prepare($this->createNearestDebatesRawSql($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds));
+        $stmt = $con->prepare($this->createNearestDebatesRawSql($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds, $inQueryTopicIds));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
@@ -753,37 +926,48 @@ LIMIT :limit
             $debates->append($debate);
         }
 
+
         return $debates;
     }
 
-    /* ######################################################################################################## */
-    /*                                               CRUD OPERATIONS                                            */
-    /* ######################################################################################################## */
 
     /**
      * Get user's screen notifications
      *
      * @param integer $userId
+     * @param string $inQueryNotificationIds
+     * @param string $inQueryTopicIds
      * @param string $modifyAt  get notifications from current date applying this string - has to be DateTime.modify compatible
      * @return PropelCollection|PUNotification[]
      */
-    public function getScreenUserNotifications($userId, $modifyAt = '-7 day')
+    public function getScreenUserNotifications($userId, $inQueryNotificationIds, $inQueryTopicIds, $modifyAt = '-7 day')
     {
-        // Requête notifs
+        $this->logger->info('*** getScreenUserNotifications');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$inQueryNotificationIds = ' . print_r($inQueryNotificationIds, true));
+        $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
+
         $minAt = new \DateTime();
         $minAt->modify($modifyAt);
 
-        $notifIds = $this->getScreenNotifIds();
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
-        // Notifications de moins d'une semaine ou non checkées
-        $notifications = PUNotificationQuery::create()
-                            ->filterByPUserId($userId)
-                            ->filterByCreatedAt(array('min' => $minAt))
-                            ->_or()
-                            ->filterByChecked(false)
-                            ->filterByPNotificationId($notifIds)
-                            ->orderByCreatedAt('desc')
-                            ->find();
+        $stmt = $con->prepare($this->createScreenUserNotificationsRawSql($inQueryNotificationIds, $inQueryTopicIds));
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':created_at_min', $minAt->format('Y-m-d'), \PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $notifications = new \PropelCollection();
+        foreach ($result as $row) {
+            $notification = new PUNotification();
+            $notification->hydrate($row);
+
+            $notifications->append($notification);
+        }
 
         return $notifications;
     }
@@ -792,21 +976,75 @@ LIMIT :limit
      * Count user's screen notifications - count only unchecked notif
      *
      * @param integer $userId
+     * @param string $inQueryNotificationIds
      * @return int
      */
-    public function countScreenUserNotifications($userId)
+    public function countScreenUserNotifications($userId, $inQueryNotificationIds, $inQueryTopicIds)
     {
+        $this->logger->info('*** countScreenUserNotifications');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$inQueryNotificationIds = ' . print_r($inQueryNotificationIds, true));
+        $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
+
         $notifIds = $this->getScreenNotifIds();
 
-        // Notifications de moins d'une semaine ou non checkées
-        $nbNotifications = PUNotificationQuery::create()
-                            ->filterByPUserId($userId)
-                            ->filterByChecked(false)
-                            ->filterByPNotificationId($notifIds)
-                            ->count();
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
 
-        return $nbNotifications;
+        $stmt = $con->prepare($this->createCountScreenUserNotificationsRawSql($inQueryNotificationIds, $inQueryTopicIds));
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+        
+        return $result[0]['nb'];
     }
+
+    
+    /**
+     * Get user's notifications for emailing use
+     *
+     * @param integer $userId
+     * @param string $inQueryTopicIds
+     * @param DateTime $beginAt
+     * @param DateTime $endAt
+     * @return PropelCollection|PUNotification[]
+     */
+    public function getUserNotificationsForEmailing($userId, $inQueryTopicIds, $beginAt, $endAt)
+    {
+        $this->logger->info('*** getUserNotificationsForEmailing');
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
+        $this->logger->info('$beginAt = ' . print_r($beginAt, true));
+        $this->logger->info('$endAt = ' . print_r($endAt, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+
+        $stmt = $con->prepare($this->createUserNotificationsForEmailingRawSql($inQueryTopicIds));
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':begin_at', $beginAt->format('Y-m-d H:i'), \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at', $endAt->format('Y-m-d H:i'), \PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $notifications = new \PropelCollection();
+        foreach ($result as $row) {
+            $notification = new PUNotification();
+            $notification->hydrate($row);
+
+            $notifications->append($notification);
+        }
+
+        return $notifications;
+    }
+
+    /* ######################################################################################################## */
+    /*                                               CRUD OPERATIONS                                            */
+    /* ######################################################################################################## */
 
     /**
      * Update a user's notification to check state

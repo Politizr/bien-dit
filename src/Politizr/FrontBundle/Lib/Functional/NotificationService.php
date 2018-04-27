@@ -11,6 +11,7 @@ use Politizr\Model\PUNotificationQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUTaggedTQuery;
+use Politizr\Model\PCTopicQuery;
 
 /**
  * Functional service for notification management.
@@ -21,21 +22,32 @@ use Politizr\Model\PUTaggedTQuery;
 class NotificationService
 {
     private $notificationManager;
+
+    private $circleService;
+
     private $globalTools;
+
     private $logger;
 
     /**
      *
      * @param @politizr.manager.notification
+     * @param @politizr.functional.circle
+     * @param @politizr.tools.global
      * @param @logger
      */
     public function __construct(
         $notificationManager,
+        $circleService,
         $globalTools,
         $logger
     ) {
         $this->notificationManager = $notificationManager;
+
+        $this->circleService = $circleService;
+
         $this->globalTools = $globalTools;
+
         $this->logger = $logger;
     }
 
@@ -96,9 +108,78 @@ class NotificationService
         return $userIds;
     }
 
+    /**
+     * Get array of circle's topic ids
+     *
+     * @param int $circleId
+     * @return array
+     */
+    private function getTopicIdsArray($circleId)
+    {
+        $topicIds = PCTopicQuery::create()
+            ->select('Id')
+            ->filterByPCircleId($circleId)
+            ->find()
+            ->toArray();
+
+        return $topicIds;
+    }
+
     /* ######################################################################################################## */
     /*                                              SPECIFIC LISTING                                            */
     /* ######################################################################################################## */
+
+    /**
+     * Get notifications for user
+     *
+     * @param PUser $user
+     * @return \PropelCollection PUNotification
+     */
+    public function getScreenUserNotifications($user, $notifIds = null)
+    {
+        if (!$user) {
+            throw new InconsistentDataException('User null');
+        }
+
+        // Topics
+        $topicIds = $this->circleService->getTopicIdsByUserId($user->getId());
+        $inQueryTopicIds = null;
+        if (!empty($topicIds)) {
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
+
+        // Notifications
+        $notifIds = $this->notificationManager->getScreenNotifIds();
+        $inQueryNotificationsIds = $this->globalTools->getInQuery($notifIds);
+
+        return $this->notificationManager->getScreenUserNotifications($user->getId(), $inQueryNotificationsIds, $inQueryTopicIds);
+    }
+
+    /**
+     * Count active screen notifications for user
+     *
+     * @param PUser $user
+     * @return int
+     */
+    public function countScreenUserNotifications($user)
+    {
+        if (!$user) {
+            throw new InconsistentDataException('User null');
+        }
+
+        // Topics
+        $topicIds = $this->circleService->getTopicIdsByUserId($user->getId());
+        $inQueryTopicIds = null;
+        if (!empty($topicIds)) {
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
+
+        // Notifications
+        $notifIds = $this->notificationManager->getScreenNotifIds();
+        $inQueryNotificationsIds = $this->globalTools->getInQuery($notifIds);
+
+        return $this->notificationManager->countScreenUserNotifications($user->getId(), $inQueryNotificationsIds, $inQueryTopicIds);
+    }
 
     /**
      * Retrieve ids of object type from InteractedPublications listing.
@@ -119,14 +200,14 @@ class NotificationService
     }
 
     /**
-     * Get user notifications from begin to end date
+     * Get user notifications from begin to end date, used in emailing
      *
      * @param PUser $user
      * @param DateTime $beginAt
      * @param DateTime $endAt
      * @return PropelCollection[PUNotification]
      */
-    public function getUserNotifications(PUser $user, $beginAt, $endAt)
+    public function getUserNotificationsForEmailing(PUser $user, $beginAt, $endAt)
     {
         $puNotifications = null;
 
@@ -134,15 +215,14 @@ class NotificationService
             throw new InconsistentDataException('Can get user notifications - user null');
         }
 
-        $puNotifications = PUNotificationQuery::create()
-            ->filterByPUserId($user->getId())
-            ->filterByCreatedAt(array('min' => $beginAt, 'max' => $endAt))
-            ->orderByPNotificationId('asc')
-            ->orderByPObjectName('asc')
-            ->orderByPObjectId('asc')
-            ->find();
+        // Topics
+        $topicIds = $this->circleService->getTopicIdsByUserId($user->getId());
+        $inQueryTopicIds = null;
+        if (!empty($topicIds)) {
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
 
-        return $puNotifications;
+        return $this->notificationManager->getUserNotificationsForEmailing($user->getId(), $inQueryTopicIds, $beginAt, $endAt);
     }
 
     /**
@@ -178,7 +258,14 @@ class NotificationService
             throw new InconsistentDataException('Can get user most interacted publications - user null');
         }
 
-        $publications = $this->notificationManager->generateMostInteractedUserPublications($user->getId(), $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
+        // Topics
+        $topicIds = $this->circleService->getTopicIdsByUserId($user->getId());
+        $inQueryTopicIds = null;
+        if (!empty($topicIds)) {
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
+
+        $publications = $this->notificationManager->generateMostInteractedUserPublications($inQueryTopicIds, $user->getId(), $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
 
         return $publications;
     }
@@ -202,6 +289,13 @@ class NotificationService
             throw new InconsistentDataException('Can get user followed publications - user null');
         }
 
+        // Topics
+        $topicIds = $this->circleService->getTopicIdsByUserId($user->getId());
+        $inQueryTopicIds = null;
+        if (!empty($topicIds)) {
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
+
         // Compute followed users ids
         $userIds = $this->getFollowedUsersIdsArray($user->getId());
         $inQueryUserIds = $this->globalTools->getInQuery($userIds);
@@ -212,7 +306,7 @@ class NotificationService
         $inQueryNotInPDDCommentIds = $this->globalTools->getInQuery($notInCommentDebateIds);
         $inQueryNotInPDRCommentIds = $this->globalTools->getInQuery($notInCommentReactionIds);
 
-        $publications = $this->notificationManager->generateMostInteractedFollowedUserPublications($inQueryUserIds, $inQueryNotInPDDebateIds, $inQueryNotInPDReactionIds, $inQueryNotInPDDCommentIds, $inQueryNotInPDRCommentIds, $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
+        $publications = $this->notificationManager->generateMostInteractedFollowedUserPublications($inQueryUserIds, $inQueryTopicIds, $inQueryNotInPDDebateIds, $inQueryNotInPDReactionIds, $inQueryNotInPDDCommentIds, $inQueryNotInPDRCommentIds, $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
 
         return $publications;
     }
@@ -232,11 +326,18 @@ class NotificationService
             throw new InconsistentDataException('Can get user followed publications - user null');
         }
 
+        // Topics
+        $topicIds = $this->circleService->getTopicIdsByUserId($user->getId());
+        $inQueryTopicIds = null;
+        if (!empty($topicIds)) {
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
+
         // Récupération d'un tableau des ids des débats suivis
         $debateIds = $this->getFollowedDebatesIdsArray($user->getId());
         $inQueryDebateIds = $this->globalTools->getInQuery($debateIds);
 
-        $publications = $this->notificationManager->generateMostInteractedFollowedDebatesPublications($inQueryDebateIds, $user->getId(), $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
+        $publications = $this->notificationManager->generateMostInteractedFollowedDebatesPublications($inQueryDebateIds, $inQueryTopicIds, $user->getId(), $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
 
         return $publications;
     }
@@ -302,11 +403,19 @@ class NotificationService
         $tagIds = $this->getFollowedTagsIdsArray($user->getId());
         $inQueryTagIds = $this->globalTools->getInQuery($tagIds);
 
+        // Topics
+        $topicIds = $this->circleService->getTopicIdsByUserId($user->getId());
+        $inQueryTopicIds = null;
+        if (!empty($topicIds)) {
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
+
         // Retrieve debates
         $debates = $this->notificationManager->generateNearestDebates(
             $inQueryDebateIds,
             $inQueryUserIds,
             $inQueryTagIds, 
+            $inQueryTopicIds,
             $user->getId(),
             $city->getId(),
             $department->getId(),

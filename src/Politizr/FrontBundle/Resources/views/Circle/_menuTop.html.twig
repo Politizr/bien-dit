@@ -1,0 +1,15 @@
+{# @todo dynamic rendering #}
+<div id="grpMenu">
+    <div class="center">
+        <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}"><img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ circle.logoFileName) }}"></a>
+        <div id="grpMenuPseudoTabs">
+            <span>{{ circle.title }}</span>
+        </div>
+        <div id="grpMenuLinksMobile" action="toggleGrpMenuLinks">Menu<i class="icon-menu"></i></div>
+        <div id="grpMenuLinks">
+            {% for topic in topics %}
+                <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">{{ topic.title }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>

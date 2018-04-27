@@ -5,9 +5,10 @@
         <div id="modalContent" class="modalRepresentatives">
             <div class="modalClose" action="closeModal"><i class="icon-cross"></i></div>
             <div class="modalText">
-                <b>Vous utilisez un blog pour relayer vos actions?</b><br><br>
-                Utilisez Politizr en complément et nous nous occuperons de la <b>promotion de vos publications</b> pour vous rendre <b>visible sur votre territoire</b>!
-                <a href="{{ path('DebateDraftNew'~profileSuffix()) }}" class="newSubject"><i class="icon-plane"></i><span>Rédigez un nouveau sujet</span></a>
+                <b>Relayez votre point de vue!</b><br><br>
+                Utilisez Politizr pour répondre à vos <b>concitoyens</b> et/ou à des <b>citoyens et élus</b> de toute la France pour leur faire part de <b>votre point de vue</b> et de vos <b>retours d'expérience</b>!<br><br>
+                {# <a href="{{ path('DebateDraftNew') }}" class="newSubject"><i class="icon-plane"></i><span>Je m'exprime</span></a> #}
+                <a href="{{ path('ListingSearchPublications') }}" class="newSubject"><span>Voir les publications</span></a>
                 <span class="modalCancel" action="closeModal">fermer</span>
             </div>
         </div>
@@ -17,10 +18,9 @@
         <div id="modalContent" class="modalCitizen">
             <div class="modalClose" action="closeModal"><i class="icon-cross"></i></div>
             <div class="modalText">
-                <b>Vous êtes un citoyen-ne engagé-e?</b><br><br>
-                Utilisez Politizr pour parler de problématiques locales et nous nous occuperons de la <b>promotion de vos publications</b> pour vous rendre <b>visible sur votre territoire</b>!
-                Pour soutenir les publications existantes, <b>notez les et ajoutez les à votre fil d'actualité!</b><br><br>
-                <a href="{{ path('DebateDraftNew'~profileSuffix()) }}" class="newSubject"><i class="icon-plane"></i><span>Rédigez un nouveau sujet</span></a>
+                <b>Devenez acteur de votre territoire!</b><br><br>
+                Utilisez Politizr pour parler de <b>problématiques locales</b> et notre équipe contactera <b>vos élus</b> pour les inviter à vous répondre. De plus, un sujet sera choisi chaque mois pour bénéficier d'une <b>campagne de promotion sur Facebook</b>!<br><br>
+                <a href="{{ path('DebateDraftNew') }}" class="newSubject"><i class="icon-plane"></i><span>Je m'exprime</span></a>
                 <span class="modalCancel" action="closeModal">fermer</span>
             </div>
         </div>

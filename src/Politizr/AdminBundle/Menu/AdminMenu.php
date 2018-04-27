@@ -62,35 +62,52 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $users = $this->addLinkRoute($menu, 'Utilisateur', 'Politizr_AdminBundle_PUser_list');
 
         // Document
-        $reputation = $this->addDropdown($menu, 'Document');
+        $document = $this->addDropdown($menu, 'Document');
         $this->addLinkRoute(
-            $reputation,
+            $document,
             'Sujet',
             'Politizr_AdminBundle_PDDebate_list'
         );
         $this->addLinkRoute(
-            $reputation,
+            $document,
             'Réponse',
             'Politizr_AdminBundle_PDReaction_list'
         );
         $this->addLinkRoute(
-            $reputation,
-            'Message direct',
-            'Politizr_AdminBundle_PDDirect_list'
+            $document,
+            'Média',
+            'Politizr_AdminBundle_PDMedia_list'
         );
 
-
         // Commentaires
-        $reputation = $this->addDropdown($menu, 'Commentaire');
+        $comment = $this->addDropdown($menu, 'Commentaire');
         $this->addLinkRoute(
-            $reputation,
+            $comment,
             'Sujet',
             'Politizr_AdminBundle_PDDComment_list'
         );
         $this->addLinkRoute(
-            $reputation,
+            $comment,
             'Réponse',
             'Politizr_AdminBundle_PDRComment_list'
+        );
+
+        // Groupes
+        $circle = $this->addDropdown($menu, 'Groupes');
+        $this->addLinkRoute(
+            $circle,
+            'Client',
+            'Politizr_AdminBundle_PCOwner_list'
+        );
+        $this->addLinkRoute(
+            $circle,
+            'Groupe',
+            'Politizr_AdminBundle_PCircle_list'
+        );
+        $this->addLinkRoute(
+            $circle,
+            'Discussions',
+            'Politizr_AdminBundle_PCTopic_list'
         );
 
         // Tags
@@ -123,6 +140,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Politizr_AdminBundle_PMEmailing_list'
         );
         $this->addLinkRoute(
+            $reputation,
+            'Message direct',
+            'Politizr_AdminBundle_PDDirect_list'
+        );
+        $this->addLinkRoute(
             $monitoring,
             'Demande de modification',
             'Politizr_AdminBundle_PMAskForUpdate_list'
@@ -149,6 +171,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             $regulations,
             'Badge (type)',
             'Politizr_AdminBundle_PRBadgeType_list'
+        );
+        $this->addLinkRoute(
+            $regulations,
+            'Groupe',
+            'Politizr_AdminBundle_PCircleType_list'
         );
         $this->addLinkRoute(
             $regulations,

@@ -13,6 +13,7 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PCircle;
 use Politizr\Model\PDDComment;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDRComment;
@@ -46,6 +47,7 @@ use Politizr\Model\PUBookmarkDR;
 use Politizr\Model\PUCurrentQO;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
+use Politizr\Model\PUInPC;
 use Politizr\Model\PUMandate;
 use Politizr\Model\PUNotification;
 use Politizr\Model\PUReputation;
@@ -109,6 +111,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByNbIdCheck($order = Criteria::ASC) Order by the nb_id_check column
  * @method PUserQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PUserQuery orderByHomepage($order = Criteria::ASC) Order by the homepage column
+ * @method PUserQuery orderBySupportGroup($order = Criteria::ASC) Order by the support_group column
  * @method PUserQuery orderByBanned($order = Criteria::ASC) Order by the banned column
  * @method PUserQuery orderByBannedNbDaysLeft($order = Criteria::ASC) Order by the banned_nb_days_left column
  * @method PUserQuery orderByBannedNbTotal($order = Criteria::ASC) Order by the banned_nb_total column
@@ -165,6 +168,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByNbIdCheck() Group by the nb_id_check column
  * @method PUserQuery groupByOnline() Group by the online column
  * @method PUserQuery groupByHomepage() Group by the homepage column
+ * @method PUserQuery groupBySupportGroup() Group by the support_group column
  * @method PUserQuery groupByBanned() Group by the banned column
  * @method PUserQuery groupByBannedNbDaysLeft() Group by the banned_nb_days_left column
  * @method PUserQuery groupByBannedNbTotal() Group by the banned_nb_total column
@@ -272,6 +276,10 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoinPDRComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the PDRComment relation
  * @method PUserQuery rightJoinPDRComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PDRComment relation
  * @method PUserQuery innerJoinPDRComment($relationAlias = null) Adds a INNER JOIN clause to the query using the PDRComment relation
+ *
+ * @method PUserQuery leftJoinPUInPC($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUInPC relation
+ * @method PUserQuery rightJoinPUInPC($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUInPC relation
+ * @method PUserQuery innerJoinPUInPC($relationAlias = null) Adds a INNER JOIN clause to the query using the PUInPC relation
  *
  * @method PUserQuery leftJoinPMUserModerated($relationAlias = null) Adds a LEFT JOIN clause to the query using the PMUserModerated relation
  * @method PUserQuery rightJoinPMUserModerated($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PMUserModerated relation
@@ -383,6 +391,7 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByNbIdCheck(int $nb_id_check) Return the first PUser filtered by the nb_id_check column
  * @method PUser findOneByOnline(boolean $online) Return the first PUser filtered by the online column
  * @method PUser findOneByHomepage(boolean $homepage) Return the first PUser filtered by the homepage column
+ * @method PUser findOneBySupportGroup(boolean $support_group) Return the first PUser filtered by the support_group column
  * @method PUser findOneByBanned(boolean $banned) Return the first PUser filtered by the banned column
  * @method PUser findOneByBannedNbDaysLeft(int $banned_nb_days_left) Return the first PUser filtered by the banned_nb_days_left column
  * @method PUser findOneByBannedNbTotal(int $banned_nb_total) Return the first PUser filtered by the banned_nb_total column
@@ -439,6 +448,7 @@ use Politizr\Model\PUserQuery;
  * @method array findByNbIdCheck(int $nb_id_check) Return PUser objects filtered by the nb_id_check column
  * @method array findByOnline(boolean $online) Return PUser objects filtered by the online column
  * @method array findByHomepage(boolean $homepage) Return PUser objects filtered by the homepage column
+ * @method array findBySupportGroup(boolean $support_group) Return PUser objects filtered by the support_group column
  * @method array findByBanned(boolean $banned) Return PUser objects filtered by the banned column
  * @method array findByBannedNbDaysLeft(int $banned_nb_days_left) Return PUser objects filtered by the banned_nb_days_left column
  * @method array findByBannedNbTotal(int $banned_nb_total) Return PUser objects filtered by the banned_nb_total column
@@ -557,7 +567,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_u_status_id`, `p_l_city_id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `indexed_at`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_u_status_id`, `p_l_city_id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `indexed_at`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `support_group`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -2265,6 +2275,33 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the support_group column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySupportGroup(true); // WHERE support_group = true
+     * $query->filterBySupportGroup('yes'); // WHERE support_group = true
+     * </code>
+     *
+     * @param     boolean|string $supportGroup The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterBySupportGroup($supportGroup = null, $comparison = null)
+    {
+        if (is_string($supportGroup)) {
+            $supportGroup = in_array(strtolower($supportGroup), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserPeer::SUPPORT_GROUP, $supportGroup, $comparison);
+    }
+
+    /**
      * Filter the query on the banned column
      *
      * Example usage:
@@ -2864,7 +2901,7 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return PUserQuery The current query, for fluid interface
      */
-    public function joinPEOperation($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPEOperation($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PEOperation');
@@ -2899,7 +2936,7 @@ abstract class BasePUserQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PEOperationQuery A secondary query class using the current class as primary query
      */
-    public function usePEOperationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePEOperationQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinPEOperation($relationAlias, $joinType)
@@ -4313,6 +4350,80 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related PUInPC object
+     *
+     * @param   PUInPC|PropelObjectCollection $pUInPC  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PUserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPUInPC($pUInPC, $comparison = null)
+    {
+        if ($pUInPC instanceof PUInPC) {
+            return $this
+                ->addUsingAlias(PUserPeer::ID, $pUInPC->getPUserId(), $comparison);
+        } elseif ($pUInPC instanceof PropelObjectCollection) {
+            return $this
+                ->usePUInPCQuery()
+                ->filterByPrimaryKeys($pUInPC->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPUInPC() only accepts arguments of type PUInPC or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PUInPC relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function joinPUInPC($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PUInPC');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PUInPC');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PUInPC relation PUInPC object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Politizr\Model\PUInPCQuery A secondary query class using the current class as primary query
+     */
+    public function usePUInPCQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPUInPC($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PUInPC', '\Politizr\Model\PUInPCQuery');
+    }
+
+    /**
      * Filter the query by a related PMUserModerated object
      *
      * @param   PMUserModerated|PropelObjectCollection $pMUserModerated  the related object to use as filter
@@ -5640,6 +5751,23 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->usePUSubscribePNEQuery()
             ->filterByPNEmail($pNEmail, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related PCircle object
+     * using the p_u_in_p_c table as cross reference
+     *
+     * @param   PCircle $pCircle the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PUserQuery The current query, for fluid interface
+     */
+    public function filterByPCircle($pCircle, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePUInPCQuery()
+            ->filterByPCircle($pCircle, $comparison)
             ->endUse();
     }
 

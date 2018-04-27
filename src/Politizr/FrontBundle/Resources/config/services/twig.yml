@@ -32,7 +32,9 @@ services:
             - @security.token_storage
             - @security.authorization_checker
             - @router
+            - @politizr.functional.document
             - @politizr.functional.timeline
+            - @politizr.functional.user
             - @form.factory
             - @politizr.tools.global
             - @logger
@@ -45,7 +47,9 @@ services:
             - @security.token_storage
             - @security.authorization_checker
             - @router
+            - @politizr.functional.user
             - @politizr.functional.document
+            - @politizr.functional.circle
             - @form.factory
             - @politizr.tools.global
             - @logger
@@ -62,3 +66,16 @@ services:
             - @logger
         tags:
             - { name: twig.extension }
+
+    politizr.twig.circle:
+        class:          Politizr\FrontBundle\Twig\PolitizrCircleExtension
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @router
+            - @politizr.functional.circle
+            - @politizr.tools.global
+            - @logger
+        tags:
+            - { name: twig.extension }
+

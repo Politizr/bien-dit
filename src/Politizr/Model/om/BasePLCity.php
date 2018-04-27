@@ -15,6 +15,10 @@ use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Politizr\Model\PCGroupLC;
+use Politizr\Model\PCGroupLCQuery;
+use Politizr\Model\PCircle;
+use Politizr\Model\PCircleQuery;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReaction;
@@ -262,9 +266,20 @@ abstract class BasePLCity extends BaseObject implements Persistent
     protected $collPDReactionsPartial;
 
     /**
+     * @var        PropelObjectCollection|PCGroupLC[] Collection to store aggregation of PCGroupLC objects.
+     */
+    protected $collPCGroupLCs;
+    protected $collPCGroupLCsPartial;
+
+    /**
      * @var        PropelObjectCollection|PEOperation[] Collection to store aggregation of PEOperation objects.
      */
     protected $collPEOperations;
+
+    /**
+     * @var        PropelObjectCollection|PCircle[] Collection to store aggregation of PCircle objects.
+     */
+    protected $collPCircles;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -296,6 +311,12 @@ abstract class BasePLCity extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $pCirclesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $pEOScopePLCsScheduledForDeletion = null;
 
     /**
@@ -315,6 +336,12 @@ abstract class BasePLCity extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pDReactionsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pCGroupLCsScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -1487,7 +1514,10 @@ abstract class BasePLCity extends BaseObject implements Persistent
 
             $this->collPDReactions = null;
 
+            $this->collPCGroupLCs = null;
+
             $this->collPEOperations = null;
+            $this->collPCircles = null;
         } // if (deep)
     }
 
@@ -1670,6 +1700,32 @@ abstract class BasePLCity extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pCirclesScheduledForDeletion !== null) {
+                if (!$this->pCirclesScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pCirclesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    PCGroupLCQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->pCirclesScheduledForDeletion = null;
+                }
+
+                foreach ($this->getPCircles() as $pCircle) {
+                    if ($pCircle->isModified()) {
+                        $pCircle->save($con);
+                    }
+                }
+            } elseif ($this->collPCircles) {
+                foreach ($this->collPCircles as $pCircle) {
+                    if ($pCircle->isModified()) {
+                        $pCircle->save($con);
+                    }
+                }
+            }
+
             if ($this->pEOScopePLCsScheduledForDeletion !== null) {
                 if (!$this->pEOScopePLCsScheduledForDeletion->isEmpty()) {
                     PEOScopePLCQuery::create()
@@ -1735,6 +1791,23 @@ abstract class BasePLCity extends BaseObject implements Persistent
 
             if ($this->collPDReactions !== null) {
                 foreach ($this->collPDReactions as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pCGroupLCsScheduledForDeletion !== null) {
+                if (!$this->pCGroupLCsScheduledForDeletion->isEmpty()) {
+                    PCGroupLCQuery::create()
+                        ->filterByPrimaryKeys($this->pCGroupLCsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pCGroupLCsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPCGroupLCs !== null) {
+                foreach ($this->collPCGroupLCs as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -2189,6 +2262,9 @@ abstract class BasePLCity extends BaseObject implements Persistent
             if (null !== $this->collPDReactions) {
                 $result['PDReactions'] = $this->collPDReactions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collPCGroupLCs) {
+                $result['PCGroupLCs'] = $this->collPCGroupLCs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
         }
 
         return $result;
@@ -2532,6 +2608,12 @@ abstract class BasePLCity extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPCGroupLCs() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPCGroupLC($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -2656,6 +2738,9 @@ abstract class BasePLCity extends BaseObject implements Persistent
         }
         if ('PDReaction' == $relationName) {
             $this->initPDReactions();
+        }
+        if ('PCGroupLC' == $relationName) {
+            $this->initPCGroupLCs();
         }
     }
 
@@ -3501,6 +3586,31 @@ abstract class BasePLCity extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
      */
+    public function getPDDebatesJoinPCTopic($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDDebateQuery::create(null, $criteria);
+        $query->joinWith('PCTopic', $join_behavior);
+
+        return $this->getPDDebates($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLCity is new, it will return
+     * an empty collection; or if this PLCity has previously
+     * been saved, it will retrieve related PDDebates from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLCity.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDDebate[] List of PDDebate objects
+     */
     public function getPDDebatesJoinPEOperation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PDDebateQuery::create(null, $criteria);
@@ -3859,6 +3969,281 @@ abstract class BasePLCity extends BaseObject implements Persistent
         return $this->getPDReactions($query, $con);
     }
 
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLCity is new, it will return
+     * an empty collection; or if this PLCity has previously
+     * been saved, it will retrieve related PDReactions from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLCity.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PDReaction[] List of PDReaction objects
+     */
+    public function getPDReactionsJoinPCTopic($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PDReactionQuery::create(null, $criteria);
+        $query->joinWith('PCTopic', $join_behavior);
+
+        return $this->getPDReactions($query, $con);
+    }
+
+    /**
+     * Clears out the collPCGroupLCs collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PLCity The current object (for fluent API support)
+     * @see        addPCGroupLCs()
+     */
+    public function clearPCGroupLCs()
+    {
+        $this->collPCGroupLCs = null; // important to set this to null since that means it is uninitialized
+        $this->collPCGroupLCsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPCGroupLCs collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPCGroupLCs($v = true)
+    {
+        $this->collPCGroupLCsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPCGroupLCs collection.
+     *
+     * By default this just sets the collPCGroupLCs collection to an empty array (like clearcollPCGroupLCs());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPCGroupLCs($overrideExisting = true)
+    {
+        if (null !== $this->collPCGroupLCs && !$overrideExisting) {
+            return;
+        }
+        $this->collPCGroupLCs = new PropelObjectCollection();
+        $this->collPCGroupLCs->setModel('PCGroupLC');
+    }
+
+    /**
+     * Gets an array of PCGroupLC objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PLCity is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|PCGroupLC[] List of PCGroupLC objects
+     * @throws PropelException
+     */
+    public function getPCGroupLCs($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPCGroupLCsPartial && !$this->isNew();
+        if (null === $this->collPCGroupLCs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPCGroupLCs) {
+                // return empty collection
+                $this->initPCGroupLCs();
+            } else {
+                $collPCGroupLCs = PCGroupLCQuery::create(null, $criteria)
+                    ->filterByPLCity($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPCGroupLCsPartial && count($collPCGroupLCs)) {
+                      $this->initPCGroupLCs(false);
+
+                      foreach ($collPCGroupLCs as $obj) {
+                        if (false == $this->collPCGroupLCs->contains($obj)) {
+                          $this->collPCGroupLCs->append($obj);
+                        }
+                      }
+
+                      $this->collPCGroupLCsPartial = true;
+                    }
+
+                    $collPCGroupLCs->getInternalIterator()->rewind();
+
+                    return $collPCGroupLCs;
+                }
+
+                if ($partial && $this->collPCGroupLCs) {
+                    foreach ($this->collPCGroupLCs as $obj) {
+                        if ($obj->isNew()) {
+                            $collPCGroupLCs[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPCGroupLCs = $collPCGroupLCs;
+                $this->collPCGroupLCsPartial = false;
+            }
+        }
+
+        return $this->collPCGroupLCs;
+    }
+
+    /**
+     * Sets a collection of PCGroupLC objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pCGroupLCs A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function setPCGroupLCs(PropelCollection $pCGroupLCs, PropelPDO $con = null)
+    {
+        $pCGroupLCsToDelete = $this->getPCGroupLCs(new Criteria(), $con)->diff($pCGroupLCs);
+
+
+        $this->pCGroupLCsScheduledForDeletion = $pCGroupLCsToDelete;
+
+        foreach ($pCGroupLCsToDelete as $pCGroupLCRemoved) {
+            $pCGroupLCRemoved->setPLCity(null);
+        }
+
+        $this->collPCGroupLCs = null;
+        foreach ($pCGroupLCs as $pCGroupLC) {
+            $this->addPCGroupLC($pCGroupLC);
+        }
+
+        $this->collPCGroupLCs = $pCGroupLCs;
+        $this->collPCGroupLCsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PCGroupLC objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related PCGroupLC objects.
+     * @throws PropelException
+     */
+    public function countPCGroupLCs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPCGroupLCsPartial && !$this->isNew();
+        if (null === $this->collPCGroupLCs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPCGroupLCs) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPCGroupLCs());
+            }
+            $query = PCGroupLCQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPLCity($this)
+                ->count($con);
+        }
+
+        return count($this->collPCGroupLCs);
+    }
+
+    /**
+     * Method called to associate a PCGroupLC object to this object
+     * through the PCGroupLC foreign key attribute.
+     *
+     * @param    PCGroupLC $l PCGroupLC
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function addPCGroupLC(PCGroupLC $l)
+    {
+        if ($this->collPCGroupLCs === null) {
+            $this->initPCGroupLCs();
+            $this->collPCGroupLCsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPCGroupLCs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPCGroupLC($l);
+
+            if ($this->pCGroupLCsScheduledForDeletion and $this->pCGroupLCsScheduledForDeletion->contains($l)) {
+                $this->pCGroupLCsScheduledForDeletion->remove($this->pCGroupLCsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PCGroupLC $pCGroupLC The pCGroupLC object to add.
+     */
+    protected function doAddPCGroupLC($pCGroupLC)
+    {
+        $this->collPCGroupLCs[]= $pCGroupLC;
+        $pCGroupLC->setPLCity($this);
+    }
+
+    /**
+     * @param	PCGroupLC $pCGroupLC The pCGroupLC object to remove.
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function removePCGroupLC($pCGroupLC)
+    {
+        if ($this->getPCGroupLCs()->contains($pCGroupLC)) {
+            $this->collPCGroupLCs->remove($this->collPCGroupLCs->search($pCGroupLC));
+            if (null === $this->pCGroupLCsScheduledForDeletion) {
+                $this->pCGroupLCsScheduledForDeletion = clone $this->collPCGroupLCs;
+                $this->pCGroupLCsScheduledForDeletion->clear();
+            }
+            $this->pCGroupLCsScheduledForDeletion[]= clone $pCGroupLC;
+            $pCGroupLC->setPLCity(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this PLCity is new, it will return
+     * an empty collection; or if this PLCity has previously
+     * been saved, it will retrieve related PCGroupLCs from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in PLCity.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|PCGroupLC[] List of PCGroupLC objects
+     */
+    public function getPCGroupLCsJoinPCircle($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PCGroupLCQuery::create(null, $criteria);
+        $query->joinWith('PCircle', $join_behavior);
+
+        return $this->getPCGroupLCs($query, $con);
+    }
+
     /**
      * Clears out the collPEOperations collection
      *
@@ -4047,6 +4432,193 @@ abstract class BasePLCity extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPCircles collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return PLCity The current object (for fluent API support)
+     * @see        addPCircles()
+     */
+    public function clearPCircles()
+    {
+        $this->collPCircles = null; // important to set this to null since that means it is uninitialized
+        $this->collPCirclesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPCircles collection.
+     *
+     * By default this just sets the collPCircles collection to an empty collection (like clearPCircles());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPCircles()
+    {
+        $this->collPCircles = new PropelObjectCollection();
+        $this->collPCircles->setModel('PCircle');
+    }
+
+    /**
+     * Gets a collection of PCircle objects related by a many-to-many relationship
+     * to the current object by way of the p_c_group_l_c cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this PLCity is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|PCircle[] List of PCircle objects
+     */
+    public function getPCircles($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPCircles || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPCircles) {
+                // return empty collection
+                $this->initPCircles();
+            } else {
+                $collPCircles = PCircleQuery::create(null, $criteria)
+                    ->filterByPLCity($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPCircles;
+                }
+                $this->collPCircles = $collPCircles;
+            }
+        }
+
+        return $this->collPCircles;
+    }
+
+    /**
+     * Sets a collection of PCircle objects related by a many-to-many relationship
+     * to the current object by way of the p_c_group_l_c cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pCircles A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function setPCircles(PropelCollection $pCircles, PropelPDO $con = null)
+    {
+        $this->clearPCircles();
+        $currentPCircles = $this->getPCircles(null, $con);
+
+        $this->pCirclesScheduledForDeletion = $currentPCircles->diff($pCircles);
+
+        foreach ($pCircles as $pCircle) {
+            if (!$currentPCircles->contains($pCircle)) {
+                $this->doAddPCircle($pCircle);
+            }
+        }
+
+        $this->collPCircles = $pCircles;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of PCircle objects related by a many-to-many relationship
+     * to the current object by way of the p_c_group_l_c cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related PCircle objects
+     */
+    public function countPCircles($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collPCircles || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPCircles) {
+                return 0;
+            } else {
+                $query = PCircleQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPLCity($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collPCircles);
+        }
+    }
+
+    /**
+     * Associate a PCircle object to this object
+     * through the p_c_group_l_c cross reference table.
+     *
+     * @param  PCircle $pCircle The PCGroupLC object to relate
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function addPCircle(PCircle $pCircle)
+    {
+        if ($this->collPCircles === null) {
+            $this->initPCircles();
+        }
+
+        if (!$this->collPCircles->contains($pCircle)) { // only add it if the **same** object is not already associated
+            $this->doAddPCircle($pCircle);
+            $this->collPCircles[] = $pCircle;
+
+            if ($this->pCirclesScheduledForDeletion and $this->pCirclesScheduledForDeletion->contains($pCircle)) {
+                $this->pCirclesScheduledForDeletion->remove($this->pCirclesScheduledForDeletion->search($pCircle));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	PCircle $pCircle The pCircle object to add.
+     */
+    protected function doAddPCircle(PCircle $pCircle)
+    {
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$pCircle->getPLCities()->contains($this)) { $pCGroupLC = new PCGroupLC();
+            $pCGroupLC->setPCircle($pCircle);
+            $this->addPCGroupLC($pCGroupLC);
+
+            $foreignCollection = $pCircle->getPLCities();
+            $foreignCollection[] = $this;
+        }
+    }
+
+    /**
+     * Remove a PCircle object to this object
+     * through the p_c_group_l_c cross reference table.
+     *
+     * @param PCircle $pCircle The PCGroupLC object to relate
+     * @return PLCity The current object (for fluent API support)
+     */
+    public function removePCircle(PCircle $pCircle)
+    {
+        if ($this->getPCircles()->contains($pCircle)) {
+            $this->collPCircles->remove($this->collPCircles->search($pCircle));
+            if (null === $this->pCirclesScheduledForDeletion) {
+                $this->pCirclesScheduledForDeletion = clone $this->collPCircles;
+                $this->pCirclesScheduledForDeletion->clear();
+            }
+            $this->pCirclesScheduledForDeletion[]= $pCircle;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -4123,8 +4695,18 @@ abstract class BasePLCity extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPCGroupLCs) {
+                foreach ($this->collPCGroupLCs as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPEOperations) {
                 foreach ($this->collPEOperations as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collPCircles) {
+                foreach ($this->collPCircles as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -4151,10 +4733,18 @@ abstract class BasePLCity extends BaseObject implements Persistent
             $this->collPDReactions->clearIterator();
         }
         $this->collPDReactions = null;
+        if ($this->collPCGroupLCs instanceof PropelCollection) {
+            $this->collPCGroupLCs->clearIterator();
+        }
+        $this->collPCGroupLCs = null;
         if ($this->collPEOperations instanceof PropelCollection) {
             $this->collPEOperations->clearIterator();
         }
         $this->collPEOperations = null;
+        if ($this->collPCircles instanceof PropelCollection) {
+            $this->collPCircles->clearIterator();
+        }
+        $this->collPCircles = null;
         $this->aPLDepartment = null;
     }
 

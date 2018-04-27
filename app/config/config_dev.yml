@@ -71,3 +71,4 @@ bazinga_faker:
         Politizr\Model\PDDebate:
             custom_formatters:
                 FileName:               { method: image, parameters: [ '/home/lionel/www/politizr.beta/web/uploads/documents', '640', '480', 'city', false ] }
+

@@ -33,9 +33,11 @@ use Politizr\Model\PEOPresetPTQuery;
 use Politizr\Model\PEOperationQuery;
 
 use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
-use Politizr\FrontBundle\Form\Type\PUMandateType;
-
 use Politizr\AdminBundle\Form\Type\AdminPUserLocalizationType;
+use Politizr\AdminBundle\Form\Type\PUsersFiltersType;
+use Politizr\AdminBundle\Form\Type\PCirclePUsersSelectListType;
+
+use Politizr\FrontBundle\Form\Type\PUMandateType;
 
 /**
  * XHR service for admin management.
@@ -49,6 +51,7 @@ class XhrAdmin
     private $templating;
     private $formFactory;
     private $localizationService;
+    private $circleService;
     private $tagManager;
     private $userManager;
     private $localizationManager;
@@ -64,6 +67,7 @@ class XhrAdmin
      * @param @templating
      * @param @form.factory
      * @param @politizr.functional.localization
+     * @param @politizr.functional.circle
      * @param @politizr.manager.tag
      * @param @politizr.manager.user
      * @param @politizr.manager.localization
@@ -78,6 +82,7 @@ class XhrAdmin
         $templating,
         $formFactory,
         $localizationService,
+        $circleService,
         $tagManager,
         $userManager,
         $localizationManager,
@@ -94,6 +99,7 @@ class XhrAdmin
         $this->formFactory = $formFactory;
 
         $this->localizationService = $localizationService;
+        $this->circleService = $circleService;
 
         $this->tagManager = $tagManager;
         $this->userManager = $userManager;
@@ -1198,5 +1204,53 @@ class XhrAdmin
         $this->eventManager->deleteOperationCityScope($operationId, $cityId);        
 
         return true;
+    }
+
+    /* ######################################################################################################## */
+    /*                                               OPERATION                                                  */
+    /* ######################################################################################################## */
+
+    /**
+     * Apply a filter to a circle's users select list
+     */
+    public function filterCircleUsers(Request $request)
+    {
+        $this->logger->info('*** filterCircleUsers');
+
+        // Request arguments
+        $formNo = $request->get('no');
+        $circleId = $request->get('circleId');
+
+        $formFilter = $this->formFactory->create(new PUsersFiltersType());
+        $formFilter->handleRequest($request);
+        $filtersData = $formFilter->getData();
+
+        if ($formNo == 1) {
+            $users = $this->circleService->getUsersInCircleByCircleId(null, null, $filtersData);
+        } elseif ($formNo == 2) {
+            $users = $this->circleService->getUsersInCircleByCircleId($circleId, null, $filtersData);
+        } elseif ($formNo == 3) {
+            $users = $this->circleService->getUsersInCircleByCircleId($circleId, true, $filtersData);
+        }
+
+        $formUsers = $this->formFactory->create(
+            new PCirclePUsersSelectListType(),
+            null,
+            array('circle_id' => $circleId, 'users' => $users)
+        );
+
+        $html = $this->templating->render(
+            'PolitizrAdminBundle:Fragment\\Circle:_circleUsersForms'.$formNo.'.html.twig',
+            array(
+                'circleId' => $circleId,
+                'formFilter'.$formNo => $formFilter->createView(),
+                'formUsers'.$formNo => $formUsers->createView(),
+            )
+        );
+
+        // Renvoi de l'ensemble des blocs HTML maj
+        return array(
+            'html' => $html
+        );
     }
 }

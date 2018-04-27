@@ -1,0 +1,66 @@
+{# beta #}
+{% extends 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+
+{% block title %}Mes groupes - {{ parent() }}{% endblock title %}
+
+{% block content %}
+    <div id="content">
+        <div class="list">
+            <div class="pageTitle">Mes groupes</div>
+            <div id="groupListing">
+                {% for owner in owners %}
+                    <h1>{{ owner.title }}</h1>
+                    {% set circles = owner.circles %}
+                    {% for circle in circles %}
+                        <div class="groupListingRow">
+                            <h2>{{ circle.title }}</h2>
+                            <div class="circleActions withLoaderInside">
+                                {{ circle | circleActions }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="noResults">
+                        Aucun groupe n'est disponible dans votre zone géographique!
+                        {% if app.user and not app.user.supportGroup %}
+                            <div class="contactMyCity withLoaderInside" id="supportGroup">
+                                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                                {% if isGrantedE() %}
+                                    Cliquez ci dessous recevoir notre documentation complète détaillant nos services à destination des collectivités (mairie, agglo, département, etc.)<br/>
+                                {% else %}
+                                    Cliquez ci dessous pour nous aider à convaincre vos collectivités (mairie, agglo, département, etc.) d'ouvrir leurs projets à la discussion!<br/>
+                                {% endif %}
+                                <a action="supportGroup">Je suis intéressé{% if app.user.gender == 'Madame' %}e{% endif %}</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block sidebarContent %}
+    {% include 'PolitizrFrontBundle:Circle:_sidebarMenu.html.twig' %}
+{% endblock sidebarContent %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("Mes groupes");
+        </script>
+    {% endif %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/circle/subscription.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/tag/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/menuCircle.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock javascriptFooter %}

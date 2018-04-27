@@ -1,5 +1,15 @@
 {# beta #}
 <div class="actionPublish">
-    <a action="debatePublish" uuid="{{ uuid }}"><i class="icon-publish"></i>Publier</a>
-    <div class="notice">Attention, une fois publiée, vous ne pourrez plus modifier votre publication.</div>
+    {% if reason == constant('Politizr\\Constant\\DocumentConstants::REASON_CIRCLE_READ_ONLY') %}
+        <div class="cannotPublishReaction">
+            Les contributions pour ce groupe sont désormais closes.
+        </div>
+    {% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_NO_REPUTATION') %}
+        <div class="cannotPublishReaction">
+            Vous devez avoir au moins {{ constant('Politizr\\Constant\\ReputationConstants::ACTION_DEBATE_WRITE') }} de réputation pour publier un nouveau sujet.
+        </div>
+    {% else %}
+        <a action="debatePublish" uuid="{{ document.uuid }}"><i class="icon-publish"></i>Publier</a>
+        <div class="notice">Attention, une fois publiée, vous ne pourrez plus modifier votre publication.</div>
+    {% endif %}
 </div>

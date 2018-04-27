@@ -10,6 +10,8 @@ use Politizr\Constant\TagConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PDMedia;
+
 use Politizr\Model\PDRTaggedT;
 
 use Politizr\Model\PDDebateQuery;
@@ -67,6 +69,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     AND p_d_debate.homepage = 1 
 )
 
@@ -78,6 +81,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_reaction.homepage = 1
     AND p_d_reaction.tree_level > 0
 )
@@ -153,17 +157,19 @@ LIMIT :offset, :limit
      *
      * @see app/sql/documentsByFilters.sql
      *
+     * @param string $inQueryTopicIds
      * @param string $inQueryCityIds
      * @param string $inQueryDepartmentIds
      * @param int $regionId
      * @param int $countryId
+     * @param int $topicId
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterActivity
      * @param string $filterDate
      * @return string
      */
-    private function createPublicationsByFiltersRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterActivity, $filterDate)
+    private function createPublicationsByFiltersRawSql($inQueryTopicIds, $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterPublication, $filterProfile, $filterActivity, $filterDate)
     {
         // Geo subrequest
         $subRequestCityIds1 = null;
@@ -186,6 +192,17 @@ LIMIT :offset, :limit
             $subRequestRegionIds2,
             $subRequestCountryIds2
         );
+
+        // Topic subrequest
+        $subRequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subRequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($topicId) {
+            $subRequestTopic1 = sprintf("AND p_d_debate.p_c_topic_id = %s", $topicId);
+            $subRequestTopic2 = sprintf("AND p_d_reaction.p_c_topic_id = %s", $topicId);
+        } elseif ($inQueryTopicIds) {
+            $subRequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subRequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
+        }
 
         // Profile subrequest
         $subRequestFilterProfile = null;
@@ -238,6 +255,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    $subRequestTopic1
     $subRequestCityIds1
     $subRequestDepartmentIds1
     $subRequestRegionIds1
@@ -257,6 +275,7 @@ WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
+    $subRequestTopic2
     $subRequestCityIds2
     $subRequestDepartmentIds2
     $subRequestRegionIds2
@@ -276,6 +295,7 @@ FROM p_d_d_comment
         ON p_user.id = p_d_d_comment.p_user_id
 WHERE
     p_d_d_comment.online = 1
+    $subRequestTopic1
     $subRequestCityIds1
     $subRequestDepartmentIds1
     $subRequestRegionIds1
@@ -295,6 +315,7 @@ FROM p_d_r_comment
         ON p_user.id = p_d_r_comment.p_user_id
 WHERE
     p_d_r_comment.online = 1
+    $subRequestTopic2
     $subRequestCityIds2
     $subRequestDepartmentIds2
     $subRequestRegionIds2
@@ -333,15 +354,17 @@ LIMIT :offset, :limit
      *
      * @see app/sql/documentsByFiltersMostFollowed.sql
      *
+     * @param string $inQueryTopicIds
      * @param string $inQueryCityIds
      * @param string $inQueryDepartmentIds
      * @param int $regionId
      * @param int $countryId
+     * @param int $topicId
      * @param string $filterProfile
      * @param string $filterDate
      * @return string
      */
-    private function createPublicationsByFiltersMostFollowedRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterProfile, $filterDate)
+    private function createPublicationsByFiltersMostFollowedRawSql($inQueryTopicIds, $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterProfile, $filterDate)
     {
         // Geo subrequest
         $subRequestCityIds1 = null;
@@ -364,6 +387,17 @@ LIMIT :offset, :limit
             $subRequestRegionIds2,
             $subRequestCountryIds2
         );
+
+        // Topic subrequest
+        $subRequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subRequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($topicId) {
+            $subRequestTopic1 = sprintf("AND p_d_debate.p_c_topic_id = %s", $topicId);
+            $subRequestTopic2 = sprintf("AND p_d_reaction.p_c_topic_id = %s", $topicId);
+        } elseif ($inQueryTopicIds) {
+            $subRequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subRequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
+        }
 
         // Profile subrequest
         $subRequestFilterProfileLeftJoin = null;
@@ -401,6 +435,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    $subRequestTopic1
     $subRequestCityIds1
     $subRequestDepartmentIds1
     $subRequestRegionIds1
@@ -423,16 +458,18 @@ LIMIT :offset, :limit
      *
      * @see app/sql/documentsByFiltersMostReactions.sql
      *
+     * @param string $inQueryTopicIds
      * @param string $inQueryCityIds
      * @param string $inQueryDepartmentIds
      * @param int $regionId
      * @param int $countryId
+     * @param int $topicId
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterDate
      * @return string
      */
-    private function createPublicationsByFiltersMostReactionsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterDate)
+    private function createPublicationsByFiltersMostReactionsRawSql($inQueryTopicIds, $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterPublication, $filterProfile, $filterDate)
     {
         // Geo subrequest
         $subRequestCityIds1 = null;
@@ -455,6 +492,17 @@ LIMIT :offset, :limit
             $subRequestRegionIds2,
             $subRequestCountryIds2
         );
+
+        // Topic subrequest
+        $subRequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subRequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($topicId) {
+            $subRequestTopic1 = sprintf("AND p_d_debate.p_c_topic_id = %s", $topicId);
+            $subRequestTopic2 = sprintf("AND p_d_reaction.p_c_topic_id = %s", $topicId);
+        } elseif ($inQueryTopicIds) {
+            $subRequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subRequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
+        }
 
         // Profile subrequest
         $subRequestFilterProfileLeftJoin1 = null;
@@ -501,6 +549,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
+    $subRequestTopic1
     AND p_d_reaction_child.published = 1
     AND p_d_reaction_child.online = true
     $subRequestCityIds1
@@ -523,6 +572,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    $subRequestTopic2
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction_child.published = 1
     AND p_d_reaction_child.online = true
@@ -562,16 +612,18 @@ LIMIT :offset, :limit
      *
      * @see app/sql/documentsByFiltersMostComments.sql
      *
+     * @param string $inQueryTopicIds
      * @param string $inQueryCityIds
      * @param string $inQueryDepartmentIds
      * @param int $regionId
      * @param int $countryId
+     * @param int $topicId
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterDate
      * @return string
      */
-    private function createPublicationsByFiltersMostCommentsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterDate)
+    private function createPublicationsByFiltersMostCommentsRawSql($inQueryTopicIds, $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterPublication, $filterProfile, $filterDate)
     {
         // Geo subrequest
         $subRequestCityIds1 = null;
@@ -594,6 +646,17 @@ LIMIT :offset, :limit
             $subRequestRegionIds2,
             $subRequestCountryIds2
         );
+
+        // Topic subrequest
+        $subRequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subRequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($topicId) {
+            $subRequestTopic1 = sprintf("AND p_d_debate.p_c_topic_id = %s", $topicId);
+            $subRequestTopic2 = sprintf("AND p_d_reaction.p_c_topic_id = %s", $topicId);
+        } elseif ($inQueryTopicIds) {
+            $subRequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subRequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
+        }
 
         // Profile subrequest
         $subRequestFilterProfileLeftJoin1 = null;
@@ -636,6 +699,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
+    $subRequestTopic1
     AND p_d_d_comment.online = true
     $subRequestCityIds1
     $subRequestDepartmentIds1
@@ -657,6 +721,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    $subRequestTopic2
     AND p_d_reaction.tree_level > 0
     AND p_d_r_comment.online = true
     $subRequestCityIds2
@@ -731,15 +796,24 @@ LIMIT :limit
      *
      * @see app/sql/userDocuments.sql
      *
+     * @param string $inQueryTopicIds
      * @param string $orderBy
      * @param integer $tagId
      * @return string
      */
-    private function createPublicationsByUserRawSql($orderBy = ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE, $tagId = null)
+    private function createPublicationsByUserRawSql($inQueryTopicIds, $orderBy = ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE, $tagId = null)
     {
         $orderByReq = "ORDER BY note_pos DESC, note_neg ASC";
         if ($orderBy == ListingConstants::ORDER_BY_KEYWORD_LAST) {
             $orderByReq = "ORDER BY published_at DESC";
+        }
+
+        // Topic subrequest
+        $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subrequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
         }
 
         // Tag filtering subrequest
@@ -782,6 +856,7 @@ WHERE
     p_user_id = :p_user_id
     AND p_d_debate.published = 1
     AND p_d_debate.online = 1
+    $subrequestTopic1
     $subRequestTagWhere1
 )
 
@@ -794,6 +869,7 @@ WHERE
     p_user_id = :p_user_id2
     AND p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    $subrequestTopic2
     $subRequestTagWhere2
 )
 
@@ -801,10 +877,15 @@ UNION DISTINCT
 
 ( SELECT p_d_d_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_d_comment.description as description, \"slug\" as slug, p_d_d_comment.published_at as published_at, p_d_d_comment.updated_at as updated_at, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 $subRequestTagLeftJoin3
 WHERE
     p_d_d_comment.online = 1
     AND p_d_d_comment.p_user_id = :p_user_id3
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    $subrequestTopic1
     $subRequestTagWhere3
 )
 
@@ -812,10 +893,15 @@ UNION DISTINCT
 
 ( SELECT p_d_r_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_r_comment.description as description, \"slug\" as slug, p_d_r_comment.published_at as published_at, p_d_r_comment.updated_at as updated_at, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
+    LEFT JOIN p_d_reaction
+        ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 $subRequestTagLeftJoin4
 WHERE
     p_d_r_comment.online = 1
     AND p_d_r_comment.p_user_id = :p_user_id4
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    $subrequestTopic2
     $subRequestTagWhere4
 )
 
@@ -831,7 +917,7 @@ LIMIT :offset, :limit
     /**
      * Documents by recommended
      *
-     * @see app/sql/topDocumentsBestNote.sql
+     * @see app/sql/topDocuments.sql
      *
      * @return string
      */
@@ -853,6 +939,7 @@ FROM p_u_reputation
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     AND (p_d_debate.note_pos - p_d_debate.note_neg) > 0
     AND p_u_reputation.p_r_action_id = :id_author_debate_note_pos
     $subRequestCond
@@ -868,6 +955,7 @@ FROM p_u_reputation
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_reaction.tree_level > 0
     AND (p_d_reaction.note_pos - p_d_reaction.note_neg) > 0
     AND p_u_reputation.p_r_action_id = :id_author_reaction_note_pos
@@ -908,6 +996,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     AND p_d_debate.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -926,6 +1015,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction.p_user_id IN (
         SELECT p_user.id
@@ -943,8 +1033,13 @@ UNION DISTINCT
 # Commentaires débats publiés
 ( SELECT DISTINCT p_d_d_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_d_comment.description as description, \"slug\" as slug, p_d_d_comment.note_pos as note_pos, p_d_d_comment.note_neg as note_neg, -1 as nb_views, p_d_d_comment.published_at as published_at, p_d_d_comment.updated_at as updated_at, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    AND p_d_debate.p_c_topic_id is NULL
     AND p_d_d_comment.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -961,8 +1056,13 @@ UNION DISTINCT
 # Commentaires réactions publiés
 ( SELECT DISTINCT p_d_r_comment.id as id, \"commentaire\" as title, \"image\" as fileName, p_d_r_comment.description as description, \"slug\" as slug, p_d_r_comment.note_pos as note_pos, p_d_r_comment.note_neg as note_neg, -1 as nb_views, p_d_r_comment.published_at as published_at, p_d_r_comment.updated_at as updated_at, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
+    LEFT JOIN p_d_reaction
+        ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_r_comment.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -988,10 +1088,11 @@ LIMIT :offset, :limit
      * @see app/sql/documentsByTags.sql
      *
      * @param string $inQueryTagIds
+     * @param string $inQueryTopicIds
      * @param integer $orderBy
      * @return string
      */
-    private function createDocumentsByTagsRawSql($inQueryTagIds, $orderBy = null)
+    private function createDocumentsByTagsRawSql($inQueryTagIds, $inQueryTopicIds, $orderBy = null)
     {
         if ($orderBy == ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE) {
             $orderBy = "ORDER BY note_pos DESC, note_neg ASC, published_at DESC";
@@ -999,6 +1100,14 @@ LIMIT :offset, :limit
             $orderBy = "ORDER BY published_at DESC, note_pos DESC, note_neg ASC";
         } else {
             throw new InconsistentDataException(sprintf('OrderBy keyword %s not found'), $keyword);
+        }
+
+        // Topic subrequest
+        $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subrequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
         }
 
         // Requête SQL
@@ -1010,6 +1119,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    $subrequestTopic1
     AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)
     )
 
@@ -1023,6 +1133,7 @@ WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_reaction.tree_level > 0
+    $subrequestTopic2
     AND p_d_r_tagged_t.p_tag_id IN ($inQueryTagIds)
     )
 
@@ -1050,6 +1161,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW() 
     )
 
@@ -1060,6 +1172,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW() 
     )
@@ -1334,10 +1447,12 @@ GROUP BY p_d_debate_id
     /**
      * Documents by filters paginated listing
      *
+     * @param string $inQueryTopicIds
      * @param string $inQueryCityIds
      * @param string $inQueryDepartmentIds
      * @param int $regionId
      * @param int $countryId
+     * @param int $topicId
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterActivity
@@ -1346,13 +1461,27 @@ GROUP BY p_d_debate_id
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generatePublicationsByFiltersPaginated($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterActivity, $filterDate, $offset, $limit)
-    {
-        $this->logger->info('*** generatePublicationsByFiltersPaginated');
-        $this->logger->info('$inQueryCityIds = ' . print_r($inQueryCityIds, true));
-        $this->logger->info('$inQueryDepartmentIds = ' . print_r($inQueryDepartmentIds, true));
-        $this->logger->info('$regionId = ' . print_r($regionId, true));
-        $this->logger->info('$countryId = ' . print_r($countryId, true));
+    public function generatePublicationsByFiltersPaginated(
+        $inQueryTopicIds,
+        $inQueryCityIds,
+        $inQueryDepartmentIds,
+        $regionId,
+        $countryId,
+        $topicId,
+        $filterPublication,
+        $filterProfile,
+        $filterActivity,
+        $filterDate,
+        $offset,
+        $limit
+    ) {
+        // $this->logger->info('*** generatePublicationsByFiltersPaginated');
+        // $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
+        // $this->logger->info('$inQueryCityIds = ' . print_r($inQueryCityIds, true));
+        // $this->logger->info('$inQueryDepartmentIds = ' . print_r($inQueryDepartmentIds, true));
+        // $this->logger->info('$regionId = ' . print_r($regionId, true));
+        // $this->logger->info('$countryId = ' . print_r($countryId, true));
+        // $this->logger->info('$topicId = ' . print_r($topicId, true));
         // $this->logger->info('$filterPublication = ' . print_r($filterPublication, true));
         // $this->logger->info('$filterProfile = ' . print_r($filterProfile, true));
         // $this->logger->info('$filterActivity = ' . print_r($filterActivity, true));
@@ -1364,13 +1493,13 @@ GROUP BY p_d_debate_id
 
         // special request construction for "most followed" / "most reactions" / "most comments" filters
         if ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_FOLLOWED) {
-            $stmt = $con->prepare($this->createPublicationsByFiltersMostFollowedRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterProfile, $filterDate));
+            $stmt = $con->prepare($this->createPublicationsByFiltersMostFollowedRawSql($inQueryTopicIds, $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterProfile, $filterDate));
         } elseif ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_REACTIONS) {
-            $stmt = $con->prepare($this->createPublicationsByFiltersMostReactionsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterDate));
+            $stmt = $con->prepare($this->createPublicationsByFiltersMostReactionsRawSql($inQueryTopicIds, $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterPublication, $filterProfile, $filterDate));
         } elseif ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_COMMENTS) {
-            $stmt = $con->prepare($this->createPublicationsByFiltersMostCommentsRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterDate));
+            $stmt = $con->prepare($this->createPublicationsByFiltersMostCommentsRawSql($inQueryTopicIds, $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterPublication, $filterProfile, $filterDate));
         } else {
-            $stmt = $con->prepare($this->createPublicationsByFiltersRawSql($inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $filterPublication, $filterProfile, $filterActivity, $filterDate));
+            $stmt = $con->prepare($this->createPublicationsByFiltersRawSql($inQueryTopicIds, $inQueryCityIds, $inQueryDepartmentIds, $regionId, $countryId, $topicId, $filterPublication, $filterProfile, $filterActivity, $filterDate));
         }
 
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
@@ -1389,23 +1518,25 @@ GROUP BY p_d_debate_id
      * My documents paginated listing
      *
      * @param integer $userId
+     * @param string $inQueryTopicIds
      * @param integer $orderBy
      * @param integer $tagId
      * @param integer $offset
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generatePublicationsByUserPaginated($userId, $orderBy, $tagId, $offset, $limit)
+    public function generatePublicationsByUserPaginated($userId, $inQueryTopicIds, $orderBy, $tagId, $offset, $limit)
     {
         // $this->logger->info('*** generatePublicationsByUserPaginated');
         // $this->logger->info('$userId = ' . print_r($userId, true));
+        // $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
         // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         // $this->logger->info('$tagId = ' . print_r($tagId, true));
         // $this->logger->info('$offset = ' . print_r($offset, true));
         // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createPublicationsByUserRawSql($orderBy, $tagId));
+        $stmt = $con->prepare($this->createPublicationsByUserRawSql($inQueryTopicIds, $orderBy, $tagId));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
@@ -1517,21 +1648,23 @@ GROUP BY p_d_debate_id
      * Documents by tags
      *
      * @param string $inQueryTagIds
+     * @param string $inQueryTopicIds
      * @param integer $orderBy
      * @param integer $offset
      * @param integer $limit
      * @return PropelCollection[PDDebate|PDReaction]
      */
-    public function generateDocumentsByTagsPaginated($inQueryTagIds, $orderBy, $offset, $limit)
+    public function generateDocumentsByTagsPaginated($inQueryTagIds, $inQueryTopicIds, $orderBy, $offset, $limit)
     {
         // $this->logger->info('*** generateUserSuggestedDebatesPaginatedListing');
         // $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
+        // $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
         // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         // $this->logger->info('$offset = ' . print_r($offset, true));
         // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createDocumentsByTagsRawSql($inQueryTagIds, $orderBy));
+        $stmt = $con->prepare($this->createDocumentsByTagsRawSql($inQueryTagIds, $inQueryTopicIds, $orderBy));
 
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
@@ -1908,9 +2041,10 @@ GROUP BY p_d_debate_id
      * @param int $userId
      * @param int $debateId
      * @param int $parentId
+     * @param int $topicId
      * @return PDReaction
      */
-    public function createReaction($userId, $debateId, $parentId = null)
+    public function createReaction($userId, $debateId, $parentId = null, $topicId = null)
     {
         $reaction = new PDReaction();
 
@@ -1925,6 +2059,8 @@ GROUP BY p_d_debate_id
         $reaction->setPublished(false);
 
         $reaction->setParentReactionId($parentId);
+
+        $reaction->setPCTopicId($topicId);
 
         $reaction->save();
 
@@ -2035,5 +2171,36 @@ GROUP BY p_d_debate_id
         $result = $reaction->delete();
 
         return $result;
+    }
+
+    /**
+     * Create a new PDMedia
+     *
+     * @param int $debateId
+     * @param int $reactionId
+     * @param string $path
+     * @param string $fileName
+     * @param string $extension
+     * @param int $size
+     * @param int $width
+     * @param int $height
+     * @return PDMedia
+     */
+    public function createMedia($debateId, $reactionId, $path, $fileName, $extension, $size, $width, $height)
+    {
+        $media = new PDMedia();
+
+        $media->setPDDebateId($debateId);
+        $media->setPDReactionId($reactionId);
+        $media->setPath($path);
+        $media->setFileName($fileName);
+        $media->setExtension($extension);
+        $media->setSize($size);
+        $media->setWidth($width);
+        $media->setHeight($height);
+
+        $media->save();
+
+        return $media;
     }
 }

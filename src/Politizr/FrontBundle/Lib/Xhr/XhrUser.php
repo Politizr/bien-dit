@@ -282,6 +282,7 @@ class XhrUser
         $user->setFileName(null);
 
         $html = $this->userTwigExtension->photo(
+            $this->twigEnv,
             $user,
             'user_40',
             false
@@ -512,6 +513,8 @@ class XhrUser
                     // Envoi email
                     $dispatcher = $this->eventDispatcher->dispatch('upd_password_email', new GenericEvent($user));
                 }
+                $this->userManager->updateCanonicalFields($user);
+                $user->save();
             } elseif ($formTypeId == 4) {
                 // upd localization infos
                 $this->localizationService->updateUserGeoloc($user, $form);
@@ -909,7 +912,7 @@ class XhrUser
     }
 
     /**
-     * Last 12 user followers
+     * Last X user followers
      * code beta
      */
     public function lastUserFollowers(Request $request)
@@ -926,7 +929,9 @@ class XhrUser
         }
 
         $query = PUserQuery::create()
-            ->joinPUFollowURelatedByPUserFollowerId()
+            ->usePUFollowURelatedByPUserFollowerIdQuery()
+                ->filterByPUserId($user->getId())
+            ->endUse()
             ->setDistinct()
             ->orderBy('PUFollowURelatedByPUserFollowerId.CreatedAt', 'desc');
             
@@ -970,8 +975,10 @@ class XhrUser
         }
 
         $query = PUserQuery::create()
-            ->joinPUFollowURelatedByPUserFollowerId()
-            ->setDistinct()
+            ->distinct()
+            ->usePUFollowURelatedByPUserFollowerIdQuery()
+                ->filterByPUserId($user->getId())
+            ->endUse()
             ->orderBy('PUFollowURelatedByPUserFollowerId.CreatedAt', 'desc')
             ->limit(ListingConstants::LISTING_CLASSIC_PAGINATION)
             ->offset($offset);
@@ -1025,6 +1032,9 @@ class XhrUser
 
         $query = PUserQuery::create()
             ->joinPUFollowURelatedByPUserId()
+            ->usePUFollowURelatedByPUserIdQuery()
+                ->filterByPUserFollowerId($user->getId())
+            ->endUse()
             ->setDistinct()
             ->orderBy('PUFollowURelatedByPUserId.CreatedAt', 'desc');
             
@@ -1068,7 +1078,9 @@ class XhrUser
         }
 
         $query = PUserQuery::create()
-            ->joinPUFollowURelatedByPUserId()
+            ->usePUFollowURelatedByPUserIdQuery()
+                ->filterByPUserFollowerId($user->getId())
+            ->endUse()
             ->setDistinct()
             ->orderBy('PUFollowURelatedByPUserId.CreatedAt', 'desc')
             ->limit(ListingConstants::LISTING_CLASSIC_PAGINATION)

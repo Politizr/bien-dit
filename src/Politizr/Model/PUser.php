@@ -103,6 +103,14 @@ class PUser extends BasePUser implements UserInterface
     /**
      *
      */
+    public function getNameFirstname()
+    {
+        return trim($this->getName().' '.$this->getFirstname());
+    }
+
+    /**
+     *
+     */
     public function getPathFileName()
     {
         $default = 'default_avatar.jpg';

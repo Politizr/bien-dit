@@ -25,10 +25,51 @@
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/selection-sharer.css') }}" />
 {% endblock %}
 
+{% block bodyClass %}
+    {% spaceless %}
+        {% if debate.PCTopicId %}
+            {% set circle = debate.circle %}
+            {% if (isGrantedE() or isGrantedC()) %}
+                class="grp grp-{{ circle.PCOwner.slug }}"
+            {% else %}    
+                class="grp public grp-{{ circle.PCOwner.slug }}"
+            {% endif %}
+        {% else %}
+            {{ parent() }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block header %}
+    {% if (isGrantedE() or isGrantedC()) %}
+        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+            {% block topLeftMenu %}
+                {% if debate.PCTopicId %}
+                    {% set circle = debate.circle %}
+                    {% include 'PolitizrFrontBundle:Navigation\\Menu:_topLeftMenu.html.twig' with { 'circle': circle } only %}
+                {% else %}
+                    {{ parent() }}
+                {% endif %}
+            {% endblock %}
+            {% block newSubject %}
+                {{ debate | newSubject }}
+            {% endblock newSubject %}
+        {% endembed %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block preMain %}
+    {{ debate | circleContext }}
+{% endblock %}
+
 {% block headerMsg %}
     {{ parent() }}
-
+    
     {{ debate | documentOperation }}
+    {{ debate | boostQuestion }}
+    {{ debate | readOnlyMessage }}
 {% endblock %}
 
 {% block content %}
@@ -53,15 +94,15 @@
                     </div>
                 {% endif %}
                 <div id="cardPostText">
-                    {% if private %}
-                        {% include 'PolitizrFrontBundle:Navigation\\Helper:_createAccountToFullRead.html.twig' %}
-                    {% endif %}
                     {% for paragraph in paragraphs %}
                         <div id="p-{{ loop.index }}" class="paragraph">
-                            {% include 'PolitizrFrontBundle:Comment:_paragraph.html.twig' with { 'document': debate, 'paragraphNo': loop.index } only %}
+                            {% include 'PolitizrFrontBundle:Comment:_paragraph.html.twig' with { 'document': debate, 'noParagraph': loop.index } only %}
                             {{ paragraph | purify }}
                         </div>
                     {% endfor %}
+                    {% if not app.user %}
+                        {% include 'PolitizrFrontBundle:Navigation\\Helper:_createAccountToFullRead.html.twig' with { 'document': debate } %}
+                    {% endif %}
                 </div>
 
                 {% if reactions | length > 0 %}
@@ -73,7 +114,7 @@
                 </div>
             </div>
             <div id="p-0">
-                {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': debate, 'formComment': formComment } only %}
+                {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': debate } only %}
             </div>
 
             <div class="postTags">
@@ -94,6 +135,10 @@
     {% endif %}
     {% include 'PolitizrFrontBundle:Debate:_sidebar.html.twig' %}
 {% endblock sidebarContent %}
+
+{% block sidebarFooter %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_sidebar.html.twig' with { 'document': debate } %}
+{% endblock %}
 
 {% block javascriptFooter %}
     {{ parent() }}

@@ -16,7 +16,7 @@ InscriptionChoice:
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionChoice }
 
 DeleteAccount:
-    pattern:  /$w/supprimer-mon-compte
+    pattern:  /-w/supprimer-mon-compte
     defaults: { _controller: PolitizrFrontBundle:Security:deleteAccount }
 
 
@@ -34,11 +34,11 @@ InscriptionCheck:
         _method:        POST
 
 InscriptionContact:
-    pattern:  /$u/inscription/citoyen/contact
+    pattern:  /-u/inscription/citoyen/contact
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionContact }
 
 InscriptionContactCheck:
-    pattern:  /$u/inscription/citoyen/contact/check
+    pattern:  /-u/inscription/citoyen/contact/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionContactCheck }
     requirements:
         _method:        POST
@@ -57,50 +57,50 @@ InscriptionElectedCheck:
         _method:        POST
 
 InscriptionElectedContact:
-    pattern:  /$v/inscription/elu/contact
+    pattern:  /-v/inscription/elu/contact
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedContact }
 
 InscriptionElectedContactCheck:
-    pattern:  /$v/inscription/elu/contact/check
+    pattern:  /-v/inscription/elu/contact/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedContactCheck }
     requirements:
         _method:        POST
 
 InscriptionElectedMandate:
-    pattern:  /$v/inscription/elu/mandat{error}
+    pattern:  /-v/inscription/elu/mandat{error}
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedMandate, error: 0  }
 
 InscriptionElectedMandateCheck:
-    pattern:  /$v/inscription/elu/mandat/check
+    pattern:  /-v/inscription/elu/mandat/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedMandateCheck }
 
 InscriptionElectedOrder:
-    pattern:  /$v/inscription/elu/commande
+    pattern:  /-v/inscription/elu/commande
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedOrder }
 
 InscriptionElectedOrderCheck:
-    pattern:  /$v/inscription/elu/commande/check
+    pattern:  /-v/inscription/elu/commande/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedOrderCheck }
     requirements:
         _method:        POST
 
 InscriptionElectedPayment:
-    pattern:  /$v/inscription/elu/paiement
+    pattern:  /-v/inscription/elu/paiement
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPayment }
 
 InscriptionElectedPaymentCheck:
-    pattern:  /$v/inscription/elu/paiement/check
+    pattern:  /-v/inscription/elu/paiement/check
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentCheck }
 
 InscriptionElectedPaymentFinished:
-    pattern:  /$v/inscription/elu/paiement-termine
+    pattern:  /-v/inscription/elu/paiement-termine
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentFinished }
 
 InscriptionElectedPaymentCanceled:
-    pattern:  /$v/inscription/elu/paiement-annule
+    pattern:  /-v/inscription/elu/paiement-annule
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedPaymentCanceled }
 
 InscriptionElectedFinishSuccess:
-    pattern:  /$v/inscription/elu/inscription-terminee
+    pattern:  /-v/inscription/elu/inscription-terminee
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionElectedFinishSuccess }
 

@@ -1,16 +1,28 @@
 {# beta #}
 {% if metal == constant('Politizr\\Constant\\ReputationConstants::METAL_TYPE_GOLD') %}
     {% set class = 'goldBadge' %}
-    {% set img = 'gold' %}
+    {% if badge.fileName %}
+        {% set img = constant('Politizr\\Constant\\PathConstants::BADGES_UPLOAD_WEB_PATH')~badge.fileName %}
+    {% else %}
+        {% set img = 'bundles/politizrfront/images/badges/gold.svg' %}
+    {% endif %}
 {% elseif metal == constant('Politizr\\Constant\\ReputationConstants::METAL_TYPE_SILVER') %}
     {% set class = 'silverBadge' %}
-    {% set img = 'silver' %}
+    {% if badge.fileName %}
+        {% set img = constant('Politizr\\Constant\\PathConstants::BADGES_UPLOAD_WEB_PATH')~badge.fileName %}
+    {% else %}
+        {% set img = 'bundles/politizrfront/images/badges/silver.svg' %}
+    {% endif %}
 {% elseif metal == constant('Politizr\\Constant\\ReputationConstants::METAL_TYPE_BRONZE') %}
     {% set class = 'bronzeBadge' %}
-    {% set img = 'bronze' %}
+    {% if badge.fileName %}
+        {% set img = constant('Politizr\\Constant\\PathConstants::BADGES_UPLOAD_WEB_PATH')~badge.fileName %}
+    {% else %}
+        {% set img = 'bundles/politizrfront/images/badges/bronze.svg' %}
+    {% endif %}
 {% endif %}
 
 <div class="badgeHolder {{ class }}">
-    <img src="{{ asset('bundles/politizrfront/images/badges/'~img~'.svg') }}" width="30">
+    <img src="{{ asset(img) }}" width="30">
     {% include 'PolitizrFrontBundle:Reputation:_bubbleBadge.html.twig' with { 'badge': badge } only %}
 </div> 

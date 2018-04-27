@@ -5,6 +5,7 @@ namespace Politizr\FrontBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -14,12 +15,14 @@ use Politizr\Constant\TagConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\LocalizationConstants;
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\DocumentConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PLCountryQuery;
 use Politizr\Model\PEOperationQuery;
+use Politizr\Model\PCTopicQuery;
 
 use Politizr\Model\PDDComment;
 use Politizr\Model\PDRComment;
@@ -29,8 +32,6 @@ use Politizr\Model\PUTrackDR;
 use Politizr\FrontBundle\Form\Type\PDDebateType;
 use Politizr\FrontBundle\Form\Type\PDReactionType;
 use Politizr\FrontBundle\Form\Type\PDDebateLocalizationType;
-use Politizr\FrontBundle\Form\Type\PDDCommentType;
-use Politizr\FrontBundle\Form\Type\PDRCommentType;
 
 /**
  * Document controller: debates, reactions, comments
@@ -60,6 +61,12 @@ class DocumentController extends Controller
             throw new NotFoundHttpException(sprintf('Document not published.'));
         }
 
+        // check access granted
+        $topic = $document->getPCTopic();
+        if ($topic) {
+            $this->denyAccessUnlessGranted('topic_detail', $topic);
+        }
+
         return true;
     }
 
@@ -84,6 +91,24 @@ class DocumentController extends Controller
         }
     }
 
+    /**
+     * Build-in Medium editor delete image XHR action
+     *
+     * @return JsonResponse
+     */
+    public function deleteDocumentImageAction(Request $request)
+    {
+        // @todo cf https://github.com/orthes/medium-editor-insert-plugin/pull/428
+        // retrieve media by filename
+        // example: http://politizr.beta/uploads/documents/5a391ed0c25a7.jpg
+        $file = $request->get('file');
+
+        $fileName = basename($file);
+        $this->get('politizr.functional.document')->removeMediaByFilename($fileName);
+
+        return new JsonResponse(array('success' => true));
+    }
+
     /* ######################################################################################################## */
     /*                                         DEBATE & REACTION DETAILS                                        */
     /* ######################################################################################################## */
@@ -104,12 +129,6 @@ class DocumentController extends Controller
         $debate->setNbViews($debate->getNbViews() + 1);
         $debate->save();
 
-        // Global comment form
-        $formType = new PDDCommentType();
-        $comment = new PDDComment();
-        $comment->setParagraphNo(0);
-        $formComment = $this->createForm($formType, $comment);
-
         // Tracking
         $visitor = $this->getUser();
         if ($visitor) {
@@ -125,7 +144,7 @@ class DocumentController extends Controller
         $private = $this->get('politizr.tools.global')->isPrivateMode($visitor, $debate, $this->getParameter('private_mode'), $this->getParameter('public_user_ids'));
         $description = $debate->getDescription();
         if ($private) {
-            $description = $this->get('politizr.tools.global')->truncate($description, 800, ['html' => true]);
+            $description = $this->get('politizr.tools.global')->truncate($description, DocumentConstants::PRIVATE_DOC_LENGTH, ['html' => true]);
         }
 
         // Paragraphs explode
@@ -141,7 +160,6 @@ class DocumentController extends Controller
         return $this->render('PolitizrFrontBundle:Debate:detail.html.twig', array(
             'private' => $private,
             'debate' => $debate,
-            'formComment' => $formComment->createView(),
             'paragraphs' => $paragraphs,
             'reactions' => $reactions,
             'similars' => $similars,
@@ -168,12 +186,6 @@ class DocumentController extends Controller
         $reaction->setNbViews($reaction->getNbViews() + 1);
         $reaction->save();
 
-        // Global comment form
-        $formType = new PDRCommentType();
-        $comment = new PDRComment();
-        $comment->setParagraphNo(0);
-        $formComment = $this->createForm($formType, $comment);
-
         // Tracking
         $visitor = $this->getUser();
         if ($visitor) {
@@ -190,7 +202,7 @@ class DocumentController extends Controller
 
         $description = $reaction->getDescription();
         if ($private) {
-            $description = $this->get('politizr.tools.global')->truncate($description, 800, ['html' => true]);
+            $description = $this->get('politizr.tools.global')->truncate($description, DocumentConstants::PRIVATE_DOC_LENGTH, ['html' => true]);
         }
 
         // Paragraphs explode
@@ -240,7 +252,6 @@ class DocumentController extends Controller
             'private' => $private,
             'debate' => $debate,
             'reaction' => $reaction,
-            'formComment' => $formComment->createView(),
             'paragraphs' => $paragraphs,
             'reactions' => $reactions,
             'parentReaction' => $parentReaction,
@@ -282,24 +293,20 @@ class DocumentController extends Controller
             $debate = $this->get('politizr.functional.document')->createDebate();
         }
 
-        // manage OP
+        // manage context (op, topic)
         $opUuid = $request->get('op');
-        $operation = null;
-        if ($opUuid) {
-            $operation = PEOperationQuery::create()
-                ->filterByUuid($opUuid)
-                ->findOne();
-            if (!$operation) {
-                throw new InconsistentDataException(sprintf('Operation %s not found.', $opUuid));
-            }
+        $topicUuid = $request->get('topic');
+        $debate = $this->get('politizr.functional.document')->manageEditDocumentContext($debate, $opUuid, $topicUuid);
 
-            $debate->setPEOperationId($operation->getId());
-            $debate->save();
+        $topic = $debate->getPCTopic();
+        if ($topic) {
+            // circle security check
+            $this->denyAccessUnlessGranted('topic_detail', $topic);
 
-            // op preset tags
-            $tags = $operation->getPTags();
-            foreach ($tags as $tag) {
-                $this->get('politizr.manager.tag')->createDebateTag($debate->getId(), $tag->getId());
+            // circle read only?
+            $circle = $topic->getPCircle();
+            if ($circle->getReadOnly()) {
+                throw new InconsistentDataException(sprintf('Circle %s in "read only" mode', $circle->getId()));
             }
         }
 
@@ -334,13 +341,17 @@ class DocumentController extends Controller
 
         // get geo debate informations
         $debateLocType = $this->get('politizr.form.type.document_localization');
+        $options = array(
+                'data_class' => ObjectTypeConstants::TYPE_DEBATE,
+                'user' => $user,
+        );
+        if ($debate->getPCTopicId()) {
+            $this->get('politizr.functional.circle')->updateDocumentLocalizationTypeOptions($debate->getPCTopic(), $options);
+        }
         $formLocalization = $this->createForm(
             $debateLocType,
             $debate,
-            array(
-                'data_class' => ObjectTypeConstants::TYPE_DEBATE,
-                'user' => $user,
-            )
+            $options
         );
 
         return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
@@ -384,6 +395,12 @@ class DocumentController extends Controller
             throw new InconsistentDataException('Debate\'s reaction not found.');
         }
 
+        // authorization checking
+        $authorized = $this->get('politizr.functional.user')->isAuthorizedToPublishReaction($user, $debate);
+        if (!$authorized) {
+            throw new InconsistentDataException(sprintf('User-%s is not authorized to publish reaction for Debate-%s.', $user->getId(), $debate->getId()));
+        }
+
         // search "as new" already created reaction
         $reaction = PDReactionQuery::create()
                     ->filterByPUserId($user->getId())
@@ -394,8 +411,21 @@ class DocumentController extends Controller
                     ->where('p_d_reaction.created_at = p_d_reaction.updated_at')
                     ->findOne();
 
+
         if (!$reaction) {
             $reaction = $this->get('politizr.functional.document')->createReaction($debate, $parent);
+        }
+
+        $topic = $reaction->getPCTopic();
+        if ($topic) {
+            // circle security check
+            $this->denyAccessUnlessGranted('topic_detail', $topic);
+
+            // circle read only?
+            $circle = $topic->getPCircle();
+            if ($circle->getReadOnly()) {
+                throw new InconsistentDataException(sprintf('Circle %s in "read only" mode', $circle->getId()));
+            }
         }
 
         return $this->redirect($this->generateUrl('ReactionDraftEdit'.$this->get('politizr.tools.global')->computeProfileSuffix(), array(
@@ -436,13 +466,17 @@ class DocumentController extends Controller
 
         // get geo reaction informations
         $reactionLocType = $this->get('politizr.form.type.document_localization');
+        $options = array(
+                'data_class' => ObjectTypeConstants::TYPE_REACTION,
+                'user' => $user,
+        );
+        if ($reaction->getPCTopicId()) {
+            $this->get('politizr.functional.circle')->updateDocumentLocalizationTypeOptions($reaction->getPCTopic(), $options);
+        }
         $formLocalization = $this->createForm(
             $reactionLocType,
             $reaction,
-            array(
-                'user' => $user,
-                'data_class' => ObjectTypeConstants::TYPE_REACTION
-            )
+            $options
         );
 
         return $this->render('PolitizrFrontBundle:Reaction:edit.html.twig', array(

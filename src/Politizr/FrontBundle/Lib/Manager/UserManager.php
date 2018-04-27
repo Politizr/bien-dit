@@ -83,15 +83,16 @@ LIMIT :offset, :limit
      *
      * @see app/sql/timeline.sql
      *
-     * @param array $inQueryDebateIds IN stmt values
-     * @param array $inQueryUserIds IN stmt values
-     * @param array $inQueryMyDebateIds IN stmt values
-     * @param array $inQueryMyReactionIds IN stmt values
-     * @param array $inQueryReputationIds IN stmt values
-     * @param array $inQueryReputationIds2 IN stmt values
-     * @param array $inQueryReputationIds3 IN stmt values
-     * @param array $inQueryReputationIds4 IN stmt values
-     * @param array $inQueryReputationIds5 IN stmt values
+     * @param string $inQueryDebateIds IN stmt values
+     * @param string $inQueryUserIds IN stmt values
+     * @param string $inQueryMyDebateIds IN stmt values
+     * @param string $inQueryMyReactionIds IN stmt values
+     * @param string $inQueryReputationIds IN stmt values
+     * @param string $inQueryReputationIds2 IN stmt values
+     * @param string $inQueryReputationIds3 IN stmt values
+     * @param string $inQueryReputationIds4 IN stmt values
+     * @param string $inQueryReputationIds5 IN stmt values
+     * @param string $inQueryTopicIds IN stmt values
      * @return string
      */
     public function createMyTimelineRawSql(
@@ -103,7 +104,8 @@ LIMIT :offset, :limit
         $inQueryReputationIds2,
         $inQueryReputationIds3,
         $inQueryReputationIds4,
-        $inQueryReputationIds5
+        $inQueryReputationIds5,
+        $inQueryTopicIds
     ) {
         $sql = "
 #  Débats publiés
@@ -112,6 +114,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))
     AND p_d_debate.p_user_id = :p_user_id )
 
 UNION DISTINCT
@@ -122,6 +125,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))
     AND p_d_reaction.p_user_id = :p_user_id2
     AND p_d_reaction.tree_level > 0 )
 
@@ -154,6 +158,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))
     AND p_d_debate.p_user_id IN ($inQueryUserIds) )
 
 UNION DISTINCT
@@ -164,6 +169,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))
     AND p_d_reaction.p_user_id IN ($inQueryUserIds) )
 
 UNION DISTINCT
@@ -174,7 +180,8 @@ FROM p_d_reaction
     LEFT JOIN p_d_debate
         ON p_d_reaction.p_d_debate_id = p_d_debate.id
 WHERE
-    p_d_reaction.published = 1
+    (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))
+    AND p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND p_d_debate.p_user_id = :p_user_id3
     AND p_d_reaction.tree_level > 0 )
@@ -187,7 +194,8 @@ FROM p_d_reaction as p_d_reaction
     LEFT JOIN p_d_reaction as my_reaction
         ON p_d_reaction.p_d_debate_id = my_reaction.p_d_debate_id
 WHERE
-    p_d_reaction.published = 1
+    (my_reaction.p_c_topic_id is NULL OR my_reaction.p_c_topic_id IN ($inQueryTopicIds))
+    AND p_d_reaction.published = 1
     AND p_d_reaction.online = 1
     AND my_reaction.id IN ($inQueryMyReactionIds)
     AND p_d_reaction.tree_left > my_reaction.tree_left
@@ -200,8 +208,13 @@ UNION DISTINCT
 # Commentaires débats publiés
 ( SELECT p_d_d_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))
     AND p_d_d_comment.p_user_id = :p_user_id4 )
 
 UNION DISTINCT
@@ -209,8 +222,13 @@ UNION DISTINCT
 # Commentaires réactions publiés
 ( SELECT p_d_r_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
+    LEFT JOIN p_d_reaction
+        ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))
     AND p_d_r_comment.p_user_id = :p_user_id5 )
 
 UNION DISTINCT
@@ -218,8 +236,13 @@ UNION DISTINCT
 # Commentaires débats des users suivis
 ( SELECT p_d_d_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))
     AND p_d_d_comment.p_user_id IN ($inQueryUserIds) )
 
 UNION DISTINCT
@@ -227,8 +250,13 @@ UNION DISTINCT
 # Commentaires réactions des users suivis
 ( SELECT p_d_r_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
+    LEFT JOIN p_d_reaction
+        ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))
     AND p_d_r_comment.p_user_id IN ($inQueryUserIds) )
 
 UNION DISTINCT
@@ -236,8 +264,12 @@ UNION DISTINCT
 # Commentaires débats des débats suivis
 ( SELECT p_d_d_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
     AND p_d_d_comment.p_d_debate_id IN ($inQueryDebateIds) )
 
 UNION DISTINCT
@@ -249,6 +281,8 @@ FROM p_d_r_comment
         ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
     AND p_d_reaction.p_d_debate_id IN ($inQueryDebateIds) )
 
 UNION DISTINCT
@@ -256,8 +290,13 @@ UNION DISTINCT
 # Commentaires sur mes débats
 ( SELECT p_d_d_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_d_comment.published_at as published_at, 'Politizr\\\Model\\\PDDComment' as type
 FROM p_d_d_comment
+    LEFT JOIN p_d_debate
+        ON p_d_d_comment.p_d_debate_id = p_d_debate.id
 WHERE
     p_d_d_comment.online = 1
+    AND p_d_debate.published = 1
+    AND p_d_debate.online = 1
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))
     AND p_d_d_comment.p_d_debate_id IN ($inQueryMyDebateIds) )
 
 UNION DISTINCT
@@ -265,13 +304,19 @@ UNION DISTINCT
 # Commentaires sur mes réactions
 ( SELECT p_d_r_comment.id as id, null as target_id, null as target_user_id, null as target_object_name, \"commentaire\" as title, p_d_r_comment.published_at as published_at, 'Politizr\\\Model\\\PDRComment' as type
 FROM p_d_r_comment
+    LEFT JOIN p_d_reaction
+        ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
 WHERE
     p_d_r_comment.online = 1
+    AND p_d_reaction.published = 1
+    AND p_d_reaction.online = 1
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))
     AND p_d_r_comment.p_d_reaction_id IN ($inQueryMyReactionIds) )
 
 UNION DISTINCT
 
 #  Actions réputation: note +/- comment / sujet / reponse, suivre un utilisateur, être suivi par un utilisateur
+#  upd > être suivi par un utilisateur, suivre / ne plus suivre un utilisateur, suivre / ne plus suivre un débat
 ( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, null as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
 FROM p_r_action
     LEFT JOIN p_u_reputation
@@ -304,6 +349,7 @@ WHERE
         WHERE
             p_d_debate.published = 1
             AND p_d_debate.online = 1
+            AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))
             AND p_d_debate.p_user_id = :p_user_id7 )
     )
     AND p_r_action.id IN ($inQueryReputationIds2)
@@ -330,6 +376,7 @@ WHERE
         WHERE
             p_d_reaction.published = 1
             AND p_d_reaction.online = 1
+            AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))
             AND p_d_reaction.p_user_id = :p_user_id8
             AND p_d_reaction.tree_level > 0 )
     )
@@ -354,8 +401,13 @@ WHERE
    p_u_reputation.p_object_id IN (
         ( SELECT p_d_d_comment.id as id
         FROM p_d_d_comment
+            LEFT JOIN p_d_debate
+                ON p_d_d_comment.p_d_debate_id = p_d_debate.id
         WHERE
             p_d_d_comment.online = 1
+            AND p_d_debate.published = 1
+            AND p_d_debate.online = 1
+            AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))
             AND p_d_d_comment.p_user_id = :p_user_id9
         )
     )
@@ -380,8 +432,13 @@ WHERE
    p_u_reputation.p_object_id IN (
         ( SELECT p_d_r_comment.id as id
         FROM p_d_r_comment
+            LEFT JOIN p_d_reaction
+                ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
         WHERE
             p_d_r_comment.online = 1
+            AND p_d_reaction.published = 1
+            AND p_d_reaction.online = 1
+            AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))
             AND p_d_r_comment.p_user_id = :p_user_id10
         )
     )
@@ -412,7 +469,7 @@ WHERE
 
 UNION DISTINCT
 
-#  Actions réputation des users suivis: note + comment / sujet / reponse, suivre un utilisateur
+#  Actions réputation des users suivis: suivre un utilisateur
 ( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
 FROM p_r_action
     LEFT JOIN p_u_reputation
@@ -420,7 +477,100 @@ FROM p_r_action
 
 WHERE
     p_u_reputation.p_user_id IN ($inQueryUserIds)
-    AND p_r_action.id IN ($inQueryReputationIds5)
+    AND p_r_action.id = :id_author_user_follow
+)
+
+UNION DISTINCT
+
+# Actions réputation des users suivis: note + comment / sujet / reponse, 
+( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
+FROM p_r_action
+    LEFT JOIN p_u_reputation
+        ON p_r_action.id = p_u_reputation.p_r_action_id
+
+WHERE
+   p_u_reputation.p_object_id IN (
+        ( SELECT p_d_debate.id as id
+        FROM p_d_debate
+        WHERE
+            p_d_debate.published = 1
+            AND p_d_debate.online = 1
+            AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))
+            AND p_d_debate.p_user_id IN ($inQueryUserIds) )
+    )
+    AND p_r_action.id = :id_author_debate_note_pos2
+)
+
+
+UNION DISTINCT
+
+( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
+FROM p_r_action
+    LEFT JOIN p_u_reputation
+        ON p_r_action.id = p_u_reputation.p_r_action_id
+
+WHERE
+   p_u_reputation.p_object_id IN (
+        ( SELECT p_d_reaction.id as id
+        FROM p_d_reaction
+        WHERE
+            p_d_reaction.published = 1
+            AND p_d_reaction.online = 1
+            AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))
+            AND p_d_reaction.p_user_id IN ($inQueryUserIds)
+            AND p_d_reaction.tree_level > 0 )
+    )
+    AND p_r_action.id = :id_author_reaction_note_pos2
+)
+
+UNION DISTINCT
+
+( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
+FROM p_r_action
+    LEFT JOIN p_u_reputation
+        ON p_r_action.id = p_u_reputation.p_r_action_id
+
+WHERE
+   p_u_reputation.p_object_id IN (
+        ( SELECT p_d_d_comment.id as id
+        FROM p_d_d_comment
+            LEFT JOIN p_d_debate
+                ON p_d_d_comment.p_d_debate_id = p_d_debate.id
+        WHERE
+            p_d_d_comment.online = 1
+            AND p_d_debate.published = 1
+            AND p_d_debate.online = 1
+            AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))
+            AND p_d_d_comment.p_user_id IN ($inQueryUserIds)
+        )
+    )
+    AND p_u_reputation.p_object_name = 'Politizr\\\Model\\\PDDComment'
+    AND p_r_action.id = :id_author_comment_note_pos3
+)
+
+UNION DISTINCT
+
+( SELECT p_u_reputation.p_r_action_id as id, p_u_reputation.p_object_id as target_id, p_u_reputation.p_user_id as target_user_id, p_u_reputation.p_object_name as target_object_name, p_r_action.title as title, p_u_reputation.created_at as published_at, 'Politizr\\\Model\\\PRAction' as type
+FROM p_r_action
+    LEFT JOIN p_u_reputation
+        ON p_r_action.id = p_u_reputation.p_r_action_id
+
+WHERE
+   p_u_reputation.p_object_id IN (
+        ( SELECT p_d_r_comment.id as id
+        FROM p_d_r_comment
+            LEFT JOIN p_d_reaction
+                ON p_d_r_comment.p_d_reaction_id = p_d_reaction.id
+        WHERE
+            p_d_r_comment.online = 1
+            AND p_d_reaction.published = 1
+            AND p_d_reaction.online = 1
+            AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))
+            AND p_d_r_comment.p_user_id IN ($inQueryUserIds)
+        )
+    )
+    AND p_u_reputation.p_object_name = 'Politizr\\\Model\\\PDRComment'
+    AND p_r_action.id = :id_author_comment_note_pos4
 )
 
 ORDER BY published_at DESC
@@ -607,6 +757,7 @@ LIMIT :offset, :limit
         $inQueryReputationIds3,
         $inQueryReputationIds4,
         $inQueryReputationIds5,
+        $inQueryTopicIds,
         $offset,
         $count
     ) {
@@ -621,6 +772,7 @@ LIMIT :offset, :limit
         // $this->logger->info('$inQueryReputationIds3 = ' . print_r($inQueryReputationIds3, true));
         // $this->logger->info('$inQueryReputationIds4 = ' . print_r($inQueryReputationIds4, true));
         // $this->logger->info('$inQueryReputationIds5 = ' . print_r($inQueryReputationIds5, true));
+        // $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
         // $this->logger->info('$offset = ' . print_r($offset, true));
         // $this->logger->info('$count = ' . print_r($count, true));
 
@@ -634,7 +786,8 @@ LIMIT :offset, :limit
             $inQueryReputationIds2,
             $inQueryReputationIds3,
             $inQueryReputationIds4,
-            $inQueryReputationIds5
+            $inQueryReputationIds5,
+            $inQueryTopicIds
         ));
 
         $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
@@ -668,6 +821,11 @@ LIMIT :offset, :limit
         $stmt->bindValue(':id_target_comment_note_pos2', ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_POS, \PDO::PARAM_INT);
         $stmt->bindValue(':id_author_comment_note_neg2', ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_NEG, \PDO::PARAM_INT);
         $stmt->bindValue(':id_target_comment_note_neg2', ReputationConstants::ACTION_ID_D_TARGET_COMMENT_NOTE_NEG, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_user_follow', ReputationConstants::ACTION_ID_U_AUTHOR_USER_FOLLOW, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_debate_note_pos2', ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_reaction_note_pos2', ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_comment_note_pos3', ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS, \PDO::PARAM_INT);
+        $stmt->bindValue(':id_author_comment_note_pos4', ReputationConstants::ACTION_ID_D_AUTHOR_COMMENT_NOTE_POS, \PDO::PARAM_INT);
 
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $stmt->bindValue(':count', $count, \PDO::PARAM_INT);
@@ -924,6 +1082,27 @@ LIMIT :offset, :limit
         $result = $mandate->delete();
 
         return $result;
+    }
+
+    /**
+     * Check if a user follow debate
+     *
+     * @param integer $userId
+     * @param integer $debateId
+     * @return PUFollowDD
+     */
+    public function isUserFollowDebate($userId, $debateId)
+    {
+        $nb = PUFollowDDQuery::create()
+            ->filterByPUserId($userId)
+            ->filterByPDDebateId($debateId)
+            ->count();
+
+        if ($nb > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

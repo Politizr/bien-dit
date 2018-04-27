@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Politizr\Constant\QualificationConstants;
+use Politizr\Constant\UserConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUMandate;
@@ -139,9 +140,12 @@ class SecurityController extends Controller
         $user = null;
 
         // test & redirect if user previously canceled his subscription during process
-        $data =  $request->request->get('user_elected_register');
+        $data =  $request->request->get('user_register');
         if ($data['email']) {
-            $user = PUserQuery::create()->filterByUsername($data['email'])->findOne();
+            $user = PUserQuery::create()
+                        ->filterByUsername($data['email'])
+                        ->filterByPUStatusId(UserConstants::STATUS_INSCRIPTION_PROCESS)
+                        ->findOne();
         }
         if (!$user) {
             $user = new PUser();
@@ -232,6 +236,8 @@ class SecurityController extends Controller
             // Inscription done
             $request->getSession()->getFlashBag()->add('inscription/success', true);
 
+            $this->get('session')->set('gettingStarted', true);
+
             // Redirect to page before inscription
             $refererUrl = $this->get('politizr.tools.global')->getRefererUrl();
             if ($refererUrl) {
@@ -281,7 +287,10 @@ class SecurityController extends Controller
         // test & redirect if user previously canceled his subscription during process
         $data =  $request->request->get('user_elected_register');
         if ($data['email']) {
-            $user = PUserQuery::create()->filterByUsername($data['email'])->findOne();
+            $user = PUserQuery::create()
+                        ->filterByUsername($data['email'])
+                        ->filterByPUStatusId(UserConstants::STATUS_INSCRIPTION_PROCESS)
+                        ->findOne();
         }
         if (!$user) {
             $user = new PUser();
@@ -560,6 +569,8 @@ class SecurityController extends Controller
 
         // Inscription done
         $request->getSession()->getFlashBag()->add('inscription/success', true);
+
+        $this->get('session')->set('gettingStarted', true);
 
         // Redirect to page before inscription
         $refererUrl = $this->get('politizr.tools.global')->getRefererUrl();

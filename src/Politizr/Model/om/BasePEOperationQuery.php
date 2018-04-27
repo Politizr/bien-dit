@@ -34,6 +34,7 @@ use Politizr\Model\PUser;
  * @method PEOperationQuery orderByGeoScoped($order = Criteria::ASC) Order by the geo_scoped column
  * @method PEOperationQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PEOperationQuery orderByTimeline($order = Criteria::ASC) Order by the timeline column
+ * @method PEOperationQuery orderByNewSubjectLink($order = Criteria::ASC) Order by the new_subject_link column
  * @method PEOperationQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PEOperationQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PEOperationQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -48,6 +49,7 @@ use Politizr\Model\PUser;
  * @method PEOperationQuery groupByGeoScoped() Group by the geo_scoped column
  * @method PEOperationQuery groupByOnline() Group by the online column
  * @method PEOperationQuery groupByTimeline() Group by the timeline column
+ * @method PEOperationQuery groupByNewSubjectLink() Group by the new_subject_link column
  * @method PEOperationQuery groupByCreatedAt() Group by the created_at column
  * @method PEOperationQuery groupByUpdatedAt() Group by the updated_at column
  * @method PEOperationQuery groupBySlug() Group by the slug column
@@ -84,6 +86,7 @@ use Politizr\Model\PUser;
  * @method PEOperation findOneByGeoScoped(boolean $geo_scoped) Return the first PEOperation filtered by the geo_scoped column
  * @method PEOperation findOneByOnline(boolean $online) Return the first PEOperation filtered by the online column
  * @method PEOperation findOneByTimeline(boolean $timeline) Return the first PEOperation filtered by the timeline column
+ * @method PEOperation findOneByNewSubjectLink(boolean $new_subject_link) Return the first PEOperation filtered by the new_subject_link column
  * @method PEOperation findOneByCreatedAt(string $created_at) Return the first PEOperation filtered by the created_at column
  * @method PEOperation findOneByUpdatedAt(string $updated_at) Return the first PEOperation filtered by the updated_at column
  * @method PEOperation findOneBySlug(string $slug) Return the first PEOperation filtered by the slug column
@@ -98,6 +101,7 @@ use Politizr\Model\PUser;
  * @method array findByGeoScoped(boolean $geo_scoped) Return PEOperation objects filtered by the geo_scoped column
  * @method array findByOnline(boolean $online) Return PEOperation objects filtered by the online column
  * @method array findByTimeline(boolean $timeline) Return PEOperation objects filtered by the timeline column
+ * @method array findByNewSubjectLink(boolean $new_subject_link) Return PEOperation objects filtered by the new_subject_link column
  * @method array findByCreatedAt(string $created_at) Return PEOperation objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PEOperation objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PEOperation objects filtered by the slug column
@@ -212,7 +216,7 @@ abstract class BasePEOperationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `description`, `editing_description`, `file_name`, `geo_scoped`, `online`, `timeline`, `created_at`, `updated_at`, `slug` FROM `p_e_operation` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `description`, `editing_description`, `file_name`, `geo_scoped`, `online`, `timeline`, `new_subject_link`, `created_at`, `updated_at`, `slug` FROM `p_e_operation` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -614,6 +618,33 @@ abstract class BasePEOperationQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the new_subject_link column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNewSubjectLink(true); // WHERE new_subject_link = true
+     * $query->filterByNewSubjectLink('yes'); // WHERE new_subject_link = true
+     * </code>
+     *
+     * @param     boolean|string $newSubjectLink The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PEOperationQuery The current query, for fluid interface
+     */
+    public function filterByNewSubjectLink($newSubjectLink = null, $comparison = null)
+    {
+        if (is_string($newSubjectLink)) {
+            $newSubjectLink = in_array(strtolower($newSubjectLink), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PEOperationPeer::NEW_SUBJECT_LINK, $newSubjectLink, $comparison);
+    }
+
+    /**
      * Filter the query on the created_at column
      *
      * Example usage:
@@ -762,7 +793,7 @@ abstract class BasePEOperationQuery extends ModelCriteria
      *
      * @return PEOperationQuery The current query, for fluid interface
      */
-    public function joinPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPUser($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PUser');
@@ -797,7 +828,7 @@ abstract class BasePEOperationQuery extends ModelCriteria
      *
      * @return   \Politizr\Model\PUserQuery A secondary query class using the current class as primary query
      */
-    public function usePUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePUserQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinPUser($relationAlias, $joinType)

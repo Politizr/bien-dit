@@ -27,12 +27,32 @@ $("body").on("click", "[action='bookmark']", function(e) {
 });
 
 
+// boost question
+$("body").on("click", "[action='boost']", function(e) {
+    // console.log('*** click boost');
+    
+    var targetElement = $(this).closest('.boostBox');
+    var localLoader = $(this).closest('.boostBox').find('.ajaxLoader').first();
+    var uuid = $(this).attr('uuid');
+    var type = $(this).attr('type');
+    var boost = $(this).attr('boost');
+
+    if (boost == 1) {
+        // open Paypal payment link
+        window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=356HDHFFNQM8U');
+    }
+
+    return boostQuestion(targetElement, localLoader, uuid, type, boost);
+});
+
 
 // ******************************************************************* //
-//                            NOTIFICATIONS                            //
+//                              MAIN MENU                              //
 // ******************************************************************* //
 
+// toggle notifications + menu
 $("body").on("mousedown touchstart", function(e) {
+//$(document).mousedown(function (e) {
     var container = $("#notifBox, [action='toggleNotifBox']");
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
@@ -40,11 +60,41 @@ $("body").on("mousedown touchstart", function(e) {
         $('#notifBox').hide();      
     }
 });
-
 $("body").on("click", "[action='toggleNotifBox']", function() {
     $('#notifBox').toggle();
+    $('body.css700 #headerMenu').hide();
 });
 
+// toggle grp menu
+$("body").on("mousedown touchstart", function(e) {
+//$(document).mousedown(function (e) {
+    var container = $("#headerGrpMenu, [action='toggleGrpMenu']");
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        $('#headerGrpMenu').hide();     
+    }
+});
+$("body").on("click", "[action='toggleGrpMenu']", function() {
+    $('#headerGrpMenu').toggle();
+    $('body.css700 #headerMenu').hide();    
+});
+
+// toggle menu
+$("body").on("mousedown touchstart", function(e) {
+//$(document).mousedown(function (e) {
+    var container = $("body.css700 #headerMenu, #menu, [action='toggleMenu']");
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        $('#menu').hide();
+        $('body.css700 #headerMenu').hide();
+    }
+});
+
+$("body").on("click", "[action='toggleMenu']", function() {
+    $('#menu, body.css700 #headerMenu').toggle();
+});
 
 // check notification
 $("body").on("click", "i[action='notificationCheck']", function(e) {
@@ -78,7 +128,6 @@ $("body").on("click", "div[action='notificationCheckAll']", function(e) {
     return chekNotificationAll(localLoader);
 });
 
-
 // ******************************************************************* //
 //                            FOLLOWING                                //
 // ******************************************************************* //
@@ -106,6 +155,9 @@ $("body").on("click", "[action='followDebate']", function(e) {
             // update reputation counter
             // scoreCounter();
             // badgesCounter();
+
+            // refresh followers
+            refreshDebateFollowers();
 
             // refresh timeline
             refreshTimeline();
@@ -137,6 +189,9 @@ $("body").on("click", "[action='followUser']", function(e) {
             // update reputation counter
             // scoreCounter();
             // badgesCounter();
+
+            // update followers listing
+            refreshUserFollowers();
 
             // refresh timeline
             refreshTimeline();
@@ -208,13 +263,16 @@ $("body").on("click", "[action='note']", function(e) {
     var uuid = $(this).attr('uuid');
     var type = $(this).attr('type');
     var way = $(this).attr('way');
-
-    $.when(
-        noteDocument($(this), localLoader, uuid, type, way)
-    ).done(function(data) {
-        // follow debate
+    
+    noteDocument(
+        $(this), localLoader, uuid, type, way
+    ).then(
+        // automatic following
         followRelativeDebate(uuid, type)
-    });
+    ).then(
+        // update followers listing
+        refreshDebateFollowers()
+    );
 });
 
 // ******************************************************************* //
@@ -249,6 +307,37 @@ function modalHelpUs() {
         }
     });
 };
+
+
+/**
+ * Modal getting started
+ */
+function modalGettingStarted() {
+    // console.log('*** modalGettingStarted');
+
+    $('body').addClass('noScroll');
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_GETTING_STARTED,
+        'modal',
+        'gettingStarted',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        null,
+        xhrPath
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#modalContainer').html(data['html']);
+        }
+    });
+};
+
 
 // ******************************************************************* //
 //                   LOCALIZATION ALERT BOX                            //

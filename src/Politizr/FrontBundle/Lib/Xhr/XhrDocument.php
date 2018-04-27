@@ -15,6 +15,7 @@ use Politizr\Constant\PathConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\TagConstants;
 use Politizr\Constant\LocalizationConstants;
+use Politizr\Constant\DocumentConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
@@ -64,9 +65,11 @@ class XhrDocument
     private $userManager;
     private $documentManager;
     private $documentService;
+    private $userService;
     private $localizationService;
     private $tagService;
     private $facebookService;
+    private $circleService;
     private $globalTools;
     private $documentTwigExtension;
     private $documentLocalizationFormType;
@@ -86,9 +89,11 @@ class XhrDocument
      * @param @politizr.manager.user
      * @param @politizr.manager.document
      * @param @politizr.functional.document
+     * @param @politizr.functional.user
      * @param @politizr.functional.localization
      * @param @politizr.functional.tag
      * @param @politizr.functional.facebook
+     * @param @politizr.functional.circle
      * @param @politizr.tools.global
      * @param @politizr.twig.document
      * @param @politizr.form.type.document_localization
@@ -107,9 +112,11 @@ class XhrDocument
         $userManager,
         $documentManager,
         $documentService,
+        $userService,
         $localizationService,
         $tagService,
         $facebookService,
+        $circleService,
         $globalTools,
         $documentTwigExtension,
         $documentLocalizationFormType,
@@ -132,9 +139,11 @@ class XhrDocument
         $this->documentManager = $documentManager;
 
         $this->documentService = $documentService;
+        $this->userService = $userService;
         $this->localizationService = $localizationService;
         $this->tagService = $tagService;
         $this->facebookService = $facebookService;
+        $this->circleService = $circleService;
 
         $this->globalTools = $globalTools;
 
@@ -169,21 +178,9 @@ class XhrDocument
         
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
         if ('follow' == $way) {
-            $this->userManager->createUserFollowDebate($user->getId(), $debate->getId());
-
-            // Events
-            // upd > no emails events
-            $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
-            $dispatcher = $this->eventDispatcher->dispatch('r_debate_follow', $event);
-            // $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
-            // $dispatcher = $this->eventDispatcher->dispatch('n_debate_follow', $event);
+            $this->userService->followDebate($user, $debate);
         } elseif ('unfollow' == $way) {
-            $this->userManager->deleteUserFollowDebate($user->getId(), $debate->getId());
-
-            // Events
-            // upd > no events reputation nor emails because of "followRelativeDebate" concepts
-            $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
-            $dispatcher = $this->eventDispatcher->dispatch('r_debate_unfollow', $event);
+            $this->userService->unfollowDebate($user, $debate);
         } else {
             throw new InconsistentDataException(sprintf('Follow\'s way %s not managed', $way));
         }
@@ -292,9 +289,8 @@ class XhrDocument
                 throw new InconsistentDataException(sprintf('Note on type %s not allowed', $type));
         }
 
-        // related to issue #178 > control user <> subject
-        $canUserNoteDocument = $this->documentService->canUserNoteDocument($user, $subject, $way);
-        if (!$canUserNoteDocument) {
+        $isAuthorizedToNote = $this->userService->isAuthorizedToNote($user, $subject);
+        if (!$isAuthorizedToNote) {
             // throw new InconsistentDataException('You can\'t note this publication.');
 
             // Rendering
@@ -763,13 +759,17 @@ class XhrDocument
         }
 
         // Document's localization
+        $options = array(
+                'data_class' => $type,
+                'user' => $user,
+        );
+        if ($document->getPCTopicId()) {
+            $this->circleService->updateDocumentLocalizationTypeOptions($document->getPCTopic(), $options);
+        }
         $formLocalization = $this->formFactory->create(
             $this->documentLocalizationFormType,
             $document,
-            array(
-                'user' => $user,
-                'data_class' => $type
-            )
+            $options
         );
         $formLocalization->bind($request);
         $document = $formLocalization->getData();
@@ -806,111 +806,6 @@ class XhrDocument
             $this->tagService->updateReactionTags($document, $tags, TagConstants::TAG_TYPE_FAMILY);
         } else {
             throw new InconsistentDataException('Document '.$type.' unknown.');
-        }
-
-        return true;
-    }
-
-    /**
-     * Document's photo upload
-     * beta
-     */
-    public function documentPhotoUpload(Request $request)
-    {
-        // $this->logger->info('*** documentPhotoUpload');
-
-        // Request arguments
-        $uuid = $request->get('uuid');
-        // $this->logger->info(print_r($uuid, true));
-        $type = $request->get('type');
-        // $this->logger->info(print_r($type, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        switch ($type) {
-            case ObjectTypeConstants::TYPE_DEBATE:
-                $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
-                $uploadWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
-                break;
-            case ObjectTypeConstants::TYPE_REACTION:
-                $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-                $uploadWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
-                break;
-            default:
-                throw new InconsistentDataException(sprintf('Object type %s not managed', $type));
-        }
-
-        if (!$document->isOwner($user->getId())) {
-            throw new InconsistentDataException('Document '.$uuid.' is not yours.');
-        }
-
-        // Chemin des images
-        $path = $this->kernel->getRootDir() . '/../web' . $uploadWebPath;
-
-        // Appel du service d'upload ajax
-        $fileName = $this->globalTools->uploadXhrImage(
-            $request,
-            'fileName',
-            $path,
-            1024,
-            1024
-        );
-
-        $document->setFileName($fileName);
-        $html = $this->documentTwigExtension->image(
-            $this->twigEnv,
-            $document,
-            'debate_header'
-        );
-
-        return array(
-            'fileName' => $fileName,
-            'html' => $html,
-        );
-    }
-
-    /**
-     * Users's photo deletion
-     * beta
-     */
-    public function documentPhotoDelete(Request $request)
-    {
-        // $this->logger->info('*** documentPhotoDelete');
-        
-        // Request arguments
-        $uuid = $request->get('uuid');
-        // $this->logger->info(print_r($uuid, true));
-        $type = $request->get('type');
-        // $this->logger->info(print_r($type, true));
-
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
-        switch ($type) {
-            case ObjectTypeConstants::TYPE_DEBATE:
-                $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
-                $uploadWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
-                break;
-            case ObjectTypeConstants::TYPE_REACTION:
-                $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-                $uploadWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
-                break;
-            default:
-                throw new InconsistentDataException(sprintf('Object type %s not managed', $type));
-        }
-
-        if (!$document->isOwner($user->getId())) {
-            throw new InconsistentDataException('Document '.$uuid.' is not yours.');
-        }
-
-        // Chemin des images
-        $path = $this->kernel->getRootDir() . '/../web' . $uploadWebPath;
-
-        // Suppression photo déjà uploadée
-        $filename = $document->getFilename();
-        if ($filename && $fileExists = file_exists($path . $filename)) {
-            unlink($path . $filename);
         }
 
         return true;
@@ -988,7 +883,7 @@ class XhrDocument
     }
 
     /**
-     * Display comments & create form comment
+     * Display comments
      * code beta
      */
     public function comments(Request $request)
@@ -1003,27 +898,24 @@ class XhrDocument
         $noParagraph = $request->get('noParagraph');
         // $this->logger->info('$noParagraph = ' . print_r($noParagraph, true));
 
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($currentUser)) {
+            $currentUser = null;
+        }
+
         switch ($type) {
             case ObjectTypeConstants::TYPE_DEBATE:
                 $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
-                $comment = new PDDComment();
-                $formType = new PDDCommentType();
                 break;
             case ObjectTypeConstants::TYPE_REACTION:
                 $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-                $comment = new PDRComment();
-                $formType = new PDRCommentType();
                 break;
             default:
                 throw new InconsistentDataException(sprintf('Object type %s not managed', $type));
         }
 
         $comments = $document->getComments(true, $noParagraph);
-
-        if ($this->securityAuthorizationChecker->isGranted('ROLE_PROFILE_COMPLETED')) {
-            $comment->setParagraphNo($noParagraph);
-        }
-        $formComment = $this->formFactory->create($formType, $comment);
 
         // Rendering
         $paragraphContext = 'global';
@@ -1033,11 +925,13 @@ class XhrDocument
 
         $form = null;
         if ($paragraphContext == 'global') {
+            $reason = $this->userService->isAuthorizedToPublishComment($currentUser, $document, true);
             $form = $this->templating->render(
-                'PolitizrFrontBundle:Comment:_isAuthorizedToNewComment.html.twig',
+                'PolitizrFrontBundle:Comment:_comment.html.twig',
                 array(
                     'document' => $document,
-                    'formComment' => $formComment->createView(),
+                    'reason' => $reason,
+                    'noParagraph' => $noParagraph,
                 )
             );
         }
@@ -1048,24 +942,24 @@ class XhrDocument
                 'paragraphContext' => $paragraphContext,
                 'document' => $document,
                 'comments' => $comments,
-                'formComment' => $formComment->createView(),
+                'noParagraph' => $noParagraph,
             )
         );
         $counter = $this->templating->render(
             'PolitizrFrontBundle:Comment:_counter.html.twig',
             array(
                 'document' => $document,
-                'paragraphNo' => $noParagraph,
+                'noParagraph' => $noParagraph,
                 'active' => true,
                 'paragraphContext' => $paragraphContext,
             )
         );
 
         return array(
-            'form' => $form,
             'list' => $list,
             'counter' => $counter,
-            );
+            'form' => $form,
+        );
     }
 
     /* ######################################################################################################## */
@@ -1361,8 +1255,15 @@ class XhrDocument
         $tagIds = array();
         $tagIds[] = $tag->getId();
 
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($currentUser)) {
+            $currentUser = null;
+        }
+
         $documents = $this->documentService->getDocumentsByTagsPaginated(
             $tagIds,
+            $currentUser?$currentUser->getId():null,
             $orderBy,
             $offset,
             ListingConstants::LISTING_CLASSIC_PAGINATION
@@ -1501,7 +1402,6 @@ class XhrDocument
         $offset = $request->get('offset');
         $this->logger->info('$offset = ' . print_r($offset, true));
 
-
         $user = PUserQuery::create()->filterByUuid($uuid)->findOne();
         if (!$user) {
             throw new InconsistentDataException(sprintf('User %s not found', $uuid));
@@ -1515,9 +1415,16 @@ class XhrDocument
             $tagId = $tag->getId();
         }
 
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($currentUser)) {
+            $currentUser = null;
+        }
+
         // get publications
         $publications = $this->documentService->getUserPublicationsPaginatedListing(
             $user->getId(),
+            $currentUser?$currentUser->getId():null,
             $orderBy,
             $tagId,
             $offset,
@@ -1627,9 +1534,17 @@ class XhrDocument
             $filterDate = ListingConstants::FILTER_KEYWORD_ALL_DATE;
         }
 
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($currentUser)) {
+            $currentUser = null;
+        }
+
         $publications = $this->documentService->getPublicationsByFilters(
+            $currentUser?$currentUser->getId():null,
             $geoUuid,
             $type,
+            null,
             $filterPublication,
             $filterProfile,
             $filterActivity,
@@ -1863,6 +1778,54 @@ class XhrDocument
                 'comments' => $comments,
                 'nbEmotions' => $nbEmotions,
                 'nbShares' => $nbShares,
+            )
+        );
+
+        return array(
+            'html' => $html,
+        );
+    }
+
+
+    /**
+     * Boost question
+     * code beta
+     */
+    public function boostQuestion(Request $request)
+    {
+        // $this->logger->info('*** boostQuestion');
+        
+        // Request arguments
+        $uuid = $request->get('uuid');
+        // $this->logger->info('$uuid = ' . print_r($uuid, true));
+        $type = $request->get('type');
+        // $this->logger->info('$type = ' . print_r($type, true));
+        $boost = $request->get('boost');
+        // $this->logger->info('$boost = ' . print_r($boost, true));
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        } else {
+            throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+        }
+
+        $document->setWantBoost($boost);
+        $document->save();
+
+        if ($boost == DocumentConstants::WB_OK) {
+            $event = new GenericEvent($document);
+            $dispatcher =  $this->eventDispatcher->dispatch('boost_fb_email', $event);
+        }
+
+        $html = $this->templating->render(
+            'PolitizrFrontBundle:Document:_boostQuestionResponse.html.twig',
+            array(
+                'boost' => $boost
             )
         );
 

@@ -9,6 +9,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Politizr\Constant\ListingConstants;
+use Politizr\Constant\GlobalConstants;
+use Politizr\Constant\LocalizationConstants;
 
 use Politizr\Model\PDDirect;
 
@@ -17,6 +19,8 @@ use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PQOrganizationQuery;
+use Politizr\Model\PMCguQuery;
+use Politizr\Model\PMCharteQuery;
 
 use Politizr\FrontBundle\Form\Type\PDDirectType;
 
@@ -79,153 +83,213 @@ class PublicController extends Controller
             ->orderByMostActive()
             ;
 
+        /*
+            $users = $usersQuery
+                ->usePuTaggedTPUserQuery()
+                    ->usePuTaggedTPTagQuery()
+                        ->filterBySlug('democratie-participative')
+                    ->endUse()
+                ->endUse()
+                ->find();
+        */
+
         $directMessage = new PDDirect();
         $form = $this->createForm(new PDDirectType(), $directMessage);
 
         if ($theme == 'civic-tech') {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('civic-tech')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('civic-tech')
-                    ->endUse()
-                ->endUse()
-                ->find();
             $template = 'civictech.html.twig';
-        } elseif ($theme == 'elu-local')  {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('elus-locaux')
-                        ->_or()
-                        ->filterBySlug('statut-de-l-elu')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('elus-locaux')
-                        ->_or()
-                        ->filterBySlug('statut-de-l-elu')
-                    ->endUse()
-                ->endUse()
-                ->find();
+        } elseif ($theme == 'elus-locaux')  {
             $template = 'eluLocal.html.twig';
         } elseif ($theme == 'dialogue-citoyen')  {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('citoyen')
-                        ->_or()
-                        ->filterBySlug('citoyenneté')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('citoyen')
-                        ->_or()
-                        ->filterBySlug('citoyenneté')
-                    ->endUse()
-                ->endUse()
-                ->find();
             $template = 'dialogueCitoyen.html.twig';
         } elseif ($theme == 'democratie-locale')  {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('democratie-locale')
-                    ->endUse()
-                ->endUse()
-                ->find();
-
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('democratie-participative')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            
             $template = 'democratieLocale.html.twig';
         } elseif ($theme == 'democratie-participative')  {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('democratie-participative')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('democratie-participative')
-                    ->endUse()
-                ->endUse()
-                ->find();
             $template = 'democratieParticipative.html.twig';
         } elseif ($theme == 'reseau-social-politique')  {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('%democratie%')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('%democratie%')
-                    ->endUse()
-                ->endUse()
-                ->find();
             $template = 'reseauSocial.html.twig';
         } elseif ($theme == 'primaires-presidentielle-2017')  {
-            $documents = $documentsQuery
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('presidentielle-2017')
-                    ->endUse()
-                ->endUse()
-                ->find();
-            $users = $usersQuery
-                ->usePuTaggedTPUserQuery()
-                    ->usePuTaggedTPTagQuery()
-                        ->filterBySlug('presidentielle-2017')
-                    ->endUse()
-                ->endUse()
-                ->find();
             $template = 'presidentielle.html.twig';
         } elseif ($theme == 'charlotte-marchandise')  {
-            $documents = PDDebateQuery::create()
-                ->limit(9)
-                ->online()
-                ->orderByPublishedAt('desc')
-                ->usePDDTaggedTQuery()
-                    ->usePTagQuery()
-                        ->filterBySlug('presidentielle-2017')
-                    ->endUse()
-                ->endUse()
-                // ->orderByMostViews()
-                ->filterByPUserId(315)
-                ->find();
             $template = 'charlotte.html.twig';
         } elseif ($theme == 'concertation-publique')  {
             $template = 'concertationPublique.html.twig';
+        } elseif ($theme == 'budget-participatif')  {
+            $template = 'budgetParticipatif.html.twig';
         } elseif ($theme == 'entreprise-liberee')  {
             $template = 'entrepriseLiberee.html.twig';
+        } elseif ($theme == 'dialogue-entreprise-public')  {
+            $template = 'dialogueEntreprisePublic.html.twig';
         } elseif ($theme == 'offre-candidat-legislatives-2017')  {
             $template = 'offreCandidat.html.twig';
         } elseif ($theme == 'offre-candidat-senatoriales-2017')  {
             $template = 'offreCandidatSenatoriales.html.twig';
+        } elseif ($theme == 'offres-collectivites')  {
+            $template = 'offresCollectivites.html.twig';
+        } elseif ($theme == 'boite-a-idees-numerique')  {
+            $template = 'boiteAIdees.html.twig';
+        } elseif ($theme == 'actus-ariege')  {
+            $documents = $this->get('politizr.functional.document')->getPublicationsByFilters(
+                null,
+                '0ee7c5fc-cd8a-4089-92d4-f1caf8751c0d',
+                LocalizationConstants::TYPE_DEPARTMENT,
+                null,
+                ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_LAST,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                0,
+                6
+            );
+
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                '0ee7c5fc-cd8a-4089-92d4-f1caf8751c0d',
+                LocalizationConstants::TYPE_DEPARTMENT,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
+            $template = 'actusAriege.html.twig';
+        } elseif ($theme == 'actus-toulouse')  {
+            $documents = $this->get('politizr.functional.document')->getPublicationsByFilters(
+                null,
+                '06813a50-839a-48b7-98d6-c9f3606894ce',
+                LocalizationConstants::TYPE_DEPARTMENT,
+                null,
+                ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_LAST,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                0,
+                6
+            );
+
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                '06813a50-839a-48b7-98d6-c9f3606894ce',
+                LocalizationConstants::TYPE_DEPARTMENT,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
+            $template = 'actusToulouse.html.twig';
+        } elseif ($theme == 'actus-paris')  {
+            $documents = $this->get('politizr.functional.document')->getPublicationsByFilters(
+                null,
+                'e423798f-7ed5-4c08-82d1-ddc41a5e0b91',
+                LocalizationConstants::TYPE_REGION,
+                null,
+                ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_LAST,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                0,
+                6
+            );
+
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                'e423798f-7ed5-4c08-82d1-ddc41a5e0b91',
+                LocalizationConstants::TYPE_REGION,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_FOLLOWED,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
+            $template = 'actusParis.html.twig';
+        } elseif ($theme == 'actus-bordeaux')  {
+            $documents = $this->get('politizr.functional.document')->getPublicationsByFilters(
+                null,
+                '836f7d34-f836-44e9-89b2-6e6932d735c3',
+                LocalizationConstants::TYPE_REGION,
+                null,
+                ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_LAST,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                0,
+                6
+            );
+
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                '836f7d34-f836-44e9-89b2-6e6932d735c3',
+                LocalizationConstants::TYPE_REGION,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
+            $template = 'actusBordeaux.html.twig';
+        } elseif ($theme == 'actus-bretagne')  {
+            $documents = $this->get('politizr.functional.document')->getPublicationsByFilters(
+                null,
+                '8c9e3199-9cef-462e-bc48-0850b91fdf1d',
+                LocalizationConstants::TYPE_REGION,
+                null,
+                ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+                ListingConstants::FILTER_KEYWORD_CITIZEN,
+                ListingConstants::ORDER_BY_KEYWORD_LAST,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                0,
+                6
+            );
+
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                '8c9e3199-9cef-462e-bc48-0850b91fdf1d',
+                LocalizationConstants::TYPE_REGION,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
+            $template = 'actusBretagne.html.twig';
+        } elseif ($theme == 'actus-normandie')  {
+            $documents = $this->get('politizr.functional.document')->getPublicationsByFilters(
+                null,
+                '6703c4ab-c59c-4de4-9945-4ba0c8e41f68',
+                LocalizationConstants::TYPE_REGION,
+                null,
+                ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_LAST,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                0,
+                6
+            );
+
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                '6703c4ab-c59c-4de4-9945-4ba0c8e41f68',
+                LocalizationConstants::TYPE_REGION,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
+            $template = 'actusNormandie.html.twig';
+        } elseif ($theme == 'actus-hauts-de-france')  {
+            $users = $this->get('politizr.functional.user')->getUsersByFilters(
+                'fb8cd4a1-ae02-45ab-90a2-25aaa7494abb',
+                LocalizationConstants::TYPE_REGION,
+                ListingConstants::FILTER_KEYWORD_ALL_USERS,
+                ListingConstants::ORDER_BY_KEYWORD_MOST_ACTIVE,
+                ListingConstants::FILTER_KEYWORD_ALL_DATE,
+                $offset = 0,
+                6
+            );
+
+            $template = 'actusHautsDeFrance.html.twig';
         } else {
             return $this->redirect($this->generateUrl('Homepage'));
         }
@@ -264,11 +328,43 @@ class PublicController extends Controller
     }
 
     /**
+     * CGU
+     */
+    public function cguAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** cguAction');
+
+        $legal = PMCguQuery::create()->filterByOnline(true)->orderByCreatedAt('desc')->findOne();
+
+        return $this->render('PolitizrFrontBundle:Public:cgu.html.twig', array(
+            'legal' => $legal,
+        ));
+    }
+
+    /**
+     * Charte publique
+     */
+    public function charteAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** charteAction');
+
+        $charte = PMCharteQuery::create()->findPk(GlobalConstants::GLOBAL_CHARTE_ID);
+
+        return $this->render('PolitizrFrontBundle:Public:charte.html.twig', array(
+            'charte' => $charte,
+        ));
+    }
+
+    /**
      * RSS feed
      */
     public function rssFeedAction()
     {
         $publications = $this->get('politizr.functional.document')->getPublicationsByFilters(
+            null,
+            null,
             null,
             null,
             ListingConstants::FILTER_KEYWORD_DEBATES_AND_REACTIONS,

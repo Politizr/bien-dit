@@ -31,13 +31,13 @@ abstract class BasePUNotificationPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PUNotificationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 12;
+    const NUM_COLUMNS = 13;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 12;
+    const NUM_HYDRATE_COLUMNS = 13;
 
     /** the column name for the id field */
     const ID = 'p_u_notification.id';
@@ -59,6 +59,9 @@ abstract class BasePUNotificationPeer
 
     /** the column name for the p_author_user_id field */
     const P_AUTHOR_USER_ID = 'p_u_notification.p_author_user_id';
+
+    /** the column name for the p_c_topic_id field */
+    const P_C_TOPIC_ID = 'p_u_notification.p_c_topic_id';
 
     /** the column name for the description field */
     const DESCRIPTION = 'p_u_notification.description';
@@ -94,12 +97,12 @@ abstract class BasePUNotificationPeer
      * e.g. PUNotificationPeer::$fieldNames[PUNotificationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'PNotificationId', 'PObjectName', 'PObjectId', 'PAuthorUserId', 'Description', 'Checked', 'CheckedAt', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'pNotificationId', 'pObjectName', 'pObjectId', 'pAuthorUserId', 'description', 'checked', 'checkedAt', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (PUNotificationPeer::ID, PUNotificationPeer::UUID, PUNotificationPeer::P_USER_ID, PUNotificationPeer::P_NOTIFICATION_ID, PUNotificationPeer::P_OBJECT_NAME, PUNotificationPeer::P_OBJECT_ID, PUNotificationPeer::P_AUTHOR_USER_ID, PUNotificationPeer::DESCRIPTION, PUNotificationPeer::CHECKED, PUNotificationPeer::CHECKED_AT, PUNotificationPeer::CREATED_AT, PUNotificationPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'P_NOTIFICATION_ID', 'P_OBJECT_NAME', 'P_OBJECT_ID', 'P_AUTHOR_USER_ID', 'DESCRIPTION', 'CHECKED', 'CHECKED_AT', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'p_notification_id', 'p_object_name', 'p_object_id', 'p_author_user_id', 'description', 'checked', 'checked_at', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PUserId', 'PNotificationId', 'PObjectName', 'PObjectId', 'PAuthorUserId', 'PCTopicId', 'Description', 'Checked', 'CheckedAt', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pUserId', 'pNotificationId', 'pObjectName', 'pObjectId', 'pAuthorUserId', 'pCTopicId', 'description', 'checked', 'checkedAt', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (PUNotificationPeer::ID, PUNotificationPeer::UUID, PUNotificationPeer::P_USER_ID, PUNotificationPeer::P_NOTIFICATION_ID, PUNotificationPeer::P_OBJECT_NAME, PUNotificationPeer::P_OBJECT_ID, PUNotificationPeer::P_AUTHOR_USER_ID, PUNotificationPeer::P_C_TOPIC_ID, PUNotificationPeer::DESCRIPTION, PUNotificationPeer::CHECKED, PUNotificationPeer::CHECKED_AT, PUNotificationPeer::CREATED_AT, PUNotificationPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_USER_ID', 'P_NOTIFICATION_ID', 'P_OBJECT_NAME', 'P_OBJECT_ID', 'P_AUTHOR_USER_ID', 'P_C_TOPIC_ID', 'DESCRIPTION', 'CHECKED', 'CHECKED_AT', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_user_id', 'p_notification_id', 'p_object_name', 'p_object_id', 'p_author_user_id', 'p_c_topic_id', 'description', 'checked', 'checked_at', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -109,12 +112,12 @@ abstract class BasePUNotificationPeer
      * e.g. PUNotificationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'PNotificationId' => 3, 'PObjectName' => 4, 'PObjectId' => 5, 'PAuthorUserId' => 6, 'Description' => 7, 'Checked' => 8, 'CheckedAt' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'pNotificationId' => 3, 'pObjectName' => 4, 'pObjectId' => 5, 'pAuthorUserId' => 6, 'description' => 7, 'checked' => 8, 'checkedAt' => 9, 'createdAt' => 10, 'updatedAt' => 11, ),
-        BasePeer::TYPE_COLNAME => array (PUNotificationPeer::ID => 0, PUNotificationPeer::UUID => 1, PUNotificationPeer::P_USER_ID => 2, PUNotificationPeer::P_NOTIFICATION_ID => 3, PUNotificationPeer::P_OBJECT_NAME => 4, PUNotificationPeer::P_OBJECT_ID => 5, PUNotificationPeer::P_AUTHOR_USER_ID => 6, PUNotificationPeer::DESCRIPTION => 7, PUNotificationPeer::CHECKED => 8, PUNotificationPeer::CHECKED_AT => 9, PUNotificationPeer::CREATED_AT => 10, PUNotificationPeer::UPDATED_AT => 11, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'P_NOTIFICATION_ID' => 3, 'P_OBJECT_NAME' => 4, 'P_OBJECT_ID' => 5, 'P_AUTHOR_USER_ID' => 6, 'DESCRIPTION' => 7, 'CHECKED' => 8, 'CHECKED_AT' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'p_notification_id' => 3, 'p_object_name' => 4, 'p_object_id' => 5, 'p_author_user_id' => 6, 'description' => 7, 'checked' => 8, 'checked_at' => 9, 'created_at' => 10, 'updated_at' => 11, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PUserId' => 2, 'PNotificationId' => 3, 'PObjectName' => 4, 'PObjectId' => 5, 'PAuthorUserId' => 6, 'PCTopicId' => 7, 'Description' => 8, 'Checked' => 9, 'CheckedAt' => 10, 'CreatedAt' => 11, 'UpdatedAt' => 12, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pUserId' => 2, 'pNotificationId' => 3, 'pObjectName' => 4, 'pObjectId' => 5, 'pAuthorUserId' => 6, 'pCTopicId' => 7, 'description' => 8, 'checked' => 9, 'checkedAt' => 10, 'createdAt' => 11, 'updatedAt' => 12, ),
+        BasePeer::TYPE_COLNAME => array (PUNotificationPeer::ID => 0, PUNotificationPeer::UUID => 1, PUNotificationPeer::P_USER_ID => 2, PUNotificationPeer::P_NOTIFICATION_ID => 3, PUNotificationPeer::P_OBJECT_NAME => 4, PUNotificationPeer::P_OBJECT_ID => 5, PUNotificationPeer::P_AUTHOR_USER_ID => 6, PUNotificationPeer::P_C_TOPIC_ID => 7, PUNotificationPeer::DESCRIPTION => 8, PUNotificationPeer::CHECKED => 9, PUNotificationPeer::CHECKED_AT => 10, PUNotificationPeer::CREATED_AT => 11, PUNotificationPeer::UPDATED_AT => 12, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_USER_ID' => 2, 'P_NOTIFICATION_ID' => 3, 'P_OBJECT_NAME' => 4, 'P_OBJECT_ID' => 5, 'P_AUTHOR_USER_ID' => 6, 'P_C_TOPIC_ID' => 7, 'DESCRIPTION' => 8, 'CHECKED' => 9, 'CHECKED_AT' => 10, 'CREATED_AT' => 11, 'UPDATED_AT' => 12, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_user_id' => 2, 'p_notification_id' => 3, 'p_object_name' => 4, 'p_object_id' => 5, 'p_author_user_id' => 6, 'p_c_topic_id' => 7, 'description' => 8, 'checked' => 9, 'checked_at' => 10, 'created_at' => 11, 'updated_at' => 12, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -195,6 +198,7 @@ abstract class BasePUNotificationPeer
             $criteria->addSelectColumn(PUNotificationPeer::P_OBJECT_NAME);
             $criteria->addSelectColumn(PUNotificationPeer::P_OBJECT_ID);
             $criteria->addSelectColumn(PUNotificationPeer::P_AUTHOR_USER_ID);
+            $criteria->addSelectColumn(PUNotificationPeer::P_C_TOPIC_ID);
             $criteria->addSelectColumn(PUNotificationPeer::DESCRIPTION);
             $criteria->addSelectColumn(PUNotificationPeer::CHECKED);
             $criteria->addSelectColumn(PUNotificationPeer::CHECKED_AT);
@@ -208,6 +212,7 @@ abstract class BasePUNotificationPeer
             $criteria->addSelectColumn($alias . '.p_object_name');
             $criteria->addSelectColumn($alias . '.p_object_id');
             $criteria->addSelectColumn($alias . '.p_author_user_id');
+            $criteria->addSelectColumn($alias . '.p_c_topic_id');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.checked');
             $criteria->addSelectColumn($alias . '.checked_at');

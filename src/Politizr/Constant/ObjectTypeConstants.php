@@ -24,6 +24,9 @@ class ObjectTypeConstants
     const TYPE_ABUSE = 'Politizr\Model\PMAbuseReporting';
     const TYPE_ASK_FOR_UPDATE = 'Politizr\Model\PMAskForUpdate';
     const TYPE_ACTION = 'Politizr\Model\PRAction';
+    const TYPE_CIRCLE = 'Politizr\Model\PCircle';
+    const TYPE_CIRCLE_OWNER = 'Politizr\Model\PCOwner';
+    const TYPE_TOPIC = 'Politizr\Model\PCTopic';
     const TYPE_OPERATION = 'Politizr\Model\PEOperation';
 
     const CONTEXT_DEBATE = 'debate';
@@ -81,6 +84,7 @@ class ObjectTypeConstants
     nb_id_check,
     online,
     homepage,
+    support_group,
     banned,
     banned_nb_days_left,
     banned_nb_total,
@@ -100,6 +104,7 @@ class ObjectTypeConstants
     p_l_department_id,
     p_l_region_id,
     p_l_country_id,
+    p_c_topic_id,
     fb_ad_id,
     title,
     file_name,
@@ -108,6 +113,7 @@ class ObjectTypeConstants
     note_pos,
     note_neg,
     nb_views,
+    want_boost,
     published,
     published_at,
     published_by,

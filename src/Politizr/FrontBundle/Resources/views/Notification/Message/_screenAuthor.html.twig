@@ -1,4 +1,8 @@
-<a action="notificationCheck" href="{{ authorUrl }}">
-    {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': author } only %}
-    {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': author } only %}
-</a>
+{% if authorUrl != '#' %}
+    <a action="notificationCheck" href="{{ authorUrl }}">
+        {% include 'PolitizrFrontBundle:User:_authorName.html.twig' with { 'user': author } only %}
+        {% include 'PolitizrFrontBundle:User:_authorOrganization.html.twig' with { 'user': author } only %}
+    </a>
+{% else %}
+    Un ex-utilisateur
+{% endif %}

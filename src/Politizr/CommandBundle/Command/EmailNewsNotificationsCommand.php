@@ -111,7 +111,7 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
         foreach ($users as $user) {
             // $output->write('.');
 
-            $puNotifications = $this->notificationService->getUserNotifications($user, $beginAt, $endAt);
+            $puNotifications = $this->notificationService->getUserNotificationsForEmailing($user, $beginAt, $endAt);
 
             // Nearest elected users
             $nearestUsers = $this->notificationService->getNearestQualifiedUsers($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_ELECTED_USERS);

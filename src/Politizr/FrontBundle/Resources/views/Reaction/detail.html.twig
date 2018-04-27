@@ -32,7 +32,44 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.swipe.min.js') }}"></script>
 {% endblock %}
 
+{% block bodyClass %}
+    {% spaceless %}
+        {% if reaction.PCTopicId %}
+            {% set circle = reaction.circle %}
+            {% if (isGrantedE() or isGrantedC()) %}
+                class="grp grp-{{ circle.PCOwner.slug }}"
+            {% else %}    
+                class="grp public grp-{{ circle.PCOwner.slug }}"
+            {% endif %}
+        {% else %}
+            {{ parent() }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block header %}
+    {% if (isGrantedE() or isGrantedC()) %}
+        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+            {% block topLeftMenu %}
+                {% if reaction.PCTopicId %}
+                    {% set circle = reaction.circle %}
+                    {% include 'PolitizrFrontBundle:Navigation\\Menu:_topLeftMenu.html.twig' with { 'circle': circle } only %}
+                {% else %}
+                    {{ parent() }}
+                {% endif %}
+            {% endblock %}
+            {% block newSubject %}
+                {{ reaction | newSubject }}
+            {% endblock newSubject %}
+        {% endembed %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
 {% block preMain %}
+    {{ reaction | circleContext }}
+
     {% include 'PolitizrFrontBundle:Reaction:_menu.html.twig' with {
         'debate': debate,
         'reaction': reaction,
@@ -47,6 +84,8 @@
     {{ parent() }}
 
     {{ reaction | documentOperation }}
+    {{ reaction | boostQuestion }}
+    {{ reaction | readOnlyMessage }}
 {% endblock %}
 
 {% block content %}
@@ -71,15 +110,15 @@
                     </div>
                 {% endif %}
                 <div id="cardPostText">
-                    {% if private %}
-                        {% include 'PolitizrFrontBundle:Navigation\\Helper:_createAccountToFullRead.html.twig' %}
-                    {% endif %}
                     {% for paragraph in paragraphs %}
                         <div id="p-{{ loop.index }}" class="paragraph">
-                            {% include 'PolitizrFrontBundle:Comment:_paragraph.html.twig' with { 'document': reaction, 'paragraphNo': loop.index } only %}
+                            {% include 'PolitizrFrontBundle:Comment:_paragraph.html.twig' with { 'document': reaction, 'noParagraph': loop.index } only %}
                             {{ paragraph | purify }}
                         </div>
                     {% endfor %}
+                    {% if not app.user %}
+                        {% include 'PolitizrFrontBundle:Navigation\\Helper:_createAccountToFullRead.html.twig' with { 'document': reaction } %}
+                    {% endif %}
                 </div>
 
                 {% if reactions | length > 0 %}
@@ -91,7 +130,7 @@
                 </div>
             </div>
             <div id="p-0">
-                {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': reaction, 'formComment': formComment } only %}
+                {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': reaction } only %}
             </div>
 
             <div class="postTags">
@@ -112,6 +151,10 @@
     {% endif %}
     {% include 'PolitizrFrontBundle:Reaction:_sidebar.html.twig' %}
 {% endblock sidebarContent %}
+
+{% block sidebarFooter %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_sidebar.html.twig' with { 'document': reaction } %}
+{% endblock %}
 
 {% block javascriptFooter %}
     {{ parent() }}

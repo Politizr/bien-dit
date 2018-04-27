@@ -1,0 +1,126 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\PDMedia
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        uuid:
+            label:          UUID
+        p_d_debate_id:
+            label:          ID Débat
+        p_d_reaction_id:
+            label:          ID Réaction
+        p_d_debate:
+            label:          Débat
+        p_d_reaction:
+            label:          Réaction
+        path:
+            label:          Chemin
+        file_name:
+            label:          Fichier
+        extension:
+            label:          Extension
+        size:
+            label:          Taille
+        width:
+            label:          Largeur
+        height:
+            label:          Hauteur
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des images utilisées dans les documents
+            max_per_page:                       50
+            sort:                               [ created_at, DESC ]
+            display:                            [ file_name, p_d_debate, p_d_reaction, size, width, height, created_at ]
+            filtersMode:                        modal
+            filters:                            [ file_name, file_name, p_d_debate_id, p_d_reaction_id, created_at ]
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    edit:
+        params:
+            title:                              "Edition du média '{{ PDMedia.fileName }}'"
+            tabs:
+                "Média":
+                    "Image":                    [ uploadedFileName ]
+                    "Fichier":                  [ [ path, file_name, extension ] ]
+                    "Caractéristiques":         [ [ size, width, height ] ]
+                "Objets":
+                    "Sujet":                    [ p_d_debate ]
+                    "Réponse":                  [ p_d_reaction ]
+                "Attributs":
+                    "Identifiants":             [ [ id, uuid ] ]
+                    "Création":                 [ [ created_at, updated_at ] ]
+            fields:
+                uploadedFileName:
+                    label:                      "Image"
+                    grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                id:
+                    addFormOptions:
+                        read_only:              true
+                p_d_debate:
+                    addFormOptions:
+                        required:               false
+                        disabled:               true
+                        read_only:              true
+                p_d_reaction:
+                    addFormOptions:
+                        required:               false
+                        disabled:               true
+                        read_only:              true
+                created_at:
+                    addFormOptions:
+                      widget:                   single_text
+                updated_at:
+                    addFormOptions:
+                      widget:                   single_text
+            actions:
+                save:                           ~
+                show:                           ~
+                list:                           ~
+                delete:                         ~
+    show:
+        params:
+            title:                              "Visualisation du média '{{ PDMedia.fileName }}'"
+            tabs:
+                "Média":
+                    "Image":                    [ file_name ]
+                    "Caractéristiques":         [ [ size, width, height ] ]
+                "Objets":
+                    "Sujet":                    [ p_d_debate ]
+                    "Réponse":                  [ p_d_reaction ]
+                "Attributs":
+                    "Identifiants":             [ [ id, uuid ] ]
+                    "Création":                 [ [ created_at, updated_at ] ]
+            actions:
+                list:                           ~
+                edit:                           ~
+                delete:                         ~
+    actions:
+        params:
+            object_actions:
+                delete: ~
+            batch_actions:
+                delete: ~

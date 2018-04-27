@@ -1,9 +1,6 @@
 // beta
 // on document ready
 $(function() {
-    autosize($('.formCommentNew textarea'));
-    commentTextCounter();
-
     var commentMode = $('#commentMode').attr('mode');
     // console.log(commentMode);
 
@@ -195,9 +192,11 @@ function loadParagraphContent(context)
             }
             targetElement.html(data['list']);
             targetCounter.html(data['counter']);
+
             fullImgLiquid();
             autosize($('.formCommentNew textarea'));
             commentTextCounter();
+            
             // $('#comment_description').focus();
         }
         localLoader.hide();

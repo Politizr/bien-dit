@@ -64,6 +64,27 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     }
 
     /**
+     * @see PDocumentInterface::getCircle
+     */
+    public function getCircle()
+    {
+        $topic = $this->getPCTopic();
+        if ($topic) {
+            return $topic->getPCircle();
+        }
+
+        return null;
+    }
+
+    /**
+     * @see PDocumentInterface::getCircle
+     */
+    public function getTopicId()
+    {
+        return $this->getPCTopicId();
+    }
+
+    /**
      * @see PDocumentInterface::isDisplayed
      */
     public function isDisplayed()

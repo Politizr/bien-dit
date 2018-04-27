@@ -25,6 +25,7 @@ use Politizr\Model\PEOperationArchiveQuery;
  * @method PEOperationArchiveQuery orderByGeoScoped($order = Criteria::ASC) Order by the geo_scoped column
  * @method PEOperationArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PEOperationArchiveQuery orderByTimeline($order = Criteria::ASC) Order by the timeline column
+ * @method PEOperationArchiveQuery orderByNewSubjectLink($order = Criteria::ASC) Order by the new_subject_link column
  * @method PEOperationArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PEOperationArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PEOperationArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -40,6 +41,7 @@ use Politizr\Model\PEOperationArchiveQuery;
  * @method PEOperationArchiveQuery groupByGeoScoped() Group by the geo_scoped column
  * @method PEOperationArchiveQuery groupByOnline() Group by the online column
  * @method PEOperationArchiveQuery groupByTimeline() Group by the timeline column
+ * @method PEOperationArchiveQuery groupByNewSubjectLink() Group by the new_subject_link column
  * @method PEOperationArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PEOperationArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PEOperationArchiveQuery groupBySlug() Group by the slug column
@@ -61,6 +63,7 @@ use Politizr\Model\PEOperationArchiveQuery;
  * @method PEOperationArchive findOneByGeoScoped(boolean $geo_scoped) Return the first PEOperationArchive filtered by the geo_scoped column
  * @method PEOperationArchive findOneByOnline(boolean $online) Return the first PEOperationArchive filtered by the online column
  * @method PEOperationArchive findOneByTimeline(boolean $timeline) Return the first PEOperationArchive filtered by the timeline column
+ * @method PEOperationArchive findOneByNewSubjectLink(boolean $new_subject_link) Return the first PEOperationArchive filtered by the new_subject_link column
  * @method PEOperationArchive findOneByCreatedAt(string $created_at) Return the first PEOperationArchive filtered by the created_at column
  * @method PEOperationArchive findOneByUpdatedAt(string $updated_at) Return the first PEOperationArchive filtered by the updated_at column
  * @method PEOperationArchive findOneBySlug(string $slug) Return the first PEOperationArchive filtered by the slug column
@@ -76,6 +79,7 @@ use Politizr\Model\PEOperationArchiveQuery;
  * @method array findByGeoScoped(boolean $geo_scoped) Return PEOperationArchive objects filtered by the geo_scoped column
  * @method array findByOnline(boolean $online) Return PEOperationArchive objects filtered by the online column
  * @method array findByTimeline(boolean $timeline) Return PEOperationArchive objects filtered by the timeline column
+ * @method array findByNewSubjectLink(boolean $new_subject_link) Return PEOperationArchive objects filtered by the new_subject_link column
  * @method array findByCreatedAt(string $created_at) Return PEOperationArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PEOperationArchive objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PEOperationArchive objects filtered by the slug column
@@ -185,7 +189,7 @@ abstract class BasePEOperationArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `description`, `editing_description`, `file_name`, `geo_scoped`, `online`, `timeline`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_e_operation_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_user_id`, `title`, `description`, `editing_description`, `file_name`, `geo_scoped`, `online`, `timeline`, `new_subject_link`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_e_operation_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -582,6 +586,33 @@ abstract class BasePEOperationArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PEOperationArchivePeer::TIMELINE, $timeline, $comparison);
+    }
+
+    /**
+     * Filter the query on the new_subject_link column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNewSubjectLink(true); // WHERE new_subject_link = true
+     * $query->filterByNewSubjectLink('yes'); // WHERE new_subject_link = true
+     * </code>
+     *
+     * @param     boolean|string $newSubjectLink The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PEOperationArchiveQuery The current query, for fluid interface
+     */
+    public function filterByNewSubjectLink($newSubjectLink = null, $comparison = null)
+    {
+        if (is_string($newSubjectLink)) {
+            $newSubjectLink = in_array(strtolower($newSubjectLink), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PEOperationArchivePeer::NEW_SUBJECT_LINK, $newSubjectLink, $comparison);
     }
 
     /**

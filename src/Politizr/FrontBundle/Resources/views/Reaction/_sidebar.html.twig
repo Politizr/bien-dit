@@ -7,7 +7,7 @@
         {% endif %}
         <div class="actionsBox">
             <div class="miniActions">
-                {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': reaction } only %}
+                {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': reaction, 'checkIfAuthorized': true } only %}
             </div>  
             <div class="notation withLoaderInside">
                 {% include 'PolitizrFrontBundle:Reputation:_noteAction.html.twig' with { 'subject': reaction } only %}

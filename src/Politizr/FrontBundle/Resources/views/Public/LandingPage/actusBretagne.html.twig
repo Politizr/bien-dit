@@ -1,0 +1,161 @@
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% extends layout %}
+{% set headerRight = false %}
+
+{% set metaTitle = 'Actualités Politique en Bretagne' %}
+{% set metaDescription = 'Retrouvez l\'actualité politique en Bretagne remontée par vos concitoyens et exprimez-vous avec vos élus.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block bodyClass %} class="public visitor"{% endblock %}
+
+{% block main %}
+    <div id="lpGeneric">
+        <div id="lpHero">
+            <div class="center">
+                <h1>Devenez acteur de l'actualité en Bretagne</h1>
+                <h2>En participant à des échanges directs entre citoyens et élus</h2>
+                <div id="f-display"><img src="{{ asset('bundles/politizrfront/images/f-display.png') }}" alt="Actualités Bretagne"></div>
+                <div id="f-accessories"><img src="{{ asset('bundles/politizrfront/images/f-accessories.png') }}"></div>
+            </div>
+            <div id="lpHeroFader"></div>
+        </div>
+        <div id="lpUnderHero">
+            <div class="center">
+                POLITIZR est un espace de discussion indépendant, neutre et gratuit qui renouvelle les pratiques politiques en permettant des échanges structurés et constructifs entre les citoyen.ne.s, les élu.e.s et leurs collectivités - en Bretagne et ailleurs. Devenez acteur de votre territoire!<br/><br/><b>100% gratuit</b>
+            </div>
+        </div>
+
+        <div id="lpCTA">
+            <div class="center">
+                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
+            </div>
+        </div>
+
+        <div id="postSelection">
+            <div class="center">
+                <h1>Les sujets d'actualités en Bretagne</h1>
+                <h2>Brest, Rennes, Lorient, Quimper, etc.</h2>
+                
+                {% for document in documents %}
+                    {% set document = document.relativeObject %}
+                    {% if loop.first or loop.index0 is divisible by(2) %}
+                        <div class="cardColumn">
+                    {% endif %}
+                        {% include 'PolitizrFrontBundle:Document:_cardPublic.html.twig' %}
+                    {% if loop.last or loop.index is divisible by(2) %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="lpCTA">
+            <div class="center">
+                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
+            </div>
+        </div>
+
+        <div id="profileSelection">
+            <div class="center">
+                <h1>Rejoignez la communauté Politizr déjà inscrite en Bretagne</h1>
+                <h2>&nbsp;</h2>
+                
+                {% for user in users %}
+                    {% if loop.first or loop.index0 is divisible by(2) %}
+                        <div class="cardColumn">
+                    {% endif %}
+                        {% include 'PolitizrFrontBundle:User:_cardPublic.html.twig' %}
+                    {% if loop.last or loop.index is divisible by(2) %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="lpCTA">
+            <div class="center">
+                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
+            </div>
+        </div>
+
+        <div id="lpArgu">
+            <div class="center">
+                <div class="lpLeftCol">
+                    <p>
+                        Politizr propose un réseau social de dialogue citoyen permettant de reconnecter les citoyen.ne.s et leurs élu.e.s, en Bretagne et partout en France.
+                        <br/><br/>
+                        Nous travaillons à améliorer la démocratie locale en proposant d'échanger sur l'actualité via un espace de discussion qui favorise les échanges structurées et argumentées dans un temps long propice à la qualité du débat.
+                    </p>
+                    <img src="{{ asset('bundles/politizrfront/images/f-illustr01.jpg') }}">
+                </div>
+                <div class="lpRightCol">
+                    <h3>Vous êtes un citoyen breton désireux d'une nouvelle politique?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Discutez directement avec les élu.e.s de Bretagne.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Commentez et notez toutes les discussions ouvertes.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Partagez votre opinion sur l'actualité auprès de vos concitoyen.ne.s et élu.e.s.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Participez à des échanges suivant vos centres d'intérêt.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Accédez à l'ensemble des publications de l'Bretagne et d'ailleurs.</p></div>
+                    <div class="lpCheckLi"><i class="icon-social-fb"></i><p>&nbsp;Visualisez l'impact Facebook de vos publications en Bretagne.</p></div>
+                    <br/>
+                    <h3>Vous êtes un élu breton moderne?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Expliquez vos actions à vos concitoyen.ne.s de Bretagne.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Répondez aux questions et aux opinions d'actualité de vos concitoyen.ne.s.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Faîtes profiter d'autres élu.e.s de vos retours d'expérience.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Participez à des échanges suivant l'actualité et vos centres d'intérêt.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Accédez à l'ensemble des publications aux niveaux local et national.</p></div>
+                    <div class="lpCheckLi"><i class="icon-social-fb"></i><p>&nbsp;Visualisez l'impact Facebook de vos publications sur votre territoire.</p></div>
+                    <h3>Vous êtes une collectivité?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Découvrez <a href="https://www.politizr.com/lp/offres-collectivites">nos offres pour les collectivités</a>, conçues spécialement pour renforcer la démocratie locale sur votre territoire.</p></div>
+                    <h3>&nbsp;</h3>
+                </div>
+            </div>
+        </div>
+
+        <div id="lpCTA">
+            <div class="center">
+                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
+            </div>
+        </div>
+
+        <div id="lpContact">
+            <div class="center">
+                <div class="lpLeftCol">
+                    Envie de nous remonter une opinion ou une question sur l'actualité en Bretagne?<br/>
+                    Vous pouvez aussi simplement remplir ce questionnaire!
+                </div>
+                <div class="lpRightCol">
+                    {% include 'PolitizrFrontBundle:Public\\LandingPage:_formContact.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block postMain %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
+{% endblock postMain %}
+
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("LP");
+        </script>
+    {% endif %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/landingPage.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

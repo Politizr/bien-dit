@@ -46,17 +46,22 @@ class AppKernel extends Kernel
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Liip\UrlAutoConverterBundle\LiipUrlAutoConverterBundle(),
             
-            // HTML Purifier
+            // Security
             new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
-
-            // Strength Password
             new Rollerworks\Bundle\PasswordStrengthBundle\RollerworksPasswordStrengthBundle(),
+            // new Nelmio\SecurityBundle\NelmioSecurityBundle(),
 
             // ATOM RSS Feed
             new Eko\FeedBundle\EkoFeedBundle(),
 
+            // File upload JS
+            new Oneup\UploaderBundle\OneupUploaderBundle(),
+
             // Lexik maintenance
             new Lexik\Bundle\MaintenanceBundle\LexikMaintenanceBundle(),
+
+            // HTTP Cache
+            new FOS\HttpCacheBundle\FOSHttpCacheBundle(),
 
             // Project Bundle,
             new Politizr\FrontBundle\PolitizrFrontBundle(),

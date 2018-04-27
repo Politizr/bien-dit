@@ -1,0 +1,5 @@
+{% set homePath = path('Homepage') %}
+{% if app.user %}
+    {% set homePath = path('Homepage'~profileSuffix()) %}
+{% endif %}
+<div id="logo"><a href="{{ homePath }}"><i class="icon-pltzr-logo"></i><span>politizr{% if app.environment == 'demo' %}<span class="betaMarker">demo</span>{% endif %}</span></a></div>

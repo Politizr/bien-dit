@@ -9,29 +9,28 @@
     {% set imgFilter = 'reaction_header' %}
 {% endif %}
 
+{% set imgPath = document | mainImagePath() %}
+
 {# image #}
-{% if withImg %}
-    {% if mini %}
-        {% set imgClass = 'miniPostImg' %}
-    {% else %}
-        {% set imgClass = 'postImg' %}
-    {% endif %}
+{% set imgClass = 'postImg' %}
+{% if mini %}
+    {% set imgClass = 'miniPostImg' %}
+{% endif %}
 
-    {% if document.fileName %}
-        <div class="{{ imgClass }}">
-            <a href="{{ detailPath }}">
-                {{ document | image(imgFilter, false) }}
-            </a>
-        </div>
-    {% else %}
-        <div class="{{ imgClass }} noImg"></div>
-    {% endif %}
-{% endif %}    
+{% if withImg and imgPath %}
+    <div class="{{ imgClass }}">
+        <a href="{{ detailPath }}">
+            <img src="{{ asset(imgPath) | imagine_filter('document_header') }}" alt="{{ document.title }}">
+        </a>
+    </div>
+{% elseif withImg and not imgPath %}
+    <div class="{{ imgClass }} noImg"></div>
+{% endif %}
 
-<a href="{{ detailPath }}"{% if withImg and not document.fileName and mini %} class="fullWidth"{% endif %}>
+{# document link #}
+<a href="{{ detailPath }}"{% if withImg and not imgPath and mini %} class="fullWidth"{% endif %}>
     <span{% if withImg %} class="postTitle {{ spanClass }}"{% endif %}>{{ document.title }}</span>
     {% if summary %}
-        {# document.description | removeLinks | removeSpans | excerpt(1, true) | purify #}
         {{ document.description | striptags | truncate(250, true) | purify }}
     {% endif %}
 </a>

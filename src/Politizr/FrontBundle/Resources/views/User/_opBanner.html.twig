@@ -6,14 +6,16 @@
         </div>
         <div class="txtOp">
             {{ operation.description | purify }}
-            {% if app.user and app.user | isAuthorizedToAskOperation(operation) %}
-                <span>
-                    <a class="ctaOp" href="{{ path('DebateDraftNew'~profileSuffix(), { op: operation.uuid }) }}">{{ questionLabel }}</a>
-                </span>
-            {% elseif not app.user %}
-                <span>
-                    <a class="ctaOp" href="{{ path('InscriptionChoice') }}">{{ questionLabel }}</a>
-                </span>
+            {% if operation.newSubjectLink %}
+                {% if app.user and operation.newSubjectLink and app.user | isAuthorizedToAskOperation(operation) %}
+                    <span>
+                        <a class="ctaOp" href="{{ path('DebateDraftNew', { op: operation.uuid }) }}">{{ questionLabel }}</a>
+                    </span>
+                {% elseif not app.user %}
+                    <span>
+                        <a class="ctaOp" href="{{ path('InscriptionChoice') }}">{{ questionLabel }}</a>
+                    </span>
+                {% endif %}
             {% endif %}
         </div>
     </div>

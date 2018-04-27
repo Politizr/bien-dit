@@ -16,11 +16,14 @@ services:
             - { name: kernel.event_listener, event: welcome_email }
             - { name: kernel.event_listener, event: idcheck_trace_email }
             - { name: kernel.event_listener, event: direct_message_email }
+            - { name: kernel.event_listener, event: boost_fb_email }
+            - { name: kernel.event_listener, event: support_group_email }
 
     politizr.listener.notification:
         class:      Politizr\FrontBundle\Listener\NotificationListener
         arguments:
             - @event_dispatcher
+            - @politizr.functional.circle
             - @logger
         tags:
             - { name: kernel.event_listener, event: n_note_pos }
@@ -71,6 +74,18 @@ services:
             - { name: kernel.event_listener, event: b_comment_note_neg }
             - { name: kernel.event_listener, event: b_user_follow }
 
+    politizr.listener.circle:
+        class:      Politizr\FrontBundle\Listener\CircleListener
+        arguments:
+            - @politizr.functional.circle
+            - @politizr.functional.user
+            - @event_dispatcher
+            - @logger
+        tags:
+            - { name: kernel.event_listener, event: u_inscription }
+            - { name: kernel.event_listener, event: c_subscribe }
+            - { name: kernel.event_listener, event: c_unsubscribe }
+
     politizr.listener.activity:
         class:      Politizr\FrontBundle\Listener\ActivityListener
         arguments:  [ @security.token_storage ]
@@ -92,3 +107,19 @@ services:
         scope: request
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
+
+    oneup_uploader.listener.upload:
+        class: Politizr\FrontBundle\Listener\UploadListener
+        arguments:
+            - @security.token_storage
+            - @validator
+            - @politizr.functional.document
+            - @politizr.tools.global
+            - @logger
+        tags:
+            - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
+
+    oneup_uploader.listener.validation:
+        class: Politizr\FrontBundle\Listener\DocumentValidationListener
+        tags:
+            - { name: kernel.event_listener, event: oneup_uploader.validation.document, method: onValidate }

@@ -19,6 +19,7 @@ reload-bdd.sh
 /web/app.php
 /web/index.php
 /web/*_dev.php
+/web/*_cache.php
 /web/*_stage.php
 
 /web/uploads/

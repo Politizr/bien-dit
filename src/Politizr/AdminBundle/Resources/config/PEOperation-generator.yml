@@ -30,6 +30,8 @@ params:
             label:          Mise en timeline
         online:
             label:          En ligne
+        new_subject_link:
+            label:          Lien nouveau sujet par défaut actif
         created_at:
             label:          Création
         updated_at:
@@ -67,7 +69,7 @@ builders:
                     formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
                         multiple:               false
-                        required:               true
+                        required:               false
                         class:                  Politizr\Model\PUser
                         query:                  \Politizr\Model\PUserQuery::create()->orderByName()
             actions:
@@ -89,7 +91,7 @@ builders:
                     "Ajouter des villes":       [ block_cities_add ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Options":                  [ [ geo_scoped, timeline ] ]
+                    "Options":                  [ [ geo_scoped, timeline, new_subject_link ] ]
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:
@@ -101,9 +103,13 @@ builders:
                         deleteable:             fileName
                         data_class:             Symfony\Component\HttpFoundation\File\File
                 p_user:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
-                        disabled:               true
-                        read_only:              true
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PUser
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName()
                 description:
                     grid_class:                 "col-md-12"
                     addFormOptions:
@@ -162,7 +168,7 @@ builders:
                     "Villes associés":          [ block_cities ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Options":                  [ [ geo_scoped, timeline ] ]
+                    "Options":                  [ [ geo_scoped, timeline, new_subject_link ] ]
                     "En ligne":                 [ online ]
                     "Création":                 [ [ created_at, updated_at ] ]
             fields:

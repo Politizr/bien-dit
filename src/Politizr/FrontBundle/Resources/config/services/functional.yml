@@ -5,8 +5,10 @@ services:
             - @security.token_storage
             - @security.authorization_checker
             - @politizr.manager.document
+            - @politizr.manager.tag
             - @politizr.functional.tag
             - @politizr.functional.localization
+            - @politizr.functional.circle
             - @router
             - @politizr.tools.global
             - @logger
@@ -19,6 +21,8 @@ services:
             - @politizr.manager.user
             - @politizr.functional.tag
             - @politizr.functional.localization
+            - @politizr.functional.circle
+            - @event_dispatcher
             - @router
             - @logger
 
@@ -38,6 +42,7 @@ services:
             - @politizr.tools.global
             - "%facebook_client_id%"
             - "%facebook_client_secret%"
+            - "%facebook_graph_version%"
             - "%twitter_api_key%"
             - "%twitter_api_secret%"
             - "%google_client_id%"
@@ -49,8 +54,10 @@ services:
         arguments:
             - @security.token_storage
             - @security.authorization_checker
+            - @politizr.functional.circle
             - @politizr.manager.user
             - @politizr.manager.document
+            - @politizr.tools.global
             - @logger
 
     politizr.functional.tag:
@@ -87,5 +94,15 @@ services:
         class: Politizr\FrontBundle\Lib\Functional\NotificationService
         arguments:
             - @politizr.manager.notification
+            - @politizr.functional.circle
             - @politizr.tools.global
+            - @logger
+
+    politizr.functional.circle:
+        class: Politizr\FrontBundle\Lib\Functional\CircleService
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @politizr.manager.circle
+            - @event_dispatcher
             - @logger

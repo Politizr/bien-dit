@@ -1,11 +1,3 @@
 {# beta #}
 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-{% if subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %} 
-    {{ subject | linkNoteDebate }}
-{% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %} 
-    {{ subject | linkNoteReaction }}
-{% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE_COMMENT') %} 
-    {{ subject | linkNoteComment }}
-{% elseif subject.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT') %} 
-    {{ subject | linkNoteComment }}
-{% endif %}
+{{ subject | linkNoteDocument }}

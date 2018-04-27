@@ -3,7 +3,7 @@
 {% set headerRight = false %}
 
 {% set metaTitle = 'Civic Tech n°1' %}
-{% set metaDescription = 'Politizr est une plateforme web de Civic Tech qui (re)connecte les citoyens et les élus.' %}
+{% set metaDescription = 'Politizr est une plateforme Civic Tech qui (re)connecte les citoyens et les élus.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -20,48 +20,16 @@
     <div id="lpGeneric">
         <div id="lpHero">
             <div class="center">
-                <h1>En 2017, la Civic Tech est sur POLITIZR !</h1>
-                <h2>Plateforme web n°1 de la CivicTech en France</h2>
-                <div id="f-display"><img src="{{ asset('bundles/politizrfront/images/f-display.png') }}" alt="Démocratie participative"></div>
+                <h1>En 2018, la Civic Tech est sur POLITIZR</h1>
+                <h2>Plateforme CivicTech de politique de proximité</h2>
+                <div id="f-display"><img src="{{ asset('bundles/politizrfront/images/f-display.png') }}" alt="Civic Tech"></div>
                 <div id="f-accessories"><img src="{{ asset('bundles/politizrfront/images/f-accessories.png') }}"></div>
             </div>
             <div id="lpHeroFader"></div>
         </div>
         <div id="lpUnderHero">
             <div class="center">
-                Élus ou citoyen, profitez d'un <b>espace d'échange unique et adapté</b>: exprimez-vous <b>simplement et gratuitement</b> sur des sujets relatifs à <b>votre territoire</b> pour permettre à vos élus de prendre <b>les bonnes décisions en toute transparence</b>.
-            </div>
-        </div>
-        <div id="lpArgu">
-            <div class="center">
-                <div class="lpLeftCol">
-                    <p>
-                        Politizr est un acteur français de la <a href="https://fr.wikipedia.org/wiki/Civic_tech" target="_blank"><b>Civic Tech</b></a>, ou technologie civique, qui représente l’ensemble des procédés, outils et technologies qui permettent d’<b>améliorer le système politique</b>.
-                    </p>
-                    <p>
-                        Nous travaillons à améliorer la <b>démocratie représentative</b> en proposant un espace de discussion qui favorise les <b>échanges structurées et argumentées</b> dans un temps long propice à la qualité du débat.
-                    </p>
-                    <img src="{{ asset('bundles/politizrfront/images/f-illustr01.jpg') }}">
-                </div>
-                <div class="lpRightCol">
-                    <h3>Vous êtes un citoyen désireux d'une nouvelle politique?</h3>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Discutez <b>directement</b> avec vos <b>élu-e-s</b>.</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p><b>Commentez et notez</b> toutes les discussions ouvertes.</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Partagez <b>votre opinion</b> auprès de vos <b>concitoyen-ne-s et élu-e-s</b>.</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Participez à des échanges suivant vos <b>centres d'intérêt</b>.</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Accédez à l'ensemble des publications aux niveaux <b>local et national</b>.</p></div>
-                    <div class="lpCheckLi"><i class="icon-social-fb"></i><p>&nbsp;Visualisez <b>l'impact Facebook</b> de vos publications sur <b>votre territoire</b>.</p></div>
-                    <br/>
-                    <h3>Vous êtes un élu moderne?</h3>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Expliquez <b>vos actions</b> à vos concitoyen-ne-s.</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Répondez aux <b>questions</b> et aux <b>opinions</b> de vos concitoyen-ne-s.</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Faîtes profiter d'autres élu-e-s de vos <b>retours d'expérience</b>.</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Participez à des échanges suivant vos <b>centres d'intérêt</b>.</p></div>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Accédez à l'ensemble des publications aux niveaux <b>local et national</b>.</p></div>
-                    <div class="lpCheckLi"><i class="icon-social-fb"></i><p>&nbsp;Visualisez <b>l'impact Facebook</b> de vos publications sur <b>votre territoire</b>.</p></div>
-                    <h3>Vous êtes une collectivité?</h3>
-                    <div class="lpCheckLi"><i class="icon-check"></i><p>Découvrez <a href="https://territoires.politizr.com" target="_blank">Politizr Territoires</a>, une offre conçue spécialement pour renforcer la démocratie locale sur votre territoire.</p></div>
-                </div>
+                POLITIZR est un outil français de la Civic Tech: il se présente comme un espace de discussion indépendant, neutre et gratuit qui renouvelle les pratiques politiques en permettant des échanges structurés et constructifs entre les citoyen.ne.s, les élu.e.s et leurs collectivités partout en France. Devenez acteur de votre territoire!<br/><br/><b>100% gratuit</b>
             </div>
         </div>
 
@@ -71,39 +39,36 @@
             </div>
         </div>
 
-        <div id="lpPostsElection">
+        <div id="lpArgu">
             <div class="center">
-                <h1>Les discussions sur la Civic Tech</h1>
-                <h2>Des échanges avec des citoyens et des élus</h2>
-                
-                {% for document in documents %}
-                    {% if loop.first or loop.index0 is divisible by(2) %}
-                        <div class="cardColumn">
-                    {% endif %}
-                        {% include 'PolitizrFrontBundle:Document:_cardPublic.html.twig' %}
-                    {% if loop.last or loop.index is divisible by(2) %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                
-                <div id="morePosts"><a href="{{ path('ListingByTag', {'slug' : 'civic-tech'}) }}">Toutes les discussions en cours</a></div>
-            </div>
-        </div>
-
-        <div id="lpProfilesSelection">
-            <div class="center">
-                <h1>Rejoignez la communauté Politizr</h1>
-                <h2>Des citoyens et élus de toute la France sont sur Politizr</h2>
-                
-                {% for user in users %}
-                    {% if loop.first or loop.index0 is divisible by(2) %}
-                        <div class="cardColumn">
-                    {% endif %}
-                        {% include 'PolitizrFrontBundle:User:_cardPublic.html.twig' %}
-                    {% if loop.last or loop.index is divisible by(2) %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
+                <div class="lpLeftCol">
+                    <p>
+                        Politizr est un acteur français de la Civic Tech, ou technologie civique, qui représente l’ensemble des procédés, outils et technologies qui permettent d’améliorer le système politique.
+                        <br/><br/>
+                        Nous travaillons à améliorer la démocratie locale en proposant un espace de discussion qui favorise les échanges structurées et argumentées dans un temps long propice à la qualité du débat.
+                    </p>
+                    <img src="{{ asset('bundles/politizrfront/images/f-illustr01.jpg') }}">
+                </div>
+                <div class="lpRightCol">
+                    <h3>Vous êtes un citoyen désireux d'une nouvelle politique?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Discutez directement avec vos élu.e.s.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Commentez et notez toutes les discussions ouvertes.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Partagez votre opinion auprès de vos concitoyen.ne.s et élu.e.s.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Participez à des échanges suivant vos centres d'intérêt.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Accédez à l'ensemble des publications aux niveaux local et national.</p></div>
+                    <div class="lpCheckLi"><i class="icon-social-fb"></i><p>&nbsp;Visualisez l'impact Facebook de vos publications sur votre territoire.</p></div>
+                    <br/>
+                    <h3>Vous êtes un élu moderne?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Expliquez vos actions à vos concitoyen.ne.s.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Répondez aux questions et aux opinions de vos concitoyen.ne.s.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Faîtes profiter d'autres élu.e.s de vos retours d'expérience.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Participez à des échanges suivant vos centres d'intérêt.</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Accédez à l'ensemble des publications aux niveaux local et national.</p></div>
+                    <div class="lpCheckLi"><i class="icon-social-fb"></i><p>&nbsp;Visualisez l'impact Facebook de vos publications sur votre territoire.</p></div>
+                    <h3>Vous êtes une collectivité?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Découvrez <a href="https://www.politizr.com/lp/offres-collectivites">nos offres pour les collectivités</a>, conçues spécialement pour renforcer la démocratie locale sur votre territoire.</p></div>
+                    <h3>&nbsp;</h3>
+                </div>
             </div>
         </div>
 
@@ -116,7 +81,7 @@
         <div id="lpContact">
             <div class="center">
                 <div class="lpLeftCol">
-                    Contactez-nous pour en savoir plus : <a href="mailto:contact@politizr.com">contact@politizr.com</a><br>
+                    Contactez-nous pour plus d'informations : <a href="mailto:contact@politizr.com">contact@politizr.com</a><br>
                     ou par téléphone au <b>09. 50. 42. 09. 34</b>
                 </div>
                 <div class="lpRightCol">

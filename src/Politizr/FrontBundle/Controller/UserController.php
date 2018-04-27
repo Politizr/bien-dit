@@ -192,13 +192,18 @@ class UserController extends Controller
         $logger->info('*** editPersoAction');
 
         // Récupération user courant
+        $circleMember = false;
         $user = $this->getUser();
+        $nbCircles = $this->get('politizr.functional.circle')->countUserCircles($user);
+        if ($nbCircles > 0) {
+            $circleMember = true;
+        }
 
         // Formulaire
         $formPerso1 = $this->createForm(new PUserIdentityType($user), $user);
         $formPerso2 = $this->createForm(new PUserEmailType(), $user);
         $formPerso3 = $this->createForm(new PUserConnectionType(), $user);
-        $formPerso4 = $this->createForm(new PUserLocalizationType($user), $user);
+        $formPerso4 = $this->createForm(new PUserLocalizationType($user), $user, ['circleMember' => $circleMember]);
 
         // $formIdCheck = $this->createForm(new PUserIdCheckType(), $user);
 

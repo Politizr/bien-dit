@@ -64,3 +64,5 @@ parameters:
 
     public_user_ids: [ 3, 315 ]
     
+    # HTML Purifier customized service
+    exercise_html_purifier.config.class: Politizr\FrontBundle\Lib\HtmlPurifierConfig

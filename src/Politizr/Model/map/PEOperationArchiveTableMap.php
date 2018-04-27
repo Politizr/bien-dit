@@ -44,7 +44,7 @@ class PEOperationArchiveTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
-        $this->addColumn('p_user_id', 'PUserId', 'INTEGER', true, null, null);
+        $this->addColumn('p_user_id', 'PUserId', 'INTEGER', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 150, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('editing_description', 'EditingDescription', 'LONGVARCHAR', false, null, null);
@@ -52,6 +52,7 @@ class PEOperationArchiveTableMap extends TableMap
         $this->addColumn('geo_scoped', 'GeoScoped', 'BOOLEAN', false, 1, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('timeline', 'Timeline', 'BOOLEAN', false, 1, null);
+        $this->addColumn('new_subject_link', 'NewSubjectLink', 'BOOLEAN', false, 1, true);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);

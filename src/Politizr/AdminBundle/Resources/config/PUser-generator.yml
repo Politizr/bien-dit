@@ -75,6 +75,8 @@ params:
             label:          En ligne
         homepage:
             label:          Accueil
+        support_group:
+            label:          Supporte la création d'un groupe pour ses collectivités
         banned:
             label:          Banni
         banned_nb_days_left:
@@ -89,13 +91,6 @@ params:
             addFormOptions:
                 expanded:                       true
                 multiple:                       true
-                choices:                
-                    ROLE_OAUTH_USER:            'Connexion OpenID'
-                    ROLE_CITIZEN_INSCRIPTION:   'Inscription Citoyen en cours'
-                    ROLE_ELECTED_INSCRIPTION:   'Inscription Élu en cours'
-                    ROLE_CITIZEN:               'Citoyen'
-                    ROLE_ELECTED:               'Élu'
-                    ROLE_PROFILE_COMPLETED:     'Inscription terminée'
         created_at:
             label:      Création
             # addFilterOptions:
@@ -124,6 +119,8 @@ builders:
                         filters: 
                             qualified:          0
             display:                            [ file_name, name, firstname, p_l_city, qualified, validated, nb_id_check, reputation_score, online, homepage, last_activity, created_at ]
+            filters:                            [ id, uuid, email, name, qualified, validated, p_u_status, online, homepage, created_at, last_login ]
+            filtersMode:                        modal
             fields:
                 p_l_city:
                     label:                      Localisation
@@ -131,8 +128,6 @@ builders:
                 reputation_score:
                     label:                      Score
                     sortable:                   false
-            filtersMode:                        modal
-            filters:                            [ id, uuid, email, name, qualified, validated, p_u_status, online, homepage, last_activity, created_at ]
             object_actions:
                 homepage:
                     label:    En page d'accueil
@@ -209,8 +204,8 @@ builders:
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ qualified ]
-                    "En ligne":                 [ online ]
-                    "Mise en avant":            [ homepage ]
+                    "En ligne":                 [ [ online, homepage] ]
+                    "Groupe":                   [ support_group ]
                     "Validé":                   [ validated, nb_id_check ]
                     "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
             fields:
@@ -368,8 +363,8 @@ builders:
                     "Précédentes notifications": [ block_moderation_alert_listing  ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "En ligne":                 [ online ]
-                    "Mise en avant":            [ homepage ]
+                    "En ligne":                 [ [ online, homepage] ]
+                    "Groupe":                   [ support_group ]
                     "Validé":                   [ validated, nb_id_check ]
                     "Rôles":                    [ roles ]
                     "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]

@@ -1,0 +1,9 @@
+{% for user in users %}
+    {% if loop.first or loop.index0 is divisible by(3) %}
+        <div class="grpAnswersByColumn">
+    {% endif %}
+        {% include 'PolitizrFrontBundle:User:_summary.html.twig' with {'user': user} only %}
+    {% if loop.last or loop.index is divisible by(3) %}
+        </div>
+    {% endif %}
+{% endfor %}

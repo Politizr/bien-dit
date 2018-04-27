@@ -94,6 +94,7 @@ class PUserTableMap extends TableMap
         $this->addColumn('nb_id_check', 'NbIdCheck', 'INTEGER', false, null, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('homepage', 'Homepage', 'BOOLEAN', false, 1, null);
+        $this->addColumn('support_group', 'SupportGroup', 'BOOLEAN', false, 1, null);
         $this->addColumn('banned', 'Banned', 'BOOLEAN', false, 1, null);
         $this->addColumn('banned_nb_days_left', 'BannedNbDaysLeft', 'INTEGER', false, null, null);
         $this->addColumn('banned_nb_total', 'BannedNbTotal', 'INTEGER', false, null, null);
@@ -113,7 +114,7 @@ class PUserTableMap extends TableMap
         $this->addRelation('PLCity', 'Politizr\\Model\\PLCity', RelationMap::MANY_TO_ONE, array('p_l_city_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PUser', 'Politizr\\Model\\PTag', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PUsers');
         $this->addRelation('POwner', 'Politizr\\Model\\PTag', RelationMap::ONE_TO_MANY, array('id' => 'p_owner_id', ), 'SET NULL', 'CASCADE', 'POwners');
-        $this->addRelation('PEOperation', 'Politizr\\Model\\PEOperation', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PEOperations');
+        $this->addRelation('PEOperation', 'Politizr\\Model\\PEOperation', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'SET NULL', 'PEOperations');
         $this->addRelation('POrder', 'Politizr\\Model\\POrder', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'POrders');
         $this->addRelation('PuFollowDdPUser', 'Politizr\\Model\\PUFollowDD', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuFollowDdPUsers');
         $this->addRelation('PuBookmarkDdPUser', 'Politizr\\Model\\PUBookmarkDD', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PuBookmarkDdPUsers');
@@ -133,6 +134,7 @@ class PUserTableMap extends TableMap
         $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDReactions');
         $this->addRelation('PDDComment', 'Politizr\\Model\\PDDComment', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDDComments');
         $this->addRelation('PDRComment', 'Politizr\\Model\\PDRComment', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PDRComments');
+        $this->addRelation('PUInPC', 'Politizr\\Model\\PUInPC', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PUInPCs');
         $this->addRelation('PMUserModerated', 'Politizr\\Model\\PMUserModerated', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'CASCADE', 'CASCADE', 'PMUserModerateds');
         $this->addRelation('PMUserMessage', 'Politizr\\Model\\PMUserMessage', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMUserMessages');
         $this->addRelation('PMUserHistoric', 'Politizr\\Model\\PMUserHistoric', RelationMap::ONE_TO_MANY, array('id' => 'p_user_id', ), 'SET NULL', 'CASCADE', 'PMUserHistorics');
@@ -161,6 +163,7 @@ class PUserTableMap extends TableMap
         $this->addRelation('PUCurrentQOPQOrganization', 'Politizr\\Model\\PQOrganization', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUCurrentQOPQOrganizations');
         $this->addRelation('PUNotificationPNotification', 'Politizr\\Model\\PNotification', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUNotificationPNotifications');
         $this->addRelation('PNEmail', 'Politizr\\Model\\PNEmail', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PNEmails');
+        $this->addRelation('PCircle', 'Politizr\\Model\\PCircle', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PCircles');
         $this->addRelation('PMModerationType', 'Politizr\\Model\\PMModerationType', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PMModerationTypes');
     } // buildRelations()
 

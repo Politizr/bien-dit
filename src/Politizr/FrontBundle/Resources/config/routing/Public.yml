@@ -13,6 +13,14 @@ Concept:
     pattern:  /concept
     defaults: { _controller: PolitizrFrontBundle:Public:concept }
 
+Cgu:
+    pattern:  /cgu-politizr
+    defaults: { _controller: PolitizrFrontBundle:Public:cgu }
+
+Charte:
+    pattern:  /charte-politizr
+    defaults: { _controller: PolitizrFrontBundle:Public:charte }
+
 LandingPage:
     pattern:  /lp/{theme}
     defaults: { _controller: PolitizrFrontBundle:Public:landingPage, theme: null }

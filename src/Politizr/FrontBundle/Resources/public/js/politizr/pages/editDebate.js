@@ -1,16 +1,13 @@
-$(function() {
-    // photo upload management
-    $("#formDebateUpdate").ajaxForm(options);
+// GLOBAL vars
+var uuid = $('#formDebateUpdate').attr('uuid');
+var type = $('#formDebateUpdate').attr('type');
 
+$(function() {
     // modal attributes show/hide
     $('.modalPublish').hide();
 
     // modal city/dep/region/country selection show/hide
     locShowHideAttr();
-
-    var uuid = $('input[name="uuid"]').val();
-    // // console.log(uuid);
-    
     updateDebateTagsZone(uuid);
 
     // sticky sidebar
@@ -36,9 +33,6 @@ $('body').on('click', "[action='openModalPublish']", function(e){
 $('body').on('click', "[action='closeModalPublish'], .modalPublishBg", function(e){
     // console.log('*** click close modal publish');
 
-    var uuid = $('input[name="uuid"]').val();
-    // // console.log(uuid);
-    
     updateDebateTagsZone(uuid);
 
     $('body').removeClass('noScroll');
@@ -59,29 +53,6 @@ $('#formTagType :checkbox, #formTagFamily :checkbox').on('change', function() {
     saveDocumentAttr();
 });
 
-
-// Publish debate from attr > final publication
-$('body').on('click', "[action='debatePublish']", function(e){
-    // console.log('*** click publish debate');
-    var uuid = $(this).attr('uuid');
-
-    $.when(saveDocumentAttr()).done(function(r1) {
-        return publishDebate(uuid);
-        // var confirmMsg = "Une fois publié, vous ne pourrez plus modifier votre sujet de discussion. Voulez-vous publier votre sujet?";
-        // smoke.confirm(confirmMsg, function(e) {
-        //     if (e) {
-        //         return publishDebate(uuid);
-        //     }
-        // }, {
-        //     ok: "Publier",
-        //     cancel: "Annuler"
-        //     // classname: "custom-class",
-        //     // reverseButtons: true
-        // });
-    });
-});
-
-
 // Save debate
 $("body").on("click", "[action='debateSave']", function(e) {
     // console.log('*** click debate save');
@@ -93,7 +64,6 @@ $("body").on("click", "[action='debateSave']", function(e) {
 $('body').on('click', "[action='debateDelete']", function(e){
     // console.log('*** click delete debate');
 
-    var uuid = $(this).attr('uuid');
     var confirmMsg = "Êtes-vous sûr de vouloir supprimer votre brouillon?";
     smoke.confirm(confirmMsg, function(e) {
         if (e) {
@@ -107,28 +77,11 @@ $('body').on('click', "[action='debateDelete']", function(e){
     });
 });
 
-//  PHOTO
+// Publish debate from attr > final publication
+$('body').on('click', "[action='debatePublish']", function(e){
+    // console.log('*** click publish debate');
 
-// Clic bouton upload photo local
-$("body").on("click", "[action='fileSelect']", function() {
-    // console.log('click file select');
-    $("#fileName").trigger('click');
-    return false;
+    $.when(saveDocumentAttr()).done(function(r1) {
+        return publishDebate(uuid);
+    });
 });
-
-// Upload simple
-$("body").on("change", "#fileName", function() {
-    // console.log('change file name');
-    $('#formDebateUpdate').submit();
-});
-
-// Delete photo
-$('body').on('click', "[action='fileDelete']", function(e){
-    // console.log('*** click file delete');
-
-    var uuid = $(this).attr('uuid');
-    var type = $(this).attr('type');
-
-    return deleteDocumentPhoto(uuid, type);
-});
-

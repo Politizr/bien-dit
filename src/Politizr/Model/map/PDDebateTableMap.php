@@ -50,6 +50,7 @@ class PDDebateTableMap extends TableMap
         $this->addForeignKey('p_l_department_id', 'PLDepartmentId', 'INTEGER', 'p_l_department', 'id', false, null, null);
         $this->addForeignKey('p_l_region_id', 'PLRegionId', 'INTEGER', 'p_l_region', 'id', false, null, null);
         $this->addForeignKey('p_l_country_id', 'PLCountryId', 'INTEGER', 'p_l_country', 'id', false, null, null);
+        $this->addForeignKey('p_c_topic_id', 'PCTopicId', 'INTEGER', 'p_c_topic', 'id', false, null, null);
         $this->addColumn('fb_ad_id', 'FbAdId', 'VARCHAR', false, 150, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 150, null);
@@ -58,6 +59,7 @@ class PDDebateTableMap extends TableMap
         $this->addColumn('note_pos', 'NotePos', 'INTEGER', false, null, 0);
         $this->addColumn('note_neg', 'NoteNeg', 'INTEGER', false, null, 0);
         $this->addColumn('nb_views', 'NbViews', 'INTEGER', false, null, null);
+        $this->addColumn('want_boost', 'WantBoost', 'INTEGER', false, null, 0);
         $this->addColumn('published', 'Published', 'BOOLEAN', false, 1, null);
         $this->addColumn('published_at', 'PublishedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('published_by', 'PublishedBy', 'VARCHAR', false, 300, null);
@@ -84,6 +86,7 @@ class PDDebateTableMap extends TableMap
         $this->addRelation('PLDepartment', 'Politizr\\Model\\PLDepartment', RelationMap::MANY_TO_ONE, array('p_l_department_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PLRegion', 'Politizr\\Model\\PLRegion', RelationMap::MANY_TO_ONE, array('p_l_region_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PLCountry', 'Politizr\\Model\\PLCountry', RelationMap::MANY_TO_ONE, array('p_l_country_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('PCTopic', 'Politizr\\Model\\PCTopic', RelationMap::MANY_TO_ONE, array('p_c_topic_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PEOperation', 'Politizr\\Model\\PEOperation', RelationMap::MANY_TO_ONE, array('p_e_operation_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('PuFollowDdPDDebate', 'Politizr\\Model\\PUFollowDD', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PuFollowDdPDDebates');
         $this->addRelation('PuBookmarkDdPDDebate', 'Politizr\\Model\\PUBookmarkDD', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PuBookmarkDdPDDebates');
@@ -91,6 +94,7 @@ class PDDebateTableMap extends TableMap
         $this->addRelation('PDReaction', 'Politizr\\Model\\PDReaction', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDReactions');
         $this->addRelation('PDDComment', 'Politizr\\Model\\PDDComment', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDDComments');
         $this->addRelation('PDDTaggedT', 'Politizr\\Model\\PDDTaggedT', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDDTaggedTs');
+        $this->addRelation('PDMedia', 'Politizr\\Model\\PDMedia', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'CASCADE', 'CASCADE', 'PDMedias');
         $this->addRelation('PMDebateHistoric', 'Politizr\\Model\\PMDebateHistoric', RelationMap::ONE_TO_MANY, array('id' => 'p_d_debate_id', ), 'SET NULL', 'CASCADE', 'PMDebateHistorics');
         $this->addRelation('PuFollowDdPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuFollowDdPUsers');
         $this->addRelation('PuBookmarkDdPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PuBookmarkDdPUsers');

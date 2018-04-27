@@ -23,17 +23,21 @@
                             <td colspan="2" style="padding: 40px 40px 40px 40px;  line-height: 180%;">
 Bonjour {{ user }},<br/><br/>
 
-Merci de votre inscription ! Je suis {% if user.qualified %}Lionel{% else %}Thomas{% endif %} de Politizr et je voulais vous souhaiter la bienvenue. Notre équipe est présente si vous avez besoin d'aide dans la découverte de nos fonctionnalités.<br/><br/>
+Je suis {% if user.qualified %}Lionel Bouzonville{% else %}Thomas Champion{% endif %}, co-fondateur de Politizr.<br/><br/>
+Chez Politizr, nous pensons que citoyens et élus doivent échanger pour oeuvrer à l’intérêt général: nous voulons faire évoluer les pratiques politiques pour favoriser des échanges constructifs, basés sur la transparence, le respect et la bienveillance.<br/><br/>
 
-En quelques mots, Politizr c'est :<br/><br/>
+{% if user.qualified %}
+Un des points fort de Politizr est de permettre de générer des discussions de fond sur des problématiques précises, pour permettre d’échanger sur des points de vue et avoir des retours sur des bonnes pratiques de la part d'élus de toute la France.<br/><br/>
 
-- Un lieu d'échange privilégié entre les citoyens et les élus.<br/>
-- Retrouvez l'intégralité des sujets qui font l'actualité au niveau local et national.<br/>
-- Un espace indépendant où vous avez la possibilité de vous exprimer afin de faire entendre votre voix sur les sujets qui vous préocuppent.<br/><br/>
+En complément, nous proposons désormais aux collectivités, de tout type et de toute taille, un service intégré à POLITIZR pour leur permettre d’avoir des retours de leurs administrés: je reviendrai vers vous prochainement avec une documentation complète !<br/><br/>
 
-Retrouvez plus de détail sur cette <a href="{{ url('Concept') }}">page</a>.<br/><br/>
+{% else %}
 
-Faites entendre votre voix avec Politizr!<br/><br/>
+Grâce à Politizr, vous pourrez exprimer votre opinion sur les sujets qui vous semblent importants sur votre territoire et obtenir des retours de vos élus.<br/><br/>
+
+{% endif %} 
+
+Commencez dès aujourd'hui à vous <a href="{{ url('DebateDraftNew') }}">exprimer</a>!<br/><br/>
 
 {% if user.qualified %}
 Lionel Bouzonville<br>

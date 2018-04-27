@@ -1,0 +1,31 @@
+imports:
+    - { resource: config.yml }
+
+framework:
+    # http://symfony.com/doc/current/reference/configuration/framework.html#session
+    session:
+        # cookies should only be sent over secure connections.
+        # cookie_secure: true
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
+            level: debug
+
+swiftmailer:
+    disable_delivery: true
+
+
+# app/config/config.yml
+fos_http_cache:
+    proxy_client:
+        symfony:
+            http:
+                servers: [ 127.0.0.1 ]
+                base_url: demo.politizr.com

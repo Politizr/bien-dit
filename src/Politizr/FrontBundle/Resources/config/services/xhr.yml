@@ -24,12 +24,31 @@ services:
             - @politizr.manager.user
             - @politizr.manager.document
             - @politizr.functional.document
+            - @politizr.functional.user
             - @politizr.functional.localization
             - @politizr.functional.tag
             - @politizr.functional.facebook
+            - @politizr.functional.circle
             - @politizr.tools.global
             - @politizr.twig.document
             - @politizr.form.type.document_localization
+            - @logger
+
+    politizr.xhr.circle:
+        class: Politizr\FrontBundle\Lib\Xhr\XhrCircle
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @kernel
+            - @session
+            - @event_dispatcher
+            - @templating
+            - @form.factory
+            - @router
+            - @politizr.functional.circle
+            - @politizr.functional.document
+            - @politizr.manager.circle
+            - @politizr.tools.global
             - @logger
 
     politizr.xhr.modal:
@@ -53,6 +72,7 @@ services:
         arguments:
             - @security.token_storage
             - @templating
+            - @politizr.functional.notification
             - @politizr.manager.user
             - @politizr.manager.notification
             - @logger
@@ -127,7 +147,6 @@ services:
 
     politizr.xhr.organization:
         class: Politizr\FrontBundle\Lib\Xhr\XhrOrganization
-        arguments:
         arguments:
             - @security.token_storage
             - @router

@@ -3,23 +3,46 @@
 deps
 README.md
 
+.forward
+.bashrc
+.bash_profile
+.bash_logout
+.bash_history
+.viminfo
+.gitmodules
+.ovhconfig
+
 update-fixtures.sh
 reload-bdd.sh
+
+/.ssh/
+
+/app/propel/fixtures/1*.yml
 
 /app/cache/*
 /app/logs/*
 /app/sessions/*
 /app/config/parameters.yml
 /app/config/parameters.yml.dev
+/app/config/parameters.yml.re7
+/app/config/config_dev.yml
+/app/config/config_re7.yml
+/app/config/config_test.yml
+/app/config/rsync_exclude_re7
 
 /vendor
 
 /web/.htaccess
-/web/robots.txt
 /web/app.php
 /web/index.php
+/web/robots.txt
 /web/*_dev.php
-/web/*_stage.php
+/web/*_cache.php
+/web/*_dev.php
+/web/*_re7.php
 
 /web/uploads/
-/web/html/
+/web/static/
+
+/web/js/
+/web/assetic/

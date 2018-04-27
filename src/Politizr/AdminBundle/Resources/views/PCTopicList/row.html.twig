@@ -1,0 +1,29 @@
+{% extends_admingenerated "PolitizrAdminBundle:PCTopicList:row.html.twig" %}
+
+{% block list_td_column_file_name %}
+    {% if PCTopic.fileName %}
+        <img src="{{ asset('/uploads/circles/'~PCTopic.fileName) | imagine_filter('admin_banner_thumb') }}" alt="{{ PCTopic.title }}">
+    {% endif %}
+{% endblock list_td_column_file_name %}
+
+{% block object_action_moveup %}
+    {% spaceless %}
+        {% if not PCTopic.isFirst() %}
+            <a class="btn btn-default btn-xs" href="{{ path("Politizr_AdminBundle_PCTopic_object", { 'pk': PCTopic.Id, action: 'moveUp' }) }}" 
+                data-original-title="{% trans from "Admin" %}+Haut{% endtrans %}" rel="tooltip">
+                <i class="fa fa-fw fa-arrow-up"></i>
+            </a>
+        {% endif %}
+    {% endspaceless %}
+{% endblock object_action_moveup %}
+
+{% block object_action_movedown %}
+    {% spaceless %}
+        {% if not PCTopic.isLast() %}
+            <a class="btn btn-default btn-xs" href="{{ path("Politizr_AdminBundle_PCTopic_object", { 'pk': PCTopic.Id, action: 'moveDown' }) }}" 
+                data-original-title="{% trans from "Admin" %}+Bas{% endtrans %}" rel="tooltip">
+                <i class="fa fa-fw fa-arrow-down"></i>
+            </a>
+        {% endif %}
+    {% endspaceless %}
+{% endblock object_action_movedown %}

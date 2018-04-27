@@ -3,12 +3,35 @@
 
 {% block title %}Éditer un sujet de discussion - {{ parent() }}{% endblock title %}
 
-{% block bodyClass %} class="user edition"{% endblock bodyClass %}
+{% block bodyClass %}
+    {% spaceless %}
+        {% if debate.PCTopicId %}
+            class="user edition grp"
+        {% else %}
+             class="user edition"
+        {% endif %}
+    {% endspaceless %}
+{% endblock bodyClass %}
+
+{% block header %}
+    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+        {% block topLeftMenu %}
+            {% if debate.PCTopicId %}
+                {% set circle = debate.circle %}
+                {% include 'PolitizrFrontBundle:Navigation\\Menu:_topLeftMenu.html.twig' with { 'circle': circle } only %}
+            {% else %}
+                {{ parent() }}
+            {% endif %}
+        {% endblock %}
+        {% block newSubject %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
 
 {% block headerMsg %}
     {{ parent() }}
 
-    {{ debate | editDocumentOperation }}
+    {{ debate | editDocumentBanner }}
 {% endblock %}
 
 {% block content %}
@@ -56,58 +79,25 @@
                     {{ debate | editTagFamilyForm }}
                 </div>
             </div>
-            {{ app.user | isAuthorizedToPublishDebate(debate.uuid) }}
+            {{ app.user | isAuthorizedToPublishDebate(debate) }}
             <div class="modalPublishBg"></div>
         </div>
     </div>
     <div id="content">
-        <div id="modalNoEdition">
-            <div class="noEdition">
-                <div class="alertNoEdition">
-                    <i class="icon-info"></i> L'édition d'un sujet n'est pas disponible sur mobile.
-                </div>
-                <p>Un brouillon a été sauvegardé. Vous pourrez le modifier ultérieurement.</p>
-                <a href="javascript: history.go(-1)">Retour page précédente</a>
-                <a href="{{ path('Homepage'~profileSuffix()) }}">Retour page d'accueil</a>
-            </div>
-        </div>
         <div class="editionPostCard">
-            {% set uploadAction = path('XhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ROUTE_DOCUMENT_PHOTO_UPLOAD'), 'xhrService': 'document', 'xhrMethod': 'documentPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_URL')}) %}
-            <form method="POST" action="{{ uploadAction }}" name="debate" id="formDebateUpdate" class="autoSubmitForm" enctype="multipart/form-data">
+            <form method="POST" name="debate" id="formDebateUpdate" class="autoSubmitForm" uuid="{{ debate.uuid }}" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') }}">
                 <div class="formBlock">
                     <div class="formBlockHeader">
                         <label>Titre</label>
                     </div>
-                    {{ form_widget(form.title, { 'attr': {'placeholder': 'Donnez un titre à votre sujet de discussion'}}) }}
-                </div>
-                <div class="formBlock">
-                    <div class="formBlockHeader">
-                        <label>Illustration</label>
-                    </div>
-                    <div class="postIllustration">
-                        <div id="uploadedPhoto">
-                            {% if debate.fileName %}
-                                {{ debate | image('debate_header', false) }}
-                            {% endif %}
-                        </div>
-                        <label for="fileName"><i class="icon-camera"></i></label>
-                    </div>
-                    <div class="uploadIllustration">
-                        <input type="file" name="fileName" id="fileName">
-                        <input type="hidden" name="uuid" value="{{ debate.uuid }}">
-                        <input type="hidden" name="type" value="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') }}">
-                        <label for="fileName">Sélectionner une image d'illustration</label>
-                        <a class="photoDelete" action="fileDelete" uuid="{{ debate.uuid }}" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') }}"><i class="icon-remove"></i>Supprimer</a>
-                        {{ form_widget(form.copyright, { 'attr': {'placeholder': 'Saississez ici la légende de votre illustration'}}) }}
-                    </div>
+                    {{ form_widget(form.title, { 'attr': {'placeholder': 'Titre de votre sujet'}}) }}
                 </div>
                 <div class="formBlock">
                     <div class="formBlockHeader">
                         <label>Texte</label>
                         {% include 'PolitizrFrontBundle:Navigation\\Helper:_textEditor.html.twig' %}
                     </div>
-                    <!-- idem alpha -->
-                    <div id="postText">
+                    <div id="postText" path="{{ oneup_uploader_endpoint('document') }}" delete="{{ path('DocImageDelete') }}">
                         <div class="paragraph">
                             <div class="editable description">
                                 {{ debate.description | purify }}
@@ -146,11 +136,15 @@
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/smoke.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/handlebars-v4.0.11.js'
+        '@PolitizrFrontBundle/Resources/public/js/jquery-sortable-min.js'
+        '@PolitizrFrontBundle/Resources/public/js/jquery.ui.widget.js'
+        '@PolitizrFrontBundle/Resources/public/js/jquery.iframe-transport.js'
+        '@PolitizrFrontBundle/Resources/public/js/jquery.fileupload.js'
         '@PolitizrFrontBundle/Resources/public/js/medium-editor.min.js'
-        '@PolitizrFrontBundle/Resources/public/js/jquery.form.min.js'
+        '@PolitizrFrontBundle/Resources/public/js/medium-editor-insert-plugin.min.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/medium.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/edit.js'
-        '@PolitizrFrontBundle/Resources/public/js/politizr/document/editPhoto.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/tag/editTags.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/editDebate.js'
         filter='uglifyjs2' %}

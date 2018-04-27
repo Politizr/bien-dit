@@ -1,0 +1,5 @@
+{% if user.qualified %}
+    <p>{{ user }} (ID {{ user.id }}) vient de demander une documentation pour Politizr Territoires!</p>
+{% else %}
+    <p>{{ user }} (ID {{ user.id }}) vient de soutenir la création de groupes pour ses collectivités!</p>
+{% endif %}

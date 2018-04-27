@@ -1,0 +1,12 @@
+{# beta #}
+<h5>Période</h5>
+<form id="dateFilter">
+    <input type="radio" class="dateFilter" name="dateFilter[]" value="{{ constant('Politizr\\Constant\\ListingConstants::FILTER_KEYWORD_ALL_DATE') }}" id="dateFilterAll" checked/>
+    <label for="dateFilterAll"><i class="icon-check"></i>Tous</label>
+    <input type="radio" class="dateFilter" name="dateFilter[]" value="{{ constant('Politizr\\Constant\\ListingConstants::FILTER_KEYWORD_LAST_DAY') }}" id="dateFilterLastDay"/>
+    <label for="dateFilterLastDay"><i class="icon-check"></i>Publiés ces dernières 24h</label>
+    <input type="radio" class="dateFilter" name="dateFilter[]" value="{{ constant('Politizr\\Constant\\ListingConstants::FILTER_KEYWORD_LAST_WEEK') }}" id="dateFilterLastWeek"/>
+    <label for="dateFilterLastWeek"><i class="icon-check"></i>Publiés ces 7 derniers jours</label>
+    <input type="radio" class="dateFilter" name="dateFilter[]" value="{{ constant('Politizr\\Constant\\ListingConstants::FILTER_KEYWORD_LAST_MONTH') }}" id="dateFilterLastMonth"/>
+    <label for="dateFilterLastMonth"><i class="icon-check"></i>Publiés ces 30 derniers jours</label>
+</form>

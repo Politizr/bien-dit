@@ -1,5 +1,25 @@
 {# beta #}
 <div class="actionPublish">
-    <a action="reactionPublish" uuid="{{ uuid }}"><i class="icon-publish"></i>Publier</a>
-    <div class="notice">Attention, une fois publiée, vous ne pourrez plus modifier votre publication.</div>
+    {% if 
+        reason == constant('Politizr\\Constant\\DocumentConstants::REASON_DEBATE_OWNER')
+        or reason == constant('Politizr\\Constant\\DocumentConstants::REASON_AUTHORIZED_CIRCLE_USER')
+        or reason == constant('Politizr\\Constant\\DocumentConstants::REASON_USER_ELECTED')
+        or reason == constant('Politizr\\Constant\\DocumentConstants::REASON_USER_OPERATION')
+        or reason == constant('Politizr\\Constant\\DocumentConstants::REASON_OWNER_OPERATION')
+    %}
+        <a action="reactionPublish" uuid="{{ document.uuid }}"><i class="icon-publish"></i>Publier</a>
+        <div class="notice">Attention, une fois publiée, vous ne pourrez plus modifier votre publication.</div>
+    {% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_CIRCLE_READ_ONLY') %}
+        <div class="cannotPublishReaction">
+            Les contributions pour ce groupe sont désormais closes.
+        </div>
+    {% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_NO_REPUTATION') %}
+        <div class="cannotPublishReaction">
+            Vous devez avoir au moins {{ constant('Politizr\\Constant\\ReputationConstants::ACTION_REACTION_WRITE') }} de réputation pour publier une réponse.
+        </div>
+    {% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_USER_NOT_CERTIFIED') %}
+        <div class="cannotPublishReaction">
+            Vous devez <a href="{{ path('IdCheckDataReviewE') }}">certifier votre identité</a> pour pouvoir publier une réponse.
+        </div>
+    {% endif %}
 </div>

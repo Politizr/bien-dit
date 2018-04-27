@@ -11,22 +11,9 @@
 {% block page_content %}
     <div id="dashboard">
         <div id="notificationBox">
-
-            {{ form_start(form, {'attr': { 'id': 'formNotification', 'novalidate': 'novalidate' }}) }}
-                {{ form_errors(form) }}
-
-                <label class="help">
-                    <ul>
-                        <li><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;Toujours utiliser des liens absolus</li>
-                        <li><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;Ajouter ```action="notificationCheck"``` dans les attributs des liens</li>
-                    </ul>
-                </label>
-                {{ form_row(form.description) }}
-                {{ form_row(form.p_users) }}
-    
-                <a action="createAdminNotif">Envoyer</a>
-            {{ form_end(form) }}
-
+            <div id="adminNotifForm">
+                {% include 'PolitizrAdminBundle:Fragment\\Notification:_adminNotifForm.html.twig' %}
+            </div>
             <div id="notificationsAdminHistory">
                 {% include 'PolitizrAdminBundle:Dashboard:_notifLast.html.twig' %}
             </div>

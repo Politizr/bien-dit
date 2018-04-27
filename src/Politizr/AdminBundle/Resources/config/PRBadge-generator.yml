@@ -24,6 +24,8 @@ params:
             label:          Titre
         online:
             label:          En ligne
+        file_name:
+            label:          Image
         created_at:
             label:          Création
         updated_at:
@@ -38,9 +40,9 @@ builders:
             title:                              Liste des badges
             max_per_page:                       50
             sort:                               [ id, ASC ]
-            display:                            [ title, p_r_badge_family, p_r_metal_type, nb_users, online ]
+            display:                            [ file_name, title, p_r_badge_family, p_r_metal_type, nb_users, online ]
             # filtersMode:                        top
-            filters:                            [ title, p_r_badge_family, p_r_metal_type, online, created_at ]
+            filters:                            [ title, p_r_badge_family, p_r_metal_type, online ]
             actions:
                 new:                            ~
             object_actions:
@@ -71,6 +73,7 @@ builders:
             tabs:
                 "Contenu":
                     "Texte":                    [ [ p_r_badge_family, p_r_metal_type  ], [ title ] ]
+                    "Image principale":         [ uploadedFileName ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
@@ -84,6 +87,13 @@ builders:
                 uuid:
                     addFormOptions:
                         read_only:              true
+                uploadedFileName:
+                    dbType:                     VARCHAR
+                    label:                      Image
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\SingleUploadType
+                    addFormOptions:
+                        deleteable:             fileName
+                        data_class:             Symfony\Component\HttpFoundation\File\File
                 created_at:
                     addFormOptions:
                       widget:                   single_text

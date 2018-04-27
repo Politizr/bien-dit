@@ -4,6 +4,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
+    AND p_d_debate.p_c_topic_id is NULL
     AND p_d_debate.homepage = 1 
 )
 
@@ -15,6 +16,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
+    AND p_d_reaction.p_c_topic_id is NULL
     AND p_d_reaction.homepage = 1
     AND p_d_reaction.tree_level > 0
 )

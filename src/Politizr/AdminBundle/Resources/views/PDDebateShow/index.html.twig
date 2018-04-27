@@ -15,6 +15,10 @@
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDDebate.PUserId) }}
 {% endblock %}
 
+{% block show_column_block_p_c_topic %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_TOPIC'), PDDebate.PCTopicId) }}
+{% endblock %}
+
 {# Contenus #}
 {% block show_column_summary %}
     {{ PDDebate.getSummary | purify }}
@@ -65,6 +69,19 @@
         {{ adminModerationAlertListing(PDDebate.PUserId) }}
     </div>
 {% endblock %}
+
+
+{# Bloc boost #}
+{% block show_column_block_want_boost %}
+    {% if PDDebate.wantBoost == constant('Politizr\\Constant\\DocumentConstants::WB_NO_RESPONSE') %}
+        Non répondu
+    {% elseif PDDebate.wantBoost == constant('Politizr\\Constant\\DocumentConstants::WB_OK') %}
+        Oui
+    {% else %}
+        Non
+    {% endif %}
+{% endblock %}
+
 
 {# Block front link #}
 {% block show_column_block_front %}

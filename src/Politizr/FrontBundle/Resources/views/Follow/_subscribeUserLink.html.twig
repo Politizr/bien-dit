@@ -3,19 +3,19 @@
     {% if app.user.id != object.id %}
         {% if follower %}
             <div class="stopFollowing" action="followUser" uuid="{{ object.uuid }}" way="unfollow">
-                <div class="actionText">Supprimer&nbsp;de&nbsp;mon&nbsp;fil&nbsp;d'actualité</div>
+                <div class="actionText">Ne plus suivre</div>
                 <i class="icon-remove"></i>
             </div>
         {% else %}
             <div class="startFollowing" action="followUser" uuid="{{ object.uuid }}" way="follow">
-                <div class="actionText">&nbsp;Ajouter&nbsp;à&nbsp;mon&nbsp;fil&nbsp;d'actualité</div>
+                <div class="actionText">Suivre cet utilisateur</div>
                 <i class="icon-add"></i>
             </div>
         {% endif %}
     {% endif %}
 {% else %}
     <div class="startFollowing">
-        <div class="actionText"><a href="{{ path('InscriptionChoice') }}">&nbsp;Ajouter&nbsp;à&nbsp;mon&nbsp;fil&nbsp;d'actualité</a></div>
+        <div class="actionText"><a href="{{ path('InscriptionChoice') }}">Suivre cet utilisateur</a></div>
         <i class="icon-add"></i>
     </div>
 {% endif %}

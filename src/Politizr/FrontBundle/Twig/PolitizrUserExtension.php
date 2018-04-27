@@ -17,6 +17,7 @@ use Politizr\Model\PDDebate;
 use Politizr\Model\PUNotification;
 use Politizr\Model\PUser;
 use Politizr\Model\PEOperation;
+use Politizr\Model\PCOwner;
 
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUserQuery;
@@ -38,7 +39,9 @@ class PolitizrUserExtension extends \Twig_Extension
 
     private $router;
 
+    private $userService;
     private $documentService;
+    private $circleService;
     
     private $formFactory;
 
@@ -50,7 +53,9 @@ class PolitizrUserExtension extends \Twig_Extension
      * @security.token_storage
      * @security.authorization_checker
      * @router
+     * @politizr.functional.user
      * @politizr.functional.document
+     * @politizr.functional.circle
      * @form.factory
      * @politizr.tools.global
      * @logger
@@ -59,7 +64,9 @@ class PolitizrUserExtension extends \Twig_Extension
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $router,
+        $userService,
         $documentService,
+        $circleService,
         $formFactory,
         $globalTools,
         $logger
@@ -69,7 +76,9 @@ class PolitizrUserExtension extends \Twig_Extension
 
         $this->router = $router;
 
+        $this->userService = $userService;
         $this->documentService = $documentService;
+        $this->circleService = $circleService;
 
         $this->formFactory = $formFactory;
         
@@ -150,18 +159,13 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
-                'isAuthorizedToReact',
-                array($this, 'isAuthorizedToReact'),
-                array('is_safe' => array('html'))
-            ),
-            new \Twig_SimpleFilter(
                 'isAuthorizedToReportAbuse',
                 array($this, 'isAuthorizedToReportAbuse'),
                 array('is_safe' => array('html'))
             ),
             new \Twig_SimpleFilter(
-                'isAuthorizedToNewComment',
-                array($this, 'isAuthorizedToNewComment'),
+                'isAuthorizedToPublishComment',
+                array($this, 'isAuthorizedToPublishComment'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
@@ -183,6 +187,21 @@ class PolitizrUserExtension extends \Twig_Extension
                 'localization',
                 array($this, 'localization'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
+                'circleMember',
+                array($this, 'circleMember'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
+                'circleMenu',
+                array($this, 'circleMenu'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
+                'circlesByOwner',
+                array($this, 'circlesByOwner'),
+                array('is_safe' => array('html'))
             ),
         );
     }
@@ -424,33 +443,7 @@ class PolitizrUserExtension extends \Twig_Extension
         // get current user
         $currentUser = $this->securityTokenStorage->getToken()->getUser();
         
-        $tags = array();
-
-        $debates = $user->getDebates();
-        foreach ($debates as $debate) {
-            $documentTags = $debate->getIndexedArrayTags($tagTypeId);
-            $tags = array_replace($tags, $documentTags);
-        }
-
-        $reactions = $user->getReactions();
-        foreach ($reactions as $reaction) {
-            $documentTags = $reaction->getIndexedArrayTags($tagTypeId);
-            $tags = array_replace($tags, $documentTags);
-        }
-
-        $comments = $user->getDComments();
-        foreach ($comments as $comment) {
-            $document = $comment->getPDocument();
-            $documentTags = $document->getIndexedArrayTags($tagTypeId);
-            $tags = array_replace($tags, $documentTags);
-        }
-
-        $comments = $user->getRComments();
-        foreach ($comments as $comment) {
-            $document = $comment->getPDocument();
-            $documentTags = $document->getIndexedArrayTags($tagTypeId);
-            $tags = array_replace($tags, $documentTags);
-        }
+        $tags = $this->userService->getIndexedArrayTagsByUserPublications($user, $tagTypeId, $currentUser);
 
         // Construction du rendu du tag
         $html = $env->render(
@@ -688,45 +681,6 @@ class PolitizrUserExtension extends \Twig_Extension
     }
 
     /**
-     * Test if the user has role to react to the document
-     *
-     * @param PUser $user
-     * @param PDDebate $document
-     * @return boolean
-     */
-    public function isAuthorizedToReact(PUser $user, PDocumentInterface $document)
-    {
-        // $this->logger->info('*** isAuthorizedToReact');
-        // $this->logger->info('$user = '.print_r($user, true));
-        // $this->logger->info('$document = '.print_r($document, true));
-
-        // elected profile can react if document ha no private tags
-        if (!$document->isWithPrivateTag() && $this->securityAuthorizationChecker->isGranted('ROLE_ELECTED')) {
-            return true;
-        }
-
-        // owner of private tag can react
-        if ($document->isWithPrivateTag()) {
-            $tags = $document->getTags(TagConstants::TAG_TYPE_PRIVATE);
-            foreach ($tags as $tag) {
-                $tagOwner = $tag->getPOwner();
-                if ($tagOwner && $tagOwner->getId() == $user->getId()) {
-                    return true;
-                }
-            }
-        }
-
-        // author of the debate can react
-        // + min reputation to reach
-        $score = $user->getReputationScore();
-        if ($document->isDebateOwner($user->getId()) && $score >= ReputationConstants::ACTION_REACTION_WRITE) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Test if the user can report an abuse
      *
      * @param PUser $user
@@ -783,104 +737,92 @@ class PolitizrUserExtension extends \Twig_Extension
     }
 
     /**
-     * Display the publish link - or not - depending of the reputation score and if elected user is validated
+     * Compute authorization for document's comment
      *
      * @param PUser $user
-     * @param string $uuid
+     * @param PDocumentInterface $document
+     * @param int $noParagraph
+     * @param boolean $withReason
      * @return string
      */
-    public function isAuthorizedToPublishDebate(\Twig_Environment $env, PUser $user, $uuid)
+    public function isAuthorizedToPublishComment(\Twig_Environment $env, PUser $user, PDocumentInterface $document, $noParagraph = 0, $withReason = true)
     {
-        // $this->logger->info('*** isAuthorizedToPublishDebate');
+        // $this->logger->info('*** isAuthorizedToPublishComment');
         // $this->logger->info('$user = '.print_r($user, true));
 
-        $score = $user->getReputationScore();
+        $reason = $this->userService->isAuthorizedToPublishComment($user, $document, $withReason);
 
-        if ($score >= ReputationConstants::ACTION_DEBATE_WRITE) {
-            $html = $env->render(
-                'PolitizrFrontBundle:Debate:_publishLink.html.twig',
-                array(
-                    'uuid' => $uuid,
-                )
-            );
-        } else {
-            $html = $env->render(
-                'PolitizrFrontBundle:Reputation:_cannotPublishDebate.html.twig',
-                array(
-                    'score' => $score,
-                )
-            );
+        if (!$withReason) {
+            return $reason;
         }
+
+        $html = $env->render(
+            'PolitizrFrontBundle:Comment:_comment.html.twig',
+            array(
+                'document' => $document,
+                'noParagraph' => $noParagraph,
+                'reason' => $reason,
+            )
+        );
 
         return $html;
     }
 
     /**
-     * Display the publish link - or not - depending of the reputation score
+     * Compute authorization for debate
      *
      * @param PUser $user
      * @param string $uuid
      * @return string
      */
-    public function isAuthorizedToPublishReaction(\Twig_Environment $env, PUser $user, $uuid)
+    public function isAuthorizedToPublishDebate(\Twig_Environment $env, PUser $user, PDDebate $debate, $withReason = true)
+    {
+        // $this->logger->info('*** isAuthorizedToPublishDebate');
+        // $this->logger->info('$user = '.print_r($user, true));
+
+        $reason = $this->userService->isAuthorizedToPublishDebate($user, $debate, $withReason);
+
+        if (!$withReason) {
+            return $reason;
+        }
+
+        $html = $env->render(
+            'PolitizrFrontBundle:Debate:_publishLink.html.twig',
+            array(
+                'document' => $debate,
+                'reason' => $reason,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Compute authorization for reaction
+     *
+     * @param PUser $user
+     * @param string $uuid
+     * @param boolean $withReason
+     * @return string
+     */
+    public function isAuthorizedToPublishReaction(\Twig_Environment $env, PUser $user, PDocumentInterface $document, $withReason = true)
     {
         // $this->logger->info('*** isAuthorizedToPublishReaction');
         // $this->logger->info('$user = '.print_r($user, true));
 
-        $score = $user->getReputationScore();
-        
-        if ($this->securityAuthorizationChecker->isGranted('ROLE_ELECTED') && !$user->isValidated()) {
-            // case: own subject > certification not needed
-            $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-            $debate = $reaction->getDebate();
-            if ($debate) {
-                $debateUser = $debate->getPUser();
-                if ($debateUser && $debateUser->getId() == $user->getId()) {
-                    if ($score >= ReputationConstants::ACTION_REACTION_WRITE) {
-                        $html = $env->render(
-                            'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
-                            array(
-                                'uuid' => $uuid,
-                            )
-                        );
-                    } else {
-                        $html = $env->render(
-                            'PolitizrFrontBundle:Reputation:_cannotPublishReaction.html.twig',
-                            array(
-                                'case' => ReputationConstants::SCORE_NOT_REACHED,
-                                'score' => $score,
-                            )
-                        );
-                    }
+        $reason = $this->userService->isAuthorizedToPublishReaction($user, $document, $withReason);
 
-                    return $html;
-                }
-            }
-
-            // case: other subject > certification needed
-            $html = $env->render(
-                'PolitizrFrontBundle:Reputation:_cannotPublishReaction.html.twig',
-                array(
-                    'case' => ReputationConstants::USER_ELECTED_NOT_VALIDATED,
-                    'score' => $score,
-                )
-            );
-        } elseif ($score >= ReputationConstants::ACTION_REACTION_WRITE) {
-            $html = $env->render(
-                'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
-                array(
-                    'uuid' => $uuid,
-                )
-            );
-        } else {
-            $html = $env->render(
-                'PolitizrFrontBundle:Reputation:_cannotPublishReaction.html.twig',
-                array(
-                    'case' => ReputationConstants::SCORE_NOT_REACHED,
-                    'score' => $score,
-                )
-            );
+        if (!$withReason) {
+            return $reason;
         }
+
+        $html = $env->render(
+            'PolitizrFrontBundle:Reaction:_publishLink.html.twig',
+            array(
+                'document' => $document,
+                'reason' => $reason,
+            )
+        );
 
         return $html;
     }
@@ -942,6 +884,53 @@ class PolitizrUserExtension extends \Twig_Extension
         );
 
         return $html;
+    }
+
+    /**
+     * Check if user is member of a circle
+     *
+     * @return boolean
+     */
+    public function circleMember(PUser $user)
+    {
+        $nbCircles = $this->circleService->countUserCircles($user);
+
+        if ($nbCircles > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get user's circles
+     *
+     * @return string
+     */
+    public function circleMenu(\Twig_Environment $env, PUser $user)
+    {
+        $owners = $this->circleService->getOwnersByUser($user);
+
+        $html = $env->render(
+            'PolitizrFrontBundle:Navigation\\Menu:_circles.html.twig',
+            array(
+                'owners' => $owners,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Get owner's circles for a user
+     *
+     * @return PropelCollection[PCircle]
+     */
+    public function circlesByOwner(PUser $user, PCOwner $owner)
+    {
+        $circles = $this->circleService->getOwnerCirclesByUser($owner, $user);
+
+        return $circles;
     }
 
     /* ######################################################################################################## */

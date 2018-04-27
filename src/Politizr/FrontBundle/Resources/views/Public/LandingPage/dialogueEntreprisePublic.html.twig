@@ -1,0 +1,113 @@
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% extends layout %}
+{% set headerRight = false %}
+
+{% set metaTitle = 'Dialogue Entreprise et Grand Public' %}
+{% set metaDescription = 'POLITIZR est un outil de dialogue à destination du grand public pour les entreprises désireuses d\'engager un dialogue constructif et de long terme.' %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ metaDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block bodyClass %} class="public visitor noHeaderTrigger"{% endblock %}
+
+{% block main %}
+    <div id="lpGeneric">
+        <div id="lpHero">
+            <div class="center">
+                <h1>En 2018, vous pouvez engager une consultation constructive avec le grand public...</h1>
+                <div id="f-display"><img src="{{ asset('bundles/politizrfront/images/f-display.png ') }}" alt="Entreprise et grand public"></div>
+                <div id="f-accessories"><img src="{{ asset('bundles/politizrfront/images/f-accessories.png') }}"></div>
+            </div>
+            <div id="lpHeroFader"></div>
+        </div>
+        <div id="lpUnderHero">
+            <div class="center">
+                Expert de la Civic Tech et du dialogue citoyen, POLITIZR propose une solution qui aidera les sociétés ou associations à engager un dialogue direct et constructif avec le grand public, que ce soit des parties prenantes en rapport avec vos projets ou tout simplement vos clients. Construit comme un réseau social et articulé autour de valeurs de légitimité, de durée et d'échanges constructifs, notre plateforme contribuera à construire une communauté active et impliquée autour de vos projets, loin des écueils des réseaux sociaux tradtionnels.<br/><br/>
+                <b>Ils nous font confiance: Actia, Caisse d'Epargne, ENEDIS, Véolia, CEVIPOF / Sciences Po Paris...</b>
+            </div>
+        </div>
+        <div id="lpArgu">
+            <div class="center">
+                <div class="lpLeftCol">
+                    <p>
+                        Notre plateforme se déploie en "marque blanche" et favorise des échanges constructifs, basés sur la transparence, le respect et la bienveillance.
+                    </p>
+                    <img src="{{ asset('bundles/politizrfront/images/f-illustr01.jpg') }}">
+                </div>
+                <div class="lpRightCol">
+                    <h3>Vous êtes une société ou une association désireuse d'impliquer le grand public?</h3>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Réseau social de “dialogue citoyen” clef en main</div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Interface favorisant des échanges constructifs</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Charte assurant un cadre convivial et respectueux</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Customisation en fonction de vos besoins</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Outil d’administration complet</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Service SaaS intégrant des mises à jour continues</p></div>
+                    <div class="lpCheckLi"><i class="icon-check"></i><p>Accompagnement et suivi de la démarche</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="lpCTA">
+            <div class="center">
+                Contactez-nous pour en savoir plus
+            </div>
+        </div>
+
+        <div id="lpContact">
+            <div class="center">
+                <div class="lpLeftCol">
+                    Contactez-nous pour en savoir plus : <a href="mailto:contact@politizr.com">contact@politizr.com</a><br>
+                    ou par téléphone au <b>09. 50. 42. 09. 34</b>
+                </div>
+                <div class="lpRightCol">
+                    <div class="formBlock withLoaderInside">
+                        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+
+                        <form name="directMessage" id="formDirectMessage">
+                            {{ form_errors(form) }}
+
+                            {{ form_row(form.name, { 'attr': { 'placeholder': 'Prénom et Nom' }}) }}
+                            {{ form_row(form.email, { 'attr': { 'placeholder': 'Email' }}) }}
+                            {{ form_row(form.city, { 'attr': { 'placeholder': 'Téléphone' }}) }}
+                            {{ form_row(form.description, { 'attr': { 'placeholder': 'Question' }}) }}
+
+                            {{ form_rest(form) }}
+                            <div class="buttonDirectMessage">
+                                <button type="button" action="submitDirectMessage">
+                                    Envoyer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock main %}
+
+{% block postMain %}
+    {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
+{% endblock postMain %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("LP Concertation Publique");
+        </script>
+    {% endif %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/landingPage.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

@@ -8,6 +8,10 @@ params:
     fields:
         id:
             label:          ID
+        p_circle:
+            label:          Groupe
+        p_circle_id:
+            label:          ID Groupe
         title:
             label:          Titre
         summary:
@@ -30,10 +34,12 @@ builders:
             title:                              Liste des chartes
             max_per_page:                       50
             sort:                               [ online, DESC ]
-            display:                            [ created_at, online ]
+            display:                            [ title, p_circle, created_at, online ]
             object_actions:
                 edit:                           ~
                 delete:                         ~
+            actions:
+                new:                            ~
     excel:
         params: ~
         filename: ~
@@ -42,7 +48,16 @@ builders:
         params:
             title:                              "Création charte"
             display:
-                "Champs principal":             [ title ]
+                "Champs principal":             [ title, p_circle ]
+            fields:
+                p_circle:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PCircle
+                        query:                  \Politizr\Model\PCircleQuery::create()->orderByTitle()
             actions:
               save:                             ~
               list:                             ~
@@ -52,10 +67,13 @@ builders:
             tabs:
                 "Résumé":
                     "Général":                  [ [ title  ], [ summary ] ]
+                "Objets":
+                    "Utilisateur":              [ p_circle ]
                 "Contenu":
                     "Texte":                    [ description ]
                 "Attributs":
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                    "En ligne":                 [ online ]
+                    "Création":                 [ [ created_at, updated_at ] ]
             fields:
                 summary:
                     grid_class:                 "col-md-12"
@@ -65,6 +83,10 @@ builders:
                     grid_class:                 "col-md-12"
                     addFormOptions:
                         attr:                   { class : tinymce }
+                p_circle:
+                    addFormOptions:
+                        disabled:               true
+                        read_only:              true
                 created_at:
                     addFormOptions:
                       widget:                   single_text

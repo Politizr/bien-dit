@@ -1,0 +1,105 @@
+{# beta #}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{% endif %}
+{% extends layout %}
+
+{% set metaTitle = topic.title | purify | trim ~' - '~ circle.title | purify | trim %}
+{% set metaDescription = topic.summary | striptags | truncate(160, true) | purify %}
+{% set ogDescription = topic.summary | striptags | truncate(295, true) | purify %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ ogDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block bodyClass %}
+    {% spaceless %}
+        {% set circle = topic.PCircle %}
+        {% if (isGrantedE() or isGrantedC()) %}
+            class="grp grp-{{ circle.PCOwner.slug }}"
+        {% else %}    
+            class="grp public grp-{{ circle.PCOwner.slug }}"
+        {% endif %}
+    {% endspaceless %}
+{% endblock bodyClass %}
+
+{% block header %}
+    {% if (isGrantedE() or isGrantedC()) %}
+        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+            {% block topLeftMenu %}
+                {% set circle = topic.PCircle %}
+                {% include 'PolitizrFrontBundle:Navigation\\Menu:_topLeftMenu.html.twig' with { 'circle': circle } only %}
+            {% endblock %}
+            {% block newSubject %}
+                {{ topic | newSubject }}
+            {% endblock %}
+        {% endembed %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block headerMsg %}
+    {{ circle | readOnlyMessage }}
+{% endblock %}
+
+{% block main %}
+    <div class="mainClass">
+        <div class="center">
+            {{ circle | circleMenuTop }}
+            {{ circleBreadcrumb(topic = topic) }}
+        </div>
+    </div>
+    {{ topic | topicBriefing }}
+
+    <div class="mainClass">
+        <div class="center">        
+            <div class="listHeaderByTag">
+                <div class="listHeader">
+                    <h5>[ {{ circle.title }} ] Les questions, avis, remarques ou opinions abordants la thématique:</h5>
+                    <h1>{{ topic.title }}</h1>
+                </div>
+            </div>
+                        
+            <div id="content">                                  
+                <div id="documentListing" uuid="{{ topic.uuid }}" class="searchResults withLoaderInside">
+                    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                    <div class="listTop"></div>
+                </div>
+            </div>
+
+            <div id="sidebar">
+                <div class="sidebarSearch">
+                    <div class="sidebarSearchFilters withLoaderInside">
+                        {% include 'PolitizrFrontBundle:Topic\\Filters:_publicationsCategory.html.twig' %}
+                    </div>
+                </div>
+                {{ topic | topicQuestion }}
+                {% include 'PolitizrFrontBundle:Navigation\\Helper:_circleHowTo.html.twig' %}
+            </div>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% if (app.environment == 'prod') %}
+        <script type="text/javascript">
+            mixpanel.track("Les discussions {{ topic.title }} du groupe {{ circle.title }}");
+        </script>
+    {% endif %}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/circle/listing.js'
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/detailTopic.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

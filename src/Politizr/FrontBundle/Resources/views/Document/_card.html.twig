@@ -1,12 +1,13 @@
 {# beta #}
 <div class="card {% if app.user and app.user.id == document.getPUserId %}myactivity{% endif %}">
+    {{ circleCardHeader(document = document) }}
     {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': document.user, 'withSocialLinks': false, 'withMandates': false } only %}
     <div class="{% if mini %}miniPost{% else %}newPost{% endif %}">
         {% include 'PolitizrFrontBundle:Document:_cardContent.html.twig' with { 'document': document, 'withImg': true, 'mini': false, 'summary': true } only %}
     </div>
     <div class="actionsBox">
         <div class="miniActions">
-            {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': document } only %}
+            {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': document, 'checkIfAuthorized': true } only %}
             {#
             {% if app.user and app.user.id != document.getPUserId %}
                 {% include 'PolitizrFrontBundle:Follow:_actionFollow.html.twig' with { 'subject': document } only %}
@@ -24,10 +25,9 @@
         <div class="postStats">
             {% include 'PolitizrFrontBundle:Document:_statsMini.html.twig' with { 'document': document, 'facebook': false } only %}
         </div>
-
         {{ document | nbElectedPublications }}
-
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': document } only %}</h5>
+        {{ circleBreadcrumb(document = document) }}
         <div class="postTags">
             <h5>Thématiques abordées</h5>
             <div class="tagList">

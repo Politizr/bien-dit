@@ -6,7 +6,7 @@
             <div class="bubblesCommentsHeader">
                 <span action="closeComments">Masquer<i class="icon-cross"></i></span>
             </div>
-            {{ app.user | isAuthorizedToNewComment(formComment, document.uuid, document.type) }}
+            {{ app.user | isAuthorizedToPublishComment(document, noParagraph, true) }}
         </div>
     {% endif %}
 
@@ -18,6 +18,6 @@
 {% else %}
     <div class="createAccountToComment">
         <span action="closeComments">Masquer<i class="icon-cross"></i></span>
-        <a class="linkCreateAccount" href="{{ path('InscriptionChoice') }}"><i class="icon-alert"></i>Créer un compte pour participer au débat</a>
+        <a class="linkCreateAccount" href="{{ path('InscriptionChoice') }}"><i class="icon-alert"></i>Inscription pour participer au débat</a>
     </div>
 {% endif %}

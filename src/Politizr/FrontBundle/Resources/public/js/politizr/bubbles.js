@@ -2,6 +2,12 @@
 var bubbleDelay = 500;
 var timeoutId;
 
+
+// reverse bubble for author
+$(function() {
+    $(".post .bubblesProfile").addClass("reverseBubblesProfile");
+});
+
 /**
  * Load bubble
  *

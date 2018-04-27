@@ -65,4 +65,20 @@ class PDDComment extends BasePDDComment implements PDCommentInterface
     {
         return parent::getPUser();
     }
+
+    /**
+     * @see PDCommentInterface::getTopicId
+     */
+    public function getTopicId()
+    {
+        return $this->getPDocument()->getTopicId();
+    }
+
+    /**
+     * @see PDCommentInterface::getCircle
+     */
+    public function getCircle()
+    {
+        return $this->getPDocument()->getCircle();
+    }
 }

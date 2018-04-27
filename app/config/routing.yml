@@ -15,3 +15,16 @@ _liip_imagine:
 #_internal:
 #    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #    prefix:   /_internal
+
+oneup_uploader:
+    resource: .
+    type: uploader
+
+nelmio_security:
+    path:     /nelmio/csp/report
+    defaults: { _controller: nelmio_security.csp_reporter_controller:indexAction }
+    methods:  [POST]
+
+# foshttpcache
+user_context_hash:
+    path: /_fos_user_context_hash

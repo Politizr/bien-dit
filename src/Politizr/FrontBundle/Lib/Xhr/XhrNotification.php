@@ -19,6 +19,7 @@ class XhrNotification
 {
     private $securityTokenStorage;
     private $templating;
+    private $notificationService;
     private $userManager;
     private $notificationManager;
     private $logger;
@@ -27,6 +28,7 @@ class XhrNotification
      *
      * @param @security.token_storage
      * @param @templating
+     * @param @politizr.functional.notification
      * @param @politizr.manager.user
      * @param @politizr.manager.notification
      * @param @logger
@@ -34,6 +36,7 @@ class XhrNotification
     public function __construct(
         $securityTokenStorage,
         $templating,
+        $notificationService,
         $userManager,
         $notificationManager,
         $logger
@@ -41,6 +44,8 @@ class XhrNotification
         $this->securityTokenStorage = $securityTokenStorage;
 
         $this->templating = $templating;
+
+        $this->notificationService = $notificationService;
 
         $this->userManager = $userManager;
         $this->notificationManager = $notificationManager;
@@ -68,8 +73,8 @@ class XhrNotification
             $notifs = [];
             $counterNotifs = 0;
         } else {
-            $notifs = $this->notificationManager->getScreenUserNotifications($user->getId());
-            $counterNotifs = $this->notificationManager->countScreenUserNotifications($user->getId());
+            $notifs = $this->notificationService->getScreenUserNotifications($user);
+            $counterNotifs = $this->notificationService->countScreenUserNotifications($user);
         }
 
         // Rendering

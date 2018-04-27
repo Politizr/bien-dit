@@ -63,9 +63,9 @@ class DocumentLocalizationType extends AbstractType
                 if ($currentType == LocalizationConstants::TYPE_CITY) {
                     $currentUuid = $this->localizationManager->getCityUuidByCityId($options['force_geoloc_id']);
                 } elseif ($currentType == LocalizationConstants::TYPE_DEPARTMENT) {
-                    $currentUuid = $this->localizationManager->getDepartmentUuidByDepartmentId($departmentId);
+                    $currentUuid = $this->localizationManager->getDepartmentUuidByDepartmentId($options['force_geoloc_id']);
                 } elseif ($currentType == LocalizationConstants::TYPE_REGION) {
-                    $currentUuid = $this->localizationManager->getRegionUuidByRegionId($regionId);
+                    $currentUuid = $this->localizationManager->getRegionUuidByRegionId($options['force_geoloc_id']);
                 }
             } else {
                 // If user is out of France, default is "circonscription" / other case > "city"
@@ -101,6 +101,7 @@ class DocumentLocalizationType extends AbstractType
 
             $form->add('loc_type', 'choice', array(
                 'label' => 'Localisation de la publication',
+                'disabled' => $options['force_geoloc'],
                 'required' => true,
                 'mapped' => false,
                 'choices' => $choices,
@@ -114,6 +115,7 @@ class DocumentLocalizationType extends AbstractType
 
             // Localization city type
             $form->add('localization_city', LocalizationCityChoiceType::class, array(
+                'disabled' => $options['force_geoloc'],
                 'required' => false,
                 'mapped' => false,
                 'current_uuid' => $currentUuid,
@@ -122,6 +124,7 @@ class DocumentLocalizationType extends AbstractType
 
             // Localization department type
             $form->add('localization_department', LocalizationDepartmentChoiceType::class, array(
+                'disabled' => $options['force_geoloc'],
                 'required' => false,
                 'mapped' => false,
                 'current_uuid' => $currentUuid,
@@ -130,6 +133,7 @@ class DocumentLocalizationType extends AbstractType
 
             // Localization region type
             $form->add('localization_region', LocalizationRegionChoiceType::class, array(
+                'disabled' => $options['force_geoloc'],
                 'required' => false,
                 'mapped' => false,
                 'current_uuid' => $currentUuid,
@@ -138,6 +142,7 @@ class DocumentLocalizationType extends AbstractType
 
             // Localization circonscription type
             $form->add('localization_circonscription', LocalizationCirconscriptionChoiceType::class, array(
+                'disabled' => $options['force_geoloc'],
                 'required' => false,
                 'mapped' => false,
                 'current_uuid' => $currentUuid,
@@ -210,6 +215,7 @@ class DocumentLocalizationType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Politizr\Model\PDocumentInterface',
             'user' => null,
+            'force_geoloc' => false,
             'force_geoloc_type' => null,
             'force_geoloc_id' => null,
         ));

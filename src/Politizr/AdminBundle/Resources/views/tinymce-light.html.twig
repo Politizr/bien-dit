@@ -3,8 +3,7 @@
 
 <script type="text/javascript">
     // Initializes all textareas with the tinymce class
-    $().ready(function() {
-       $('textarea.tinymce').tinymce({
+    var tinyMceAttr = {
           script_url : '{{ asset("bundles/politizradmin/js/tinymce_v4/tinymce.min.js") }}',
           theme : "modern",
           language : "fr_FR",
@@ -12,10 +11,12 @@
           height : 100,
           plugins : "paste,link,code",
           tools: "inserttable",
-          toolbar: "bold italic | link",
+          toolbar: "bold italic | link | code",
           paste_as_text: true,
           convert_urls: false,
           relatives_urls: false,
-       });
+    };
+    $().ready(function() {
+       $('textarea.tinymce').tinymce(tinyMceAttr);
     });
 </script>

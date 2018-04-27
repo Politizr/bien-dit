@@ -30,8 +30,12 @@ class TimelineService
 
     private $templating;
 
+    private $circleService;
+
     private $userManager;
     private $documentManager;
+
+    private $globalTools;
 
     private $logger;
 
@@ -39,23 +43,31 @@ class TimelineService
      *
      * @param @security.token_storage
      * @param @security.authorization_checker
+     * @param @politizr.functional.circle
      * @param @politizr.manager.user
      * @param @politizr.manager.document
+     * @param @politizr.tools.global
      * @param @logger
      */
     public function __construct(
         $securityTokenStorage,
         $securityAuthorizationChecker,
+        $circleService,
         $userManager,
         $documentManager,
+        $globalTools,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
+        $this->circleService = $circleService;
+
         $this->userManager = $userManager;
         $this->documentManager = $documentManager;
         
+        $this->globalTools = $globalTools;
+
         $this->logger = $logger;
     }
 
@@ -243,6 +255,9 @@ class TimelineService
             $inQueryReputationIds5 = 0;
         }
 
+        $topicIds = $this->circleService->getTopicIdsByUserId($userId);
+        $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+
         $timeline = $this->userManager->generateMyTimelinePaginatedListing(
             $userId,
             $inQueryDebateIds,
@@ -254,6 +269,7 @@ class TimelineService
             $inQueryReputationIds3,
             $inQueryReputationIds4,
             $inQueryReputationIds5,
+            $inQueryTopicIds,
             $offset,
             $count
         );

@@ -89,6 +89,24 @@ Politizr_AdminBundle_PUser_archive:
     defaults: { _controller: PolitizrAdminBundle:PUser/Actions:archive }
 
 
+# Circles
+Politizr_AdminBundle_PCircle_addUsersToCircle:
+    pattern:  /PCircle/addUsersToCircle
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:addUsersToCircle }
+
+Politizr_AdminBundle_PCircle_removeUsersFromCircle:
+    pattern:  /PCircle/removeUsersFromCircle
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:removeUsersFromCircle }
+
+Politizr_AdminBundle_PCircle_addUsersIsAuthorizedReactionToCircle:
+    pattern:  /PCircle/addUsersIsAuthorizedReactionToCircle
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:addUsersIsAuthorizedReactionToCircle }
+
+Politizr_AdminBundle_PCircle_removeUsersIsAuthorizedReactionToCircle:
+    pattern:  /PCircle/removeUsersIsAuthorizedReactionToCircle
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:removeUsersIsAuthorizedReactionToCircle }
+
+
 ################################################################################
 #               ADMIN GENERATED ROUTES
 ################################################################################
@@ -132,6 +150,11 @@ Politizr_AdminBundle_PDReaction:
     type:     admingenerator_nested
     prefix:   /PDReaction
 
+Politizr_AdminBundle_PDMedia:
+    resource: "@PolitizrAdminBundle/Controller/PDMedia/"
+    type:     admingenerator
+    prefix:   /PDMedia
+
 Politizr_AdminBundle_PDDComment:
     resource: "@PolitizrAdminBundle/Controller/PDDComment/"
     type:     admingenerator
@@ -142,10 +165,21 @@ Politizr_AdminBundle_PDRComment:
     type:     admingenerator
     prefix:   /PDRComment
 
-Politizr_AdminBundle_PDDirect:
-    resource: "@PolitizrAdminBundle/Controller/PDDirect/"
+# Groupes
+Politizr_AdminBundle_PCOwner:
+    resource: "@PolitizrAdminBundle/Controller/PCOwner/"
     type:     admingenerator
-    prefix:   /PDDirect
+    prefix:   /PCOwner
+
+Politizr_AdminBundle_PCircle:
+    resource: "@PolitizrAdminBundle/Controller/PCircle/"
+    type:     admingenerator
+    prefix:   /PCircle
+
+Politizr_AdminBundle_PCTopic:
+    resource: "@PolitizrAdminBundle/Controller/PCTopic/"
+    type:     admingenerator
+    prefix:   /PCTopic
 
 
 # Tags
@@ -213,6 +247,11 @@ Politizr_AdminBundle_POPaymentType:
     type:     admingenerator
     prefix:   /POPaymentType
 
+Politizr_AdminBundle_PCircleType:
+    resource: "@PolitizrAdminBundle/Controller/PCircleType/"
+    type:     admingenerator
+    prefix:   /PCircleType
+
 Politizr_AdminBundle_POPaymentState:
     resource: "@PolitizrAdminBundle/Controller/POPaymentState/"
     type:     admingenerator
@@ -238,6 +277,11 @@ Politizr_AdminBundle_PMEmailing:
     resource: "@PolitizrAdminBundle/Controller/PMEmailing/"
     type:     admingenerator
     prefix:   /PMEmailing
+
+Politizr_AdminBundle_PDDirect:
+    resource: "@PolitizrAdminBundle/Controller/PDDirect/"
+    type:     admingenerator
+    prefix:   /PDDirect
 
 Politizr_AdminBundle_PMAppException:
     resource: "@PolitizrAdminBundle/Controller/PMAppException/"

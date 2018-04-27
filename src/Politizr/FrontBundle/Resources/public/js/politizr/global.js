@@ -39,20 +39,6 @@ $("body").on("click", "[action='closeModal']", function() {
     $('#modal').hide();
 });
 
-// main menu
-$("body").on("mousedown touchstart", function(e) {
-    var container = $("body.css700 #headerMenu, #menu, [action='toggleMenu']");
-    if (!container.is(e.target) // if the target of the click isn't the container...
-        && container.has(e.target).length === 0) // ... nor a descendant of the container
-    {
-        $('#menu, body.user.css700 #headerMenu').hide();      
-    }
-});
-
-$("body").on("click", "[action='toggleMenu']", function() {
-    $('#menu, body.css700 #headerMenu').toggle();
-});
-
 // Scroll haut de page
 $("body").on("click", "[action='goUp']", function() {
     stickySidebar(true);
@@ -187,13 +173,49 @@ $("body").on("mouseout", "[action='confidentialToggle']", function() {
     $(this).next('.confidentialInfo').hide();   
 });
 
-// refresh timeline
+// ******************************************************************* //
+//                             REFRESH                                 //
+// ******************************************************************* //
+
+/**
+ * Refresh timeline
+ */
 function refreshTimeline() {
     if ($('.myfeed').length) {
         Waypoint.destroyAll();
         timelineList();
     }
 }
+
+/**
+ * Refresh debate followers infos
+ */
+function refreshDebateFollowers() {
+    if ($('#subjectFollowers').length) {
+        lastDebateFollowersListing(
+            $('.sidebarSubjectFollowers').find('#subjectFollowers').first(),
+            $('.sidebarSubjectFollowers').find('.ajaxLoader').first(),
+            $('#subjectFollowers').attr('uuid')
+        );
+    }
+}
+
+/**
+ * Refresh user followers infos
+ */
+function refreshUserFollowers() {
+    if ($('#userFollowers').length) {
+        lastUserFollowersListing(
+            $('.sidebarUserFollowers').find('#userFollowers').first(),
+            $('.sidebarUserFollowers').find('.ajaxLoader').first(),
+            $('#userFollowers').attr('uuid')
+        );
+    }
+}
+
+// ******************************************************************* //
+//                              STICKY                                 //
+// ******************************************************************* //
 
 // global sticky instance
 var stickyWaypoint;
@@ -270,7 +292,13 @@ function fullImgLiquid() {
         fill: true,
         horizontalAlign: "center",
         verticalAlign: "center"
-    });    
+    });
+    // full size image in grp
+    $("#grpBriefHeaderImg, .grpCharterImg, .grpImg").imgLiquid({
+        fill: true,
+        horizontalAlign: "center",
+        verticalAlign: "center"
+    });
 }
 
 /**
@@ -364,7 +392,9 @@ $('body').on("click", "[action='openCgv']", function(e){
 $('body').on("click", "[action='openCharte']", function(e){
     // console.log('*** click openCharte');
 
-    return modalCharte();
+    var uuid = $(this).attr('uuid');
+
+    return modalCharte(uuid);
 });
 
 $('body').on("click", "[action='openGlobalHelper']", function(e){
@@ -432,8 +462,9 @@ function modalCgv() {
 /**
  * Modal Charte
  */
-function modalCharte() {
+function modalCharte(uuid) {
     // console.log('*** modalCharte');
+    // console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_MODAL_CHARTE,
@@ -444,7 +475,7 @@ function modalCharte() {
 
     return xhrCall(
         document,
-        null,
+        { 'uuid': uuid },
         xhrPath
     ).done(function(data) {
         if (data['error']) {

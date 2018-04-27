@@ -6,6 +6,11 @@ use Politizr\Constant\PathConstants;
 
 use Politizr\Exception\InconsistentDataException;
 
+use Politizr\Model\PDDebateQuery;
+use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDDCommentQuery;
+use Politizr\Model\PDRCommentQuery;
+
 use Eko\FeedBundle\Item\Writer\RoutedItemInterface;
 
 /**
@@ -146,6 +151,33 @@ class Publication implements RoutedItemInterface
     public function setType($val)
     {
         $this->type = $val;
+    }
+
+    // ******************************************************************************************* //
+
+    /**
+     * Return "real" object relative to this abstract publication
+     *
+     * @return PDDebate|PDReaction|PDDComment|PDRComment
+     */
+    public function getRelativeObject()
+    {
+        switch ($this->getType()) {
+            case ObjectTypeConstants::TYPE_DEBATE:
+                return PDDebateQuery::create()->findPk($this->getId());
+                break;
+            case ObjectTypeConstants::TYPE_REACTION:
+                return PDReactionQuery::create()->findPk($this->getId());
+                break;
+            case ObjectTypeConstants::TYPE_DEBATE_COMMENT:
+                return PDDCommentQuery::create()->findPk($this->getId());
+                break;
+            case ObjectTypeConstants::TYPE_REACTION_COMMENT:
+                return PDRCommentQuery::create()->findPk($this->getId());
+                break;
+            default:
+                throw new InconsistentDataException(sprintf('Cannot retrieve relative object for Publication ID-', $this->getId()));
+        }
     }
 
     // ******************************************************************************************* //

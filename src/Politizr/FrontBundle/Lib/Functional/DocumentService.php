@@ -1,9 +1,13 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Functional;
 
+use Symfony\Component\DomCrawler\Crawler;
+
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\PathConstants;
+use Politizr\Constant\DocumentConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\LocalizationConstants;
@@ -16,6 +20,7 @@ use Politizr\Model\PUser;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
+use Politizr\Model\PDMediaQuery;
 use Politizr\Model\PDDCommentQuery;
 use Politizr\Model\PDRCommentQuery;
 use Politizr\Model\PUserQuery;
@@ -25,6 +30,10 @@ use Politizr\Model\PUReputationQuery;
 use Politizr\Model\PTagQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUFollowUQuery;
+use Politizr\Model\PEOperationQuery;
+use Politizr\Model\PCTopicQuery;
+
+use Politizr\FrontBundle\Lib\SimpleImage;
 
 /**
  * Functional service for document management.
@@ -38,9 +47,11 @@ class DocumentService
     private $securityAuthorizationChecker;
     
     private $documentManager;
+    private $tagManager;
 
     private $tagService;
     private $localizationService;
+    private $circleService;
 
     private $router;
 
@@ -53,8 +64,10 @@ class DocumentService
      * @param @security.token_storage
      * @param @security.authorization_checker
      * @param @politizr.manager.document
+     * @param @politizr.manager.tag
      * @param @politizr.functional.tag
      * @param @politizr.functional.localization
+     * @param @politizr.functional.circle
      * @param @router
      * @param @politizr.tools.global
      * @param @logger
@@ -63,8 +76,10 @@ class DocumentService
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $documentManager,
+        $tagManager,
         $tagService,
         $localizationService,
+        $circleService,
         $router,
         $globalTools,
         $logger
@@ -73,9 +88,11 @@ class DocumentService
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
         $this->documentManager = $documentManager;
+        $this->tagManager = $tagManager;
 
         $this->tagService = $tagService;
         $this->localizationService = $localizationService;
+        $this->circleService = $circleService;
 
         $this->router = $router;
 
@@ -146,8 +163,10 @@ class DocumentService
      * Get filtered paginated documents
      * beta
      *
+     * @param int $currentUserId
      * @param string $geoUuid
      * @param string $type
+     * @param string $topicUuid
      * @param string $filterPublication
      * @param string $filterProfile
      * @param string $filterActivity
@@ -157,8 +176,10 @@ class DocumentService
      * @return PropelCollection[Publication]
      */
     public function getPublicationsByFilters(
-        $geoUuid,
-        $type,
+        $currentUserId = null,
+        $geoUuid = null,
+        $type = null,
+        $topicUuid = null,
         $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS,
         $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS,
         $filterActivity = ListingConstants::ORDER_BY_KEYWORD_LAST,
@@ -167,6 +188,12 @@ class DocumentService
         $count = ListingConstants::LISTING_CLASSIC_PAGINATION
     ) {
         $documents = new \PropelCollection();
+
+        $inQueryTopicIds = null;
+        if ($currentUserId) {
+            $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
 
         $inQueryCityIds = null;
         $inQueryDepartmentIds = null;
@@ -186,6 +213,14 @@ class DocumentService
 
             $inQueryCityIds = $this->globalTools->getInQuery($cityIds);
             $inQueryDepartmentIds = $this->globalTools->getInQuery($departmentIds);
+        }
+
+        $topicId = null;
+        if ($topicUuid) {
+            $topic = PCTopicQuery::create()->filterByUuid($topicUuid)->findOne();
+            if ($topic) {
+                $topicId = $topic->getId();
+            }
         }
 
         // "most views" activity filters only applied to debates and/or reactions:
@@ -230,10 +265,12 @@ class DocumentService
         }
 
         $documents = $this->documentManager->generatePublicationsByFiltersPaginated(
+            $inQueryTopicIds,
             $inQueryCityIds,
             $inQueryDepartmentIds,
             $regionId,
             $countryId,
+            $topicId,
             $filterPublication,
             $filterProfile,
             $filterActivity,
@@ -249,16 +286,23 @@ class DocumentService
      * Get "user publications" paginated listing
      * beta
      *
-     * @param array $userId
+     * @param int $userId
+     * @param int $currentUserId
      * @param string $orderBy
      * @param string $tagId
      * @param integer $offset
      * @param înteger $count
      * @return PropelCollection[Publication]
      */
-    public function getUserPublicationsPaginatedListing($userId, $orderBy, $tagId = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    public function getUserPublicationsPaginatedListing($userId, $currentUserId = null, $orderBy, $tagId = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
-        $documents = $this->documentManager->generatePublicationsByUserPaginated($userId, $orderBy, $tagId, $offset, $count);
+        $inQueryTopicIds = null;
+        if ($currentUserId) {
+            $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
+
+        $documents = $this->documentManager->generatePublicationsByUserPaginated($userId, $inQueryTopicIds, $orderBy, $tagId, $offset, $count);
 
         return $documents;
     }
@@ -312,19 +356,26 @@ class DocumentService
      * beta
      *
      * @param array $tagIds
+     * @param int $currentUserId
      * @param string $orderBy
      * @param integer $offset
      * @param înteger $count
      * @return PropelCollection PDocument
      */
-    public function getDocumentsByTagsPaginated($tagIds, $orderBy = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    public function getDocumentsByTagsPaginated($tagIds, $currentUserId = null, $orderBy = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
+        $inQueryTopicIds = null;
+        if ($currentUserId) {
+            $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
+
         $inQueryTagIds = implode(',', $tagIds);
         if (empty($inQueryTagIds)) {
             $inQueryTagIds = 0;
         }
 
-        $documents = $this->documentManager->generateDocumentsByTagsPaginated($inQueryTagIds, $orderBy, $offset, $count);
+        $documents = $this->documentManager->generateDocumentsByTagsPaginated($inQueryTagIds, $inQueryTopicIds, $orderBy, $offset, $count);
 
         return $documents;
     }
@@ -552,9 +603,10 @@ class DocumentService
         if ($parent) {
             $parentId = $parent->getId();
         }
+        $topicId = $debate->getPCTopicId();
 
         // Create reaction for user
-        $reaction = $this->documentManager->createReaction($user->getId(), $debateId, $parentId);
+        $reaction = $this->documentManager->createReaction($user->getId(), $debateId, $parentId, $topicId);
 
         // Init default reaction's tagged tags
         $this->documentManager->initReactionTaggedTags($reaction);
@@ -562,60 +614,190 @@ class DocumentService
         return $reaction;
     }
 
-    /* ######################################################################################################## */
-    /*                                      SECURITY CONTROLS                                                   */
-    /* ######################################################################################################## */
-    
     /**
-     * Controle if user can note document:
-     *  - not his document
-     *  - not already notate
-     *  - has reputation to note down
+     * Create new media
      *
-     * @param PUser $user
-     * @param PDDebate|PDReaction|PDDComment|PDRComment $object
-     * @param string up|down
+     * @param SimpleImage $image
+     * @param string $uuid  document uuid
+     * @param string $type document type
+     * @return PDMedia
+     */
+    public function createMediaFromSimpleImageByDocUuid(SimpleImage $image, $uuid, $type)
+    {
+        // get reaction's associated debate
+        if (!$image || !$uuid) {
+            throw new InconsistentDataException('File null');
+        }
+
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $query = PDDebateQuery::create();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $query = PDReactionQuery::create();
+        } else {
+            throw new InconsistentDataException(sprintf('Document of type "%s" not found', $type));
+        }
+
+        $document = $query->filterByUuid($uuid)->findOne();
+        if (!$document) {
+            throw new InconsistentDataException(sprintf('Document "%s" not found', $uuid));
+        }
+
+        $debateId = null;
+        $reactionId = null;
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $debateId = $document->getId();
+        } else {
+            $reactionId = $document->getId();
+        }
+
+        $media = $this->documentManager->createMedia(
+            $debateId,
+            $reactionId,
+            $image->getPath(),
+            $image->getBasename(),
+            $image->getExtension(),
+            $image->getSize(),
+            $image->getWidth(),
+            $image->getHeight()
+        );
+
+        return $media;
+    }
+
+    /**
+     * Remove a Media object by basename
+     *
+     * @param string $basename
      * @return boolean
      */
-    public function canUserNoteDocument(PUser $user, $object, $way)
+    public function removeMediaByFilename($basename)
     {
-        // $this->logger->info('*** canUserNoteDocument');
-        // $this->logger->info('$user = '.print_r($user, true));
-        // $this->logger->info('$object = '.print_r($object, true));
-        // $this->logger->info('$way = '.print_r($way, true));
+        $medias = PDMediaQuery::create()
+            ->filterByFileName($basename)
+            ->find();
 
-        // check if current user is not author
-        if ($object->getPUserId() == $user->getId()) {
-            return false;
+        if (count($medias) > 1) {
+            throw new InconsistentDataException(sprintf('Several medias with basename %s have been found, cancel deletion'), $basename);
+        } elseif (count($medias) == 1) {
+            $medias->delete();
+
+            return true;
         }
 
-        // check if user has already notate
-        $query = PUReputationQuery::create()
-                    ->filterByPObjectId($object->getId())
-                    ->filterByPObjectName($object->getType())
-                    ->filterByPRActionId(
-                        ReputationConstants::getNotationPRActionsId()
-                    );
-        $nb = $user->countPUReputations($query);
-        if ($nb > 0) {
-            return false;
-        }
-
-        // check if user can note down
-        if ($way == 'down') {
-            $score = $user->getReputationScore();
-            if ($score < ReputationConstants::ACTION_DEBATE_NOTE_NEG) {
-                return false;
-            }
-        }
-
-        return true;
+        return false;
     }
 
     /* ######################################################################################################## */
-    /*                                  CONTEXT BY DOCUMENT TYPE                                                */
+    /*                                CONTEXT DOCUMENT COMPUTING                                                */
     /* ######################################################################################################## */
     
+    /**
+     * Compute and return the main image for a document
+     * return fileName if it exists (BC), else get the image in the first div if it exists
+     *
+     * @return string $path
+     */
+    public function findMainImagePath(PDocumentInterface $document)
+    {
+        $fileName = null;
+        if ($document->getFileName()) {
+            // old behaviour
+            $fileName = $document->getFileName();
+        } else {
+            // parse document to find 1st image
+            // cf https://symfony.com/doc/2.8/components/dom_crawler.html
+            $crawler = new Crawler($document->getDescription());
+            $nbImg = $crawler->filter('img')->count();
+            if ($nbImg > 0) {
+                $imgSrc = $crawler->filter('img')->first()->attr('src');
+                $uuid = $crawler->filter('img')->first()->attr('uuid');
+
+                // extract relative path from src / apply only with local uploads
+                if ($uuid) {
+                    $fileName = basename($imgSrc);
+                    // check image attribute
+                    $media = PDMediaQuery::create()->filterByUuid($uuid)->findOne();
+                    if ($media) {
+                        // min width required to be used as post illustration
+                        $width = $media->getWidth();
+                        if ($width < DocumentConstants::DOC_MAIN_IMAGE_MIN_WIDTH) {
+                            $fileName = null;
+                        }
+                    }
+                }
+            }
+        }
+
+        // file found
+        if ($fileName) {
+            switch ($document->getType()) {
+                case ObjectTypeConstants::TYPE_DEBATE:
+                    $uploadWebPath = PathConstants::DEBATE_UPLOAD_WEB_PATH;
+                    $path = $uploadWebPath.$fileName;
+                    break;
+                case ObjectTypeConstants::TYPE_REACTION:
+                    $uploadWebPath = PathConstants::REACTION_UPLOAD_WEB_PATH;
+                    $path = $uploadWebPath.$fileName;
+                    break;
+                default:
+                    throw new InconsistentDataException(sprintf('Object type %s not managed', $document->getType()));
+            }
+            return $path;
+        }
+
+        return null;
+    }
+
+    /**
+     * Manage linked object depending of the context of edition
+     *
+     * @param
+     * @param
+     * @return
+     */
+    public function manageEditDocumentContext(PDDebate $debate, $opUuid = null, $topicUuid = null)
+    {
+        // manage OP context
+        $operation = null;
+        if ($opUuid && $debate->getType() == ObjectTypeConstants::TYPE_DEBATE) {
+            $operation = PEOperationQuery::create()
+                ->filterByUuid($opUuid)
+                ->findOne();
+            if (!$operation) {
+                throw new InconsistentDataException(sprintf('Operation %s not found.', $opUuid));
+            }
+
+            $debate->setPEOperationId($operation->getId());
+            $debate->save();
+
+            // op preset tags
+            $tags = $operation->getPTags();
+            foreach ($tags as $tag) {
+                $this->tagManager->createDebateTag($debate->getId(), $tag->getId());
+            }
+
+            return $debate;
+        }
+
+        // manage TOPIC context
+        $topic = null;
+        if ($topicUuid) {
+            $topic = PCTopicQuery::create()
+                ->filterByUuid($topicUuid)
+                ->findOne();
+            if (!$topic) {
+                throw new InconsistentDataException(sprintf('Topic %s not found.', $topicUuid));
+            }
+
+            $debate->setPCTopicId($topic->getId());
+            $debate->save();
+
+            return $debate;
+        }
+
+        return $debate;
+    }
+
     /**
      * Compute various attributes depending of the document context
      *

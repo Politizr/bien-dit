@@ -38,7 +38,7 @@
         "friendsofsymfony/user-bundle": "^1.3",
 
         "knplabs/knp-menu-bundle": ">1.0,<2.2",
-        "symfony2admingenerator/generator-bundle": "^2.0@beta",
+        "symfony2admingenerator/generator-bundle": "^2.0",
         "symfony2admingenerator/form-bundle": "@stable",
         "symfony2admingenerator/form-extensions-bundle": "dev-master",
         "liuggio/excelbundle": "^2.0",
@@ -61,10 +61,17 @@
         "liip/url-auto-converter-bundle": "dev-master",
 
         "exercise/htmlpurifier-bundle": "^0.2.2",
-        "rollerworks/password-strength-bundle": "^1.4",
+        "rollerworks/password-strength-bundle": "^1.7",
         "lexik/maintenance-bundle": "^2.0",
         "eko/feedbundle": "^1.2",
-        "algolia/algoliasearch-client-php": "^1.18"
+        "algolia/algoliasearch-client-php": "^1.18",
+
+        "oneup/uploader-bundle": "^1.9",
+        
+        "nelmio/security-bundle": "^2.4",
+        "friendsofsymfony/http-cache-bundle": "^2.1",
+        "guzzlehttp/psr7": "^1.4",
+        "php-http/guzzle6-adapter": "^1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

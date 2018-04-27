@@ -1,7 +1,7 @@
 {# beta #}
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
-{% block title %}Politizr, espace de discussions entre les citoyens et les élus{% endblock title %}
+{% block title %}Politizr, réseau social d'échanges constructifs entre les citoyens, les élus et les collectivités{% endblock title %}
 
 {% block ogVideo %}<meta property='og:video' content='https://www.youtube.com/v/7WHZpebc9q4' />{% endblock ogVideo %}
 {% block tcPlayer %}<meta name="twitter:player" content="https://www.youtube.com/embed/7WHZpebc9q4" />{% endblock tcPlayer %}
@@ -24,9 +24,9 @@
     <div id="publicVideo">
         <div id="videoOverlay">
             <div id="videoText">
-                <h1>Élu-e ou Citoyen-ne?<br/>Bienvenue sur un lieu d'échange unique et adapté</h1>
-                <h2>POLITIZR est un espace en ligne <b>indépendant, neutre et gratuit</b><br> qui réinvente le dialogue entre <b>citoyen-ne-s et élu-e-s</b> pour que chaque habitant-e devienne <b>acteur de son territoire</b><br> et que chaque élu-e puisse <b>rendre compte publiquement, sur le fond et dans la durée</b> de ses actions.</h2>
-                <a href="{{ path('InscriptionChoice') }}">Créer un compte</a>
+                <h1>Et vous, changerez-vous d'opinion?<br/></h1>
+                <h2>Bienvenue sur un espace de discussion <b>indépendant, neutre et gratuit</b> qui renouvelle les pratiques politiques<br>en permettant des échanges structurés et constructifs entre <b>les citoyen.ne.s, les élu.e.s et leurs collectivités</b> partout en France.</h2>
+                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
                 <a href="{{ path('Concept') }}">En savoir plus</a>
             </div>
             <div id="goDown" action="scrollVideo">
@@ -43,16 +43,31 @@
         <div class="center">
             <div id="yellowBlock">
                 <span>
-                    Exprimez-vous <b>simplement et gratuitement</b> sur des sujets relatifs à <b>votre territoire</b><br> pour permettre à <b>vos élus</b> de prendre les <b>bonnes décisions en toute transparence</b>.
+                    Nous favorisons des <b>échanges constructifs</b>, basés sur la <b>transparence</b>, le <b>respect</b> et la <b>bienveillance</b> sur des <b>sujets proches de chez vous</b>.
                 </span>
-                <a href="{{ path('InscriptionChoice') }}">J'ai quelque chose à dire</a>
+                <a href="{{ path('InscriptionChoice') }}">Je m'exprime</a>
             </div>
             <div id="blueBlock">
-                <span>Des <b>échanges constructifs</b> entre citoyen-ne-s et élu-e-s<br>aux <b>quatre coins de la France</b>.</span>
+                <span><b>Questions, opinions<br>et propositions<br>partout en France!</b></span>
             </div>
         </div>
     </div>
 
+    <div id="bannerPromo" class="bannerPromoSenatoriales">
+        <div class="center">
+            <div class="txtBannerPromo">
+                <h1>Collectivités?</h1>
+                <b>PLU/PLUi, aménagement urbain, budget participatif...</b><br><br>
+                <span>
+Communiquez autour de vos projets et faîtes réagir vos administrés sur les sujets de votre choix, de façon ponctuelle ou sur le long terme. Quelle que soit la taille de votre collectivité, nos services vous permettront d'associer plus de citoyen.ne.s aux décisions qui façonnent votre territoire.<br/><b>Disponible à partir d’une ​offre gratuite et sans engagement!</b>
+                    <br>
+                    <a class="ctaBannerPromo" href="{{ path('LandingPage', { 'theme': 'offres-collectivites'}) }}">En savoir plus</a>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    {#
     <div id="bannerPromo" class="bannerPromoSenatoriales">
         <div class="center">
             <div class="txtBannerPromo">
@@ -65,6 +80,7 @@
             </div>
         </div>
     </div>
+    #}
 
     {#
     <div id="bannerPromo" class="bannerPromoAxelle">
@@ -85,6 +101,7 @@
     </div>
     #}
 
+    {#
     <div id="postSelection">
         <div class="center">
             <h1>Les discussions en cours</h1>
@@ -107,8 +124,8 @@
     <div id="profileSelection">
         <div class="center">
             <h1>Rejoignez la communauté Politizr</h1>
-            <h2>Citoyen-ne-s ou élu-e-s de toute la France partagent leurs points de vue en toute transparence:<br>
-            <a href="{{ path('InscriptionChoice') }}">inscrivez-vous et participez aux débats!</a></h2>
+            <h2>Des habitants et leurs élus de toute la France s'expriment:<br>
+            <a href="{{ path('InscriptionChoice') }}">venez rejoindre notre communauté!</a></h2>
             
             {% for user in users %}
                 {% if loop.first or loop.index0 is divisible by(2) %}
@@ -121,6 +138,7 @@
             {% endfor %}
         </div>
     </div>
+    #}
 {% endblock main %}
 
 {% block postMain %}

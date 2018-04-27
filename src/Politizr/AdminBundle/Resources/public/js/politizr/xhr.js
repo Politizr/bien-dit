@@ -11,6 +11,7 @@ var RETURN_URL = 3;
 
 // DASHBOARD
 var ADMIN_ROUTE_NOTIF_CREATE = 'admin/notification/create';
+var ADMIN_ROUTE_NOTIF_FILTER_USERS = 'admin/notification/filter/users';
 
 
 // UPLOAD
@@ -56,6 +57,9 @@ var ADMIN_ROUTE_OPERATION_CITIES = 'admin/operation/villes';
 var ADMIN_ROUTE_OPERATION_CITIES_SEARCH_LISTING = 'admin/operation/villes/recherche';
 var ADMIN_ROUTE_ADD_OPERATION_CITY = 'admin/operation/ville/create';
 var ADMIN_ROUTE_DELETE_OPERATION_CITY = 'admin/operation/ville/delete';
+
+// CIRCLE
+var ADMIN_ROUTE_CIRCLE_FILTER_USERS = 'admin/circle/filter/users';
 
 // Generic function to make an AJAX call
 var xhrCall = function(context, data, url, type) {
