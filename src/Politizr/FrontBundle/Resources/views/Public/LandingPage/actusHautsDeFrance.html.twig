@@ -33,6 +33,12 @@
             </div>
         </div>
 
+        <div id="lpCTA">
+            <div class="center">
+                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
+            </div>
+        </div>
+
         <div id="profileSelection">
             <div class="center">
                 <h1>Rejoignez la communauté Politizr déjà inscrite en Hauts de France</h1>
@@ -91,7 +97,7 @@
 
         <div id="lpCTA">
             <div class="center">
-                <a href="{{ path('Concept') }}">En savoir plus</a>
+                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
             </div>
         </div>
 
@@ -102,25 +108,7 @@
                     Vous pouvez aussi simplement remplir ce questionnaire!
                 </div>
                 <div class="lpRightCol">
-                    <div class="formBlock withLoaderInside">
-                        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-
-                        <form name="directMessage" id="formDirectMessage">
-                            {{ form_errors(form) }}
-
-                            {{ form_row(form.name, { 'attr': { 'placeholder': 'Prénom et Nom' }}) }}
-                            {{ form_row(form.email, { 'attr': { 'placeholder': 'Email' }}) }}
-                            {{ form_row(form.city, { 'attr': { 'placeholder': 'Téléphone' }}) }}
-                            {{ form_row(form.description, { 'attr': { 'placeholder': 'Question' }}) }}
-
-                            {{ form_rest(form) }}
-                            <div class="buttonDirectMessage">
-                                <button type="button" action="submitDirectMessage">
-                                    Envoyer
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                    {% include 'PolitizrFrontBundle:Public\\LandingPage:_formContact.html.twig' %}
                 </div>
             </div>
         </div>
