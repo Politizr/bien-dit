@@ -1,0 +1,50 @@
+{% if app.environment == 'demo' and inscriptionComplete %}
+    <div id="alertIdCheckOk">
+        <div class="idCheckOkClose">
+            <div class="center"> 
+                <span action="closeIdCheckOk"><i class="icon-cross"></i>Fermer</span>
+            </div>
+        </div>
+        <div id="idCheckOk">
+            <div class="center">         
+                <i class="icon-like-yes"></i>
+                <div id="idCheckMsg">
+                    <h1>Votre identité à été validée. Merci !</h1>
+                    Note: la validation de l'identité est automatique uniquement dans l'environnement de démo.
+                </div>
+            </div>
+        </div>
+    </div>
+{% elseif app.session.flashbag.has('idcheck/success') and app.session.flashbag.get('idcheck/success')[0] %}
+    <div id="alertIdCheckOk">
+        <div class="idCheckOkClose">
+            <div class="center"> 
+                <span action="closeIdCheckOk"><i class="icon-cross"></i>Fermer</span>
+            </div>
+        </div>
+        <div id="idCheckOk">
+            <div class="center">         
+                <i class="icon-like-yes"></i>
+                <div id="idCheckMsg">
+                    <h1>Votre identité à été validée. Merci !</h1>
+                    Nous allons procéder à la vérification de vos mandats. Vous disposez de toutes les fonctionnalités.
+                </div>
+            </div>
+        </div>
+    </div>
+{% elseif isGrantedE() and not app.user.validated %}
+    <div id="alertIdCheck">
+        <div class="center">
+            <i class="icon-info"></i>
+            <div id="maxIdCheckMsg">
+                {% if app.user.nbIdCheck < constant('Politizr\\Constant\\IdCheckConstants::MAX_USER_TRY') %}
+                    Vous devez maintenant procéder à la <a href="{{ path('IdCheckDataReviewE') }}"><b>vérification de votre identité</b></a> pour profiter pleinement de <b>votre compte élu</b>: vous disposez de <span id="nbTryLeft"><b>{{ constant('Politizr\\Constant\\IdCheckConstants::MAX_USER_TRY') - app.user.nbIdCheck }}</span> tentative(s) restante(s)</b>.<br>En cas d'échec, nous prendrons contact directement avec vous mais vous pouvez dès à présent être <b>accompagné-e durant cette procédure</b> en nous <a href="mailto:support@politizr.com"><b>envoyant un email</b></a> ou par téléphone au <b>09 50 42 09 34</b>.
+                {% else %}
+                    <b>Nous prendrons contact directement avec vous pour valider votre identité.</b><br>
+                    Merci de vérifier que votre adresse email est <a href="{{ path('EditPersoE') }}">correctement renseignée</a>.<br>
+                    Vous pouvez également prendre directement contact en nous <a href="mailto:support@politizr.com">envoyant un email</a> ou par téléphone au <b>09 50 42 09 34</b>.
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}

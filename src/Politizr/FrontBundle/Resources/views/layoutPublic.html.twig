@@ -24,6 +24,17 @@
     <div id="headerTrigger"></div>
 {% endblock header %}
 
+{% block demo %}
+    {% if app.environment == 'demo' %}
+        <div class="boostBox withLoaderInside">
+            <div class="center">
+                Vous êtes dans l'environnement de démo de POLITIZR!<br/>
+                <i>Note: l'ensemble des données est réinitialisé toutes les nuits</i>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block main %}
     <div id="main">
         <div class="center">

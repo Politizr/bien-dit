@@ -439,184 +439,184 @@ liip_imagine:
 # Bazinga Faker
 bazinga_faker:
     locale:                             fr_FR
-    entities:
-        #################################################################################################################
-        #                                   UTILISATEUR
-        #################################################################################################################
-        Politizr\Model\PUser:
-            number:                     50
-            custom_formatters:
-                PUStatusId:             { method: numberBetween, parameters: [ 1, 1 ] }
-
-                Copyright:              { method: lorem, parameters: [ 1, 1 ] }
-
-                Firstname:              { method: firstname }
-                Name:                   { method: lastname }
-
-                Subtitle:               { method: realText, parameters: [ 75 ] }
-                Biography:              { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
-
-                Website:                { method: url }
-                Twitter:                { method: lexify, parameters: [ 'https://twitter.com/??????' ] }
-                Facebook:               { method: lexify, parameters: [ 'https://facebook.com/??????' ] }
-                Phone:                  { method: phoneNumber }
-
-                Email:                  { method: email }
-
-                Provider:               { method: null }
-                ProviderId:             { method: null }
-                Nickname:               { method: null }
-                Realname:               { method: null }
-
-                UsernameCanonical:      { method: null }
-                EmailCanonical:         { method: null }
-                Salt:                   { method: null }
-                Password:               { method: null }
-                ConfirmationToken:      { method: null }
-                PasswordRequestedAt:    { method: null }
-
-                NbViews:                { method: numberBetween, parameters: [ 150, 1500 ] }
-                Qualified:              { method: boolean, parameters: [ 0 ] }
-                Validated:              { method: boolean, parameters: [ 0 ] }
-
-                Online:                 { method: boolean, parameters: [ 100 ] }
-                Slug:                   { method: null }
-
-        Politizr\Model\PUFollowT:
-            number:                     150
-            custom_formatters:
-                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-                PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
-
-        Politizr\Model\PUTaggedT:
-            number:                     150
-            custom_formatters:
-                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-                PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
-
-        Politizr\Model\PUAffinityQO:
-            number:                     150
-            custom_formatters:
-                PUserId:                { method: numberBetween, parameters: [ 23, 70 ] }
-                PQOrganizationId:       { method: numberBetween, parameters: [ 1, 13 ] }
-
-
-        #################################################################################################################
-        #                                   REPUTATION
-        #################################################################################################################
-        Politizr\Model\PUBadge:
-            number:                     50
-            custom_formatters:
-                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-                PRBadgeId:              { method: numberBetween, parameters: [ 1, 12 ] }
-
-        Politizr\Model\PUReputation:
-            number:                     150
-            custom_formatters:
-                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-                PRActionId:             { method: numberBetween, parameters: [ 1, 12 ] }
-
-
-        #################################################################################################################
-        #                                   COMMANDE
-        #################################################################################################################
-        Politizr\Model\POrder:
-            number:                     20
-            custom_formatters:
-                POOrderStateId:         { method: numberBetween, parameters: [ 1, 3 ] }
-                POPaymentStateId:       { method: numberBetween, parameters: [ 1, 3 ] }
-                POPaymentTypeId:        { method: numberBetween, parameters: [ 1, 4 ] }
-                POSubscriptionId:       { method: numberBetween, parameters: [ 1, 1 ] }
-
-                SubscriptionTitle:      { method: randomElement, parameters: [ [ 'Abonnement Annuel'] ] }
-                SubscriptionDescription:  { method: randomElement, parameters: [ [ 'Abonnement Annuel'] ] }
-                SubscriptionBeginAt:    { method: dateTimeThisYear }
-                SubscriptionEndAt:      { method: dateTimeThisYear }
-
-                Information:            { method: paragraphs, parameters: [ 2, true ] }
-
-                Price:                  { method: randomFloat, parameters: [ 2, 0, 500 ] }
-                Promotion:              { method: randomFloat, parameters: [ 2, 0, 500 ] }
-                Total:                  { method: randomFloat, parameters: [ 2, 0, 500 ] }
-
-                Firstname:              { method: firstname }
-                Name:                   { method: lastname }
-
-                InvoiceRef:             { method: bothify, parameters: [ '?####?#####' ], unique: true }
-                InvoiceFilename:        { method: lexify, parameters: [ '?????????????.pdf' ], unique: true }
-
-                SupportingDocument:     { method: null }
-                ElectiveMandates:       { method: null }
-
-        #################################################################################################################
-        #                                   DOCUMENTS
-        #################################################################################################################
-        Politizr\Model\PDDebate:
-            number:                     50
-            custom_formatters:
-                Title:                  { method: realText, parameters: [ 75 ] }
-
-                Copyright:              { method: lorem, parameters: [ 1, 1 ] }
-
-                Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
-
-                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
-                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
-
-                Favorite:               { method: boolean, parameters: [ 10 ] }
-
-                Published:              { method: boolean, parameters: [ 90 ] }
-                PublishedAt:            { method: dateTimeThisYear }
-                PublishedBy:            { method: null }
-
-                Online:                 { method: boolean, parameters: [ 100 ] }
-                Slug:                   { method: null }
-
-        Politizr\Model\PUFollowDD:
-            number:                     50
-            custom_formatters:
-                PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
-                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-
-        Politizr\Model\PDDTaggedT:
-            number:                     20
-            custom_formatters:
-                PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
-                PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
-
-        Politizr\Model\PDDComment:
-            number:                     50
-            custom_formatters:
-                PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
-                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-
-                Description:            { method: realText, parameters: [ 250 ] }
-                ParagraphNo:            { method: randomDigit }
-
-                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
-                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
-
-                PublishedBy:            { method: null }
-                PublishedAt:            { method: dateTimeThisYear }
-
-                Online:                 { method: boolean, parameters: [ 100 ] }
-
-        Politizr\Model\PDRComment:
-            number:                     50
-            custom_formatters:
-                PDReactionId:           { method: numberBetween, parameters: [ 1, 9 ] }
-                PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
-
-                Description:            { method: realText, parameters: [ 250 ] }
-                ParagraphNo:            { method: randomDigit }
-
-                NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
-                NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
-
-                PublishedBy:            { method: null }
-                PublishedAt:            { method: dateTimeThisYear }
-
-                Online:                 { method: boolean, parameters: [ 100 ] }
+#     entities:
+#         #################################################################################################################
+#         #                                   UTILISATEUR
+#         #################################################################################################################
+#         Politizr\Model\PUser:
+#             number:                     50
+#             custom_formatters:
+#                 PUStatusId:             { method: numberBetween, parameters: [ 1, 1 ] }
+# 
+#                 Copyright:              { method: lorem, parameters: [ 1, 1 ] }
+# 
+#                 Firstname:              { method: firstname }
+#                 Name:                   { method: lastname }
+# 
+#                 Subtitle:               { method: realText, parameters: [ 75 ] }
+#                 Biography:              { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
+# 
+#                 Website:                { method: url }
+#                 Twitter:                { method: lexify, parameters: [ 'https://twitter.com/??????' ] }
+#                 Facebook:               { method: lexify, parameters: [ 'https://facebook.com/??????' ] }
+#                 Phone:                  { method: phoneNumber }
+# 
+#                 Email:                  { method: email }
+# 
+#                 Provider:               { method: null }
+#                 ProviderId:             { method: null }
+#                 Nickname:               { method: null }
+#                 Realname:               { method: null }
+# 
+#                 UsernameCanonical:      { method: null }
+#                 EmailCanonical:         { method: null }
+#                 Salt:                   { method: null }
+#                 Password:               { method: null }
+#                 ConfirmationToken:      { method: null }
+#                 PasswordRequestedAt:    { method: null }
+# 
+#                 NbViews:                { method: numberBetween, parameters: [ 150, 1500 ] }
+#                 Qualified:              { method: boolean, parameters: [ 0 ] }
+#                 Validated:              { method: boolean, parameters: [ 0 ] }
+# 
+#                 Online:                 { method: boolean, parameters: [ 100 ] }
+#                 Slug:                   { method: null }
+# 
+#         Politizr\Model\PUFollowT:
+#             number:                     150
+#             custom_formatters:
+#                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
+#                 PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
+# 
+#         Politizr\Model\PUTaggedT:
+#             number:                     150
+#             custom_formatters:
+#                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
+#                 PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
+# 
+#         Politizr\Model\PUAffinityQO:
+#             number:                     150
+#             custom_formatters:
+#                 PUserId:                { method: numberBetween, parameters: [ 23, 70 ] }
+#                 PQOrganizationId:       { method: numberBetween, parameters: [ 1, 13 ] }
+# 
+# 
+#         #################################################################################################################
+#         #                                   REPUTATION
+#         #################################################################################################################
+#         Politizr\Model\PUBadge:
+#             number:                     50
+#             custom_formatters:
+#                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
+#                 PRBadgeId:              { method: numberBetween, parameters: [ 1, 12 ] }
+# 
+#         Politizr\Model\PUReputation:
+#             number:                     150
+#             custom_formatters:
+#                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
+#                 PRActionId:             { method: numberBetween, parameters: [ 1, 12 ] }
+# 
+# 
+#         #################################################################################################################
+#         #                                   COMMANDE
+#         #################################################################################################################
+#         Politizr\Model\POrder:
+#             number:                     20
+#             custom_formatters:
+#                 POOrderStateId:         { method: numberBetween, parameters: [ 1, 3 ] }
+#                 POPaymentStateId:       { method: numberBetween, parameters: [ 1, 3 ] }
+#                 POPaymentTypeId:        { method: numberBetween, parameters: [ 1, 4 ] }
+#                 POSubscriptionId:       { method: numberBetween, parameters: [ 1, 1 ] }
+# 
+#                 SubscriptionTitle:      { method: randomElement, parameters: [ [ 'Abonnement Annuel'] ] }
+#                 SubscriptionDescription:  { method: randomElement, parameters: [ [ 'Abonnement Annuel'] ] }
+#                 SubscriptionBeginAt:    { method: dateTimeThisYear }
+#                 SubscriptionEndAt:      { method: dateTimeThisYear }
+# 
+#                 Information:            { method: paragraphs, parameters: [ 2, true ] }
+# 
+#                 Price:                  { method: randomFloat, parameters: [ 2, 0, 500 ] }
+#                 Promotion:              { method: randomFloat, parameters: [ 2, 0, 500 ] }
+#                 Total:                  { method: randomFloat, parameters: [ 2, 0, 500 ] }
+# 
+#                 Firstname:              { method: firstname }
+#                 Name:                   { method: lastname }
+# 
+#                 InvoiceRef:             { method: bothify, parameters: [ '?####?#####' ], unique: true }
+#                 InvoiceFilename:        { method: lexify, parameters: [ '?????????????.pdf' ], unique: true }
+# 
+#                 SupportingDocument:     { method: null }
+#                 ElectiveMandates:       { method: null }
+# 
+#         #################################################################################################################
+#         #                                   DOCUMENTS
+#         #################################################################################################################
+#         Politizr\Model\PDDebate:
+#             number:                     50
+#             custom_formatters:
+#                 Title:                  { method: realText, parameters: [ 75 ] }
+# 
+#                 Copyright:              { method: lorem, parameters: [ 1, 1 ] }
+# 
+#                 Description:            { method: lorem, parameters: [ 50, 10, 5, 2, 2, 0, 0, 0, 0 ] }
+# 
+#                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+#                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
+# 
+#                 Favorite:               { method: boolean, parameters: [ 10 ] }
+# 
+#                 Published:              { method: boolean, parameters: [ 90 ] }
+#                 PublishedAt:            { method: dateTimeThisYear }
+#                 PublishedBy:            { method: null }
+# 
+#                 Online:                 { method: boolean, parameters: [ 100 ] }
+#                 Slug:                   { method: null }
+# 
+#         Politizr\Model\PUFollowDD:
+#             number:                     50
+#             custom_formatters:
+#                 PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
+#                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
+# 
+#         Politizr\Model\PDDTaggedT:
+#             number:                     20
+#             custom_formatters:
+#                 PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
+#                 PTagId:                 { method: numberBetween, parameters: [ 1, 35 ] }
+# 
+#         Politizr\Model\PDDComment:
+#             number:                     50
+#             custom_formatters:
+#                 PDDebateId:             { method: numberBetween, parameters: [ 1, 6 ] }
+#                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
+# 
+#                 Description:            { method: realText, parameters: [ 250 ] }
+#                 ParagraphNo:            { method: randomDigit }
+# 
+#                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+#                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
+# 
+#                 PublishedBy:            { method: null }
+#                 PublishedAt:            { method: dateTimeThisYear }
+# 
+#                 Online:                 { method: boolean, parameters: [ 100 ] }
+# 
+#         Politizr\Model\PDRComment:
+#             number:                     50
+#             custom_formatters:
+#                 PDReactionId:           { method: numberBetween, parameters: [ 1, 9 ] }
+#                 PUserId:                { method: numberBetween, parameters: [ 1, 70 ] }
+# 
+#                 Description:            { method: realText, parameters: [ 250 ] }
+#                 ParagraphNo:            { method: randomDigit }
+# 
+#                 NotePos:                { method: numberBetween, parameters: [ 2, 50 ] }
+#                 NoteNeg:                { method: numberBetween, parameters: [ 2, 50 ] }
+# 
+#                 PublishedBy:            { method: null }
+#                 PublishedAt:            { method: dateTimeThisYear }
+# 
+#                 Online:                 { method: boolean, parameters: [ 100 ] }
 
 
 # OAuth Instagram
