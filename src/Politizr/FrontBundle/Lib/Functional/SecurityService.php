@@ -293,7 +293,7 @@ class SecurityService
         }
 
         if (null !== $email) {
-            $user->setName($email);
+            $user->setEmail($email);
         }
 
         if (null !== $fbLink) {

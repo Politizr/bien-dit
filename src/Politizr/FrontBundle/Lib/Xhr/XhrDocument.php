@@ -1761,6 +1761,7 @@ class XhrDocument
             $nbEmotions = $this->facebookService->getNbEmotions($fbAdId);
             $nbShares = $this->facebookService->getNbShares($fbAdId);
         } catch (\Exception $e) {
+            // dump($e);
             return array(
                 'html' => ''
             );
