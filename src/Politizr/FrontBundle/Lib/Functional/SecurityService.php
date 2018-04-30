@@ -764,6 +764,11 @@ class SecurityService
         // update reputation
         $user->updateReputation(ReputationConstants::ACTION_ELECTED_INSCRIPTION);
 
+        // demo env > elected user validated
+        if (in_array($this->kernel->getEnvironment(), array('demo'))) {
+            $user->setValidated(true);
+        }
+
         // save user
         $user->save();
         
