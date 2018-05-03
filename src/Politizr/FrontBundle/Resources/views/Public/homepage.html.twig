@@ -26,12 +26,15 @@
             <div id="videoText">
                 <h1>Et vous, changerez-vous d'opinion?<br/></h1>
                 <h2>Bienvenue sur un espace de discussion <b>indépendant, neutre et gratuit</b> qui renouvelle les pratiques politiques<br>en permettant des échanges structurés et constructifs entre <b>les citoyen.ne.s, les élu.e.s et leurs collectivités</b> partout en France.</h2>
-                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
-                <a href="{{ path('Concept') }}">En savoir plus</a>
+                <a href="{{ path('InscriptionChoice') }}">Inscription</a>&nbsp;&nbsp;
+                <a href="{{ path('Concept') }}">En savoir plus</a>&nbsp;&nbsp;
+                <a href="{{ path('LandingPage', { 'theme': 'offres-collectivites'}) }}">Collectivités</a>
             </div>
+            {#
             <div id="goDown" action="scrollVideo">
                 Découvrir<br><img src="{{ asset('bundles/politizrfront/images/f-arrowGoDown.svg') }}">
             </div>
+            #}
         </div>
         <div id="video"></div>
         <div id="videoLoader"></div>
@@ -39,6 +42,8 @@
     </div>
     
     <div id="triggerVideo"></div>
+
+    {#
     <div id="videoFooter">
         <div class="center">
             <div id="yellowBlock">
@@ -52,7 +57,12 @@
             </div>
         </div>
     </div>
+    #}
 
+    <div id="bannerPromo" class="bannerPress">
+    </div>
+
+    {#
     <div id="bannerPromo" class="bannerPromoSenatoriales">
         <div class="center">
             <div class="txtBannerPromo">
@@ -66,6 +76,7 @@ Communiquez autour de vos projets et faîtes réagir vos administrés sur les su
             </div>
         </div>
     </div>
+    #}
 
     {#
     <div id="bannerPromo" class="bannerPromoSenatoriales">
