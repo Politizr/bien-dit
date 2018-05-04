@@ -26,15 +26,12 @@
             <div id="videoText">
                 <h1>Et vous, changerez-vous d'opinion?<br/></h1>
                 <h2>Bienvenue sur un espace de discussion <b>indépendant, neutre et gratuit</b> qui renouvelle les pratiques politiques<br>en permettant des échanges structurés et constructifs entre <b>les citoyen.ne.s, les élu.e.s et leurs collectivités</b> partout en France.</h2>
-                <a href="{{ path('InscriptionChoice') }}">Inscription</a>&nbsp;&nbsp;
-                <a href="{{ path('Concept') }}">En savoir plus</a>&nbsp;&nbsp;
-                <a href="{{ path('LandingPage', { 'theme': 'offres-collectivites'}) }}">Collectivités</a>
+                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
+                <a href="{{ path('Concept') }}">En savoir plus</a>
             </div>
-            {#
             <div id="goDown" action="scrollVideo">
                 Découvrir<br><img src="{{ asset('bundles/politizrfront/images/f-arrowGoDown.svg') }}">
             </div>
-            #}
         </div>
         <div id="video"></div>
         <div id="videoLoader"></div>
@@ -43,30 +40,32 @@
     
     <div id="triggerVideo"></div>
 
-    {#
     <div id="videoFooter">
         <div class="center">
             <div id="yellowBlock">
                 <span>
-                    Nous favorisons des <b>échanges constructifs</b>, basés sur la <b>transparence</b>, le <b>respect</b> et la <b>bienveillance</b> sur des <b>sujets proches de chez vous</b>.
+                    Conçu comme un véritable <b>réseau social de la citoyenneté</b>, POLITIZR permet à tous les citoyen.ne.s et élu.e.s de créer et de suivre <b>l’actualité politique à toutes les échelles territoriales</b>.
                 </span>
-                <a href="{{ path('InscriptionChoice') }}">Je m'exprime</a>
             </div>
             <div id="blueBlock">
                 <span><b>Questions, opinions<br>et propositions<br>partout en France!</b></span>
             </div>
         </div>
     </div>
-    #}
 
-    <div id="bannerPromo" class="bannerPress">
-    </div>
-
-    {#
     <div id="bannerPromo" class="bannerPromoSenatoriales">
         <div class="center">
+            <div id="inscriptionHome">
+                <div class="column column360">
+                    {% include 'PolitizrFrontBundle:Public:_cardAdvantagesCitizen.html.twig' %}
+                </div><!-- keep comment mark this way : they prevent unwanted space between cols
+                --><div class="column column360">
+                    {% include 'PolitizrFrontBundle:Public:_cardAdvantagesElected.html.twig' %}
+                </div>
+            </div>
+
             <div class="txtBannerPromo">
-                <h1>Collectivités?</h1>
+                <h1>Collectivités</h1>
                 <b>PLU/PLUi, aménagement urbain, budget participatif...</b><br><br>
                 <span>
 Communiquez autour de vos projets et faîtes réagir vos administrés sur les sujets de votre choix, de façon ponctuelle ou sur le long terme. Quelle que soit la taille de votre collectivité, nos services vous permettront d'associer plus de citoyen.ne.s aux décisions qui façonnent votre territoire.<br/><b>Disponible à partir d’une ​offre gratuite et sans engagement!</b>
@@ -76,7 +75,9 @@ Communiquez autour de vos projets et faîtes réagir vos administrés sur les su
             </div>
         </div>
     </div>
-    #}
+
+    <div id="bannerPromo" class="bannerPress">
+    </div>
 
     {#
     <div id="bannerPromo" class="bannerPromoSenatoriales">
