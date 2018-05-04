@@ -16,7 +16,7 @@
 }
 
 #inscriptionHome ul.checkList {
-    padding: 20px 0 0 30px;
+    padding: 20px 10px 0 10px;
 }
 
 #inscriptionHome a.submit {
@@ -30,4 +30,7 @@
     margin-bottom: 10px;
     line-height: 100%;
 }
-#inscriptionHome .cardFooter span {color: white;}
+
+#inscriptionHome .cardFooter span {
+    color: white;
+}
