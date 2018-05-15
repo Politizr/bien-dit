@@ -340,24 +340,29 @@ class DocumentController extends Controller
         $form = $this->createForm(new PDDebateType(), $debate, array('user' => $user));
 
         // get geo debate informations
-        $debateLocType = $this->get('politizr.form.type.document_localization');
-        $options = array(
-                'data_class' => ObjectTypeConstants::TYPE_DEBATE,
-                'user' => $user,
-        );
-        if ($debate->getPCTopicId()) {
-            $this->get('politizr.functional.circle')->updateDocumentLocalizationTypeOptions($debate->getPCTopic(), $options);
+        $geoActive = $this->getParameter('geo_active');
+        $formLocalization = null;
+        
+        if ($geoActive) {
+            $debateLocType = $this->get('politizr.form.type.document_localization');
+            $options = array(
+                    'data_class' => ObjectTypeConstants::TYPE_DEBATE,
+                    'user' => $user,
+            );
+            if ($debate->getPCTopicId()) {
+                $this->get('politizr.functional.circle')->updateDocumentLocalizationTypeOptions($debate->getPCTopic(), $options);
+            }
+            $formLocalization = $this->createForm(
+                $debateLocType,
+                $debate,
+                $options
+            );
         }
-        $formLocalization = $this->createForm(
-            $debateLocType,
-            $debate,
-            $options
-        );
 
         return $this->render('PolitizrFrontBundle:Debate:edit.html.twig', array(
             'debate' => $debate,
             'form' => $form->createView(),
-            'formLocalization' => $formLocalization->createView(),
+            'formLocalization' => $formLocalization?$formLocalization->createView():null,
         ));
     }
 

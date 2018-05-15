@@ -26,7 +26,7 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchiveQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method PCircleArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PCircleArchiveQuery orderByReadOnly($order = Criteria::ASC) Order by the read_only column
- * @method PCircleArchiveQuery orderByOnlyElected($order = Criteria::ASC) Order by the only_elected column
+ * @method PCircleArchiveQuery orderByPrivateAccess($order = Criteria::ASC) Order by the private_access column
  * @method PCircleArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PCircleArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PCircleArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -44,7 +44,7 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchiveQuery groupByUrl() Group by the url column
  * @method PCircleArchiveQuery groupByOnline() Group by the online column
  * @method PCircleArchiveQuery groupByReadOnly() Group by the read_only column
- * @method PCircleArchiveQuery groupByOnlyElected() Group by the only_elected column
+ * @method PCircleArchiveQuery groupByPrivateAccess() Group by the private_access column
  * @method PCircleArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PCircleArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PCircleArchiveQuery groupBySlug() Group by the slug column
@@ -68,7 +68,7 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchive findOneByUrl(string $url) Return the first PCircleArchive filtered by the url column
  * @method PCircleArchive findOneByOnline(boolean $online) Return the first PCircleArchive filtered by the online column
  * @method PCircleArchive findOneByReadOnly(boolean $read_only) Return the first PCircleArchive filtered by the read_only column
- * @method PCircleArchive findOneByOnlyElected(boolean $only_elected) Return the first PCircleArchive filtered by the only_elected column
+ * @method PCircleArchive findOneByPrivateAccess(boolean $private_access) Return the first PCircleArchive filtered by the private_access column
  * @method PCircleArchive findOneByCreatedAt(string $created_at) Return the first PCircleArchive filtered by the created_at column
  * @method PCircleArchive findOneByUpdatedAt(string $updated_at) Return the first PCircleArchive filtered by the updated_at column
  * @method PCircleArchive findOneBySlug(string $slug) Return the first PCircleArchive filtered by the slug column
@@ -86,7 +86,7 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method array findByUrl(string $url) Return PCircleArchive objects filtered by the url column
  * @method array findByOnline(boolean $online) Return PCircleArchive objects filtered by the online column
  * @method array findByReadOnly(boolean $read_only) Return PCircleArchive objects filtered by the read_only column
- * @method array findByOnlyElected(boolean $only_elected) Return PCircleArchive objects filtered by the only_elected column
+ * @method array findByPrivateAccess(boolean $private_access) Return PCircleArchive objects filtered by the private_access column
  * @method array findByCreatedAt(string $created_at) Return PCircleArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PCircleArchive objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PCircleArchive objects filtered by the slug column
@@ -197,7 +197,7 @@ abstract class BasePCircleArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `only_elected`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_circle_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `private_access`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_circle_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -641,15 +641,15 @@ abstract class BasePCircleArchiveQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the only_elected column
+     * Filter the query on the private_access column
      *
      * Example usage:
      * <code>
-     * $query->filterByOnlyElected(true); // WHERE only_elected = true
-     * $query->filterByOnlyElected('yes'); // WHERE only_elected = true
+     * $query->filterByPrivateAccess(true); // WHERE private_access = true
+     * $query->filterByPrivateAccess('yes'); // WHERE private_access = true
      * </code>
      *
-     * @param     boolean|string $onlyElected The value to use as filter.
+     * @param     boolean|string $privateAccess The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -658,13 +658,13 @@ abstract class BasePCircleArchiveQuery extends ModelCriteria
      *
      * @return PCircleArchiveQuery The current query, for fluid interface
      */
-    public function filterByOnlyElected($onlyElected = null, $comparison = null)
+    public function filterByPrivateAccess($privateAccess = null, $comparison = null)
     {
-        if (is_string($onlyElected)) {
-            $onlyElected = in_array(strtolower($onlyElected), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        if (is_string($privateAccess)) {
+            $privateAccess = in_array(strtolower($privateAccess), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
-        return $this->addUsingAlias(PCircleArchivePeer::ONLY_ELECTED, $onlyElected, $comparison);
+        return $this->addUsingAlias(PCircleArchivePeer::PRIVATE_ACCESS, $privateAccess, $comparison);
     }
 
     /**

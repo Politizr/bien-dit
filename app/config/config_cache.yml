@@ -8,7 +8,7 @@ fos_http_cache:
         symfony:
             http:
                 servers: [ 127.0.0.1 ]
-                base_url: politizr.beta
+                base_url: politizr.generationseric
 
     user_context:
         enabled: true

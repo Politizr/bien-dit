@@ -45,23 +45,10 @@ swiftmailer:
 #     delivery_address: thomas@ecologic-com.com
     delivery_address: lionel.bouzonville@gmail.com
 
-# Bazinga Faker
-bazinga_faker:
-    locale:                             fr_FR
-    entities:
-        Politizr\Model\PUser:
-            custom_formatters:
-                BackFileName:           { method: image, parameters: [ '/var/www/politizr.beta.letitbug.com/web/uploads/users', '1280', '600', 'city', false ] }
-                FileName:               { method: image, parameters: [ '/var/www/politizr.beta.letitbug.com/web/uploads/users', '150', '150', 'people', false ] }
-        Politizr\Model\PDDebate:
-            custom_formatters:
-                FileName:               { method: image, parameters: [ '/var/www/politizr.beta.letitbug.com/web/uploads/documents', '640', '480', 'city', false ] }
-
-
 # app/config/config.yml
 fos_http_cache:
     proxy_client:
         symfony:
             http:
                 servers: [ 127.0.0.1 ]
-                base_url: politizr.bugsugar.com
+                base_url: generationseric.bugsugar.com

@@ -1,3 +1,4 @@
+{# @todo > à simplifier, rendre administrable et brancher #}
 {% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 {% if (isGrantedE() or isGrantedC()) %}
     {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
@@ -164,7 +165,7 @@
                 <h2>Vous êtes un élu?</h2>
                 POLITIZR permet aux élu­.e.s d’expliquer publiquement leurs actions pour ainsi co­-construire la décision publique en toute transparence.
                 <h2>Vous êtes une collectivité?</h2>
-                POLITIZR vous propose des <a href="{{ path('LandingPage', { 'theme': 'offres-collectivites'}) }}">offres</a> dédiées!
+                POLITIZR vous propose des offres dédiées!
             </div>
             
             <div class="conceptCol conceptRightCol">
@@ -187,7 +188,7 @@
             <div class="conceptCol conceptRightCol">
                 <p>Aménagement du territoire, sécurité, économie, environnement, patrimoine, éducation, ...<br>
                 Nombreux sont les sujets qui attendent d’être révélés et discutés dans votre rue, votre quartier, votre ville, votre département ou votre région.</p>
-                <a href="{{ path('InscriptionChoice') }}">Exprimez-vous et lancez un sujet</a>
+                <a href="{{ path('Inscription') }}">Exprimez-vous et lancez un sujet</a>
             </div>          
         </div>
     </div>
@@ -268,12 +269,6 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-
-    {% if (app.environment == 'prod') %}
-        <script type="text/javascript">
-            mixpanel.track("Concept");
-        </script>
-    {% endif %}
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/concept.js'

@@ -11,8 +11,8 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svgdom.min.js') }}"></script>
 {% endblock %}
 
-{% set metaTitle = 'Publications' %}
-{% set metaDescription = 'Recherchez et classez les dernières publications de Politizr, en utilisant la carte et les nombreux filtres disponibles.' %}
+{% set metaTitle = 'Contributions' %}
+{% set metaDescription = 'Recherchez et classez les dernières contributions de notre communauté.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -26,10 +26,12 @@
 {% block content %}
     <div id="content">
         <div id="localizationPreload" action="publicationsMyMap" type="{{ currentType }}" uuid="{{ currentUuid }}"></div>
-        <div id="localizationChoiceBox">
-            <a action="publicationsMyMap" id="linkMyRegion" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_REGION') }}" uuid="{{ regionUuid }}">Ma région</a>
-            <a action="publicationsMyMap" id="linkMyDepartment" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') }}" uuid="{{ departmentUuid }}">Mon département</a>
-        </div>
+        {% if geo.active %}
+            <div id="localizationChoiceBox">
+                <a action="publicationsMyMap" id="linkMyRegion" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_REGION') }}" uuid="{{ regionUuid }}">Ma région</a>
+                <a action="publicationsMyMap" id="linkMyDepartment" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') }}" uuid="{{ departmentUuid }}">Mon département</a>
+            </div>
+        {% endif %}
         <div id="documentListing" class="searchResults withLoaderInside">
             {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
             <div class="listTop"></div>
@@ -43,12 +45,6 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-
-    {% if (app.environment == 'prod') %}
-        <script type="text/javascript">
-            mixpanel.track("Les publications (recherche)");
-        </script>
-    {% endif %}
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/localization/map.js'

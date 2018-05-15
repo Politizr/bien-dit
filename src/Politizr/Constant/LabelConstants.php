@@ -9,7 +9,11 @@ namespace Politizr\Constant;
  */
 class LabelConstants
 {
-    const USER_UNKNOWN = 'Auteur inconnu';
+    // MENU
+    const MENU_PUBLICATIONS_LISTING = 'Contributions';
+    const MENU_USERS_LISTING = 'Communauté';
 
+    // USER
+    const USER_UNKNOWN = 'Auteur inconnu';
     const UNDEFINED = 'Non défini';
 }

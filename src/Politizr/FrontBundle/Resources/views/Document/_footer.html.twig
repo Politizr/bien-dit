@@ -1,7 +1,7 @@
 <div class="noticeBox">
     {% if reason == constant('Politizr\\Constant\\DocumentConstants::REASON_USER_NOT_LOGGED') %}
         <span>
-            <a href="{{ path('InscriptionChoice') }}">Inscrivez-vous</a> pour participer au débat.
+            <a href="{{ path('Inscription') }}">Inscrivez-vous</a> pour participer au débat.
         </span> 
     {% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_DEBATE_OWNER') %}
         <span class="withActionAnswer">             

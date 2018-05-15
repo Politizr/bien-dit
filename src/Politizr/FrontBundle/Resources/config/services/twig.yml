@@ -79,3 +79,19 @@ services:
         tags:
             - { name: twig.extension }
 
+    politizr.twig.navigation:
+        class:          Politizr\FrontBundle\Twig\PolitizrNavigationExtension
+        arguments:
+            - @security.token_storage
+            - @security.authorization_checker
+            - @router
+            - @politizr.tools.global
+            - @logger
+            - "%with_group%"
+            - "%multiple_group%"
+            - "%top_menu_groups%"
+            - "%top_menu_publications%"
+            - "%top_menu_community%"
+        tags:
+            - { name: twig.extension }
+

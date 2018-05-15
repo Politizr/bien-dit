@@ -105,10 +105,11 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     protected $read_only;
 
     /**
-     * The value for the only_elected field.
+     * The value for the private_access field.
+     * Note: this column has a database default value of: false
      * @var        boolean
      */
-    protected $only_elected;
+    protected $private_access;
 
     /**
      * The value for the created_at field.
@@ -159,6 +160,27 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->private_access = false;
+    }
+
+    /**
+     * Initializes internal state of BasePCircleArchive object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
 
     /**
      * Get the [id] column value.
@@ -282,14 +304,14 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [only_elected] column value.
+     * Get the [private_access] column value.
      *
      * @return boolean
      */
-    public function getOnlyElected()
+    public function getPrivateAccess()
     {
 
-        return $this->only_elected;
+        return $this->private_access;
     }
 
     /**
@@ -682,7 +704,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     } // setReadOnly()
 
     /**
-     * Sets the value of the [only_elected] column.
+     * Sets the value of the [private_access] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -691,7 +713,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
      * @param boolean|integer|string $v The new value
      * @return PCircleArchive The current object (for fluent API support)
      */
-    public function setOnlyElected($v)
+    public function setPrivateAccess($v)
     {
         if ($v !== null) {
             if (is_string($v)) {
@@ -701,14 +723,14 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             }
         }
 
-        if ($this->only_elected !== $v) {
-            $this->only_elected = $v;
-            $this->modifiedColumns[] = PCircleArchivePeer::ONLY_ELECTED;
+        if ($this->private_access !== $v) {
+            $this->private_access = $v;
+            $this->modifiedColumns[] = PCircleArchivePeer::PRIVATE_ACCESS;
         }
 
 
         return $this;
-    } // setOnlyElected()
+    } // setPrivateAccess()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
@@ -831,6 +853,10 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->private_access !== false) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -864,7 +890,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             $this->url = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->online = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
             $this->read_only = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
-            $this->only_elected = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
+            $this->private_access = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
             $this->created_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->updated_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->slug = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
@@ -1120,8 +1146,8 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCircleArchivePeer::READ_ONLY)) {
             $modifiedColumns[':p' . $index++]  = '`read_only`';
         }
-        if ($this->isColumnModified(PCircleArchivePeer::ONLY_ELECTED)) {
-            $modifiedColumns[':p' . $index++]  = '`only_elected`';
+        if ($this->isColumnModified(PCircleArchivePeer::PRIVATE_ACCESS)) {
+            $modifiedColumns[':p' . $index++]  = '`private_access`';
         }
         if ($this->isColumnModified(PCircleArchivePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
@@ -1182,8 +1208,8 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                     case '`read_only`':
                         $stmt->bindValue($identifier, (int) $this->read_only, PDO::PARAM_INT);
                         break;
-                    case '`only_elected`':
-                        $stmt->bindValue($identifier, (int) $this->only_elected, PDO::PARAM_INT);
+                    case '`private_access`':
+                        $stmt->bindValue($identifier, (int) $this->private_access, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1287,7 +1313,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                 return $this->getReadOnly();
                 break;
             case 11:
-                return $this->getOnlyElected();
+                return $this->getPrivateAccess();
                 break;
             case 12:
                 return $this->getCreatedAt();
@@ -1343,7 +1369,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             $keys[8] => $this->getUrl(),
             $keys[9] => $this->getOnline(),
             $keys[10] => $this->getReadOnly(),
-            $keys[11] => $this->getOnlyElected(),
+            $keys[11] => $this->getPrivateAccess(),
             $keys[12] => $this->getCreatedAt(),
             $keys[13] => $this->getUpdatedAt(),
             $keys[14] => $this->getSlug(),
@@ -1422,7 +1448,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                 $this->setReadOnly($value);
                 break;
             case 11:
-                $this->setOnlyElected($value);
+                $this->setPrivateAccess($value);
                 break;
             case 12:
                 $this->setCreatedAt($value);
@@ -1474,7 +1500,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[8], $arr)) $this->setUrl($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setOnline($arr[$keys[9]]);
         if (array_key_exists($keys[10], $arr)) $this->setReadOnly($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setOnlyElected($arr[$keys[11]]);
+        if (array_key_exists($keys[11], $arr)) $this->setPrivateAccess($arr[$keys[11]]);
         if (array_key_exists($keys[12], $arr)) $this->setCreatedAt($arr[$keys[12]]);
         if (array_key_exists($keys[13], $arr)) $this->setUpdatedAt($arr[$keys[13]]);
         if (array_key_exists($keys[14], $arr)) $this->setSlug($arr[$keys[14]]);
@@ -1502,7 +1528,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCircleArchivePeer::URL)) $criteria->add(PCircleArchivePeer::URL, $this->url);
         if ($this->isColumnModified(PCircleArchivePeer::ONLINE)) $criteria->add(PCircleArchivePeer::ONLINE, $this->online);
         if ($this->isColumnModified(PCircleArchivePeer::READ_ONLY)) $criteria->add(PCircleArchivePeer::READ_ONLY, $this->read_only);
-        if ($this->isColumnModified(PCircleArchivePeer::ONLY_ELECTED)) $criteria->add(PCircleArchivePeer::ONLY_ELECTED, $this->only_elected);
+        if ($this->isColumnModified(PCircleArchivePeer::PRIVATE_ACCESS)) $criteria->add(PCircleArchivePeer::PRIVATE_ACCESS, $this->private_access);
         if ($this->isColumnModified(PCircleArchivePeer::CREATED_AT)) $criteria->add(PCircleArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PCircleArchivePeer::UPDATED_AT)) $criteria->add(PCircleArchivePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PCircleArchivePeer::SLUG)) $criteria->add(PCircleArchivePeer::SLUG, $this->slug);
@@ -1581,7 +1607,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         $copyObj->setUrl($this->getUrl());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setReadOnly($this->getReadOnly());
-        $copyObj->setOnlyElected($this->getOnlyElected());
+        $copyObj->setPrivateAccess($this->getPrivateAccess());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -1649,7 +1675,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         $this->url = null;
         $this->online = null;
         $this->read_only = null;
-        $this->only_elected = null;
+        $this->private_access = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
@@ -1659,6 +1685,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

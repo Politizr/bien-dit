@@ -33,6 +33,7 @@ services:
             - @politizr.twig.document
             - @politizr.form.type.document_localization
             - @logger
+            - "%geo_active%"
 
     politizr.xhr.circle:
         class: Politizr\FrontBundle\Lib\Xhr\XhrCircle

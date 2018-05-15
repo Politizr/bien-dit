@@ -52,14 +52,3 @@
         </center>
     </div>
 {% endblock main %}
-
-
-{% block javascriptFooter %}
-    {{ parent() }}
-
-    {% if (app.environment == 'prod') %}
-        <script type="text/javascript">
-            mixpanel.track("Id check step 1");
-        </script>
-    {% endif %}
-{% endblock javascriptFooter %}

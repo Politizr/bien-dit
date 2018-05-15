@@ -1173,12 +1173,6 @@ class XhrUser
         $filterDate = $request->get('filterDate');
         // $this->logger->info('$filterDate = ' . print_r($filterDate, true));
 
-        // set default values if not set
-        if (empty($geoUuid)) {
-            $france = PLocalizationQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
-            $geoUuid = $france->getUuid();
-            $type = LocalizationConstants::TYPE_COUNTRY;
-        }
         if (empty($filterProfile)) {
             $filterProfile = ListingConstants::FILTER_KEYWORD_ALL_USERS;
         }
@@ -1192,7 +1186,7 @@ class XhrUser
         $users = $this->userService->getUsersByFilters(
             $geoUuid,
             $type,
-            ListingConstants::FILTER_KEYWORD_QUALIFIED, // $filterProfile,
+            $filterProfile, // ListingConstants::FILTER_KEYWORD_QUALIFIED,
             $filterActivity,
             $filterDate,
             $offset,
@@ -1201,7 +1195,11 @@ class XhrUser
 
         // update url w. js
         $localization = $this->localizationService->getPLocalizationFromGeoUuid($geoUuid, $type);
-        $url = $this->router->generate('ListingSearchUsers'.$this->globalTools->computeProfileSuffix(), array('slug' => $localization->getSlug()));
+        if ($localization) {
+            $url = $this->router->generate('ListingSearchUsers', array('slug' => $localization->getSlug()));
+        } else {
+            $url = $this->router->generate('ListingSearchUsers');
+        }
 
         // /!\ PropelPager object
         $moreResults = false;

@@ -102,15 +102,3 @@
 {% block postMain %}
     {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
 {% endblock postMain %}
-
-
-{% block javascriptFooter %}
-    {{ parent() }}
-
-    {% if (app.environment == 'prod') %}
-        <script type="text/javascript">
-            mixpanel.track("Qui sommes-nous");
-        </script>
-    {% endif %}
-
-{% endblock javascriptFooter %}

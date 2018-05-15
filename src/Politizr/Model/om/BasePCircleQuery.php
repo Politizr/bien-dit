@@ -37,7 +37,7 @@ use Politizr\Model\PUser;
  * @method PCircleQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method PCircleQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PCircleQuery orderByReadOnly($order = Criteria::ASC) Order by the read_only column
- * @method PCircleQuery orderByOnlyElected($order = Criteria::ASC) Order by the only_elected column
+ * @method PCircleQuery orderByPrivateAccess($order = Criteria::ASC) Order by the private_access column
  * @method PCircleQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PCircleQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PCircleQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -54,7 +54,7 @@ use Politizr\Model\PUser;
  * @method PCircleQuery groupByUrl() Group by the url column
  * @method PCircleQuery groupByOnline() Group by the online column
  * @method PCircleQuery groupByReadOnly() Group by the read_only column
- * @method PCircleQuery groupByOnlyElected() Group by the only_elected column
+ * @method PCircleQuery groupByPrivateAccess() Group by the private_access column
  * @method PCircleQuery groupByCreatedAt() Group by the created_at column
  * @method PCircleQuery groupByUpdatedAt() Group by the updated_at column
  * @method PCircleQuery groupBySlug() Group by the slug column
@@ -101,7 +101,7 @@ use Politizr\Model\PUser;
  * @method PCircle findOneByUrl(string $url) Return the first PCircle filtered by the url column
  * @method PCircle findOneByOnline(boolean $online) Return the first PCircle filtered by the online column
  * @method PCircle findOneByReadOnly(boolean $read_only) Return the first PCircle filtered by the read_only column
- * @method PCircle findOneByOnlyElected(boolean $only_elected) Return the first PCircle filtered by the only_elected column
+ * @method PCircle findOneByPrivateAccess(boolean $private_access) Return the first PCircle filtered by the private_access column
  * @method PCircle findOneByCreatedAt(string $created_at) Return the first PCircle filtered by the created_at column
  * @method PCircle findOneByUpdatedAt(string $updated_at) Return the first PCircle filtered by the updated_at column
  * @method PCircle findOneBySlug(string $slug) Return the first PCircle filtered by the slug column
@@ -118,7 +118,7 @@ use Politizr\Model\PUser;
  * @method array findByUrl(string $url) Return PCircle objects filtered by the url column
  * @method array findByOnline(boolean $online) Return PCircle objects filtered by the online column
  * @method array findByReadOnly(boolean $read_only) Return PCircle objects filtered by the read_only column
- * @method array findByOnlyElected(boolean $only_elected) Return PCircle objects filtered by the only_elected column
+ * @method array findByPrivateAccess(boolean $private_access) Return PCircle objects filtered by the private_access column
  * @method array findByCreatedAt(string $created_at) Return PCircle objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PCircle objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PCircle objects filtered by the slug column
@@ -234,7 +234,7 @@ abstract class BasePCircleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `only_elected`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_circle` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `private_access`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_circle` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -682,15 +682,15 @@ abstract class BasePCircleQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the only_elected column
+     * Filter the query on the private_access column
      *
      * Example usage:
      * <code>
-     * $query->filterByOnlyElected(true); // WHERE only_elected = true
-     * $query->filterByOnlyElected('yes'); // WHERE only_elected = true
+     * $query->filterByPrivateAccess(true); // WHERE private_access = true
+     * $query->filterByPrivateAccess('yes'); // WHERE private_access = true
      * </code>
      *
-     * @param     boolean|string $onlyElected The value to use as filter.
+     * @param     boolean|string $privateAccess The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -699,13 +699,13 @@ abstract class BasePCircleQuery extends ModelCriteria
      *
      * @return PCircleQuery The current query, for fluid interface
      */
-    public function filterByOnlyElected($onlyElected = null, $comparison = null)
+    public function filterByPrivateAccess($privateAccess = null, $comparison = null)
     {
-        if (is_string($onlyElected)) {
-            $onlyElected = in_array(strtolower($onlyElected), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        if (is_string($privateAccess)) {
+            $privateAccess = in_array(strtolower($privateAccess), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
-        return $this->addUsingAlias(PCirclePeer::ONLY_ELECTED, $onlyElected, $comparison);
+        return $this->addUsingAlias(PCirclePeer::PRIVATE_ACCESS, $privateAccess, $comparison);
     }
 
     /**

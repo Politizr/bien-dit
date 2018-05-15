@@ -1,0 +1,17 @@
+<div class="headerSeparator"></div>
+<div id="headerGrp" action="toggleGrpMenu">
+    <i class="icon-grp"></i><span>Discussions</span><i class="icon-arrow-down"></i>
+</div>
+<div id="headerGrpMenu" style="display: none;">
+    <div id="headerGrpMenuArrow"><i class="icon-arrow-up"></i></div>
+    <div class="innerMenu">
+        <div class="primaryMenu">
+            {{ app.user | circleMenu }}
+        </div>
+        {% if manageGroup %}
+            <div class="secondaryMenu">
+                <a href="{{ path('MenuCircle') }}">Mes groupes de discussion</a>
+            </div>
+        {% endif %}
+    </div>
+</div>

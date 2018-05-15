@@ -1268,52 +1268,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
-     * Compute & display contextualized link for "je m'exprime"
-     *
-     * @param PDocumentInterface|PCTopic $subject
-     * @return string
-     */
-    public function newSubject(\Twig_Environment $env, $subject)
-    {
-        $html = null;
-
-        $display = true;
-        $url = null;
-        $label = "je m'exprime";
-
-        if ($subject instanceof PDocumentInterface) {
-            $topic = $subject->getPCTopic();
-        } elseif ($subject instanceof PCTopic) {
-            $topic = $subject;
-        } else {
-            throw new InconsistentDataException('Class not managed');
-        }
-
-        if ($topic) {
-            $circle = $topic->getPCircle();
-            if ($circle->getReadOnly()) {
-                $display = false;
-            } else {
-                $url = $this->router->generate('DebateDraftNew', array('topic' => $topic->getUuid()));
-                $label = "je m'exprime sur \"".$topic->getTitle()."\"";
-            }
-        } else {
-            $url = $this->router->generate('DebateDraftNew');
-        }
-
-        $html = $env->render(
-            'PolitizrFrontBundle:Document:_newSubject.html.twig',
-            array(
-                'display' => $display,
-                'url' => $url,
-                'label' => $label,
-            )
-        );
-
-        return $html;
-    }
-
-    /**
      * Display boost question
      *
      * @param PDocument $subject

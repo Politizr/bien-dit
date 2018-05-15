@@ -5,66 +5,13 @@
 {# useful to remove flash bag #}
 {% set inscriptionComplete = app.session.flashbag.get('inscription/success') %}
 
-{% block title %}{{ app.user | typeGender }} {{ app.user }} - Politizr{% endblock title %}
-
-{% block description %}Politizr permet de renouer du lien entre les habitants, leurs élus et leurs collectivités locales.{% endblock description %}
+{% block title %}{{ app.user | typeGender }} {{ app.user }} - {{ meta.title }}{% endblock title %}
 
 {% block stylesheets %}
     {{ parent() }}
 
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
 {% endblock %}
-
-{% block fbScript %}
-    {{ parent() }}
-
-    {% if app.environment == 'prod' and inscriptionComplete %}
-        <script>
-            // CompleteRegistration
-            // Track when a registration form is completed (ex. complete subscription, sign up for a service)
-            fbq('track', 'CompleteRegistration');
-        </script>
-
-        {# Google Code for Inscription Politizr Conversion Page #}
-        <script type="text/javascript">
-            /* <![CDATA[ */
-            var google_conversion_id = 872060456;
-            var google_conversion_language = "en";
-            var google_conversion_format = "3";
-            var google_conversion_color = "ffffff";
-            var google_conversion_label = "7d5XCPaJk20QqKzqnwM";
-            var google_remarketing_only = false;
-            /* ]]> */
-        </script>
-        <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
-        </script>
-        <noscript>
-            <div style="display:inline;">
-                <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/872060456/?label=7d5XCPaJk20QqKzqnwM&amp;guid=ON&amp;script=0"/>
-            </div>
-        </noscript>
-    {% endif %}
-{% endblock %}
-
-
-{% block mixPanel %}
-    {{ parent() }}
-
-    {% if app.environment == 'prod' and inscriptionComplete %}
-        {# Mix Panel Customer info #}
-        <script type="text/javascript">
-            mixpanel.people.set({
-                "$email": "{{ app.user.email }}",
-                "$created": "{{ app.user.createdAt | date('d/m/Y H:i:s') }}",
-                "gender": "{{ app.user.gender }}",
-                "firstname": "{{ app.user.firstname }}",
-                "name": "{{ app.user.name }}",
-                "qualified": "{{ app.user.qualified }}"
-            });
-        </script>
-    {% endif %}
-{% endblock %}
-
 
 {% block bodyClass %} class="user"{% endblock %}
 
@@ -87,7 +34,9 @@
 {% block headerMsg %}
     {% include 'PolitizrFrontBundle:Navigation\\Header:_headerMsgIdCheck.html.twig' %}
     {% block headerMsgLocalization %}
-        {{  fillLocalization() }}
+        {% if geo.active %}
+            {{  fillLocalization() }}
+        {% endif %}
     {% endblock %}
 {% endblock %}
 
@@ -156,20 +105,4 @@
             });
         </script>
     {% endif %}
-
-    <script type="text/javascript">
-        {% if app.environment == 'prod' %}
-            mixpanel.identify("{{ app.user.uuid }}");
-            
-            {# Mix Panel Customer info #}
-            mixpanel.people.set({
-                "$email": "{{ app.user.email }}",
-                "$created": "{{ app.user.createdAt | date('d/m/Y H:i:s') }}",
-                "gender": "{{ app.user.gender }}",
-                "firstname": "{{ app.user.firstname }}",
-                "name": "{{ app.user.name }}",
-                "qualified": "{{ app.user.qualified }}"
-            });
-        {% endif %}
-    </script>
 {% endblock javascriptFooter %}

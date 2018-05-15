@@ -46,7 +46,7 @@
             {% block topLeftMenu %}
                 {% if debate.PCTopicId %}
                     {% set circle = debate.circle %}
-                    {% include 'PolitizrFrontBundle:Navigation\\Menu:_topLeftMenu.html.twig' with { 'circle': circle } only %}
+                    {% include 'PolitizrFrontBundle:Navigation\\Menu:_circleTopLeftMenu.html.twig' with { 'circle': circle } only %}
                 {% else %}
                     {{ parent() }}
                 {% endif %}
@@ -142,12 +142,6 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-
-    {% if (app.environment == 'prod') %}
-        <script type="text/javascript">
-            mixpanel.track("Sujet - {{ debate.title }}");
-        </script>
-    {% endif %}
 
     <script src="{{ asset('bundles/politizrfront/js/politizr/selection-sharer.js') }}"></script>
     {% javascripts

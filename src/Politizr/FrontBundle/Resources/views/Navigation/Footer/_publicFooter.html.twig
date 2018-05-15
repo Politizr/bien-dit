@@ -1,59 +1,23 @@
+{# @todo > paramétrage en base via code HTML #}
 <div id="publicFooter">
     <div class="center">
         <div id="publicFooterLeft">
             <div class="footerColumn">
                 <div class="footerColumnTitle">Pour en savoir plus</div>
-                <a href="{{ path('Concept') }}">Le concept</a>
-                <a href="{{ path('WhoWeAre') }}">Qui sommes-nous ?</a>
-
-                {#<a href="{{ path('LandingPage', { 'theme': 'civic-tech'}) }}">Civic Tech</a>#}
-                {#<a href="{{ path('LandingPage', { 'theme': 'democratie-locale'}) }}">Démocratie Locale</a>#}
-                {#<a href="{{ path('LandingPage', { 'theme': 'democratie-participative'}) }}">Démocratie Participative</a>#}
-                {#<a href="{{ path('LandingPage', { 'theme': 'offre-candidat-senatoriales-2017'}) }}">Sénatoriales 2017</a>#}
-                {#<a href="https://blog.politizr.com" target="_blank">Notre blog</a>#}
-                <a href="{{ path('LandingPage', { 'theme': 'offres-collectivites'}) }}">Services aux collectivités</a>
-                <a href="{{ path('LandingPage', { 'theme': 'boite-a-idees-numerique'}) }}">Boîte à idées</a>
-                {#<a href="https://business.politizr.com" target="_blank">Services aux entreprises</a>#}
-
-                <a class="publicFooterHelpLink" href="http://politizr.help" target="_blank"><i class="icon-info"></i>Support et assistance</a>       
+                <a href="#">Qui sommes-nous ?</a>
             </div>
             
             <div class="footerColumn">
                 <div class="footerColumnTitle">Pour nous contacter</div>
-                <span>
-                    32, av. du Gal De Gaulle<br>
-                    09000 Foix<br>
-                </span>
-                <a href="mailto:contact@politizr.com">contact@politizr.com</a>
+                <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
                 <div id="publicPolitizrPhone">
-                    <img src="{{ asset('bundles/politizrfront/images/f-phone.svg') }}">09 50 42 09 34
+                    <img src="{{ asset('bundles/politizrfront/images/f-phone.svg') }}">{{ contact.phone }}
                 </div>
             </div>
-            
-            <div id="publicFooterBadges"></div>
         </div>
         
         <div class="footerColumn">
-            <div id="socialLinks">Retrouvez-nous sur <a href="https://twitter.com/Politizr" target="_blank"><i class="icon-social-tw"></i></a><a href="https://www.facebook.com/Politizr" target="_blank"><i class="icon-social-fb"></i></a><a href="https://plus.google.com/+Politizr/"><i class="icon-social-gg" target="_blank"></i></a><a href="https://www.politizr.com/rss"><i class="icon-social-rss" target="_blank"></i></a></div>
-            <div id="twitterFeed">
-                <a class="twitter-timeline" data-width="240" data-height="460" href="https://twitter.com/Politizr">Tweets by Politizr</a>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> 
-            </div>
-        </div>
-    </div>
-    
-    <div id="publicUnderFooter">
-        <div class="center">
-            <div id="frontSocialPlug">
-                <a href="https://twitter.com/Politizr" class="twitter-follow-button" data-show-count="true" data-lang="fr">Suivre @Politizr</a>
-                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                <div class="fb-like" data-href="https://www.facebook.com/Politizr" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
-            </div>
-            <div id="publicPartners">
-                <span>Politizr est membre de</span><a href="http://democratieouverte.org" target="_blank"><img src="{{ asset('bundles/politizrfront/images/f-DO.png') }}"></a><a href="http://www.debatlab.org" target="_blank"><img src="{{ asset('bundles/politizrfront/images/f-debatlab.png') }}"></a>
-                <a href="http://www.mouves.org" target="_blank"><img src="{{ asset('bundles/politizrfront/images/f-mouves.jpg') }}" title="Mouvement des Entrepreneurs Sociaux"></a>
-                <a href="#" target="_blank"><img src="{{ asset('bundles/politizrfront/images/f-frenchimpact.png') }}" title="French Impact"/></a>
-            </div>
+            <div id="socialLinks">Propulsé par <a href="https://www.politizr.com" target="_blank">POLITIZR</a></div>
         </div>
     </div>
 </div>

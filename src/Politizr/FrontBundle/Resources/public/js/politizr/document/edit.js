@@ -71,22 +71,96 @@ function triggerSaveDocument()
 /**
  *
  */
-function saveDocumentAttr()
+function saveDocumentAttr(uuid, type)
 {
     // console.log('*** saveDocumentAttr');
+    // console.log(uuid);
+    // console.log(type);
 
-    var serializedForms = $("#formDocLoc, #formTagType, #formTagFamily").serialize();
+    saveDocumentAttrDocLoc(uuid, type);
+    saveDocumentAttrTagType(uuid, type);
+    saveDocumentAttrTagFamily(uuid, type);
+}
+
+/**
+ *
+ */
+function saveDocumentAttrDocLoc(uuid, type)
+{
+    // console.log('*** saveDocumentAttrDocLoc');
+    // console.log(uuid);
+    // console.log(type);
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_UPDATE,
         'document',
-        'documentAttrUpdate',
+        'documentAttrUpdateDocLoc',
         RETURN_BOOLEAN
     );
 
     return xhrCall(
         document,
-        serializedForms,
+        $("#formDocLoc").serialize() + '&uuid=' + uuid + '&type=' + type,
+        xhrPath,
+        null,
+        'POST'
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        }
+    });
+}
+
+/**
+ *
+ */
+function saveDocumentAttrTagType(uuid, type)
+{
+    // console.log('*** saveDocumentAttrTagType');
+    // console.log(uuid);
+    // console.log(type);
+
+    var xhrPath = getXhrPath(
+        ROUTE_DEBATE_UPDATE,
+        'document',
+        'documentAttrUpdateTagType',
+        RETURN_BOOLEAN
+    );
+
+    return xhrCall(
+        document,
+        $("#formTagType").serialize() + '&uuid=' + uuid + '&type=' + type,
+        xhrPath,
+        null,
+        'POST'
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        }
+    });
+}
+
+/**
+ *
+ */
+function saveDocumentAttrTagFamily(uuid, type)
+{
+    // console.log('*** saveDocumentAttrTagFamily');
+    // console.log(uuid);
+    // console.log(type);
+
+    var xhrPath = getXhrPath(
+        ROUTE_DEBATE_UPDATE,
+        'document',
+        'documentAttrUpdateTagFamily',
+        RETURN_BOOLEAN
+    );
+
+    return xhrCall(
+        document,
+        $("#formTagFamily").serialize() + '&uuid=' + uuid + '&type=' + type,
         xhrPath,
         null,
         'POST'

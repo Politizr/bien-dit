@@ -33,12 +33,6 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
-    {% if (app.environment == 'prod') %}
-        <script type="text/javascript">
-            mixpanel.track("Édition des notifications");
-        </script>
-    {% endif %}
-
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/editNotifications.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/notification/email.js'

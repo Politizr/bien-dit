@@ -38,6 +38,8 @@ class CircleService
 
     private $logger;
 
+    protected $geoActive;
+
     /**
      *
      * @param @security.token_storage
@@ -45,13 +47,15 @@ class CircleService
      * @param @politizr.manager.circle
      * @param @event_dispatcher
      * @param @logger
+     * @param %geo_active%
      */
     public function __construct(
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $circleManager,
         $eventDispatcher,
-        $logger
+        $logger,
+        $geoActive
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
@@ -61,6 +65,8 @@ class CircleService
         $this->eventDispatcher = $eventDispatcher;
 
         $this->logger = $logger;
+
+        $this->geoActive = $geoActive;
     }
 
     /* ######################################################################################################## */
@@ -130,15 +136,18 @@ class CircleService
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$user->getPLCityId = '.print_r($user->getPLCityId(), true));
 
-        if (!$user || !$user->getPLCityId()) {
+        if (!$user || ($this->geoActive && !$user->getPLCityId())) {
             return null;
         }
 
         $circles = PCircleQuery::create()
                         ->filterByOnline(true)
-                        ->usePCGroupLCQuery()
-                            ->filterByPLCityId($user->getPLCityId())
-                        ->endUse()
+                        ->filterByPrivateAccess(false)
+                        ->_if($this->geoActive)
+                            ->usePCGroupLCQuery()
+                                ->filterByPLCityId($user->getPLCityId())
+                            ->endUse()
+                        ->_endif()
                         ->orderByRank()
                         ->find();
 
@@ -157,16 +166,19 @@ class CircleService
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$user->getPLCityId = '.print_r($user->getPLCityId(), true));
 
-        if (!$user || !$user->getPLCityId()) {
+        if (!$user || ($this->geoActive && !$user->getPLCityId())) {
             return null;
         }
 
         $owners = PCOwnerQuery::create()
                     ->usePCircleQuery()
                         ->filterByOnline(true)
-                        ->usePCGroupLCQuery()
-                            ->filterByPLCityId($user->getPLCityId())
-                        ->endUse()
+                        ->filterByPrivateAccess(false)
+                        ->_if($this->geoActive)
+                            ->usePCGroupLCQuery()
+                                ->filterByPLCityId($user->getPLCityId())
+                            ->endUse()
+                        ->_endif()
                         ->orderByRank()
                     ->endUse()
                     ->distinct()
@@ -361,10 +373,9 @@ class CircleService
      * Get authorized reaction users by circle
      *
      * @param PUser $user
-     * @param array|PUser $users
      * @return PropelCollection[PCircle]
      */
-    public function getAuthorizedReactionUsersByCircle(PCircle $circle, $users = null)
+    public function getAuthorizedReactionUsersByCircle(PCircle $circle)
     {
         // $this->logger->info('*** getAuthorizedReactionUsersByCircle');
         // $this->logger->info('$circle = '.print_r($circle, true));
@@ -378,9 +389,6 @@ class CircleService
                 ->filterByPCircleId($circle->getId())
                 ->filterByIsAuthorizedReaction(true)
             ->endUse()
-            ->_if($users !== null && $users instanceof PUser)
-                ->filterById($users?$users->getId():null, ' NOT IN ')
-            ->_endif()
             ->find();
 
         return $users;

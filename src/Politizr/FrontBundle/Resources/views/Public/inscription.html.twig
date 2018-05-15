@@ -1,13 +1,13 @@
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block title %}
-    Inscription étape - {{ parent() }}
+    Inscription Étape 1/2- {{ parent() }}
 {% endblock title %}
 
 {% block bodyClass %} class="process"{% endblock %}
 
 {% block header %}
-    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'citizen' } %}
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' %}
     <div id="headerTrigger"></div>
 {% endblock header %}
 
@@ -47,7 +47,7 @@
                         {{ form_row(form.plainPassword) }}
                         <div class="coloredBg">
                             <div class="control-group">
-                                {{ form_widget(form.cgu) }}<label>J’accepte les <a action="openCgu">conditions générales d'utilisation</a> et je m'engage à respecter la <a action="openCharte">charte de Politizr</a>.</label>
+                                {{ form_widget(form.cgu) }}<label>J’accepte les <a action="openCgu">conditions générales d'utilisation</a> et je m'engage à respecter la <a action="openCharte">charte de bonne conduite</a>.</label>
                                 {% if form.cgu.vars.errors|length %}
                                     <div class="field_error">{{ form_errors(form.cgu) }}</div>
                                 {% endif %}
@@ -63,21 +63,9 @@
             </div>
             <div class="column column140">
                 <div class="columnSidebar processGrey">
-                    Vous exercez — ou avez déjà exercé — un mandat électif?<br><a href="{{ path('InscriptionElected') }}">Créez votre compte élu pour prendre part aux discussions!</a>
-                    <br/><br/>
-                    Note: les citoyen-ne-s pourront utiliser un pseudonyme lors de leur inscription.
+                    Note: vous pouvez utiliser un pseudonyme lors de votre inscription.
                 </div>
             </div>
         </center>
     </div>
 {% endblock main %}
-
-{% block javascriptFooter %}
-    {{ parent() }}
-
-    {% if app.environment == 'prod' %}
-        <script type="text/javascript">
-            mixpanel.track("Page d'inscription citoyen étape 1");
-        </script>
-    {% endif %}
-{% endblock javascriptFooter %}

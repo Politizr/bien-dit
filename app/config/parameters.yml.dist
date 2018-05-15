@@ -16,8 +16,9 @@ parameters:
     locale: fr
     secret: 123
 
-    # Email contact
+    # Contact Support
     contact_email: contact@politizr.com
+    contact_phone: 123
     support_email: support@politizr.com
 
     # Hosts
@@ -44,6 +45,7 @@ parameters:
     facebook_page_id: 123
     facebook_graph_version: v2.8
     facebook_access_token: 123456789
+    facebook_pixelcode_id: 123
 
     #Twitter
     twitter_api_key: 123
@@ -53,6 +55,8 @@ parameters:
     google_client_id: 123
     google_client_secret: 123
     google_scope: email profile
+
+    google_tagmanager_id: GTM-123
 
     # ID Check
     idcheck_wsdl_url: http://www.wsdl.com
@@ -66,3 +70,35 @@ parameters:
     
     # HTML Purifier customized service
     exercise_html_purifier.config.class: Politizr\FrontBundle\Lib\HtmlPurifierConfig
+
+    # client
+    client_name: Générations ERIC
+
+    # META
+    meta_title: Mon projet
+    meta_description: Une description succinte et précise de mon projet
+    meta_og_image: share_facebook.jpg
+    meta_og_site_name: Mon projet
+    meta_og_title: Mon projet
+    meta_og_description: Une description succinte et précise de mon projet
+    meta_og_url: http://politzr.monprojet
+    meta_tw_site: @MonProjet
+    meta_tw_title: Mon Projet
+    meta_tw_description: Une description succinte et précise de mon projet
+
+    # Localization
+    geo_active: false
+
+    # Niveau d'expression
+    expression_from_scratch: false # true | false
+    
+    # Groupes
+    with_group: true
+    multiple_group: false
+    manage_group: false
+
+    # Menu
+    top_menu_cms: true # true | false
+    top_menu_groups: topics # topics | groups | false
+    top_menu_publications: true # true | false
+    top_menu_community: true # true | false

@@ -53,7 +53,7 @@ class PCircleTableMap extends TableMap
         $this->addColumn('url', 'Url', 'VARCHAR', false, 150, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('read_only', 'ReadOnly', 'BOOLEAN', false, 1, null);
-        $this->addColumn('only_elected', 'OnlyElected', 'BOOLEAN', false, 1, null);
+        $this->addColumn('private_access', 'PrivateAccess', 'BOOLEAN', false, 1, false);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);

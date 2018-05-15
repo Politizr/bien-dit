@@ -48,13 +48,6 @@ builders:
             title:                              Liste des organisations
             max_per_page:                       50
             sort:                               [ sortable_rank, ASC ]
-            scopes:
-                group_1: 
-                    "Tous":                     ~
-                    "Partis politiques":
-                        default:                1
-                        filters: 
-                            p_q_type_id:        1
             display:                            [ file_name, p_q_type_id, initials, title ]
             filters:                            [ p_q_type, p_q_type_id, initials ]
             actions:

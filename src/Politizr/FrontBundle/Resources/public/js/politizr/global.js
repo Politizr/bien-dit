@@ -73,7 +73,7 @@ $("body").on("click", "[action='hideHelper']", function() {
 // ******************************************************************* //
 //                          CSS EFFECTS                                //
 // ******************************************************************* //
-
+/*
 // transparent header
 $.fn.isVisible = function() {    
     var rect = this[0].getBoundingClientRect();
@@ -126,6 +126,7 @@ function check_if_in_view() {
 
 $window.on('scroll resize', check_if_in_view);
 $window.trigger('scroll');
+*/
 
 // ******************************************************************* //
 //                     SOCIAL NETWORK SHARING                          //

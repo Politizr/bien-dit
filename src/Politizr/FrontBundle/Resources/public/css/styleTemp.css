@@ -1,36 +1,4 @@
-#bannerPromo.bannerPress {
+#homePresentation {
     background: #e1e1e1;
-    background-image: url("../images/f-press.jpg");
-    background-position: center center;
-    background-repeat: no-repeat;
     width: 100%;
-    height: 526px;
-}
-
-#inscriptionHome {
-    text-align: center;
-}
-
-#inscriptionHome .column h1 {
-    margin: 10px 0 10px 0;
-}
-
-#inscriptionHome ul.checkList {
-    padding: 20px 10px 0 10px;
-}
-
-#inscriptionHome a.submit {
-    float: left;
-    width: 100%;
-    margin-left: 0;
-}
-
-#inscriptionHome .cardFooter {
-    margin-top: 0;
-    margin-bottom: 10px;
-    line-height: 100%;
-}
-
-#inscriptionHome .cardFooter span {
-    color: white;
 }

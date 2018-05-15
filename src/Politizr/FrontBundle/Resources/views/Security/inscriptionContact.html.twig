@@ -1,13 +1,13 @@
 {% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
 
 {% block title %}
-    Inscription - {{ parent() }}
+    Inscription Étape 2/2 - {{ parent() }}
 {% endblock title %}
 
 {% block bodyClass %} class="process"{% endblock %}
 
 {% block header %}
-    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' with { 'type': 'citizen' } %}
+    {% include 'PolitizrFrontBundle:Navigation\\Header:_headerInscription.html.twig' %}
     <div id="headerTrigger"></div>
 {% endblock header %}
 
@@ -38,7 +38,9 @@
                             </div>
                             {{ form_row(form.email) }}
                         {% endif %}
-                        {{ form_widget(form.localization) }}
+                        {% if geo.active %}
+                            {{ form_widget(form.localization) }}
+                        {% endif %}
                         <div class="coloredBg">
                             {% if (form.cgu is defined) %}
                                 <div class="control-group">
@@ -67,12 +69,6 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-
-    {% if app.environment == 'prod' %}
-        <script type="text/javascript">
-            mixpanel.track("Page d'inscription citoyen étape 2 (contact)");
-        </script>
-    {% endif %}
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/localization/edit.js'

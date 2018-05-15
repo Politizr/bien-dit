@@ -28,12 +28,6 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
-    {% if (app.environment == 'prod') %}
-        <script type="text/javascript">
-            mixpanel.track("Mes favoris");
-        </script>
-    {% endif %}
-
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/timeline/timeline.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/tag/listing.js'

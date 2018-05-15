@@ -2,7 +2,7 @@
     {% if private %}<h1><i class="icon-info"></i>Vous devez vous inscrire pour lire la suite</h1>{% endif %}
     <p>Ne manquer aucune publication {% if document.PUserId %}de <b>{{ document.user }}</b>{% endif %} en vous inscrivant. <a href="{{ path('Concept') }}">En savoir plus</a></p>
     <div class="getAccountActions">
-        <a class="linkPostGetAccount" href="{{ path('InscriptionChoice') }}">Inscription</a>
+        <a class="linkPostGetAccount" href="{{ path('Inscription') }}">Inscription</a>
         <span>Déjà inscrit-e? <a href="{{ path('Login') }}">Identifiez-vous</a></span>
     </div>
 </div>

@@ -58,17 +58,3 @@ assetic:
 
 swiftmailer:
     disable_delivery: true
-
-# Bazinga Faker
-bazinga_faker:
-    locale:                             fr_FR
-    entities:
-        Politizr\Model\PUser:
-            custom_formatters:
-                BackFileName:           { method: image, parameters: [ '/home/lionel/www/politizr.beta/web/uploads/users', '1280', '600', 'city', false ] }
-                FileName:               { method: image, parameters: [ '/home/lionel/www/politizr.beta/web/uploads/users', '150', '150', 'people', false ] }
-
-        Politizr\Model\PDDebate:
-            custom_formatters:
-                FileName:               { method: image, parameters: [ '/home/lionel/www/politizr.beta/web/uploads/documents', '640', '480', 'city', false ] }
-

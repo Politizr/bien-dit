@@ -75,6 +75,8 @@ class XhrDocument
     private $documentLocalizationFormType;
     private $logger;
 
+    private $geoActive;
+
     /**
      *
      * @param @security.token_storage
@@ -98,6 +100,7 @@ class XhrDocument
      * @param @politizr.twig.document
      * @param @politizr.form.type.document_localization
      * @param @logger
+     * @param %geo_active%
      */
     public function __construct(
         $securityTokenStorage,
@@ -120,7 +123,8 @@ class XhrDocument
         $globalTools,
         $documentTwigExtension,
         $documentLocalizationFormType,
-        $logger
+        $logger,
+        $geoActive
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
         $this->securityAuthorizationChecker = $securityAuthorizationChecker;
@@ -152,6 +156,8 @@ class XhrDocument
         $this->documentLocalizationFormType = $documentLocalizationFormType;
 
         $this->logger = $logger;
+
+        $this->geoActive = $geoActive;
     }
 
 
@@ -435,14 +441,17 @@ class XhrDocument
 
         // Validation
         $errorString = array();
+        $constraints = array(
+            'title' => $debate->getTitle(),
+            'description' => strip_tags($debate->getDescription()),
+            'tags' => $debate->getArrayTags([TagConstants::TAG_TYPE_FAMILY, TagConstants::TAG_TYPE_THEME]),
+        );
+        if ($this->geoActive) {
+            $constraints['localization'] = $debate->getPLocalizations();
+        }
         $valid = $this->globalTools->validateConstraints(
-            array(
-                'title' => $debate->getTitle(),
-                'description' => strip_tags($debate->getDescription()),
-                'tags' => $debate->getArrayTags([TagConstants::TAG_TYPE_FAMILY, TagConstants::TAG_TYPE_THEME]),
-                'localization' => $debate->getPLocalizations(),
-            ),
-            $debate->getPublishConstraints(),
+            $constraints,
+            $debate->getPublishConstraints($this->geoActive),
             $errorString
         );
         if (!$valid) {
@@ -606,14 +615,17 @@ class XhrDocument
 
         // Validation
         $errorString = array();
+        $constraints = array(
+            'title' => $reaction->getTitle(),
+            'description' => strip_tags($reaction->getDescription()),
+            'tags' => $reaction->getArrayTags([TagConstants::TAG_TYPE_FAMILY, TagConstants::TAG_TYPE_THEME]),
+        );
+        if ($this->geoActive) {
+            $constraints['localization'] = $reaction->getPLocalizations();
+        }
         $valid = $this->globalTools->validateConstraints(
-            array(
-                'title' => $reaction->getTitle(),
-                'description' => strip_tags($reaction->getDescription()),
-                'tags' => $reaction->getArrayTags([TagConstants::TAG_TYPE_FAMILY, TagConstants::TAG_TYPE_THEME]),
-                'localization' => $reaction->getPLocalizations(),
-            ),
-            $reaction->getPublishConstraints(),
+            $constraints,
+            $reaction->getPublishConstraints($this->geoActive),
             $errorString
         );
         if (!$valid) {
@@ -726,19 +738,69 @@ class XhrDocument
      * Document attributes update
      * beta
      */
-    public function documentAttrUpdate(Request $request)
+    public function documentAttrUpdateDocLoc(Request $request)
     {
-        // $this->logger->info('*** debateAttrUpdate');
-
-        // Request arguments
-        $uuid = $request->get('document_localization')['uuid'];
-        // $this->logger->info('$uuid = ' . print_r($uuid, true));
-        $type = $request->get('document_localization')['type'];
-        // $this->logger->info('$type = ' . print_r($type, true));
+        // $this->logger->info('*** documentAttrUpdateDocLoc');
 
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
+        $uuid = $request->get('uuid');
+        $type = $request->get('type');
+
+        if ($this->geoActive) {
+            // get current document
+            if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+                $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+            } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+                $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+            } else {
+                throw new InconsistentDataException('Document '.$type.' unknown.');
+            }
+
+            if (!$document) {
+                throw new InconsistentDataException('Debate '.$uuid.' not found.');
+            }
+            if (!$document->isOwner($user->getId())) {
+                throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
+            }
+            if ($document->getPublished()) {
+                throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
+            }
         
+            // Document's localization
+            $options = array(
+                    'data_class' => $type,
+                    'user' => $user,
+            );
+            if ($document->getPCTopicId()) {
+                $this->circleService->updateDocumentLocalizationTypeOptions($document->getPCTopic(), $options);
+            }
+            $formLocalization = $this->formFactory->create(
+                $this->documentLocalizationFormType,
+                $document,
+                $options
+            );
+            $formLocalization->bind($request);
+            $document = $formLocalization->getData();
+            $document->save();
+        }
+
+        return true;
+    }
+
+    /**
+     * Document attributes update
+     * beta
+     */
+    public function documentAttrUpdateTagType(Request $request)
+    {
+        // $this->logger->info('*** documentAttrUpdateTagType');
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        $uuid = $request->get('uuid');
+        $type = $request->get('type');
+
         // get current document
         if ($type == ObjectTypeConstants::TYPE_DEBATE) {
             $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
@@ -757,24 +819,7 @@ class XhrDocument
         if ($document->getPublished()) {
             throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
         }
-
-        // Document's localization
-        $options = array(
-                'data_class' => $type,
-                'user' => $user,
-        );
-        if ($document->getPCTopicId()) {
-            $this->circleService->updateDocumentLocalizationTypeOptions($document->getPCTopic(), $options);
-        }
-        $formLocalization = $this->formFactory->create(
-            $this->documentLocalizationFormType,
-            $document,
-            $options
-        );
-        $formLocalization->bind($request);
-        $document = $formLocalization->getData();
-        $document->save();
-
+        
         // Document's tags type
         $formTagType = $this->formFactory->create(
             new PDocumentTagTypeType(), 
@@ -790,6 +835,41 @@ class XhrDocument
             $this->tagService->updateReactionTags($document, $tags, TagConstants::TAG_TYPE_TYPE);
         } else {
             throw new InconsistentDataException('Document '.$type.' unknown.');
+        }
+
+        return true;
+    }
+
+    /**
+     * Document attributes update
+     * beta
+     */
+    public function documentAttrUpdateTagFamily(Request $request)
+    {
+        // $this->logger->info('*** documentAttrUpdateTagFamily');
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        $uuid = $request->get('uuid');
+        $type = $request->get('type');
+
+        // get current document
+        if ($type == ObjectTypeConstants::TYPE_DEBATE) {
+            $document = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
+        } elseif ($type == ObjectTypeConstants::TYPE_REACTION) {
+            $document = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
+        } else {
+            throw new InconsistentDataException('Document '.$type.' unknown.');
+        }
+
+        if (!$document) {
+            throw new InconsistentDataException('Debate '.$uuid.' not found.');
+        }
+        if (!$document->isOwner($user->getId())) {
+            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
+        }
+        if ($document->getPublished()) {
+            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
         }
 
         // Document's tags family
@@ -1514,13 +1594,6 @@ class XhrDocument
         $filterDate = $request->get('filterDate');
         // $this->logger->info('$filterDate = ' . print_r($filterDate, true));
 
-        // set default values if not set
-        // upd > default = all
-        // if (empty($geoUuid)) {
-        //     $france = PLCountryQuery::create()->findPk(LocalizationConstants::FRANCE_ID);
-        //     $geoUuid = $france->getUuid();
-        //     $type = LocalizationConstants::TYPE_COUNTRY;
-        // }
         if (empty($filterPublication)) {
             $filterPublication = ListingConstants::FILTER_KEYWORD_ALL_PUBLICATIONS;
         }
@@ -1555,7 +1628,11 @@ class XhrDocument
 
         // update url w. js
         $localization = $this->localizationService->getPLocalizationFromGeoUuid($geoUuid, $type);
-        $url = $this->router->generate('ListingSearchPublications', array('slug' => $localization->getSlug()));
+        if ($localization) {
+            $url = $this->router->generate('ListingSearchPublications', array('slug' => $localization->getSlug()));
+        } else {
+            $url = $this->router->generate('ListingSearchPublications');
+        }
 
         // @todo create function for code above
         $moreResults = false;

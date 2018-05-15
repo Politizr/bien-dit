@@ -20,9 +20,3 @@ Cgu:
 Charte:
     pattern:  /charte-politizr
     defaults: { _controller: PolitizrFrontBundle:Public:charte }
-
-LandingPage:
-    pattern:  /lp/{theme}
-    defaults: { _controller: PolitizrFrontBundle:Public:landingPage, theme: null }
-    requirements:
-        _method:        GET

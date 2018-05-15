@@ -111,11 +111,12 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     /**
      * Return constraints to be applied before publication
      *
+     * @param boolean $geoActive Geo constraint
      * @return Collection
      */
-    public function getPublishConstraints()
+    public function getPublishConstraints($geoActive = true)
     {
-        $collectionConstraint = new Collection(array(
+        $constraints = array(
             'title' => array(
                 new NotBlank(['message' => 'Le titre ne doit pas être vide.']),
                 new Length(['max' => 100, 'maxMessage' => 'Le titre doit contenir {{ limit }} caractères maximum.']),
@@ -125,8 +126,13 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
                 // new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir au moins {{ limit caractères.']),
             ),
             'tags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
-            'localization' => new Count(['min' => 1, 'minMessage' => 'Le document doit être associé à une localisation.']),
-        ));
+        );
+
+        if ($geoActive) {
+            $constraints['localization'] = new Count(['min' => 1, 'minMessage' => 'Le document doit être associé à une localisation.']);
+        }
+
+        $collectionConstraint = new Collection($constraints);
 
         return $collectionConstraint;
     }

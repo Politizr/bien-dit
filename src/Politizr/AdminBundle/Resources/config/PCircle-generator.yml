@@ -34,8 +34,8 @@ params:
             label:          Lecture seule
         online:
             label:          En ligne
-        only_elected:
-            label:          Élus seulement
+        private_access:
+            label:          Accès privé
         created_at:
             label:          Création
         updated_at:
@@ -91,7 +91,7 @@ builders:
                     "Offre":                    [ p_circle_type ]
                 "Options":
                     "Adresse":                  [ url ]
-                    "Restrictions":             [ only_elected ]
+                    "Restrictions":             [ private_access ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "En ligne":                 [ read_only, online ]
@@ -141,7 +141,7 @@ builders:
                     "Offre":                    [ p_circle_type ]
                 "Options":
                     "Adresse":                  [ url ]
-                    "Restrictions":             [ only_elected ]
+                    "Restrictions":             [ private_access ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "En ligne":                 [ online ]

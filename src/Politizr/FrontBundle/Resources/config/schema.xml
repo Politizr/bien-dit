@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database name="default" namespace="Politizr\Model" defaultIdMethod="native">
 
+    <table name="cms_category">
+        <behavior name="sortable" />
+        <behavior name="timestampable" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
+        <column name="file_name" type="varchar" size="250" />
+        <column name="title" type="varchar" size="250" />
+
+        <column name="online" type="boolean" />
+    </table>
+
+    <table name="cms_content">
+        <behavior name="sortable" >
+            <parameter name="use_scope" value="true" />
+            <parameter name="scope_column" value="cms_category_id" />
+        </behavior>
+        <behavior name="timestampable" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
+        <column name="cms_category_id" type="integer" />
+
+        <column name="title" type="varchar" size="250" />
+        
+        <column name="file_name" type="varchar" size="250" />
+        <column name="summary" type="longvarchar" />
+        <column name="description" type="longvarchar" />
+
+        <column name="more_info_title" type="varchar" size="250" />
+        <column name="more_info_description" type="longvarchar" />
+
+        <column name="url_embed_video" type="longvarchar" />
+
+        <column name="homepage" type="boolean" />
+        <column name="online" type="boolean" />
+        
+        <foreign-key foreignTable="cms_category" onDelete="SETNULL" onUpdate="CASCADE">
+            <reference local="cms_category_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
     <table name="p_tag">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
@@ -1382,7 +1431,7 @@
 
         <column name="online" type="boolean" />
         <column name="read_only" type="boolean" />
-        <column name="only_elected" type="boolean" />
+        <column name="private_access" type="boolean" default="false" />
 
         <foreign-key foreignTable="p_c_owner" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_c_owner_id" foreign="id" />

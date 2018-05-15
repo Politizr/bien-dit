@@ -11,11 +11,8 @@
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svgdom.min.js') }}"></script>
 {% endblock %}
 
-{% set metaTitle = 'Mes élus' %}
-{% if (isGrantedE()) %}
-    {% set metaTitle = 'Les élus' %}
-{% endif %}
-{% set metaDescription = 'Recherchez et classez les dernier-e-s élu-e-s (et citoyen-ne-s!) de Politizr, en utilisant la carte et les nombreux filtres disponibles.' %}
+{% set metaTitle = 'Communauté' %}
+{% set metaDescription = 'Recherchez et classez les membres de notre communauté.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -29,10 +26,12 @@
 {% block content %}
     <div id="content">
         <div id="localizationPreload" action="usersMyMap" type="{{ currentType }}" uuid="{{ currentUuid }}"></div>
-        <div id="localizationChoiceBox">
-            <a action="usersMyMap" id="linkMyRegion" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_REGION') }}" uuid="{{ regionUuid }}">Ma région</a>
-            <a action="usersMyMap" id="linkMyDepartment" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') }}" uuid="{{ departmentUuid }}">Mon département</a>
-        </div>
+        {% if geo.active %}
+            <div id="localizationChoiceBox">
+                <a action="usersMyMap" id="linkMyRegion" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_REGION') }}" uuid="{{ regionUuid }}">Ma région</a>
+                <a action="usersMyMap" id="linkMyDepartment" type="{{ constant('Politizr\\Constant\\LocalizationConstants::TYPE_DEPARTMENT') }}" uuid="{{ departmentUuid }}">Mon département</a>
+            </div>
+        {% endif %}
         <div id="documentListing" class="searchResults withLoaderInside">
             {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
             <div class="listTop"></div>
@@ -41,30 +40,11 @@
 {% endblock content %}
 
 {% block sidebarContent %}
-    {% if not app.user %}
-        <div id="mapHolder" class="mapUnlogged">
-            <div class="mapUnloggedText">
-                <h1>Vous devez vous<br>inscrire pour accéder<br>au filtre par zone<br>géographique</h1>
-                <a href="{{ path('InscriptionChoice') }}">Inscription</a>
-                <span>100 %<br>gratuit</span>
-            </div>
-            <div class="svg">
-                {% include 'PolitizrFrontBundle:Search\\Map:_france.svg.twig' with { 'current': null } %}
-            </div>
-        </div>
-    {% else %}
-        {% include 'PolitizrFrontBundle:Search:_sidebarSearchUsers.html.twig' %}
-    {% endif %}
+    {% include 'PolitizrFrontBundle:Search:_sidebarSearchUsers.html.twig' %}
 {% endblock sidebarContent %}
 
 {% block javascriptFooter %}
     {{ parent() }}
-
-    {% if (app.environment == 'prod') %}
-        <script type="text/javascript">
-            mixpanel.track("Les élus (recherche)");
-        </script>
-    {% endif %}
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/localization/map.js'

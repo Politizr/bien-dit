@@ -6,7 +6,7 @@
 {% extends layout %}
 
 {% set metaTitle = organization.title %}
-{% set metaDescription = 'Liste des publications et des élu-e-s de l\'organisation politique "' ~ organization.title ~ '" disponibles sur Politizr.' %}
+{% set metaDescription = 'Liste des publications et des membres de l\'organisation "' ~ organization.title %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -21,7 +21,7 @@
     <div id="content">
         <div id="organizationTypeChoiceBox" class="pseudoTabs">
             <a action="documentsByOrganization" class="currentPage" uuid="{{ organization.uuid }}">Les publications</a>
-            <a action="usersByOrganization" uuid="{{ organization.uuid }}">Les élus</a>
+            <a action="usersByOrganization" uuid="{{ organization.uuid }}">Les membres</a>
         </div>
         <div class="list">
         </div>
@@ -37,12 +37,6 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-
-    {% if (app.environment == 'prod') %}
-        <script type="text/javascript">
-            mixpanel.track("Publications et users pour le parti {{ organization.title }}");
-        </script>
-    {% endif %}
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/organization/listing.js'

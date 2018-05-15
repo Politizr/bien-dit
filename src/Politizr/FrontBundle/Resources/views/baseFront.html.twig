@@ -16,20 +16,20 @@
             {% block ogImage %}<meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ '/bundles/politizrfront/images/share_facebook.jpg' }}" />{% endblock ogImage %}
             <meta property="og:locale" content="fr_FR" />
             <meta property="og:type" content="article" />
-            <meta property="og:site_name" content="Politizr" /> 
-            <meta property="og:title" content="{% block ogTitle %}Politizr{% endblock ogTitle %}" /> 
+            <meta property="og:site_name" content="{{ meta.title }}" /> 
+            <meta property="og:title" content="{% block ogTitle %}{{ meta.og_title }}{% endblock ogTitle %}" /> 
             <meta property="og:url" content="{% block ogUrl %}{{ app.request.uri }}{% endblock ogUrl %}" /> 
-            <meta property="og:description" content="{% block ogDescription %}Politizr est une plateforme neutre et indépendante permettant aux élus et anciens élus de débattre publiquement des sujets proposés par leurs concitoyens.{% endblock ogDescription %}" />
-            {% block ogVideo %}{% endblock ogVideo %}
+            <meta property="og:description" content="{% block ogDescription %}{{ meta.og_description }}{% endblock ogDescription %}" />
         {% endblock metaopengraph %}
 
         {% block metatwittercards %}
             <meta name="twitter:card" content="summary" />
-            <meta name="twitter:site" content="@Politizr" />
-            <meta name="twitter:title" content="{% block tcTitle %}Politizr{% endblock tcTitle %}" />
-            <meta name="twitter:description" content="{% block tcDescription %}Politizr est une plateforme neutre et indépendante permettant aux élus et anciens élus de débattre publiquement des sujets proposés par leurs concitoyens.{% endblock tcDescription %}" />
+            {% if meta.tw_site is not null %}
+                <meta name="twitter:site" content="{{ meta.tw_site }}" />
+            {% endif %}
+            <meta name="twitter:title" content="{% block tcTitle %}{{ meta.tw_title }}{% endblock tcTitle %}" />
+            <meta name="twitter:description" content="{% block tcDescription %}{{ meta.tw_description }}{% endblock tcDescription %}" />
             <meta name="twitter:image" content="{% block tcImage %}{{ app.request.getSchemeAndHttpHost() ~ '/bundles/politizrfront/images/share_twitter.jpg' }}{% endblock tcImage %}" />
-            {% block tcPlayer %}{% endblock tcPlayer %}
         {% endblock metatwittercards %}
 
         {% block stylesheets %}
@@ -68,56 +68,17 @@
         {% endblock %}
 
         {% block fbScript %}
-            {% if app.environment == 'prod' %}
-                <!-- Facebook Pixel Code -->
-                <script>
-                !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-                n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-                t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-                document,'script','https://connect.facebook.net/en_US/fbevents.js');
-
-                fbq('init', '1580452892271347');
-                fbq('track', "PageView");</script>
-                <noscript><img height="1" width="1" style="display:none"
-                src="https://www.facebook.com/tr?id=1580452892271347&ev=PageView&noscript=1"
-                /></noscript>
-                <!-- End Facebook Pixel Code -->
-            {% endif %}
-        {% endblock %}
-
-        {% block mixPanel %}
-            {% if app.environment == 'prod' %}
-                <!-- start Mixpanel --><script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
-                0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
-                for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
-                mixpanel.init("b02547638893bc9b86413089fceb4532");</script><!-- end Mixpanel -->
-            {% endif %}
+            {% include 'PolitizrFrontBundle:Navigation\\Social:_fbPixelCode.html.twig' %}
         {% endblock %}
 
         {# Google Trackers #}
-        {# include 'PolitizrFrontBundle:Navigation\\Social:_analytics.html.twig' #}
         {% if app.environment == 'prod' %}
-            <!-- Google Tag Manager -->
-            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-T65MZHB');</script>
-            <!-- End Google Tag Manager -->
+            {% include 'PolitizrFrontBundle:Navigation\\Social:_gTagManager.html.twig' %}
         {% endif %}
     </head>
     {% block body %}
         <body{% block bodyClass %}{% endblock %}>
             {% include 'PolitizrFrontBundle:Navigation\\Social:_socialInit.html.twig' %}
-
-            {# Google Tag Manager #}
-            {% if app.environment == 'prod' %}
-                <!-- Google Tag Manager (noscript) -->
-                <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T65MZHB"
-                height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-                <!-- End Google Tag Manager (noscript) -->
-            {% endif %}
 
             <noscript>
                 <div id="noJsBox">
@@ -184,39 +145,7 @@
                 <script type="text/javascript">
                     var baseUrl = '{{ app.request.getBaseUrl }}';
                 </script>
-
-                {% if app.environment == 'prod' %}
-                    <!-- Twitter universal website tag code -->
-                    <script>
-                    !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
-                    },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
-                    a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
-                    // Insert Twitter Pixel ID and Standard Event data below
-                    twq('init','nw92c');
-                    twq('track','PageView');
-                    </script>
-                    <!-- End Twitter universal website tag code -->
-                {% endif %}
-
             {% endblock javascriptFooter %}
-
-            {% block tawkTo %}
-                {% if app.environment == 'prod' %}
-                    <!--Start of Tawk.to Script-->
-                    <script type="text/javascript">
-                    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-                    (function(){
-                    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-                    s1.async=true;
-                    s1.src='https://embed.tawk.to/570e03b2c703ec8e24aec814/default';
-                    s1.charset='UTF-8';
-                    s1.setAttribute('crossorigin','*');
-                    s0.parentNode.insertBefore(s1,s0);
-                    })();
-                    </script>
-                    <!--End of Tawk.to Script-->
-                {% endif %}
-            {% endblock %}
         </body>
     {% endblock body %}
 </html>

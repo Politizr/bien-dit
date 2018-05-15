@@ -21,10 +21,10 @@ class CircleListener
     protected $logger;
 
     /**
-     * @politizr.functional.circle
-     * @politizr.functional.user
-     * @event_dispatcher
-     * @logger
+     * @param @politizr.functional.circle
+     * @param @politizr.functional.user
+     * @param @event_dispatcher
+     * @param @logger
      */
     public function __construct(
         $circleService,
@@ -53,7 +53,7 @@ class CircleListener
             throw new InconsistentDataException('Subscribe event cannot manage circle or user null');
         }
 
-        // get all circle for user's geoloc
+        // get all authorizes circle for user
         $circles = $this->circleService->getAuthorizedCirclesByUser($user);
 
         // default add user to his local circles

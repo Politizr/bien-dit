@@ -32,7 +32,7 @@
     {% if (isGrantedE() or isGrantedC()) %}
         {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
             {% block topLeftMenu %}
-                {% include 'PolitizrFrontBundle:Navigation\\Menu:_topLeftMenu.html.twig' with { 'circle': circle } only %}
+                {% include 'PolitizrFrontBundle:Navigation\\Menu:_circleTopLeftMenu.html.twig' with { 'circle': circle } only %}
             {% endblock %}
             {% block newSubject %}
             {% endblock %}
@@ -59,12 +59,6 @@
 
 {% block javascriptFooter %}
     {{ parent() }}
-
-    {% if (app.environment == 'prod') %}
-        <script type="text/javascript">
-            mixpanel.track("Groupe - {{ circle.title }}");
-        </script>
-    {% endif %}
 
     {% javascripts
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/detailCircle.js'

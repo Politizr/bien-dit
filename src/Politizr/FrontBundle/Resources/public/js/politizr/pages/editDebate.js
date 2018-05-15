@@ -44,13 +44,13 @@ $('body').on('click', "[action='closeModalPublish'], .modalPublishBg", function(
 $('#formDocLoc :radio').on('change', function() {
     // console.log('*** formDocLoc change');
     locShowHideAttr();
-    saveDocumentAttr();
+    saveDocumentAttr(uuid, type);
 });
 
 // change checkbox type event
 $('#formTagType :checkbox, #formTagFamily :checkbox').on('change', function() {
     // console.log('*** formTagType change');
-    saveDocumentAttr();
+    saveDocumentAttr(uuid, type);
 });
 
 // Save debate
@@ -81,7 +81,7 @@ $('body').on('click', "[action='debateDelete']", function(e){
 $('body').on('click', "[action='debatePublish']", function(e){
     // console.log('*** click publish debate');
 
-    $.when(saveDocumentAttr()).done(function(r1) {
+    $.when(saveDocumentAttr(uuid, type)).done(function(r1) {
         return publishDebate(uuid);
     });
 });

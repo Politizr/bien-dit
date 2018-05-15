@@ -17,38 +17,38 @@ UserDetail:
 #               CITIZEN
 ################################################################################
 HomepageC:
-    pattern:  /espace/citoyen
+    pattern:  /espace/utilisateur
     defaults: { _controller: PolitizrFrontBundle:User:timeline }
 
 EditProfileC:
-    pattern:  /espace/citoyen/mon-compte/mon-profil
+    pattern:  /espace/utilisateur/mon-compte/mon-profil
     defaults: { _controller: PolitizrFrontBundle:User:editProfile }
 
 EditPersoC:
-    pattern:  /espace/citoyen/mon-compte/mes-informations-personnelles
+    pattern:  /espace/utilisateur/mon-compte/mes-informations-personnelles
     defaults: { _controller: PolitizrFrontBundle:User:editPerso }
 
 EditNotificationsC:
-    pattern:  /espace/citoyen/mon-compte/mes-notifications
+    pattern:  /espace/utilisateur/mon-compte/mes-notifications
     defaults: { _controller: PolitizrFrontBundle:User:editNotifications }
 
 ################################################################################
 #               ELECTED
 ################################################################################
 HomepageE:
-    pattern:  /espace/elu
+    pattern:  /espace/animateur
     defaults: { _controller: PolitizrFrontBundle:User:timeline }
 
 EditProfileE:
-    pattern:  /espace/elu/mon-compte/mon-profil
+    pattern:  /espace/animateur/mon-compte/mon-profil
     defaults: { _controller: PolitizrFrontBundle:User:editProfile }
 
 EditPersoE:
-    pattern:  /espace/elu/mon-compte/mes-informations-personnelles
+    pattern:  /espace/animateur/mon-compte/mes-informations-personnelles
     defaults: { _controller: PolitizrFrontBundle:User:editPerso }
 
 EditNotificationsE:
-    pattern:  /espace/elu/mon-compte/mes-notifications
+    pattern:  /espace/animateur/mon-compte/mes-notifications
     defaults: { _controller: PolitizrFrontBundle:User:editNotifications }
 
 ################################################################################
@@ -56,15 +56,15 @@ EditNotificationsE:
 ################################################################################
 
 IdCheckDataReviewE:
-    pattern:  /espace/elu/mon-compte/verification-donnees
+    pattern:  /espace/animateur/mon-compte/verification-donnees
     defaults: { _controller: PolitizrFrontBundle:User:idCheckDataReview }
 
 IdCheckDataReviewCheckE:
-    pattern:  /espace/elu/mon-compte/verification-donnees/check
+    pattern:  /espace/animateur/mon-compte/verification-donnees/check
     defaults: { _controller: PolitizrFrontBundle:User:idCheckDataReviewCheck }
     requirements:
         _method:        POST
 
 IdCheckE:
-    pattern:  /espace/elu/mon-compte/validation-identite
+    pattern:  /espace/animateur/mon-compte/validation-identite
     defaults: { _controller: PolitizrFrontBundle:User:idCheck }

@@ -4,29 +4,12 @@
         {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': user, 'withSocialLinks': false, 'withMandates': false } only %}
     </div>
     <div class="coloredBg">
-        <div class="activity">Vous avez rejoint POLITIZR: bienvenue dans notre communauté!</div>
+        <div class="activity">Bienvenue dans notre communauté!</div>
         <h5>{% include 'PolitizrFrontBundle:Navigation\\DateTime:_publishedAt.html.twig' with { 'subject': user } only %}</h5>
         <div class="cardInfo">
-            Voici les premiers pas pour bien démarrer sur POLITIZR:<br>
-            <ol>
-                <li>Complétez votre <a href="{{ path('EditProfile'~profileSuffix()) }}">profil</a> pour gagner de la visibilité sur notre plateforme.</li>
-                <li>Consultez la liste des <a href="{{ path('ListingSearchUsers'~profileSuffix()) }}">élus</a> inscrits près de chez vous (et partout ailleurs): suivez les pour être tenu au courant de leur actualité.</li>
-                <li>Consultez la liste des <a href="{{ path('ListingSearchPublications') }}">publications</a> disponibles près de chez vous (et partout ailleurs): suivez celles qui vous intéressent et n'hésitez pas à les commenter.</li>
-                <li>Exprimez-vous sur un sujet qui vous tient à coeur en cliquant sur le bouton <a href="{{ path('DebateDraftNew') }}">"Je m'exprime"</a>.</li>
-                {% if isGrantedE() %}
-                    <li>Cliquez sur le bouton "Répondre" pour faire valoir votre expérience ou votre point de vue, que ce soit sur des publications d'élus ou de citoyens. (Note: cette fonctionnalité est réservée aux élus certifiés)</li>
-                {% endif %}
-            </ol>
-            {% if isGrantedE() %}
-                <i class="icon-info"></i>
-                Nous proposons aux collectivités un ensemble de services favorisant l’expression citoyenne, pour leur permettre d’avoir des retours de leurs habitants: <a href="mailto: support@politizr.com">contactez-nous</a> pour recevoir la documentation complète!<br/><br/>
-            {% else %}
-                <i class="icon-info"></i>
-                Des collectivités de votre territoire souhaitent connaître votre avis sur des sujets qu'elles portent? Rendez-vous dans vos <a href="{{ path('MenuCircle') }}">groupes</a> pour participer!<br/><br/>
-            {% endif %}
-            Pour plus d'informations, consultez notre <a href="http://www.politizr.help" target="_blank">site d'aide</a> ou <a href="mailto: support@politizr.com">envoyez vos questions au support</a>.<br>
+            Pour bien démarrer, nous vous invitons à compléter votre <a href="{{ path('EditProfile'~profileSuffix()) }}">profil</a> pour gagner de la visibilité sur notre plateforme.<br/><br/>
             Au plaisir de vous lire,<br>
-            — L’équipe Politizr
+            — L’équipe {{ client.name }}
         </div>
     </div>
 </div>

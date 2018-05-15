@@ -1,4 +1,11 @@
-<div id="logo"><a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}"><i class="icon-pltzr-logo"></i><span>politizr</span></a></div>
-<div id="headerMenu">
-    <a href="{{ path('Homepage'~profileSuffix()) }}">retour à l'accueil principal</a>
-</div>
+{% for route in cmsRoutes %}
+    <a href="{{ route['url'] }}"{% if false %} class="currentPage"{% endif %}>{{ route['label'] }}</a>
+{% endfor %}
+
+{% for route in publicationsRoutes %}
+    <a href="{{ route['url'] }}"{% if false %} class="currentPage"{% endif %}>{{ route['label'] }}</a>
+{% endfor %}
+
+{% for route in communityRoutes %}
+    <a href="{{ route['url'] }}"{% if false %} class="currentPage"{% endif %}>{{ route['label'] }}</a>
+{% endfor %}

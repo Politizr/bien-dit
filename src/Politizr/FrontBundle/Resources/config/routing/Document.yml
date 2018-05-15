@@ -36,50 +36,50 @@ ReactionDraftNew:
 #               CITIZEN
 ################################################################################
 DebateDraftEditC:
-    pattern:  /espace/citoyen/mes-brouillons/debat/{uuid}
+    pattern:  /espace/utilisateur/mes-brouillons/debat/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:debateEdit }
     requirements:
         _method:        GET
         uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
 ReactionDraftEditC:
-    pattern:  /espace/citoyen/mes-brouillons/reaction/{uuid}
+    pattern:  /espace/utilisateur/mes-brouillons/reaction/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionEdit }
     requirements:
         _method:        GET
         uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
 DraftsC:
-    pattern:  /espace/citoyen/mes-brouillons
+    pattern:  /espace/utilisateur/mes-brouillons
     defaults: { _controller: PolitizrFrontBundle:Document:drafts }
 
 BookmarksC:
-    pattern:  /espace/citoyen/mes-favoris
+    pattern:  /espace/utilisateur/mes-favoris
     defaults: { _controller: PolitizrFrontBundle:Document:bookmarks }
 
 ################################################################################
 #               ELECTED
 ################################################################################
 DebateDraftEditE:
-    pattern:  /espace/elu/mes-brouillons/debat/{uuid}
+    pattern:  /espace/animateur/mes-brouillons/debat/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:debateEdit }
     requirements:
         _method:        GET
         uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
 ReactionDraftEditE:
-    pattern:  /espace/elu/mes-brouillons/reaction/{uuid}
+    pattern:  /espace/animateur/mes-brouillons/reaction/{uuid}
     defaults: { _controller: PolitizrFrontBundle:Document:reactionEdit }
     requirements:
         _method:        GET
         uuid:           ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})
 
 DraftsE:
-    pattern:  /espace/elu/mes-brouillons
+    pattern:  /espace/animateur/mes-brouillons
     defaults: { _controller: PolitizrFrontBundle:Document:drafts }
 
 BookmarksE:
-    pattern:  /espace/elu/mes-favoris
+    pattern:  /espace/animateur/mes-favoris
     defaults: { _controller: PolitizrFrontBundle:Document:bookmarks }
 
 

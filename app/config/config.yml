@@ -25,7 +25,7 @@ framework:
 
     # http://symfony.com/doc/current/reference/configuration/framework.html#session
     session:
-        name: pzr
+        name: ptzr-eric
         # 3 months
         cookie_lifetime: 7776000
         # 3 hours
@@ -65,11 +65,15 @@ twig:
 #      image_path_project:     %image_path_project%
 #      image_path_diaporama:   %image_path_diaporama%
     globals:
+        contact:
+            email:              %contact_email%
+            phone:              %contact_phone%
         facebook:
             admin_ids:          %facebook_admin_ids%
             client_id:          %facebook_client_id%
             client_secret:      %facebook_client_secret%
             scope:              %facebook_scope%
+            pixelcode_id:       %facebook_pixelcode_id%
         pagerfanta_opts:
             previous_message:   '< page précédente'
             next_message:       'page suivante >'
@@ -78,6 +82,24 @@ twig:
             app_id:             %algolia_app_id%
             api_key:            %algolia_search_api_key%
             index_name:         %algolia_index_name%
+        client:
+            name:               %client_name%
+        meta:
+            title:              %meta_title%
+            description:        %meta_description%
+            og_site_name:       %meta_og_site_name%
+            og_title:           %meta_og_title%
+            og_description:     %meta_og_description%
+            og_url:             %meta_og_url%
+            tw_site:            %meta_tw_site%
+            tw_title:           %meta_tw_title%
+            tw_description:     %meta_tw_description%
+        google:
+            tagmanager_id:      %google_tagmanager_id%
+        geo:
+            active:             %geo_active%
+        expression:
+            from_scratch:       %expression_from_scratch%
 
 # Assetic Configuration
 assetic:
@@ -165,7 +187,7 @@ fos_user:
     db_driver:          propel
     firewall_name:      main
     from_email:
-        address:        ne-pas-repondre@politizr.fr
+        address:        ne-pas-repondre@politizr.com
         sender_name:    Administrateur Politizr
 
 # KNPMenu Configuration
@@ -708,13 +730,13 @@ lexik_maintenance:
 eko_feed:
     feeds:
         debates:
-            title:       'Nouvelles publications - Politizr'
-            description: 'Nouveaux publications sur Politizr'
+            title:       'Nouvelles publications - Générations ERIC'
+            description: 'Nouveaux publications sur Générations ERIC'
             link:
                 route_name: RssFeed
                 # route_params: {id: 2} # necessary if route cantains required parameters
             encoding:    'utf-8'
-            author:      'Politizr'
+            author:      'Générations ERIC'
 
 # File upload JS
 # cf. https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/index.md

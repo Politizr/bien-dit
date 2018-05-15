@@ -127,11 +127,6 @@ class PolitizrCircleExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'authorizedReactionUsersForCd09'  => new \Twig_SimpleFunction(
-                'authorizedReactionUsersForCd09',
-                array($this, 'authorizedReactionUsersForCd09'),
-                array('is_safe' => array('html'), 'needs_environment' => true)
-            ),
             'circleBreadcrumb'  => new \Twig_SimpleFunction(
                 'circleBreadcrumb',
                 array($this, 'circleBreadcrumb'),
@@ -162,20 +157,12 @@ class PolitizrCircleExtension extends \Twig_Extension
         // $this->logger->info('$circle = '.print_r($circle, true));
 
         // get template path > generic or dedicated
-        $templatePath = 'Circle';
-        if ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_FREE) {
-            $templatePath = 'Circle\\free';
-        } elseif ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_MEDIUM) {
-            $templatePath = 'Circle\\medium';
-        } elseif ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_FULL) {
-            $templatePath = 'Circle\\full';
-        } elseif ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_SPECIFIC && $circle->getId() == CircleConstants::CD09_ID_CIRCLE) {
-            $templatePath = 'Circle\\cd09';
-        } elseif ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_SPECIFIC && $circle->getId() == CircleConstants::LHOSPI_ID_CIRCLE) {
-            $templatePath = 'Circle\\lhospi';
-        } else {
-            $templatePath = 'Circle';
-        }
+        $templatePath = 'Circle\\standard';
+        // if ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_STANDARD) {
+        //     $templatePath = 'Circle';
+        // } else {
+        //     $templatePath = 'Circle';
+        // }
 
         // Construction du rendu du tag
         $html = $env->render(
@@ -263,12 +250,7 @@ class PolitizrCircleExtension extends \Twig_Extension
         // $this->logger->info('$circle = '.print_r($circle, true));
 
         // get template path > generic or dedicated
-        $templatePath = 'Circle';
-        if ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_FREE) {
-            $templatePath = 'Circle\\free';
-        } elseif ($circle->getId() == CircleConstants::CD09_ID_CIRCLE) {
-            $templatePath = 'Circle\\cd09';
-        }
+        $templatePath = 'Circle\\standard';
 
         // Construction du rendu du tag
         $html = $env->render(
@@ -367,24 +349,15 @@ class PolitizrCircleExtension extends \Twig_Extension
         // $this->logger->info('*** authorizedReactionUsers');
         // $this->logger->info('$topic = '.print_r($topic, true));
 
-        $mainUser = null;
-        if ($circle->getId() == CircleConstants::CD09_ID_CIRCLE) {
-            $mainUser = PUserQuery::create()->findPk(CircleConstants::CD09_ID_USER_PRESIDENT);
-        }
-
-        $users = $this->circleService->getAuthorizedReactionUsersByCircle($circle, $mainUser);
+        $users = $this->circleService->getAuthorizedReactionUsersByCircle($circle);
 
         // get template path > generic or dedicated
-        $templatePath = 'Circle';
-        if ($circle->getId() == CircleConstants::CD09_ID_CIRCLE) {
-            $templatePath = 'Circle\\cd09';
-        }
+        $templatePath = 'Circle\\standard';
 
         // Construction du rendu du tag
         $html = $env->render(
             'PolitizrFrontBundle:'.$templatePath.':_authorizedReactionUsers.html.twig',
             array(
-                'mainUser' => $mainUser,
                 'users' => $users,
             )
         );
@@ -434,29 +407,6 @@ class PolitizrCircleExtension extends \Twig_Extension
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */
     /* ######################################################################################################## */
-
-    /**
-     * Display a customized authorized reaction users for CD09 
-     *
-     * @param PUser $user
-     * @return string
-     */
-    public function authorizedReactionUsersForCd09(\Twig_Environment $env)
-    {
-        // $this->logger->info('*** authorizedReactionUsersForCd09');
-
-        $users = PUserQuery::create()->filterById(CircleConstants::CD09_IDS_USER_RESPONSES)->find();
-        
-        $html = $env->render(
-            'PolitizrFrontBundle:Circle\\cd09:_authorizedReactionUsers.html.twig',
-            array(
-                'mainUser' => $mainUser,
-                'users' => $users,
-            )
-        );
-
-        return $html;
-    }
 
     /**
      * Breadcrumb

@@ -32,10 +32,11 @@ class PUserContactType extends AbstractType
      * @param $withEmail boolean
      * @param $oAuth boolean
      */
-    public function __construct($withEmail = false, $oAuth = false)
+    public function __construct($withEmail = false, $oAuth = false, $geoActive = false)
     {
         $this->withEmail = $withEmail;
         $this->oAuth = $oAuth;
+        $this->geoActive = $geoActive;
     }
 
     /**
@@ -98,10 +99,12 @@ class PUserContactType extends AbstractType
         }
 
         // Localization type
-        $builder->add('localization', LocalizationChoiceType::class, array(
-            'required' => true,
-            'mapped' => false,
-        ));
+        if ($this->geoActive) {
+            $builder->add('localization', LocalizationChoiceType::class, array(
+                'required' => true,
+                'mapped' => false,
+            ));
+        }
 
         if ($this->oAuth) {
             $builder->add('cgu', 'checkbox', array(
