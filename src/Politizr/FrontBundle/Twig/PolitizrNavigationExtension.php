@@ -19,6 +19,8 @@ class PolitizrNavigationExtension extends \Twig_Extension
     private $securityAuthorizationChecker;
 
     private $router;
+
+    private $circleService;
     
     private $globalTools;
 
@@ -35,6 +37,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
      * @param @security.token_storage
      * @param @security.authorization_checker
      * @param @router
+     * @param @politizr.functional.circle
      * @param @politizr.tools.global
      * @param @logger
      * @param "%with_group%"
@@ -47,6 +50,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
         $securityTokenStorage,
         $securityAuthorizationChecker,
         $router,
+        $circleService,
         $globalTools,
         $logger,
         $withGroup,
@@ -59,6 +63,8 @@ class PolitizrNavigationExtension extends \Twig_Extension
         $this->securityAuthorizationChecker =$securityAuthorizationChecker;
 
         $this->router = $router;
+
+        $this->circleService = $circleService;
 
         $this->globalTools = $globalTools;
         
@@ -232,22 +238,47 @@ class PolitizrNavigationExtension extends \Twig_Extension
     {
         // $this->logger->info('*** topGroupMenu');
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
+
         // Gestion des groupes > uniquement si pls groupes
         $manageGroup = false;
         if ($this->multipleGroup) {
             $manageGroup = true;
         }
 
+        $ownersCircles = array();
+        if ($user) {
+            // get user's circles by owner
+            $owners = $this->circleService->getOwnersByUser($user);
+            foreach ($owners as $owner) {
+                $circles = $this->circleService->getOwnerCirclesByUser($owner, $user);
+                $ownersCircles[] = array($owner, $circles);
+            }
+        } else {
+            // get public circles
+            $owners = $this->circleService->getAuthorizedOwnersByUser(null);
+            foreach ($owners as $owner) {
+                $circles = $this->circleService->getOwnerCirclesByUser($owner, $user);
+                $ownersCircles[] = array($owner, $circles);
+            }
+        }
+
+        dump($ownersCircles);
+
         $html = $env->render(
             'PolitizrFrontBundle:Navigation\\Menu:_topGroupMenu.html.twig',
             array(
+                'ownersCircles' => $ownersCircles,
                 'manageGroup' => $manageGroup
             )
         );
 
         return $html;
     }
-
 
     public function getName()
     {

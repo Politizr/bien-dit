@@ -6,7 +6,12 @@
     <div id="headerGrpMenuArrow"><i class="icon-arrow-up"></i></div>
     <div class="innerMenu">
         <div class="primaryMenu">
-            {{ app.user | circleMenu }}
+            {% for ownerCircles in ownersCircles %}
+                <span>{{ ownerCircles[0].title }}</span>
+                {% for circle in ownerCircles[1] %}
+                    <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
+                {% endfor %}
+            {% endfor %}
         </div>
         {% if manageGroup %}
             <div class="secondaryMenu">

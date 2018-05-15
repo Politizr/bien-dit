@@ -3,29 +3,12 @@
     <div id="headerLeft">
         {% include 'PolitizrFrontBundle:Navigation\\Header:_logo.html.twig' %}
         <div id="headerMenu">
-            {# <a href="{{ path('Homepage') }}"{% if homepage is defined and homepage %} class="currentPage"{% endif %}>accueil</a> #}
-            {# <a href="{{ path('ListingByRecommend') }}"{% if top is defined and top %} class="currentPage"{% endif %}>top</a> #}
-            {# <a href="{{ path('ListingSearchPublications') }}"{% if searchPublications is defined and searchPublications %} class="currentPage"{% endif %}>publications</a> #}
-            {# <a href="https://blog.politizr.com">blog</a> #}
+            {{ topLeftMenu() }}
         </div>
     </div>
-    {% if headerRight is not defined or headerRight == true %}
-        <div id="headerRight">
-            <a class="headerCreateAccountLink" href="{{ path('Inscription') }}">INSCRIPTION</a>
-            <a class="headerLoginLink" href="{{ path('Login') }}">IDENTIFICATION</a>
-            {#
-            <div id="menuButton"><i class="icon-menu" action="toggleMenu"></i></div>
-            <div id="publicMenu" style="display: none;">
-                <div id="menuArrow"><i class="icon-arrow-up"></i></div> 
-                <div id="primaryMenu">
-                    <a href="{{ path('GlobalHelper') }}">Comment ça marche ?</a>
-                </div>
-                <div id="secondaryMenu">
-                    <a href="http://goo.gl/jp16az" target="_blank">Goodies</a>
-                    <a href="http://politizr.help" target="_blank"><b>Support et assistance</b></a></div>
-                </div>
-            </div>
-            #}
-        </div>
-    {% endif %}
+    <div id="headerRight">
+        {{ topGroupMenu() }}
+        <a class="headerCreateAccountLink" href="{{ path('Inscription') }}">INSCRIPTION</a>
+        <a class="headerLoginLink" href="{{ path('Login') }}">IDENTIFICATION</a>
+    </div>
 </div>

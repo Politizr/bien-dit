@@ -166,19 +166,20 @@ class CircleService
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$user->getPLCityId = '.print_r($user->getPLCityId(), true));
 
-        if (!$user || ($this->geoActive && !$user->getPLCityId())) {
-            return null;
+        $query = PCOwnerQuery::create();
+        if ($this->geoActive && $user) {
+            $query = $query
+                ->usePCGroupLCQuery()
+                    ->filterByPLCityId($user->getPLCityId())
+                ->endUse();
+        } elseif ($this->geoActive && $user == null) {
+            $query = $query->joinPCGroupLC();
         }
 
-        $owners = PCOwnerQuery::create()
+        $owners = $query
                     ->usePCircleQuery()
                         ->filterByOnline(true)
                         ->filterByPrivateAccess(false)
-                        ->_if($this->geoActive)
-                            ->usePCGroupLCQuery()
-                                ->filterByPLCityId($user->getPLCityId())
-                            ->endUse()
-                        ->_endif()
                         ->orderByRank()
                     ->endUse()
                     ->distinct()
@@ -222,7 +223,7 @@ class CircleService
      * @param PUser $user
      * @return PropelCollection[PCircle]
      */
-    public function getOwnerCirclesByUser(PCOwner $owner, PUser $user)
+    public function getOwnerCirclesByUser(PCOwner $owner, PUser $user = null)
     {
         // $this->logger->info('*** getPCOwnersByUser');
         // $this->logger->info('$user = '.print_r($user, true));
@@ -230,16 +231,21 @@ class CircleService
         if (!$owner) {
             throw new InconsistentDataException('Owner null');
         }
-        if (!$user) {
-            throw new InconsistentDataException('User null');
-        }
 
-        $circles = PCircleQuery::create()
-                    ->filterByOnline(true)
-                    ->filterByPCOwnerId($owner->getId())
+        $query = PCircleQuery::create();
+        if ($user) {
+            $query = $query
                     ->usePUinPCQuery()
                         ->filterByPUserId($user->getId())
-                    ->endUse()
+                    ->endUse();
+        } else {
+            $query = $query
+                    ->filterByPrivateAccess(false);
+        }
+
+        $circles = $query
+                    ->filterByOnline(true)
+                    ->filterByPCOwnerId($owner->getId())
                     ->orderByRank()
                     ->distinct()
                     ->find();

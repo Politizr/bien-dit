@@ -193,16 +193,6 @@ class PolitizrUserExtension extends \Twig_Extension
                 array($this, 'circleMember'),
                 array('is_safe' => array('html'))
             ),
-            new \Twig_SimpleFilter(
-                'circleMenu',
-                array($this, 'circleMenu'),
-                array('is_safe' => array('html'), 'needs_environment' => true)
-            ),
-            new \Twig_SimpleFilter(
-                'circlesByOwner',
-                array($this, 'circlesByOwner'),
-                array('is_safe' => array('html'))
-            ),
         );
     }
 
@@ -900,37 +890,6 @@ class PolitizrUserExtension extends \Twig_Extension
         }
 
         return false;
-    }
-
-    /**
-     * Get user's circles
-     *
-     * @return string
-     */
-    public function circleMenu(\Twig_Environment $env, PUser $user)
-    {
-        $owners = $this->circleService->getOwnersByUser($user);
-
-        $html = $env->render(
-            'PolitizrFrontBundle:Navigation\\Menu:_circles.html.twig',
-            array(
-                'owners' => $owners,
-            )
-        );
-
-        return $html;
-    }
-
-    /**
-     * Get owner's circles for a user
-     *
-     * @return PropelCollection[PCircle]
-     */
-    public function circlesByOwner(PUser $user, PCOwner $owner)
-    {
-        $circles = $this->circleService->getOwnerCirclesByUser($owner, $user);
-
-        return $circles;
     }
 
     /* ######################################################################################################## */
