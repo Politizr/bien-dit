@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Form\Form;
 
 use GuzzleHttp;
 
@@ -23,7 +24,7 @@ use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PUser;
 use Politizr\Model\PUMandateQuery;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 /**
  * Various tools methods
@@ -183,7 +184,7 @@ class GlobalTools
             }
 
             if (!empty($msgErrors)) {
-                throw new BoxErrorException(StudioEchoUtils::multiImplode($msgErrors, ' <br/> '));
+                throw new BoxErrorException($this->multiImplode($msgErrors, ' <br/> '));
             }
 
             // Construct file name
@@ -896,5 +897,54 @@ class GlobalTools
         }
 
         return null;
+    }
+
+    /**
+     * Get string formatted errors
+     *
+     * @param Form $form
+     * @return string
+     */
+    public function getAjaxFormErrors(Form $form)
+    {
+        $errors = array();
+
+        foreach ($form->getErrors() as $key => $error) {
+            $errors['error'] = $error->getMessage();
+        }
+
+        foreach ($form->all() as $child) {
+            if (!$child->isValid()) {
+                $errors[] = $this->getAjaxFormErrors($child);
+            }
+        }
+
+        return $this->multiImplode($errors, ' <br/> ');
+    }
+
+
+    /**
+     * Get string from multidim array
+     * cf. http://stackoverflow.com/questions/3899971/implode-and-explode-multi-dimensional-arrays
+     *
+     * @param array $array
+     * @param string $glue
+     * @return string
+     */
+    public function multiImplode($array, $glue)
+    {
+        $ret = '';
+
+        foreach ($array as $item) {
+            if (is_array($item)) {
+                $ret .= $this->multiImplode($item, $glue) . $glue;
+            } else {
+                $ret .= $item . $glue;
+            }
+        }
+
+        $ret = substr($ret, 0, 0-strlen($glue));
+
+        return $ret;
     }
 }

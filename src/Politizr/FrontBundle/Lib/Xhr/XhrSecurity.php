@@ -8,7 +8,7 @@ use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\BoxErrorException;
 use Politizr\Exception\PolitizrException;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Constant\OrderConstants;
 use Politizr\Constant\PathConstants;
@@ -138,7 +138,7 @@ class XhrSecurity
             // Event
             $dispatcher = $this->eventDispatcher->dispatch('lost_password_email', new GenericEvent($user));
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -272,7 +272,7 @@ class XhrSecurity
                 return false;
             }
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
     }
@@ -343,7 +343,7 @@ class XhrSecurity
                 $redirect = true;
                 $redirectUrl = $this->router->generate('Homepage'.$this->globalTools->computeProfileSuffix());
             } else {
-                $errors = StudioEchoUtils::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
+                $errors = $this->globalTools->multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
                 $success = false;
                 $redirect = false;
                 $redirectUrl = false;
@@ -395,7 +395,7 @@ class XhrSecurity
                 $redirect = true;
                 $redirectUrl = $this->router->generate('Homepage'.$this->globalTools->computeProfileSuffix());
             } else {
-                $errors = StudioEchoUtils::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
+                $errors = $this->globalTools->multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
                 $success = false;
                 $redirect = false;
                 $redirectUrl = false;
@@ -438,7 +438,7 @@ class XhrSecurity
         if ($this->isValidIdZla($request, $user, false)) {
             $success = true;
         } else {
-            $errors = StudioEchoUtils::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
+            $errors = $this->globalTools->multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
             $success = false;
         }
 
@@ -469,7 +469,7 @@ class XhrSecurity
         if ($this->isValidIdPhoto($request, $user, false)) {
             $success = true;
         } else {
-            $errors = StudioEchoUtils::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
+            $errors = $this->globalTools->multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
             $success = false;
         }
 

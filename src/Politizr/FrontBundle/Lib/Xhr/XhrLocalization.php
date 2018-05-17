@@ -7,7 +7,7 @@ use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\LocalizationConstants;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\BoxErrorException;

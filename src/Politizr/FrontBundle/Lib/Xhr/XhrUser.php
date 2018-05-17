@@ -4,7 +4,7 @@ namespace Politizr\FrontBundle\Lib\Xhr;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\BoxErrorException;
@@ -214,7 +214,7 @@ class XhrUser
             $userProfile = $form->getData();
             $userProfile->save();
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -317,7 +317,7 @@ class XhrUser
             $puCurrentQo->setPUserId($user->getId());
             $puCurrentQo->save();
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -343,7 +343,7 @@ class XhrUser
             $mandate->setPUserId($user->getId());
             $mandate->save();
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -406,7 +406,7 @@ class XhrUser
             $mandate = $form->getData();
             $mandate->save();
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -520,7 +520,7 @@ class XhrUser
                 $this->localizationService->updateUserGeoloc($user, $form);
             }
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 

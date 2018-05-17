@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Count;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Model\om\BasePDDebate;
 
@@ -143,7 +143,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
      */
     protected function createRawSlug()
     {
-        $toSlug =  StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug =  StaticTools::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
@@ -173,7 +173,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
      */
     public function computeFileName()
     {
-        $fileName = 'politizr-debat-' . StudioEchoUtils::randomString();
+        $fileName = 'politizr-debat-' . StaticTools::randomString();
 
         return $fileName;
     }

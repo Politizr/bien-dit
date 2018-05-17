@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints\Image;
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\DocumentConstants;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 
 /**
@@ -138,7 +138,7 @@ class UploadListener
         ]];
         
         if (is_array($msgErrors)) {
-            $response['error'] = StudioEchoUtils::multiImplode($msgErrors, ' <br/> ');
+            $response['error'] = $this->globalTools->multiImplode($msgErrors, ' <br/> ');
         } else {
             $response['error'] = $msgErrors;
         }

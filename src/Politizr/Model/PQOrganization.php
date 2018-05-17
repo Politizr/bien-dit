@@ -6,6 +6,8 @@ use Politizr\Model\om\BasePQOrganization;
 
 use Politizr\Constant\PathConstants;
 
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
+
 /**
  * Organization object model
  *
@@ -31,7 +33,7 @@ class PQOrganization extends BasePQOrganization
      */
     protected function createRawSlug()
     {
-        $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug =  StaticTools::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
@@ -92,7 +94,7 @@ class PQOrganization extends BasePQOrganization
         }
 
         // file name
-        $fileName = 'politizr-orga-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
+        $fileName = 'politizr-orga-' . StaticTools::randomString() . '.' . $extension;
 
         // move takes the target directory and then the target filename to move to
         $fileUploaded = $file->move(__DIR__ . PathConstants::ORGANIZATION_UPLOAD_PATH, $fileName);

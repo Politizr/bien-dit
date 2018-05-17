@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Constant\IdCheckConstants;
 
@@ -232,7 +232,7 @@ class IdCheck
             }
             $lastName = strtoupper($lastName);
             $lastName = preg_replace('/\s+/', '-', $lastName);
-            $lastName = StudioEchoUtils::transliterateString($lastName);
+            $lastName = StaticTools::transliterateString($lastName);
 
             // cas nom d'usage
             $usageName = null;
@@ -243,7 +243,7 @@ class IdCheck
                 }
                 $usageName = strtoupper($usageName);
                 $usageName = preg_replace('/\s+/', '-', $usageName);
-                $usageName = StudioEchoUtils::transliterateString($usageName);
+                $usageName = StaticTools::transliterateString($usageName);
             }
 
             // $firstName = $this->lastResult->contentOk->holderDetail->firstName;
@@ -255,7 +255,7 @@ class IdCheck
             $userGender = $user->getGender();
             $userLastName = strtoupper($user->getName());
             $userLastName = preg_replace('/\s+/', '-', $userLastName);
-            $userLastName = StudioEchoUtils::transliterateString($userLastName);
+            $userLastName = StaticTools::transliterateString($userLastName);
 
             // $userFirstName = $user->getFirstname();
             $userBirthDate = $user->getBirthday()->format('Y-m-d');

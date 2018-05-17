@@ -267,8 +267,6 @@ class PolitizrNavigationExtension extends \Twig_Extension
             }
         }
 
-        dump($ownersCircles);
-
         $html = $env->render(
             'PolitizrFrontBundle:Navigation\\Menu:_topGroupMenu.html.twig',
             array(

@@ -4,7 +4,7 @@ namespace Politizr\AdminBundle\Lib\Xhr;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ReputationConstants;
@@ -137,7 +137,7 @@ class XhrAdmin
             return $tag;
         }
 
-        $slug = StudioEchoUtils::generateSlug($tagTitle);
+        $slug = StaticTools::generateSlug($tagTitle);
         $tag = PTagQuery::create()
                     // ->filterByPTTagTypeId($tagTypeId)
                     ->filterBySlug($slug)
@@ -677,7 +677,7 @@ class XhrAdmin
             $newMandate = $form->getData();
             $newMandate->save();
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -731,7 +731,7 @@ class XhrAdmin
             $mandate = $form->getData();
             $mandate->save();
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -870,7 +870,7 @@ class XhrAdmin
             // mail user
             $this->eventDispatcher->dispatch('moderation_notification', new GenericEvent($userModerated));
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -1041,7 +1041,7 @@ class XhrAdmin
             // $this->localizationManager->updateUserCity($user, $form->get('localization')->getData()['city']);
             $this->localizationService->updateUserGeoloc($user, $form);
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 

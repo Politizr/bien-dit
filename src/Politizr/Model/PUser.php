@@ -6,7 +6,7 @@ use Politizr\Model\om\BasePUser;
 
 use Politizr\Exception\InconsistentDataException;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ObjectTypeConstants;
@@ -147,11 +147,11 @@ class PUser extends BasePUser implements UserInterface
     public function createRawSlug()
     {
         if ($this->getFirstname() && $this->getName()) {
-            $toSlug =  StudioEchoUtils::transliterateString($this->getFirstname() . '-' . $this->getName());
+            $toSlug =  StaticTools::transliterateString($this->getFirstname() . '-' . $this->getName());
 
             $slug = $this->cleanupSlugPart($toSlug);
         } elseif ($realname = $this->getRealname()) {
-            $toSlug =  StudioEchoUtils::transliterateString($realname);
+            $toSlug =  StaticTools::transliterateString($realname);
 
             $slug = $this->cleanupSlugPart($toSlug);
         } else {
@@ -169,7 +169,7 @@ class PUser extends BasePUser implements UserInterface
      */
     public function computeFileName()
     {
-        $fileName = 'politizr-user-' . StudioEchoUtils::randomString();
+        $fileName = 'politizr-user-' . StaticTools::randomString();
 
         return $fileName;
     }

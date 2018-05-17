@@ -4,6 +4,8 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePQMandate;
 
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
+
 /**
  *
  * @author Lionel Bouzonville
@@ -25,7 +27,7 @@ class PQMandate extends BasePQMandate
      */
     protected function createRawSlug()
     {
-        $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug =  StaticTools::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }

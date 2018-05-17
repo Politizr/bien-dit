@@ -2,7 +2,7 @@
 
 namespace Politizr\Model;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Model\om\BasePCircle;
 
@@ -29,7 +29,7 @@ class PCircle extends BasePCircle
      */
     protected function createRawSlug()
     {
-        $toSlug =  StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug =  StaticTools::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
@@ -82,7 +82,7 @@ class PCircle extends BasePCircle
         if (!$extension) {
               $extension = 'bin';
         }
-        $fileName = 'cir-' . StudioEchoUtils::randomString() . '.' . $extension;
+        $fileName = 'cir-' . StaticTools::randomString() . '.' . $extension;
 
         // move takes the target directory and then the target filename to move to
         $fileUploaded = $file->move(__DIR__ . PCircle::UPLOAD_PATH, $fileName);

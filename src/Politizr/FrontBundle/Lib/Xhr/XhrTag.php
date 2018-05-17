@@ -4,7 +4,7 @@ namespace Politizr\FrontBundle\Lib\Xhr;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\BoxErrorException;
@@ -94,7 +94,7 @@ class XhrTag
             return $tag;
         }
 
-        $slug = StudioEchoUtils::generateSlug($tagTitle);
+        $slug = StaticTools::generateSlug($tagTitle);
         $tag = PTagQuery::create()
                     // ->filterByPTTagTypeId($tagTypeId)
                     ->filterBySlug($slug)

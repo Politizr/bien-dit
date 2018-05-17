@@ -2,7 +2,7 @@
 
 namespace Politizr\Model;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Model\om\BasePCOwner;
 
@@ -29,7 +29,7 @@ class PCOwner extends BasePCOwner
      */
     protected function createRawSlug()
     {
-        $toSlug =  StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug =  StaticTools::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }

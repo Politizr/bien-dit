@@ -9,6 +9,8 @@ use Politizr\Constant\PathConstants;
 
 use Politizr\Exception\InconsistentDataException;
 
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
+
 /**
  *
  * @author Lionel Bouzonville
@@ -30,7 +32,7 @@ class PRBadge extends BasePRBadge
      */
     protected function createRawSlug()
     {
-        $toSlug =  \StudioEcho\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug =  StaticTools::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
@@ -82,7 +84,7 @@ class PRBadge extends BasePRBadge
         if (!$extension) {
               $extension = 'bin';
         }
-        $fileName = 'badge-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
+        $fileName = 'badge-' . StaticTools::randomString() . '.' . $extension;
 
         // move takes the target directory and then the target filename to move to
         $fileUploaded = $file->move(__DIR__ . PathConstants::BADGES_UPLOAD_PATH, $fileName);

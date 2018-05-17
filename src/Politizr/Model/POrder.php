@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\File\File;
 
 use Politizr\Constant\PathConstants;
 
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
+
 /**
  * Order object model
  *
@@ -74,7 +76,7 @@ class POrder extends BasePOrder
         }
 
         // file name
-        $fileName = 'politizr-order-' . \StudioEcho\Lib\StudioEchoUtils::randomString() . '.' . $extension;
+        $fileName = 'politizr-order-' . StaticTools::randomString() . '.' . $extension;
 
         // move takes the target directory and then the target filename to move to
         $fileUploaded = $file->move(__DIR__ . PathConstants::ORDER_UPLOAD_PATH, $fileName);

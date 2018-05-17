@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Count;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Constant\PathConstants;
 use Politizr\Constant\ObjectTypeConstants;
@@ -141,7 +141,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
      */
     protected function createRawSlug()
     {
-        $toSlug =  StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug =  StaticTools::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
@@ -171,7 +171,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
      */
     public function computeFileName()
     {
-        $fileName = 'politizr-reaction-' . StudioEchoUtils::randomString();
+        $fileName = 'politizr-reaction-' . StaticTools::randomString();
 
         return $fileName;
     }

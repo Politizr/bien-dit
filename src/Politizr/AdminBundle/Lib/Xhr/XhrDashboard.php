@@ -4,7 +4,7 @@ namespace Politizr\AdminBundle\Lib\Xhr;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Constant\NotificationConstants;
 
@@ -85,7 +85,7 @@ class XhrDashboard
                 $dispatcher = $this->eventDispatcher->dispatch('n_admin_message', $event);
             }
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 

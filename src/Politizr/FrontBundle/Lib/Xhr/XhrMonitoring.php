@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\BoxErrorException;
@@ -30,6 +30,7 @@ class XhrMonitoring
     private $templating;
     private $formFactory;
     private $eventDispatcher;
+    private $globalTools;
     private $logger;
 
     /**
@@ -38,6 +39,7 @@ class XhrMonitoring
      * @param @templating
      * @param @form.factory
      * @param @event_dispatcher
+     * @param @politizr.tools.global
      * @param @logger
      */
     public function __construct(
@@ -45,6 +47,7 @@ class XhrMonitoring
         $templating,
         $formFactory,
         $eventDispatcher,
+        $globalTools,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
@@ -55,6 +58,8 @@ class XhrMonitoring
 
         $this->eventDispatcher = $eventDispatcher;
 
+        $this->globalTools = $globalTools;
+        
         $this->logger = $logger;
     }
 
@@ -119,7 +124,7 @@ class XhrMonitoring
             $event = new GenericEvent($abuse);
             $dispatcher =  $this->eventDispatcher->dispatch('monitoring_email', $event);
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($formAbuse);
+            $errors = $this->globalTools->getAjaxFormErrors($formAbuse);
             throw new BoxErrorException($errors);
         }
 
@@ -186,7 +191,7 @@ class XhrMonitoring
             $event = new GenericEvent($askForUpdate);
             $dispatcher =  $this->eventDispatcher->dispatch('monitoring_email', $event);
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($formAskForUpdate);
+            $errors = $this->globalTools->getAjaxFormErrors($formAskForUpdate);
             throw new BoxErrorException($errors);
         }
 

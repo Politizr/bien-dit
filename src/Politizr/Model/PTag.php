@@ -8,7 +8,7 @@ use Politizr\Model\om\BasePTag;
 
 use Politizr\Constant\ObjectTypeConstants;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 /**
  * Tag object model
@@ -32,7 +32,7 @@ class PTag extends BasePTag implements Tag
      */
     protected function createRawSlug()
     {
-        $toSlug = StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug = StaticTools::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }

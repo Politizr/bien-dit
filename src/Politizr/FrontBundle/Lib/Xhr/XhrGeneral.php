@@ -4,7 +4,7 @@ namespace Politizr\FrontBundle\Lib\Xhr;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Exception\InconsistentDataException;
 use Politizr\Exception\BoxErrorException;
@@ -30,6 +30,7 @@ class XhrGeneral
     private $eventDispatcher;
     private $templating;
     private $formFactory;
+    private $globalTools;
     private $logger;
 
     /**
@@ -38,6 +39,7 @@ class XhrGeneral
      * @param @event_dispatcher
      * @param @templating
      * @param @form.factory
+     * @param @politizr.tools.global
      * @param @logger
      */
     public function __construct(
@@ -45,6 +47,7 @@ class XhrGeneral
         $eventDispatcher,
         $templating,
         $formFactory,
+        $globalTools,
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
@@ -53,6 +56,8 @@ class XhrGeneral
 
         $this->templating = $templating;
         $this->formFactory = $formFactory;
+
+        $this->globalTools = $globalTools;
 
         $this->logger = $logger;
     }
@@ -114,7 +119,7 @@ class XhrGeneral
             // Envoi email
             $dispatcher =  $this->eventDispatcher->dispatch('direct_message_email', new GenericEvent($directMessage));
         } else {
-            $errors = StudioEchoUtils::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 

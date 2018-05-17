@@ -7,6 +7,7 @@ services:
             - @event_dispatcher
             - @templating
             - @form.factory
+            - @politizr.tools.global
             - @logger
 
     politizr.xhr.document:
@@ -144,6 +145,7 @@ services:
             - @templating
             - @form.factory
             - @event_dispatcher
+            - @politizr.tools.global
             - @logger
 
     politizr.xhr.organization:

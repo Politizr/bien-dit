@@ -4,7 +4,7 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BasePEOperation;
 
-use StudioEcho\Lib\StudioEchoUtils;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 class PEOperation extends BasePEOperation
 {
@@ -23,7 +23,7 @@ class PEOperation extends BasePEOperation
      */
     protected function createRawSlug()
     {
-        $toSlug = StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug = StaticTools::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
@@ -76,7 +76,7 @@ class PEOperation extends BasePEOperation
         if (!$extension) {
               $extension = 'bin';
         }
-        $fileName = 'op-' . StudioEchoUtils::randomString() . '.' . $extension;
+        $fileName = 'op-' . StaticTools::randomString() . '.' . $extension;
 
         // move takes the target directory and then the target filename to move to
         $fileUploaded = $file->move(__DIR__ . PEOperation::UPLOAD_PATH, $fileName);
