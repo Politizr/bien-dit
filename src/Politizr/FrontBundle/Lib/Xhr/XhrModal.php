@@ -6,11 +6,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\GlobalConstants;
+use Politizr\Constant\CmsConstants;
 
 use Politizr\Model\PMCguQuery;
 use Politizr\Model\PMCgvQuery;
 use Politizr\Model\PMCharteQuery;
 use Politizr\Model\PCircleQuery;
+use Politizr\Model\CmsContentAdminQuery;
 
 /**
  * XHR service for modal management.
@@ -53,8 +55,16 @@ class XhrModal
         $request->getSession()->set('helpUs', true);
         // $request->getSession()->remove('helpUs');
 
+        $content = CmsContentAdminQuery::create()->findPk(CmsConstants::CMS_CONTENT_ADMIN_POPUP_HELPUS);
+        if (!$content) {
+            throw new InconsistentDataException('Contenu popup non disponible');
+        }
+
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Navigation\\Helper:_helpUs.html.twig'
+            'PolitizrFrontBundle:Navigation\\Helper:_helpUs.html.twig',
+            array(
+                'content' => $content,
+            )
         );
 
         return array(
@@ -73,8 +83,16 @@ class XhrModal
         $request->getSession()->remove('gettingStarted');
         $request->getSession()->set('helpUs', true);
 
+        $content = CmsContentAdminQuery::create()->findPk(CmsConstants::CMS_CONTENT_ADMIN_POPUP_WELCOME);
+        if (!$content) {
+            throw new InconsistentDataException('Contenu popup non disponible');
+        }
+
         $html = $this->templating->render(
-            'PolitizrFrontBundle:Navigation\\Helper:_gettingStarted.html.twig'
+            'PolitizrFrontBundle:Navigation\\Helper:_gettingStarted.html.twig',
+            array(
+                'content' => $content,
+            )
         );
 
         return array(

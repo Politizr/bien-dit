@@ -1,31 +1,11 @@
 {# beta #}
 <div id="modal">
-    {% if isGrantedE() %}
-        <!-- modal for representatives -->
-        <div id="modalContent" class="modalRepresentatives">
-            <div class="modalClose" action="closeModal"><i class="icon-cross"></i></div>
-            <div class="modalText">
-                <b>Relayez votre point de vue!</b><br><br>
-                Utilisez Politizr pour répondre à vos <b>concitoyens</b> et/ou à des <b>citoyens et élus</b> de toute la France pour leur faire part de <b>votre point de vue</b> et de vos <b>retours d'expérience</b>!<br><br>
-                {# <a href="{{ path('DebateDraftNew') }}" class="newSubject"><i class="icon-plane"></i><span>Je m'exprime</span></a> #}
-                <a href="{{ path('ListingSearchPublications') }}" class="newSubject"><span>Voir les publications</span></a>
-                <span class="modalCancel" action="closeModal">fermer</span>
-            </div>
+    <div id="modalContent" class="modalCitizen">
+        <div class="modalClose" action="closeModal"><i class="icon-cross"></i></div>
+        <div class="modalText">
+            {{ content.description | raw }}
+            <span class="modalCancel" action="closeModal">fermer</span>
         </div>
-        <!-- end modal for representatives -->
-    {% else %}
-        <!-- modal for citizen -->
-        <div id="modalContent" class="modalCitizen">
-            <div class="modalClose" action="closeModal"><i class="icon-cross"></i></div>
-            <div class="modalText">
-                <b>Devenez acteur de votre territoire!</b><br><br>
-                Utilisez Politizr pour parler de <b>problématiques locales</b> et notre équipe contactera <b>vos élus</b> pour les inviter à vous répondre. De plus, un sujet sera choisi chaque mois pour bénéficier d'une <b>campagne de promotion sur Facebook</b>!<br><br>
-                <a href="{{ path('DebateDraftNew') }}" class="newSubject"><i class="icon-plane"></i><span>Je m'exprime</span></a>
-                <span class="modalCancel" action="closeModal">fermer</span>
-            </div>
-        </div>
-        <!-- end modal for citizen -->
-    {% endif %}
-
+    </div>
     <div id="modalBg" action="closeModal"></div>
 </div>
