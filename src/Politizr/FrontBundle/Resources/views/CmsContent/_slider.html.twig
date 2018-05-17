@@ -1,0 +1,25 @@
+{% verbatim %}
+<div class="cycle-slideshow" data-cycle-fx="fade" data-cycle-timeout="0" data-cycle-slides="> div.slide" data-cycle-prev=".slidePrev" data-cycle-next=".slideNext" data-cycle-caption=".cycle-caption" data-cycle-caption-template="0{{slideNum}} / 0{{slideCount}}">
+{% endverbatim %}
+    {% for media in medias %}
+        <div class="slide">
+            {% if media.title or media.description %}
+                <div class="slideCaption">
+                    {% if media.title %}
+                        <h2>{{ media.title }}</h2>
+                    {% endif %}
+                    {{ media.description }}
+                </div>
+            {% endif %}
+            <a class="fancybox" data-fancybox="group" href="{{ asset('uploads/'~media.name) | imagine_filter('content_big_slider') }}">
+                <img src="{{ asset('uploads/'~media.name) | imagine_filter('content_slider') }}" alt="{{ media.title }}">
+            </a>
+        </div>
+    {% endfor %}
+    {% if medias | length > 1 %}
+        <div class="slideNav">
+            <div class="slidePrev"><img src="{{ asset('bundles/appfront/images/arrow-white-left.png') }}"></div>
+            <div class="slideNext"><img src="{{ asset('bundles/appfront/images/arrow-white.png') }}"></div>
+        </div>
+    {% endif %}
+</div>

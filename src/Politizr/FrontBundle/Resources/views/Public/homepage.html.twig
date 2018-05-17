@@ -14,10 +14,8 @@
 {% block bodyClass %} class="public visitor"{% endblock %}
 
 {% block main %}
-    {# @todo > customisation en bdd / admin #}
     <div id="homePresentation">
-        <h1>Générations ERIC</h1>
-        <p>Tantum autem cuique tribuendum, primum quantum ipse efficere possis, deinde etiam quantum ille quem diligas atque adiuves, sustinere. Non enim neque tu possis, quamvis excellas, omnes tuos ad honores amplissimos perducere, ut Scipio P. Rupilium potuit consulem efficere, fratrem eius L. non potuit. Quod si etiam possis quidvis deferre ad alterum, videndum est tamen, quid ille possit sustinere.</p>
+        {{ content.description | raw }}
     </div>
 {% endblock main %}
 

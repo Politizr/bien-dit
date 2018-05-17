@@ -163,6 +163,8 @@ propel:
         propel.behavior.uuid.class: "vendor.badlamer.propel-uuid-behavior.src.UuidBehavior"
         propel.behavior.geocodable.class: "path.to.GeocodableBehavior"
 
+        propel.behavior.studioechomediabundle.class: "src.StudioEchoBundles.StudioEchoMediaBundle.PropelBehaviors.MediaBundleBehavior"
+
     dbal:
         default_connection:         default
         connections:
@@ -438,6 +440,17 @@ liip_imagine:
             quality:              100
             filters:
                 relative_resize:  { widen: 250 }
+
+        # FRONT / CMS PAGES
+        content_slider:
+            quality:              90
+            filters:
+                relative_resize:  { widen: 640 }
+
+        content_big_slider:
+            quality:              90
+            filters:
+                relative_resize:  { widen: 1280 }
 
 
         # FRONT / ESPACE CITOYEN
@@ -901,3 +914,35 @@ fos_http_cache:
     user_context:
         enabled: true
         role_provider: true
+
+# StudioEchoMediaBundle Configuration
+studio_echo_media:
+    medias:
+        cms_content_images:
+            type:               image
+            extension_list:     [ jpg, jpeg, png ]
+            max_files:          10
+            max_size:           10
+            category_id:        1
+        cms_content_documents:
+            type:               document
+            extension_list:     [ doc, docx, odt, pdf ]
+            max_files:          10
+            max_size:           10
+            culture:            fr
+            category_id:        2
+            keep_file_name:     true
+        cms_content_admin_images:
+            type:               image
+            extension_list:     [ jpg, jpeg, png ]
+            max_files:          10
+            max_size:           10
+            category_id:        1
+        cms_content_admin_documents:
+            type:               document
+            extension_list:     [ doc, docx, odt, pdf ]
+            max_files:          10
+            max_size:           10
+            culture:            fr
+            category_id:        2
+            keep_file_name:     true

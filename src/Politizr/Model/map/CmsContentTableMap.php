@@ -45,13 +45,11 @@ class CmsContentTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('cms_category_id', 'CmsCategoryId', 'INTEGER', 'cms_category', 'id', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 250, null);
-        $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 250, null);
         $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('more_info_title', 'MoreInfoTitle', 'VARCHAR', false, 250, null);
         $this->addColumn('more_info_description', 'MoreInfoDescription', 'LONGVARCHAR', false, null, null);
         $this->addColumn('url_embed_video', 'UrlEmbedVideo', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('homepage', 'Homepage', 'BOOLEAN', false, 1, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('sortable_rank', 'SortableRank', 'INTEGER', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
@@ -96,6 +94,8 @@ class CmsContentTableMap extends TableMap
   'separator' => '-',
   'permanent' => 'false',
   'scope_column' => '',
+),
+            'studioechomediabundle' =>  array (
 ),
         );
     } // getBehaviors()

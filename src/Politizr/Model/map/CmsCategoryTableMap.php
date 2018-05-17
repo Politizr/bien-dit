@@ -43,7 +43,6 @@ class CmsCategoryTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('file_name', 'FileName', 'VARCHAR', false, 250, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 250, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('sortable_rank', 'SortableRank', 'INTEGER', false, null, null);

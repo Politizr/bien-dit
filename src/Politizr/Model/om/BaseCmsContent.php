@@ -59,12 +59,6 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
     protected $title;
 
     /**
-     * The value for the file_name field.
-     * @var        string
-     */
-    protected $file_name;
-
-    /**
      * The value for the summary field.
      * @var        string
      */
@@ -93,12 +87,6 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
      * @var        string
      */
     protected $url_embed_video;
-
-    /**
-     * The value for the homepage field.
-     * @var        boolean
-     */
-    protected $homepage;
 
     /**
      * The value for the online field.
@@ -203,17 +191,6 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [file_name] column value.
-     *
-     * @return string
-     */
-    public function getFileName()
-    {
-
-        return $this->file_name;
-    }
-
-    /**
      * Get the [summary] column value.
      *
      * @return string
@@ -266,17 +243,6 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
     {
 
         return $this->url_embed_video;
-    }
-
-    /**
-     * Get the [homepage] column value.
-     *
-     * @return boolean
-     */
-    public function getHomepage()
-    {
-
-        return $this->homepage;
     }
 
     /**
@@ -463,27 +429,6 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
     } // setTitle()
 
     /**
-     * Set the value of [file_name] column.
-     *
-     * @param  string $v new value
-     * @return CmsContent The current object (for fluent API support)
-     */
-    public function setFileName($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->file_name !== $v) {
-            $this->file_name = $v;
-            $this->modifiedColumns[] = CmsContentPeer::FILE_NAME;
-        }
-
-
-        return $this;
-    } // setFileName()
-
-    /**
      * Set the value of [summary] column.
      *
      * @param  string $v new value
@@ -587,35 +532,6 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
 
         return $this;
     } // setUrlEmbedVideo()
-
-    /**
-     * Sets the value of the [homepage] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return CmsContent The current object (for fluent API support)
-     */
-    public function setHomepage($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->homepage !== $v) {
-            $this->homepage = $v;
-            $this->modifiedColumns[] = CmsContentPeer::HOMEPAGE;
-        }
-
-
-        return $this;
-    } // setHomepage()
 
     /**
      * Sets the value of the [online] column.
@@ -769,18 +685,16 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->cms_category_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->file_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->summary = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->more_info_title = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->more_info_description = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->url_embed_video = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->homepage = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->online = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
-            $this->sortable_rank = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
-            $this->created_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->updated_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->slug = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->summary = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->more_info_title = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->more_info_description = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->url_embed_video = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->online = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
+            $this->sortable_rank = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -790,7 +704,7 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 15; // 15 = CmsContentPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 13; // 13 = CmsContentPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating CmsContent object", $e);
@@ -892,6 +806,11 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
+                // studioechomediabundle behavior
+
+                        $seMediaObject = \StudioEchoBundles\StudioEchoMediaBundle\Model\SeMediaObjectQuery::create()->filterByObjectClassname(get_class($this))->filterByObjectId($this->getId())->findOne();
+                        $seMediaObject->delete($con);
+
                 $con->commit();
                 $this->setDeleted(true);
             } else {
@@ -974,6 +893,13 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
                 $affectedRows = $this->doSave($con);
                 if ($isInsert) {
                     $this->postInsert($con);
+                    // studioechomediabundle behavior
+
+                            $seMediaObject = new \StudioEchoBundles\StudioEchoMediaBundle\Model\SeMediaObject();
+                            $seMediaObject->setObjectId($this->getId());
+                            $seMediaObject->setObjectClassname(get_class($this));
+                            $seMediaObject->save($con);
+
                 } else {
                     $this->postUpdate($con);
                 }
@@ -1066,9 +992,6 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
         if ($this->isColumnModified(CmsContentPeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
-        if ($this->isColumnModified(CmsContentPeer::FILE_NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`file_name`';
-        }
         if ($this->isColumnModified(CmsContentPeer::SUMMARY)) {
             $modifiedColumns[':p' . $index++]  = '`summary`';
         }
@@ -1083,9 +1006,6 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(CmsContentPeer::URL_EMBED_VIDEO)) {
             $modifiedColumns[':p' . $index++]  = '`url_embed_video`';
-        }
-        if ($this->isColumnModified(CmsContentPeer::HOMEPAGE)) {
-            $modifiedColumns[':p' . $index++]  = '`homepage`';
         }
         if ($this->isColumnModified(CmsContentPeer::ONLINE)) {
             $modifiedColumns[':p' . $index++]  = '`online`';
@@ -1122,9 +1042,6 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case '`file_name`':
-                        $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
-                        break;
                     case '`summary`':
                         $stmt->bindValue($identifier, $this->summary, PDO::PARAM_STR);
                         break;
@@ -1139,9 +1056,6 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
                         break;
                     case '`url_embed_video`':
                         $stmt->bindValue($identifier, $this->url_embed_video, PDO::PARAM_STR);
-                        break;
-                    case '`homepage`':
-                        $stmt->bindValue($identifier, (int) $this->homepage, PDO::PARAM_INT);
                         break;
                     case '`online`':
                         $stmt->bindValue($identifier, (int) $this->online, PDO::PARAM_INT);
@@ -1228,39 +1142,33 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
                 return $this->getTitle();
                 break;
             case 3:
-                return $this->getFileName();
-                break;
-            case 4:
                 return $this->getSummary();
                 break;
-            case 5:
+            case 4:
                 return $this->getDescription();
                 break;
-            case 6:
+            case 5:
                 return $this->getMoreInfoTitle();
                 break;
-            case 7:
+            case 6:
                 return $this->getMoreInfoDescription();
                 break;
-            case 8:
+            case 7:
                 return $this->getUrlEmbedVideo();
                 break;
-            case 9:
-                return $this->getHomepage();
-                break;
-            case 10:
+            case 8:
                 return $this->getOnline();
                 break;
-            case 11:
+            case 9:
                 return $this->getSortableRank();
                 break;
-            case 12:
+            case 10:
                 return $this->getCreatedAt();
                 break;
-            case 13:
+            case 11:
                 return $this->getUpdatedAt();
                 break;
-            case 14:
+            case 12:
                 return $this->getSlug();
                 break;
             default:
@@ -1295,18 +1203,16 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getCmsCategoryId(),
             $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getFileName(),
-            $keys[4] => $this->getSummary(),
-            $keys[5] => $this->getDescription(),
-            $keys[6] => $this->getMoreInfoTitle(),
-            $keys[7] => $this->getMoreInfoDescription(),
-            $keys[8] => $this->getUrlEmbedVideo(),
-            $keys[9] => $this->getHomepage(),
-            $keys[10] => $this->getOnline(),
-            $keys[11] => $this->getSortableRank(),
-            $keys[12] => $this->getCreatedAt(),
-            $keys[13] => $this->getUpdatedAt(),
-            $keys[14] => $this->getSlug(),
+            $keys[3] => $this->getSummary(),
+            $keys[4] => $this->getDescription(),
+            $keys[5] => $this->getMoreInfoTitle(),
+            $keys[6] => $this->getMoreInfoDescription(),
+            $keys[7] => $this->getUrlEmbedVideo(),
+            $keys[8] => $this->getOnline(),
+            $keys[9] => $this->getSortableRank(),
+            $keys[10] => $this->getCreatedAt(),
+            $keys[11] => $this->getUpdatedAt(),
+            $keys[12] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1361,39 +1267,33 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
                 $this->setTitle($value);
                 break;
             case 3:
-                $this->setFileName($value);
-                break;
-            case 4:
                 $this->setSummary($value);
                 break;
-            case 5:
+            case 4:
                 $this->setDescription($value);
                 break;
-            case 6:
+            case 5:
                 $this->setMoreInfoTitle($value);
                 break;
-            case 7:
+            case 6:
                 $this->setMoreInfoDescription($value);
                 break;
-            case 8:
+            case 7:
                 $this->setUrlEmbedVideo($value);
                 break;
-            case 9:
-                $this->setHomepage($value);
-                break;
-            case 10:
+            case 8:
                 $this->setOnline($value);
                 break;
-            case 11:
+            case 9:
                 $this->setSortableRank($value);
                 break;
-            case 12:
+            case 10:
                 $this->setCreatedAt($value);
                 break;
-            case 13:
+            case 11:
                 $this->setUpdatedAt($value);
                 break;
-            case 14:
+            case 12:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -1423,18 +1323,16 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setCmsCategoryId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setFileName($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setSummary($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setMoreInfoTitle($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setMoreInfoDescription($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setUrlEmbedVideo($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setHomepage($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setOnline($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setSortableRank($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setCreatedAt($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setUpdatedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setSlug($arr[$keys[14]]);
+        if (array_key_exists($keys[3], $arr)) $this->setSummary($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setMoreInfoTitle($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setMoreInfoDescription($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setUrlEmbedVideo($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setOnline($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setSortableRank($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
     }
 
     /**
@@ -1449,13 +1347,11 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
         if ($this->isColumnModified(CmsContentPeer::ID)) $criteria->add(CmsContentPeer::ID, $this->id);
         if ($this->isColumnModified(CmsContentPeer::CMS_CATEGORY_ID)) $criteria->add(CmsContentPeer::CMS_CATEGORY_ID, $this->cms_category_id);
         if ($this->isColumnModified(CmsContentPeer::TITLE)) $criteria->add(CmsContentPeer::TITLE, $this->title);
-        if ($this->isColumnModified(CmsContentPeer::FILE_NAME)) $criteria->add(CmsContentPeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(CmsContentPeer::SUMMARY)) $criteria->add(CmsContentPeer::SUMMARY, $this->summary);
         if ($this->isColumnModified(CmsContentPeer::DESCRIPTION)) $criteria->add(CmsContentPeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(CmsContentPeer::MORE_INFO_TITLE)) $criteria->add(CmsContentPeer::MORE_INFO_TITLE, $this->more_info_title);
         if ($this->isColumnModified(CmsContentPeer::MORE_INFO_DESCRIPTION)) $criteria->add(CmsContentPeer::MORE_INFO_DESCRIPTION, $this->more_info_description);
         if ($this->isColumnModified(CmsContentPeer::URL_EMBED_VIDEO)) $criteria->add(CmsContentPeer::URL_EMBED_VIDEO, $this->url_embed_video);
-        if ($this->isColumnModified(CmsContentPeer::HOMEPAGE)) $criteria->add(CmsContentPeer::HOMEPAGE, $this->homepage);
         if ($this->isColumnModified(CmsContentPeer::ONLINE)) $criteria->add(CmsContentPeer::ONLINE, $this->online);
         if ($this->isColumnModified(CmsContentPeer::SORTABLE_RANK)) $criteria->add(CmsContentPeer::SORTABLE_RANK, $this->sortable_rank);
         if ($this->isColumnModified(CmsContentPeer::CREATED_AT)) $criteria->add(CmsContentPeer::CREATED_AT, $this->created_at);
@@ -1526,13 +1422,11 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
     {
         $copyObj->setCmsCategoryId($this->getCmsCategoryId());
         $copyObj->setTitle($this->getTitle());
-        $copyObj->setFileName($this->getFileName());
         $copyObj->setSummary($this->getSummary());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setMoreInfoTitle($this->getMoreInfoTitle());
         $copyObj->setMoreInfoDescription($this->getMoreInfoDescription());
         $copyObj->setUrlEmbedVideo($this->getUrlEmbedVideo());
-        $copyObj->setHomepage($this->getHomepage());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setSortableRank($this->getSortableRank());
         $copyObj->setCreatedAt($this->getCreatedAt());
@@ -1656,13 +1550,11 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
         $this->id = null;
         $this->cms_category_id = null;
         $this->title = null;
-        $this->file_name = null;
         $this->summary = null;
         $this->description = null;
         $this->more_info_title = null;
         $this->more_info_description = null;
         $this->url_embed_video = null;
-        $this->homepage = null;
         $this->online = null;
         $this->sortable_rank = null;
         $this->created_at = null;

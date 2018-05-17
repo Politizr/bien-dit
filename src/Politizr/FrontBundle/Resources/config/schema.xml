@@ -10,7 +10,6 @@
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 
-        <column name="file_name" type="varchar" size="250" />
         <column name="title" type="varchar" size="250" />
 
         <column name="online" type="boolean" />
@@ -25,6 +24,7 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <behavior name="studioechomediabundle" />
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 
@@ -32,7 +32,6 @@
 
         <column name="title" type="varchar" size="250" />
         
-        <column name="file_name" type="varchar" size="250" />
         <column name="summary" type="longvarchar" />
         <column name="description" type="longvarchar" />
 
@@ -41,7 +40,6 @@
 
         <column name="url_embed_video" type="longvarchar" />
 
-        <column name="homepage" type="boolean" />
         <column name="online" type="boolean" />
         
         <foreign-key foreignTable="cms_category" onDelete="SETNULL" onUpdate="CASCADE">
@@ -49,6 +47,18 @@
         </foreign-key>
     </table>
 
+    <table name="cms_content_admin">
+        <behavior name="timestampable" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        <behavior name="studioechomediabundle" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
+        <column name="title" type="varchar" size="250" />
+        <column name="description" type="longvarchar" />
+    </table>
 
     <table name="p_tag">
         <behavior name="timestampable" />

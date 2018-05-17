@@ -10,7 +10,7 @@ namespace Politizr\Constant;
 class LabelConstants
 {
     // MENU
-    const MENU_PUBLICATIONS_LISTING = 'Contributions';
+    const MENU_PUBLICATIONS_LISTING = 'Publications';
     const MENU_USERS_LISTING = 'Communauté';
 
     // USER

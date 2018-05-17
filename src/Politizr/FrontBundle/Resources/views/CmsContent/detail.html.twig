@@ -1,0 +1,78 @@
+{# beta #}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{% endif %}
+{% extends layout %}
+
+{% set metaTitle = content.title | purify | trim %}
+{% set metaDescription = content.description | striptags | truncate(160, true) | purify %}
+{% set ogDescription = content.description | striptags | truncate(295, true) | purify %}
+
+{% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
+{% block description %}{{ metaDescription }}{% endblock description %}
+
+{% block ogTitle %}{{ metaTitle }} - {{ parent() }}{% endblock ogTitle %}
+{% block ogDescription %}{{ ogDescription }}{% endblock ogDescription %}
+
+{% block tcTitle %}{{ metaTitle }} - {{ parent() }}{% endblock tcTitle %}
+{% block tcDescription %}{{ metaDescription }}{% endblock tcDescription %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/selection-sharer.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/jquery.fancybox.min.css') }}">
+{% endblock %}
+
+{% block javascriptHeader %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.swipe.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.fancybox.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="center">
+        <div class="post">
+            {{ content.summary | purify }}
+        </div>
+        <div class="sidebar">
+            <h2>{{ content.moreInfoTitle | purify }}</h2>
+            {{ content.moreInfoDescription | purify }}
+        </div>
+    </div>
+    {% if medias | length > 0 %}
+        <div class="center">
+            <div id="contentSlide">
+                {% include 'PolitizrFrontBundle:CmsContent:_slider.html.twig' %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if content.urlEmbedVideo %}
+        <div class="videoEmbed">
+            {{ content.urlEmbedVideo | raw }}
+        </div>
+    {% endif %}
+    
+    <div class="center">
+        <div class="post">
+            {{ content.description | purify }}
+        </div>
+        {% if documents | length > 0 %}
+            {% include 'PolitizrFrontBundle:CmsContent:_docs.html.twig' %}
+        {% endif %}
+    </div>
+{% endblock content %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/politizrfront/js/politizr/selection-sharer.js') }}"></script>
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/detailCmsContent.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

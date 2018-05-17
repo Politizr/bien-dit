@@ -1,0 +1,13 @@
+{% extends_admingenerated "PolitizrAdminBundle:CmsContentShow:index.html.twig" %}
+
+{% block show_column_summary %}
+    {{ CmsContent.summary | purify }}
+{% endblock %}
+
+{% block show_column_description %}
+    {{ CmsContent.description | purify }}
+{% endblock %}
+
+{% block show_column_more_info_description %}
+    {{ CmsContent.moreInfoDescription | purify }}
+{% endblock %}

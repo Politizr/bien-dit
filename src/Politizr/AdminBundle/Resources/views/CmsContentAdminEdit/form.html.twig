@@ -1,0 +1,12 @@
+{% extends_admingenerated "PolitizrAdminBundle:CmsContentAdminEdit:form.html.twig" %}
+
+{# Bloc Media Bundle #}
+{% block form_row_media_bundle %}
+    {{ render(controller('StudioEchoMediaBundle:UploadMedia:index', { 'objectName' : 'Politizr\\Model\\CmsContentAdmin', 'objectId' : CmsContentAdmin.id, 'mediaParameterConfigKey' : 'cms_content_admin_images', 'culture': 'fr' })) }}
+{% endblock %}
+
+{# Bloc Media Bundle Documents #}
+{% block form_row_media_bundle_documents %}
+    {{ render(controller('StudioEchoMediaBundle:UploadMedia:index', { 'objectName' : 'Politizr\\Model\\CmsContentAdmin', 'objectId' : CmsContentAdmin.id, 'mediaParameterConfigKey' : 'cms_content_admin_documents', 'culture': 'fr' })) }}
+{% endblock %}
+

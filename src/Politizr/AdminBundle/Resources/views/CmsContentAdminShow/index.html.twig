@@ -1,0 +1,5 @@
+{% extends_admingenerated "PolitizrAdminBundle:CmsContentAdminShow:index.html.twig" %}
+
+{% block show_column_description %}
+    {{ CmsContentAdmin.description | purify }}
+{% endblock %}

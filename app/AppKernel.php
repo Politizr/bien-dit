@@ -63,6 +63,9 @@ class AppKernel extends Kernel
             // HTTP Cache
             new FOS\HttpCacheBundle\FOSHttpCacheBundle(),
 
+            // Studio Echo
+            new StudioEchoBundles\StudioEchoMediaBundle\StudioEchoMediaBundle(),
+
             // Project Bundle,
             new Politizr\FrontBundle\PolitizrFrontBundle(),
             new Politizr\AdminBundle\PolitizrAdminBundle(),

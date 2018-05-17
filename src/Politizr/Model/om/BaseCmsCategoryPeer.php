@@ -31,19 +31,16 @@ abstract class BaseCmsCategoryPeer
     const TM_CLASS = 'Politizr\\Model\\map\\CmsCategoryTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the id field */
     const ID = 'cms_category.id';
-
-    /** the column name for the file_name field */
-    const FILE_NAME = 'cms_category.file_name';
 
     /** the column name for the title field */
     const TITLE = 'cms_category.title';
@@ -89,12 +86,12 @@ abstract class BaseCmsCategoryPeer
      * e.g. CmsCategoryPeer::$fieldNames[CmsCategoryPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'FileName', 'Title', 'Online', 'SortableRank', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'fileName', 'title', 'online', 'sortableRank', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (CmsCategoryPeer::ID, CmsCategoryPeer::FILE_NAME, CmsCategoryPeer::TITLE, CmsCategoryPeer::ONLINE, CmsCategoryPeer::SORTABLE_RANK, CmsCategoryPeer::CREATED_AT, CmsCategoryPeer::UPDATED_AT, CmsCategoryPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'FILE_NAME', 'TITLE', 'ONLINE', 'SORTABLE_RANK', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'file_name', 'title', 'online', 'sortable_rank', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Online', 'SortableRank', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'online', 'sortableRank', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (CmsCategoryPeer::ID, CmsCategoryPeer::TITLE, CmsCategoryPeer::ONLINE, CmsCategoryPeer::SORTABLE_RANK, CmsCategoryPeer::CREATED_AT, CmsCategoryPeer::UPDATED_AT, CmsCategoryPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'ONLINE', 'SORTABLE_RANK', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'online', 'sortable_rank', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -104,12 +101,12 @@ abstract class BaseCmsCategoryPeer
      * e.g. CmsCategoryPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'FileName' => 1, 'Title' => 2, 'Online' => 3, 'SortableRank' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'fileName' => 1, 'title' => 2, 'online' => 3, 'sortableRank' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, ),
-        BasePeer::TYPE_COLNAME => array (CmsCategoryPeer::ID => 0, CmsCategoryPeer::FILE_NAME => 1, CmsCategoryPeer::TITLE => 2, CmsCategoryPeer::ONLINE => 3, CmsCategoryPeer::SORTABLE_RANK => 4, CmsCategoryPeer::CREATED_AT => 5, CmsCategoryPeer::UPDATED_AT => 6, CmsCategoryPeer::SLUG => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'FILE_NAME' => 1, 'TITLE' => 2, 'ONLINE' => 3, 'SORTABLE_RANK' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'file_name' => 1, 'title' => 2, 'online' => 3, 'sortable_rank' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Online' => 2, 'SortableRank' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'Slug' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'online' => 2, 'sortableRank' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'slug' => 6, ),
+        BasePeer::TYPE_COLNAME => array (CmsCategoryPeer::ID => 0, CmsCategoryPeer::TITLE => 1, CmsCategoryPeer::ONLINE => 2, CmsCategoryPeer::SORTABLE_RANK => 3, CmsCategoryPeer::CREATED_AT => 4, CmsCategoryPeer::UPDATED_AT => 5, CmsCategoryPeer::SLUG => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'ONLINE' => 2, 'SORTABLE_RANK' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'SLUG' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'online' => 2, 'sortable_rank' => 3, 'created_at' => 4, 'updated_at' => 5, 'slug' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -184,7 +181,6 @@ abstract class BaseCmsCategoryPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(CmsCategoryPeer::ID);
-            $criteria->addSelectColumn(CmsCategoryPeer::FILE_NAME);
             $criteria->addSelectColumn(CmsCategoryPeer::TITLE);
             $criteria->addSelectColumn(CmsCategoryPeer::ONLINE);
             $criteria->addSelectColumn(CmsCategoryPeer::SORTABLE_RANK);
@@ -193,7 +189,6 @@ abstract class BaseCmsCategoryPeer
             $criteria->addSelectColumn(CmsCategoryPeer::SLUG);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.sortable_rank');

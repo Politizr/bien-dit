@@ -90,7 +90,7 @@ services:
             - @logger
             - "%with_group%"
             - "%multiple_group%"
-            - "%top_menu_groups%"
+            - "%top_menu_cms%"
             - "%top_menu_publications%"
             - "%top_menu_community%"
         tags:

@@ -31,13 +31,13 @@ abstract class BaseCmsContentPeer
     const TM_CLASS = 'Politizr\\Model\\map\\CmsContentTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 15;
+    const NUM_COLUMNS = 13;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 15;
+    const NUM_HYDRATE_COLUMNS = 13;
 
     /** the column name for the id field */
     const ID = 'cms_content.id';
@@ -47,9 +47,6 @@ abstract class BaseCmsContentPeer
 
     /** the column name for the title field */
     const TITLE = 'cms_content.title';
-
-    /** the column name for the file_name field */
-    const FILE_NAME = 'cms_content.file_name';
 
     /** the column name for the summary field */
     const SUMMARY = 'cms_content.summary';
@@ -65,9 +62,6 @@ abstract class BaseCmsContentPeer
 
     /** the column name for the url_embed_video field */
     const URL_EMBED_VIDEO = 'cms_content.url_embed_video';
-
-    /** the column name for the homepage field */
-    const HOMEPAGE = 'cms_content.homepage';
 
     /** the column name for the online field */
     const ONLINE = 'cms_content.online';
@@ -115,12 +109,12 @@ abstract class BaseCmsContentPeer
      * e.g. CmsContentPeer::$fieldNames[CmsContentPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'CmsCategoryId', 'Title', 'FileName', 'Summary', 'Description', 'MoreInfoTitle', 'MoreInfoDescription', 'UrlEmbedVideo', 'Homepage', 'Online', 'SortableRank', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cmsCategoryId', 'title', 'fileName', 'summary', 'description', 'moreInfoTitle', 'moreInfoDescription', 'urlEmbedVideo', 'homepage', 'online', 'sortableRank', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (CmsContentPeer::ID, CmsContentPeer::CMS_CATEGORY_ID, CmsContentPeer::TITLE, CmsContentPeer::FILE_NAME, CmsContentPeer::SUMMARY, CmsContentPeer::DESCRIPTION, CmsContentPeer::MORE_INFO_TITLE, CmsContentPeer::MORE_INFO_DESCRIPTION, CmsContentPeer::URL_EMBED_VIDEO, CmsContentPeer::HOMEPAGE, CmsContentPeer::ONLINE, CmsContentPeer::SORTABLE_RANK, CmsContentPeer::CREATED_AT, CmsContentPeer::UPDATED_AT, CmsContentPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CMS_CATEGORY_ID', 'TITLE', 'FILE_NAME', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO_TITLE', 'MORE_INFO_DESCRIPTION', 'URL_EMBED_VIDEO', 'HOMEPAGE', 'ONLINE', 'SORTABLE_RANK', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'cms_category_id', 'title', 'file_name', 'summary', 'description', 'more_info_title', 'more_info_description', 'url_embed_video', 'homepage', 'online', 'sortable_rank', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'CmsCategoryId', 'Title', 'Summary', 'Description', 'MoreInfoTitle', 'MoreInfoDescription', 'UrlEmbedVideo', 'Online', 'SortableRank', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cmsCategoryId', 'title', 'summary', 'description', 'moreInfoTitle', 'moreInfoDescription', 'urlEmbedVideo', 'online', 'sortableRank', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (CmsContentPeer::ID, CmsContentPeer::CMS_CATEGORY_ID, CmsContentPeer::TITLE, CmsContentPeer::SUMMARY, CmsContentPeer::DESCRIPTION, CmsContentPeer::MORE_INFO_TITLE, CmsContentPeer::MORE_INFO_DESCRIPTION, CmsContentPeer::URL_EMBED_VIDEO, CmsContentPeer::ONLINE, CmsContentPeer::SORTABLE_RANK, CmsContentPeer::CREATED_AT, CmsContentPeer::UPDATED_AT, CmsContentPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CMS_CATEGORY_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'MORE_INFO_TITLE', 'MORE_INFO_DESCRIPTION', 'URL_EMBED_VIDEO', 'ONLINE', 'SORTABLE_RANK', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'cms_category_id', 'title', 'summary', 'description', 'more_info_title', 'more_info_description', 'url_embed_video', 'online', 'sortable_rank', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -130,12 +124,12 @@ abstract class BaseCmsContentPeer
      * e.g. CmsContentPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CmsCategoryId' => 1, 'Title' => 2, 'FileName' => 3, 'Summary' => 4, 'Description' => 5, 'MoreInfoTitle' => 6, 'MoreInfoDescription' => 7, 'UrlEmbedVideo' => 8, 'Homepage' => 9, 'Online' => 10, 'SortableRank' => 11, 'CreatedAt' => 12, 'UpdatedAt' => 13, 'Slug' => 14, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cmsCategoryId' => 1, 'title' => 2, 'fileName' => 3, 'summary' => 4, 'description' => 5, 'moreInfoTitle' => 6, 'moreInfoDescription' => 7, 'urlEmbedVideo' => 8, 'homepage' => 9, 'online' => 10, 'sortableRank' => 11, 'createdAt' => 12, 'updatedAt' => 13, 'slug' => 14, ),
-        BasePeer::TYPE_COLNAME => array (CmsContentPeer::ID => 0, CmsContentPeer::CMS_CATEGORY_ID => 1, CmsContentPeer::TITLE => 2, CmsContentPeer::FILE_NAME => 3, CmsContentPeer::SUMMARY => 4, CmsContentPeer::DESCRIPTION => 5, CmsContentPeer::MORE_INFO_TITLE => 6, CmsContentPeer::MORE_INFO_DESCRIPTION => 7, CmsContentPeer::URL_EMBED_VIDEO => 8, CmsContentPeer::HOMEPAGE => 9, CmsContentPeer::ONLINE => 10, CmsContentPeer::SORTABLE_RANK => 11, CmsContentPeer::CREATED_AT => 12, CmsContentPeer::UPDATED_AT => 13, CmsContentPeer::SLUG => 14, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CMS_CATEGORY_ID' => 1, 'TITLE' => 2, 'FILE_NAME' => 3, 'SUMMARY' => 4, 'DESCRIPTION' => 5, 'MORE_INFO_TITLE' => 6, 'MORE_INFO_DESCRIPTION' => 7, 'URL_EMBED_VIDEO' => 8, 'HOMEPAGE' => 9, 'ONLINE' => 10, 'SORTABLE_RANK' => 11, 'CREATED_AT' => 12, 'UPDATED_AT' => 13, 'SLUG' => 14, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cms_category_id' => 1, 'title' => 2, 'file_name' => 3, 'summary' => 4, 'description' => 5, 'more_info_title' => 6, 'more_info_description' => 7, 'url_embed_video' => 8, 'homepage' => 9, 'online' => 10, 'sortable_rank' => 11, 'created_at' => 12, 'updated_at' => 13, 'slug' => 14, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CmsCategoryId' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'MoreInfoTitle' => 5, 'MoreInfoDescription' => 6, 'UrlEmbedVideo' => 7, 'Online' => 8, 'SortableRank' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, 'Slug' => 12, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cmsCategoryId' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'moreInfoTitle' => 5, 'moreInfoDescription' => 6, 'urlEmbedVideo' => 7, 'online' => 8, 'sortableRank' => 9, 'createdAt' => 10, 'updatedAt' => 11, 'slug' => 12, ),
+        BasePeer::TYPE_COLNAME => array (CmsContentPeer::ID => 0, CmsContentPeer::CMS_CATEGORY_ID => 1, CmsContentPeer::TITLE => 2, CmsContentPeer::SUMMARY => 3, CmsContentPeer::DESCRIPTION => 4, CmsContentPeer::MORE_INFO_TITLE => 5, CmsContentPeer::MORE_INFO_DESCRIPTION => 6, CmsContentPeer::URL_EMBED_VIDEO => 7, CmsContentPeer::ONLINE => 8, CmsContentPeer::SORTABLE_RANK => 9, CmsContentPeer::CREATED_AT => 10, CmsContentPeer::UPDATED_AT => 11, CmsContentPeer::SLUG => 12, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CMS_CATEGORY_ID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'MORE_INFO_TITLE' => 5, 'MORE_INFO_DESCRIPTION' => 6, 'URL_EMBED_VIDEO' => 7, 'ONLINE' => 8, 'SORTABLE_RANK' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, 'SLUG' => 12, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cms_category_id' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'more_info_title' => 5, 'more_info_description' => 6, 'url_embed_video' => 7, 'online' => 8, 'sortable_rank' => 9, 'created_at' => 10, 'updated_at' => 11, 'slug' => 12, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -212,13 +206,11 @@ abstract class BaseCmsContentPeer
             $criteria->addSelectColumn(CmsContentPeer::ID);
             $criteria->addSelectColumn(CmsContentPeer::CMS_CATEGORY_ID);
             $criteria->addSelectColumn(CmsContentPeer::TITLE);
-            $criteria->addSelectColumn(CmsContentPeer::FILE_NAME);
             $criteria->addSelectColumn(CmsContentPeer::SUMMARY);
             $criteria->addSelectColumn(CmsContentPeer::DESCRIPTION);
             $criteria->addSelectColumn(CmsContentPeer::MORE_INFO_TITLE);
             $criteria->addSelectColumn(CmsContentPeer::MORE_INFO_DESCRIPTION);
             $criteria->addSelectColumn(CmsContentPeer::URL_EMBED_VIDEO);
-            $criteria->addSelectColumn(CmsContentPeer::HOMEPAGE);
             $criteria->addSelectColumn(CmsContentPeer::ONLINE);
             $criteria->addSelectColumn(CmsContentPeer::SORTABLE_RANK);
             $criteria->addSelectColumn(CmsContentPeer::CREATED_AT);
@@ -228,13 +220,11 @@ abstract class BaseCmsContentPeer
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.cms_category_id');
             $criteria->addSelectColumn($alias . '.title');
-            $criteria->addSelectColumn($alias . '.file_name');
             $criteria->addSelectColumn($alias . '.summary');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.more_info_title');
             $criteria->addSelectColumn($alias . '.more_info_description');
             $criteria->addSelectColumn($alias . '.url_embed_video');
-            $criteria->addSelectColumn($alias . '.homepage');
             $criteria->addSelectColumn($alias . '.online');
             $criteria->addSelectColumn($alias . '.sortable_rank');
             $criteria->addSelectColumn($alias . '.created_at');

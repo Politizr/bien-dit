@@ -2,6 +2,17 @@
 #                   PROPEL VALIDATOR RULES / ADMIN
 ##################################################################################
 
+####################################### CMS #####################################
+
+Politizr\Model\CmsCategory:
+    properties:
+        title:
+            - NotBlank:     ~
+
+Politizr\Model\CmsPage:
+    properties:
+        title:
+            - NotBlank:     ~
 
 ####################################### USER #####################################
 

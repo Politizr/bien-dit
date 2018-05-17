@@ -28,3 +28,10 @@ nelmio_security:
 # foshttpcache
 user_context_hash:
     path: /_fos_user_context_hash
+
+
+# studio echo media
+studio_echo_media:
+    resource: "@StudioEchoMediaBundle/Resources/config/routing.yml"
+    prefix:   /media
+

@@ -19,6 +19,10 @@ Helper:
 Public:
     resource: "./routing/Public.yml"
 
+# Cms
+Cms:
+    resource: "./routing/Cms.yml"
+
 # Document
 Document:
     resource: "./routing/Document.yml"

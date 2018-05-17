@@ -1,0 +1,142 @@
+generator:                  admingenerator.generator.propel
+params:
+    model:                  Politizr\Model\CmsContent
+    namespace_prefix:       Politizr
+    concurrency_lock:       ~
+    bundle_name:            AdminBundle
+    pk_requirement:         ~
+    fields:
+        id:
+            label:          ID
+        cms_category_id:
+            label:          ID Catégorie
+        cms_category:
+            label:          Catégorie
+        title:
+            label:          Titre
+        file_name:
+            label:          Bandeau
+        summary:
+            label:          Résumé
+        description:
+            label:          Description
+        more_info_title:
+            label:          Titre
+        more_info_description:
+            label:          Description
+        url_embed_video:
+            label:          URL vidéo (embed)
+        online:
+            label:          En ligne
+        created_at:
+            label:          Création
+        updated_at:
+            label:          Mis à jour
+    object_actions:
+        delete:             ~
+    batch_actions:
+        delete:             ~
+builders:
+    list:
+        params:
+            title:                              Liste des pages
+            max_per_page:                       10
+            sort:                               [ sortable_rank, ASC ]
+            display:                            [ cms_category, title, online, created_at, updated_at ]
+            filtersMode:                        modal
+            filters:                            [ cms_category, title, online ]
+            actions:
+                new:                            
+                    # credentials:                'hasRole("ROLE_SYSTEM")'
+            object_actions:
+                show:                           ~
+                edit:                           ~
+                delete:                         ~
+                moveUp:                         ~
+                moveDown:                       ~
+    excel:
+        params: ~
+        filename: ~
+        filetype: ~
+    new:
+        params:
+            title:                              "Création d'une page"
+            display:
+                "Champs principaux":            [ cms_category, title ]
+            actions:
+              save:                             ~
+              list:                             ~
+    edit:
+        params:
+            title:                              "Edition de la page '{{ CmsContent.title }}'"
+            tabs:
+                "Contenu":
+                    "En-tête":                  [ title, summary ]
+                    "Texte":                    [ description ]
+                "Encart":
+                    "En-tête encart":           [ more_info_title ]
+                    "Texte encart":             [ more_info_description ]
+                "Médias":
+                    "Vidéo":                    [ url_embed_video ]
+                    "Galerie":                  [ media_bundle ]
+                    "Documents":                [ media_bundle_documents ]
+                "Attributs":
+                    "Caractéristiques":         [ cms_category, online ]
+                    "Dates":                    [ [ created_at, updated_at ] ]
+            fields:
+                media_bundle:
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                media_bundle_documents:
+                    formType:                   hidden
+                    dbType:                     VARCHAR
+                    addFormOptions:
+                        mapped:                 false
+                summary:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                description:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                more_info_description:
+                    addFormOptions:
+                        attr:                   { class : tinymce }
+                cms_category:
+                    addFormOptions:
+                        disabled:               true
+                created_at:
+                    addFormOptions:
+                        widget:                 single_text
+                updated_at:
+                    addFormOptions:
+                        widget:                 single_text
+            actions:
+                save: ~
+                list: ~
+                delete: ~
+    show:
+        params:
+            title:                              "Visualisation de la page '{{ CmsContent.title }}'"
+            tabs:
+                "Contenu":
+                    "En-tête":                  [ title ]
+                    "Texte":                    [ summary, description ]
+                "Encart":
+                    "En-tête encart":           [ more_info_title ]
+                    "Texte encart":             [ more_info_description ]
+                "Médias":
+                    "Vidéo":                    [ url_embed_video ]
+                "Attributs":
+                    "Caractéristiques":         [ online ]
+                    "Dates":                    [ [ created_at, updated_at ] ]
+            actions:
+                list:                           ~
+                delete:                         ~
+    actions:
+        params:
+            object_actions:
+                delete:                         ~
+            batch_actions:
+                delete:                         ~

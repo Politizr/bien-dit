@@ -21,13 +21,11 @@ use Politizr\Model\CmsContentQuery;
  * @method CmsContentQuery orderById($order = Criteria::ASC) Order by the id column
  * @method CmsContentQuery orderByCmsCategoryId($order = Criteria::ASC) Order by the cms_category_id column
  * @method CmsContentQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method CmsContentQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method CmsContentQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method CmsContentQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method CmsContentQuery orderByMoreInfoTitle($order = Criteria::ASC) Order by the more_info_title column
  * @method CmsContentQuery orderByMoreInfoDescription($order = Criteria::ASC) Order by the more_info_description column
  * @method CmsContentQuery orderByUrlEmbedVideo($order = Criteria::ASC) Order by the url_embed_video column
- * @method CmsContentQuery orderByHomepage($order = Criteria::ASC) Order by the homepage column
  * @method CmsContentQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method CmsContentQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  * @method CmsContentQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
@@ -37,13 +35,11 @@ use Politizr\Model\CmsContentQuery;
  * @method CmsContentQuery groupById() Group by the id column
  * @method CmsContentQuery groupByCmsCategoryId() Group by the cms_category_id column
  * @method CmsContentQuery groupByTitle() Group by the title column
- * @method CmsContentQuery groupByFileName() Group by the file_name column
  * @method CmsContentQuery groupBySummary() Group by the summary column
  * @method CmsContentQuery groupByDescription() Group by the description column
  * @method CmsContentQuery groupByMoreInfoTitle() Group by the more_info_title column
  * @method CmsContentQuery groupByMoreInfoDescription() Group by the more_info_description column
  * @method CmsContentQuery groupByUrlEmbedVideo() Group by the url_embed_video column
- * @method CmsContentQuery groupByHomepage() Group by the homepage column
  * @method CmsContentQuery groupByOnline() Group by the online column
  * @method CmsContentQuery groupBySortableRank() Group by the sortable_rank column
  * @method CmsContentQuery groupByCreatedAt() Group by the created_at column
@@ -63,13 +59,11 @@ use Politizr\Model\CmsContentQuery;
  *
  * @method CmsContent findOneByCmsCategoryId(int $cms_category_id) Return the first CmsContent filtered by the cms_category_id column
  * @method CmsContent findOneByTitle(string $title) Return the first CmsContent filtered by the title column
- * @method CmsContent findOneByFileName(string $file_name) Return the first CmsContent filtered by the file_name column
  * @method CmsContent findOneBySummary(string $summary) Return the first CmsContent filtered by the summary column
  * @method CmsContent findOneByDescription(string $description) Return the first CmsContent filtered by the description column
  * @method CmsContent findOneByMoreInfoTitle(string $more_info_title) Return the first CmsContent filtered by the more_info_title column
  * @method CmsContent findOneByMoreInfoDescription(string $more_info_description) Return the first CmsContent filtered by the more_info_description column
  * @method CmsContent findOneByUrlEmbedVideo(string $url_embed_video) Return the first CmsContent filtered by the url_embed_video column
- * @method CmsContent findOneByHomepage(boolean $homepage) Return the first CmsContent filtered by the homepage column
  * @method CmsContent findOneByOnline(boolean $online) Return the first CmsContent filtered by the online column
  * @method CmsContent findOneBySortableRank(int $sortable_rank) Return the first CmsContent filtered by the sortable_rank column
  * @method CmsContent findOneByCreatedAt(string $created_at) Return the first CmsContent filtered by the created_at column
@@ -79,13 +73,11 @@ use Politizr\Model\CmsContentQuery;
  * @method array findById(int $id) Return CmsContent objects filtered by the id column
  * @method array findByCmsCategoryId(int $cms_category_id) Return CmsContent objects filtered by the cms_category_id column
  * @method array findByTitle(string $title) Return CmsContent objects filtered by the title column
- * @method array findByFileName(string $file_name) Return CmsContent objects filtered by the file_name column
  * @method array findBySummary(string $summary) Return CmsContent objects filtered by the summary column
  * @method array findByDescription(string $description) Return CmsContent objects filtered by the description column
  * @method array findByMoreInfoTitle(string $more_info_title) Return CmsContent objects filtered by the more_info_title column
  * @method array findByMoreInfoDescription(string $more_info_description) Return CmsContent objects filtered by the more_info_description column
  * @method array findByUrlEmbedVideo(string $url_embed_video) Return CmsContent objects filtered by the url_embed_video column
- * @method array findByHomepage(boolean $homepage) Return CmsContent objects filtered by the homepage column
  * @method array findByOnline(boolean $online) Return CmsContent objects filtered by the online column
  * @method array findBySortableRank(int $sortable_rank) Return CmsContent objects filtered by the sortable_rank column
  * @method array findByCreatedAt(string $created_at) Return CmsContent objects filtered by the created_at column
@@ -196,7 +188,7 @@ abstract class BaseCmsContentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `cms_category_id`, `title`, `file_name`, `summary`, `description`, `more_info_title`, `more_info_description`, `url_embed_video`, `homepage`, `online`, `sortable_rank`, `created_at`, `updated_at`, `slug` FROM `cms_content` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `cms_category_id`, `title`, `summary`, `description`, `more_info_title`, `more_info_description`, `url_embed_video`, `online`, `sortable_rank`, `created_at`, `updated_at`, `slug` FROM `cms_content` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -401,35 +393,6 @@ abstract class BaseCmsContentQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the file_name column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByFileName('fooValue');   // WHERE file_name = 'fooValue'
-     * $query->filterByFileName('%fooValue%'); // WHERE file_name LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $fileName The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return CmsContentQuery The current query, for fluid interface
-     */
-    public function filterByFileName($fileName = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($fileName)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $fileName)) {
-                $fileName = str_replace('*', '%', $fileName);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(CmsContentPeer::FILE_NAME, $fileName, $comparison);
-    }
-
-    /**
      * Filter the query on the summary column
      *
      * Example usage:
@@ -572,33 +535,6 @@ abstract class BaseCmsContentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CmsContentPeer::URL_EMBED_VIDEO, $urlEmbedVideo, $comparison);
-    }
-
-    /**
-     * Filter the query on the homepage column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByHomepage(true); // WHERE homepage = true
-     * $query->filterByHomepage('yes'); // WHERE homepage = true
-     * </code>
-     *
-     * @param     boolean|string $homepage The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return CmsContentQuery The current query, for fluid interface
-     */
-    public function filterByHomepage($homepage = null, $comparison = null)
-    {
-        if (is_string($homepage)) {
-            $homepage = in_array(strtolower($homepage), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(CmsContentPeer::HOMEPAGE, $homepage, $comparison);
     }
 
     /**

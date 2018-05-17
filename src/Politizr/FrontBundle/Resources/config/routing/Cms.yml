@@ -1,0 +1,9 @@
+################################################################################
+#               ROUTING CMS
+################################################################################
+CmsContent:
+    pattern:  /c/{slug}
+    defaults: { _controller: PolitizrFrontBundle:CmsContent:detail }
+    requirements:
+        _method:        GET
+        slug:           "^[a-z0-9-]+"

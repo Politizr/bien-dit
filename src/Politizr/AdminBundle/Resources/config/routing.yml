@@ -117,6 +117,21 @@ Politizr_AdminBundle_User:
     type:     admingenerator
     prefix:   /User
 
+# Cms
+Politizr_AdminBundle_CmsCategory:
+    resource: "@PolitizrAdminBundle/Controller/CmsCategory/"
+    type:     admingenerator
+    prefix:   /CmsCategory
+
+Politizr_AdminBundle_CmsContent:
+    resource: "@PolitizrAdminBundle/Controller/CmsContent/"
+    type:     admingenerator
+    prefix:   /CmsContent
+
+Politizr_AdminBundle_CmsContentAdmin:
+    resource: "@PolitizrAdminBundle/Controller/CmsContentAdmin/"
+    type:     admingenerator
+    prefix:   /CmsContentAdmin
 
 
 # Commandes
@@ -329,4 +344,3 @@ Politizr_AdminBundle_PMCharte:
     resource: "@PolitizrAdminBundle/Controller/PMCharte/"
     type:     admingenerator
     prefix:   /PMCharte
-

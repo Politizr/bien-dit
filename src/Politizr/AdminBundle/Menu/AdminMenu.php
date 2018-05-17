@@ -45,6 +45,24 @@ class AdminMenu extends AdmingeneratorMenuBuilder
                 ->setExtra('icon', 'fa fa-dashboard');
         }
 
+        // Cms Management
+        $cms = $this->addDropdown($menu, 'Contenu');
+        $this->addLinkRoute(
+            $cms,
+            'Page',
+            'Politizr_AdminBundle_CmsContent_list'
+        );
+        $this->addLinkRoute(
+            $cms,
+            'Catégorie',
+            'Politizr_AdminBundle_CmsCategory_list'
+        );
+        $this->addLinkRoute(
+            $cms,
+            'Admin',
+            'Politizr_AdminBundle_CmsContentAdmin_list'
+        );
+
         // Order
         $orders = $this->addDropdown($menu, 'Commande');
         $this->addLinkRoute(

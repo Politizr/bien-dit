@@ -49,12 +49,6 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the file_name field.
-     * @var        string
-     */
-    protected $file_name;
-
-    /**
      * The value for the title field.
      * @var        string
      */
@@ -139,17 +133,6 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
     {
 
         return $this->id;
-    }
-
-    /**
-     * Get the [file_name] column value.
-     *
-     * @return string
-     */
-    public function getFileName()
-    {
-
-        return $this->file_name;
     }
 
     /**
@@ -296,27 +279,6 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
 
         return $this;
     } // setId()
-
-    /**
-     * Set the value of [file_name] column.
-     *
-     * @param  string $v new value
-     * @return CmsCategory The current object (for fluent API support)
-     */
-    public function setFileName($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->file_name !== $v) {
-            $this->file_name = $v;
-            $this->modifiedColumns[] = CmsCategoryPeer::FILE_NAME;
-        }
-
-
-        return $this;
-    } // setFileName()
 
     /**
      * Set the value of [title] column.
@@ -489,13 +451,12 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->file_name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->online = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
-            $this->sortable_rank = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->slug = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->online = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
+            $this->sortable_rank = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->updated_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->slug = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -505,7 +466,7 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 8; // 8 = CmsCategoryPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = CmsCategoryPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating CmsCategory object", $e);
@@ -775,9 +736,6 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
         if ($this->isColumnModified(CmsCategoryPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(CmsCategoryPeer::FILE_NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`file_name`';
-        }
         if ($this->isColumnModified(CmsCategoryPeer::TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
         }
@@ -809,9 +767,6 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
-                        break;
-                    case '`file_name`':
-                        $stmt->bindValue($identifier, $this->file_name, PDO::PARAM_STR);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -895,24 +850,21 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getFileName();
-                break;
-            case 2:
                 return $this->getTitle();
                 break;
-            case 3:
+            case 2:
                 return $this->getOnline();
                 break;
-            case 4:
+            case 3:
                 return $this->getSortableRank();
                 break;
-            case 5:
+            case 4:
                 return $this->getCreatedAt();
                 break;
-            case 6:
+            case 5:
                 return $this->getUpdatedAt();
                 break;
-            case 7:
+            case 6:
                 return $this->getSlug();
                 break;
             default:
@@ -945,13 +897,12 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
         $keys = CmsCategoryPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getFileName(),
-            $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getOnline(),
-            $keys[4] => $this->getSortableRank(),
-            $keys[5] => $this->getCreatedAt(),
-            $keys[6] => $this->getUpdatedAt(),
-            $keys[7] => $this->getSlug(),
+            $keys[1] => $this->getTitle(),
+            $keys[2] => $this->getOnline(),
+            $keys[3] => $this->getSortableRank(),
+            $keys[4] => $this->getCreatedAt(),
+            $keys[5] => $this->getUpdatedAt(),
+            $keys[6] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1000,24 +951,21 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setFileName($value);
-                break;
-            case 2:
                 $this->setTitle($value);
                 break;
-            case 3:
+            case 2:
                 $this->setOnline($value);
                 break;
-            case 4:
+            case 3:
                 $this->setSortableRank($value);
                 break;
-            case 5:
+            case 4:
                 $this->setCreatedAt($value);
                 break;
-            case 6:
+            case 5:
                 $this->setUpdatedAt($value);
                 break;
-            case 7:
+            case 6:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -1045,13 +993,12 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
         $keys = CmsCategoryPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setFileName($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setOnline($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setSortableRank($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setSlug($arr[$keys[7]]);
+        if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setOnline($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setSortableRank($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setSlug($arr[$keys[6]]);
     }
 
     /**
@@ -1064,7 +1011,6 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
         $criteria = new Criteria(CmsCategoryPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(CmsCategoryPeer::ID)) $criteria->add(CmsCategoryPeer::ID, $this->id);
-        if ($this->isColumnModified(CmsCategoryPeer::FILE_NAME)) $criteria->add(CmsCategoryPeer::FILE_NAME, $this->file_name);
         if ($this->isColumnModified(CmsCategoryPeer::TITLE)) $criteria->add(CmsCategoryPeer::TITLE, $this->title);
         if ($this->isColumnModified(CmsCategoryPeer::ONLINE)) $criteria->add(CmsCategoryPeer::ONLINE, $this->online);
         if ($this->isColumnModified(CmsCategoryPeer::SORTABLE_RANK)) $criteria->add(CmsCategoryPeer::SORTABLE_RANK, $this->sortable_rank);
@@ -1134,7 +1080,6 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setFileName($this->getFileName());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setSortableRank($this->getSortableRank());
@@ -1452,7 +1397,6 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->file_name = null;
         $this->title = null;
         $this->online = null;
         $this->sortable_rank = null;

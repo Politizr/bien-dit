@@ -1,0 +1,18 @@
+{% extends_admingenerated "PolitizrAdminBundle:CmsContentEdit:form.html.twig" %}
+
+{# Bloc Video Embed #}
+{% block form_row_url_embed_video %}
+    {{ parent() }}
+    <i class="fa fa-info-circle" aria-hidden="true">&nbsp;Taille conseillée: 610px de largeur</i>
+{% endblock %}
+
+{# Bloc Media Bundle #}
+{% block form_row_media_bundle %}
+    {{ render(controller('StudioEchoMediaBundle:UploadMedia:index', { 'objectName' : 'Politizr\\Model\\CmsContent', 'objectId' : CmsContent.id, 'mediaParameterConfigKey' : 'cms_content_images', 'culture': 'fr' })) }}
+{% endblock %}
+
+{# Bloc Media Bundle Documents #}
+{% block form_row_media_bundle_documents %}
+    {{ render(controller('StudioEchoMediaBundle:UploadMedia:index', { 'objectName' : 'Politizr\\Model\\CmsContent', 'objectId' : CmsContent.id, 'mediaParameterConfigKey' : 'cms_content_documents', 'culture': 'fr' })) }}
+{% endblock %}
+

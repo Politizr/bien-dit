@@ -99,6 +99,5 @@ parameters:
 
     # Menu
     top_menu_cms: true # true | false
-    top_menu_groups: topics # topics | groups | false
     top_menu_publications: true # true | false
     top_menu_community: true # true | false

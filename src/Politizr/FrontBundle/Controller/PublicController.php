@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\GlobalConstants;
 use Politizr\Constant\LocalizationConstants;
+use Politizr\Constant\CmsConstants;
 
 use Politizr\Model\PDDirect;
 
@@ -21,6 +22,7 @@ use Politizr\Model\PTagQuery;
 use Politizr\Model\PQOrganizationQuery;
 use Politizr\Model\PMCguQuery;
 use Politizr\Model\PMCharteQuery;
+use Politizr\Model\CmsContentAdminQuery;
 
 use Politizr\FrontBundle\Form\Type\PDDirectType;
 
@@ -46,8 +48,11 @@ class PublicController extends Controller
             return $this->redirect($this->generateUrl(sprintf('Homepage%s', $profileSuffix)));
         }
 
+        $content = CmsContentAdminQuery::create()->findPk(CmsConstants::CMS_CONTENT_ADMIN_HOMEPAGE);
+
         return $this->render('PolitizrFrontBundle:Public:homepage.html.twig', array(
             'homepage' => true,
+            'content' => $content,
         ));
     }
 

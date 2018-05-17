@@ -1,0 +1,19 @@
+{% extends_admingenerated "PolitizrAdminBundle:CmsContentEdit:index.html.twig" %}
+
+{% block javascripts_head %}
+    {{ parent() }}
+
+    <!-- TinyMCE -->
+    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+
+    <!-- StudioEchoMediaBundle JS -->
+    <script src="{{ asset("bundles/studioechomedia/js/jquery.fineuploader-3.0.min.js") }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <!-- StudioEchoMediaBundle CSS -->
+    <link rel="stylesheet" href="{{ asset("bundles/studioechomedia/css/fineuploader.css") }}">
+    <link rel="stylesheet" href="{{ asset("bundles/studioechomedia/css/media-bundle.css") }}">
+{% endblock %}

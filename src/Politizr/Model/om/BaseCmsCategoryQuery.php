@@ -19,7 +19,6 @@ use Politizr\Model\CmsContent;
 
 /**
  * @method CmsCategoryQuery orderById($order = Criteria::ASC) Order by the id column
- * @method CmsCategoryQuery orderByFileName($order = Criteria::ASC) Order by the file_name column
  * @method CmsCategoryQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method CmsCategoryQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method CmsCategoryQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
@@ -28,7 +27,6 @@ use Politizr\Model\CmsContent;
  * @method CmsCategoryQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  *
  * @method CmsCategoryQuery groupById() Group by the id column
- * @method CmsCategoryQuery groupByFileName() Group by the file_name column
  * @method CmsCategoryQuery groupByTitle() Group by the title column
  * @method CmsCategoryQuery groupByOnline() Group by the online column
  * @method CmsCategoryQuery groupBySortableRank() Group by the sortable_rank column
@@ -47,7 +45,6 @@ use Politizr\Model\CmsContent;
  * @method CmsCategory findOne(PropelPDO $con = null) Return the first CmsCategory matching the query
  * @method CmsCategory findOneOrCreate(PropelPDO $con = null) Return the first CmsCategory matching the query, or a new CmsCategory object populated from the query conditions when no match is found
  *
- * @method CmsCategory findOneByFileName(string $file_name) Return the first CmsCategory filtered by the file_name column
  * @method CmsCategory findOneByTitle(string $title) Return the first CmsCategory filtered by the title column
  * @method CmsCategory findOneByOnline(boolean $online) Return the first CmsCategory filtered by the online column
  * @method CmsCategory findOneBySortableRank(int $sortable_rank) Return the first CmsCategory filtered by the sortable_rank column
@@ -56,7 +53,6 @@ use Politizr\Model\CmsContent;
  * @method CmsCategory findOneBySlug(string $slug) Return the first CmsCategory filtered by the slug column
  *
  * @method array findById(int $id) Return CmsCategory objects filtered by the id column
- * @method array findByFileName(string $file_name) Return CmsCategory objects filtered by the file_name column
  * @method array findByTitle(string $title) Return CmsCategory objects filtered by the title column
  * @method array findByOnline(boolean $online) Return CmsCategory objects filtered by the online column
  * @method array findBySortableRank(int $sortable_rank) Return CmsCategory objects filtered by the sortable_rank column
@@ -168,7 +164,7 @@ abstract class BaseCmsCategoryQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `file_name`, `title`, `online`, `sortable_rank`, `created_at`, `updated_at`, `slug` FROM `cms_category` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `online`, `sortable_rank`, `created_at`, `updated_at`, `slug` FROM `cms_category` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -297,35 +293,6 @@ abstract class BaseCmsCategoryQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CmsCategoryPeer::ID, $id, $comparison);
-    }
-
-    /**
-     * Filter the query on the file_name column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByFileName('fooValue');   // WHERE file_name = 'fooValue'
-     * $query->filterByFileName('%fooValue%'); // WHERE file_name LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $fileName The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return CmsCategoryQuery The current query, for fluid interface
-     */
-    public function filterByFileName($fileName = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($fileName)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $fileName)) {
-                $fileName = str_replace('*', '%', $fileName);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(CmsCategoryPeer::FILE_NAME, $fileName, $comparison);
     }
 
     /**

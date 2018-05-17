@@ -7,7 +7,11 @@ use Politizr\Constant\LabelConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PCTopic;
-    
+
+use Politizr\Model\CmsContentQuery;
+use Politizr\Model\CmsCategoryQuery;
+
+
 /**
  * App's navigation twig extension
  *
@@ -29,7 +33,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
     private $withGroup;
     private $multipleGroup;
 
-    private $topMenuGroups;
+    private $topMenuCms;
     private $topMenuPublications;
     private $topMenuCommunity;
 
@@ -42,7 +46,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
      * @param @logger
      * @param "%with_group%"
      * @param "%multiple_group%"
-     * @param "%top_menu_groups%"
+     * @param "%top_menu_cms%"
      * @param "%top_menu_publications%"
      * @param "%top_menu_community%"
      */
@@ -55,7 +59,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
         $logger,
         $withGroup,
         $multipleGroup,
-        $topMenuGroups,
+        $topMenuCms,
         $topMenuPublications,
         $topMenuCommunity
     ) {
@@ -73,7 +77,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
         $this->withGroup = $withGroup;
         $this->multipleGroup = $multipleGroup;
 
-        $this->topMenuGroups = $topMenuGroups;
+        $this->topMenuCms = $topMenuCms;
         $this->topMenuPublications = $topMenuPublications;
         $this->topMenuCommunity = $topMenuCommunity;
     }
@@ -188,15 +192,19 @@ class PolitizrNavigationExtension extends \Twig_Extension
         $communityRoutes = array();
 
         // CMS
-        // @todo
+        if ($this->topMenuCms) {
+            $cmsCategory = CmsCategoryQuery::create()->filterByOnline(true)->findPk(1);
+            $cmsContents = CmsContentQuery::create()
+                                ->filterByOnline(true)
+                                ->filterByCmsCategoryId(1)
+                                ->find();
 
-        // Groups
-        if ($this->topMenuGroups == 'topics') {
-            // get topics & routes
-            // @todo add boolean in topic table?
-        } elseif ($this->topMenuGroups == 'groups') {
-            // get topics & routes
-            // @todo add boolean in group table?
+            foreach ($cmsContents as $cmsContent) {
+                $url = $this->router->generate('CmsContent', array('slug' => $cmsContent->getSlug()));
+                $label = $cmsContent->getTitle();
+
+                $cmsRoutes[] = ['url' => $url, 'label' => $label];
+            }
         }
 
         // Contributions
