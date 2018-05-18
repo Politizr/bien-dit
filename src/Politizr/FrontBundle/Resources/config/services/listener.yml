@@ -25,6 +25,7 @@ services:
             - @event_dispatcher
             - @politizr.functional.circle
             - @logger
+            - "%geo_active%"
         tags:
             - { name: kernel.event_listener, event: n_note_pos }
             - { name: kernel.event_listener, event: n_note_neg }
@@ -35,7 +36,6 @@ services:
             - { name: kernel.event_listener, event: n_user_follow }
             - { name: kernel.event_listener, event: n_badge_win }
             - { name: kernel.event_listener, event: n_user_tag }
-            - { name: kernel.event_listener, event: n_localization_user }
             - { name: kernel.event_listener, event: n_localization_publication }
             - { name: kernel.event_listener, event: n_admin_message }
 

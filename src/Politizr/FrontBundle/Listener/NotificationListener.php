@@ -28,23 +28,27 @@ class NotificationListener
     protected $eventDispatcher;
     protected $circleService;
     protected $logger;
-
+    private $geoActive;
     /**
      *
      * @param @event_dispatcher
      * @param @politizr.functional.circle
      * @param @logger
+     * @param %geo_active%
      */
     public function __construct(
         $eventDispatcher,
         $circleService,
-        $logger
+        $logger,
+        $geoActive
     ) {
         $this->eventDispatcher = $eventDispatcher;
         
         $this->circleService = $circleService;
         
         $this->logger = $logger;
+        
+        $this->geoActive = $geoActive;
     }
 
     /**
@@ -182,7 +186,9 @@ class NotificationListener
         }
 
         // localization
-        $this->locDocNotificationsManagement($debate, $usersIds, $authorUserId, $objectName, $objectId, $topicId);
+        if ($this->geoActive) {
+            $this->locDocNotificationsManagement($debate, $usersIds, $authorUserId, $objectName, $objectId, $topicId);
+        }
     }
 
     /**
@@ -285,7 +291,9 @@ class NotificationListener
         }
 
         // localization
-        $this->locDocNotificationsManagement($reaction, $usersIds, $authorUserId, $objectName, $objectId, $topicId);
+        if ($this->geoActive) {
+            $this->locDocNotificationsManagement($reaction, $usersIds, $authorUserId, $objectName, $objectId, $topicId);
+        }
     }
 
     /**
@@ -525,65 +533,6 @@ class NotificationListener
                 $pNotificationId = NotificationConstants::ID_S_T_USER;
                 $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId);
             }
-        }
-    }
-
-    /**
-     * Creation of representative user / city - department - region
-     * 
-     * Notifications associées à gérer:
-     * - Un élu correspondant à votre ville/département/région vient de s'inscrire
-     *
-     * @param GenericEvent
-     */
-    public function onNLocalizationUser(GenericEvent $event)
-    {
-        $this->logger->info('*** onNLocalizationUser');
-
-        $electedUser = $event->getSubject();
-        $electedUserId = $electedUser->getId();
-
-        $objectName = get_class($electedUser);
-        $objectId = $electedUser->getId();
-
-        $city = $electedUser->getPLCity();
-        $department = $city->getPLDepartment();
-        $region = $department->getPLRegion();
-
-        // retrieve users of city
-        $users = $city->getUsers(true);
-
-        // Array to store user ids to avoid duplicate notifs
-        $usersIds = [];
-        $usersIds[] = $electedUserId;
-
-        foreach ($users as $user) {
-            if ($user->getId() != $electedUserId) {
-                $pNotificationId = NotificationConstants::ID_L_U_CITY;
-                $puNotification = $this->insertPUNotification($user->getId(), $electedUserId, $pNotificationId, $objectName, $objectId);
-
-                $usersIds[] = $user->getId();
-            }
-        }
-
-        // retrieve users of department
-        $query = PUserQuery::create()->filterById($usersIds, " NOT IN ");
-        $users = $department->getUsers(true, $query);
-
-        foreach ($users as $user) {
-            $pNotificationId = NotificationConstants::ID_L_U_DEPARTMENT;
-            $puNotification = $this->insertPUNotification($user->getId(), $electedUserId, $pNotificationId, $objectName, $objectId);
-
-            $usersIds[] = $user->getId();
-        }
-
-        // retrieve users of region
-        $query = PUserQuery::create()->filterById($usersIds, " NOT IN ");
-        $users = $region->getUsers(true, $query);
-
-        foreach ($users as $user) {
-            $pNotificationId = NotificationConstants::ID_L_U_REGION;
-            $puNotification = $this->insertPUNotification($user->getId(), $electedUserId, $pNotificationId, $objectName, $objectId);
         }
     }
 
