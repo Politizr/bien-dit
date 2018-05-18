@@ -95,7 +95,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     }
 
     /**
-     *
+     * @deprecated
      */
     public function getPathFileName()
     {

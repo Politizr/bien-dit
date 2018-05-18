@@ -22,6 +22,8 @@ use Politizr\Model\PDDebateArchiveQuery;
 use Politizr\Model\PDReactionArchiveQuery;
 
 use Politizr\Constant\ObjectTypeConstants;
+use Politizr\Constant\PathConstants;
+use Politizr\Constant\DocumentConstants;
 
 use Politizr\Exception\PolitizrException;
 
@@ -35,6 +37,7 @@ use Politizr\Exception\PolitizrException;
  */
 class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
 {
+    private $documentService;
     private $router;
     private $logger;
     private $globalTools;
@@ -82,6 +85,7 @@ class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
         $isVerbose = (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity());
 
         // services
+        $this->documentService = $this->getContainer()->get('politizr.functional.document');
         $this->router = $this->getContainer()->get('router');
         $this->logger = $this->getContainer()->get('logger');
 
@@ -286,7 +290,11 @@ class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
         foreach ($debates as $debate) {
             $imagePath = null;
             try {
-                $imagePath = $this->globalTools->filterImage($debate->getPathFileName(), 'algolia_image_document');
+                $imagePath = $this->documentService->findMainImagePath($debate);
+                if (!$imagePath) {
+                    $imagePath = PathConstants::DEBATE_UPLOAD_WEB_PATH.DocumentConstants::DOC_DEFAULT_FILE_NAME;
+                }
+                $imagePath = $this->globalTools->filterImage($imagePath, 'algolia_image_document');
             } catch (\Exception $e) {
                 $output->writeln(sprintf('Exception for debate id-%s - %s', $debate->getId(), $e->getMessage()));
             }
@@ -337,7 +345,11 @@ class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
         foreach ($reactions as $reaction) {
             $imagePath = null;
             try {
-                $imagePath = $this->globalTools->filterImage($reaction->getPathFileName(), 'algolia_image_document');
+                $imagePath = $this->documentService->findMainImagePath($reaction);
+                if (!$imagePath) {
+                    $imagePath = PathConstants::REACTION_UPLOAD_WEB_PATH.DocumentConstants::DOC_DEFAULT_FILE_NAME;
+                }
+                $imagePath = $this->globalTools->filterImage($imagePath, 'algolia_image_document');
             } catch (\Exception $e) {
                 $output->writeln(sprintf('Exception for reaction id-%s - %s', $reaction->getId(), $e->getMessage()));
             }

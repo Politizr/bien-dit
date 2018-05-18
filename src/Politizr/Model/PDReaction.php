@@ -93,7 +93,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     }
 
     /**
-     *
+     * @deprecated
      */
     public function getPathFileName()
     {
