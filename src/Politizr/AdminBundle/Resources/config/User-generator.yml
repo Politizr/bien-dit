@@ -29,9 +29,9 @@ params:
                 expanded:                       true
                 multiple:                       true
                 choices:                
-                    ROLE_USER:                  'Utilisateur'
-                    ROLE_ADMIN:                 'Administrateur'
-                    ROLE_SYSTEM:                'System'
+                    ROLE_ADMIN:                 'Admin'
+                    ROLE_SYSTEM:                'Super Admin'
+                    ROLE_CLIENT:                'Client'
         plainPassword:          
             label:                              label.plainPassword
             dbType:                             VARCHAR

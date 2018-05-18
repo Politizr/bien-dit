@@ -38,6 +38,19 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         // get current user
         $currentUser = $this->securityTokenStorage->getToken()->getUser();
 
+        if ($currentUser->hasRole('ROLE_SYSTEM')) {
+            return $this->menuSystem($menu);
+        } elseif ($currentUser->hasRole('ROLE_CLIENT')) {
+            return $this->menuClient($menu);
+        }
+    }
+
+    /**
+     * @param $menu
+     * @param Router $router
+     */
+    public function menuSystem(& $menu)
+    {
         // Homepage
         if ($dashboardRoute = $this->dashboardRoute) {
             $this
@@ -158,7 +171,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Politizr_AdminBundle_PMEmailing_list'
         );
         $this->addLinkRoute(
-            $reputation,
+            $monitoring,
             'Message direct',
             'Politizr_AdminBundle_PDDirect_list'
         );
@@ -285,6 +298,122 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             $archive,
             'Commentaire réaction',
             'Politizr_AdminBundle_PMRCommentHistoric_list'
+        );
+        
+        return $menu;
+    }
+
+
+    /**
+     * @param $menu
+     * @param Router $router
+     */
+    public function menuClient(& $menu)
+    {
+        // Homepage
+        if ($dashboardRoute = $this->dashboardRoute) {
+            $this
+                ->addLinkRoute($menu, 'Accueil', $dashboardRoute)
+                ->setExtra('icon', 'fa fa-dashboard');
+        }
+
+        // Cms Management
+        $cms = $this->addDropdown($menu, 'Contenu');
+        $this->addLinkRoute(
+            $cms,
+            'Page',
+            'Politizr_AdminBundle_CmsContent_list'
+        );
+        $this->addLinkRoute(
+            $cms,
+            'Catégorie',
+            'Politizr_AdminBundle_CmsCategory_list'
+        );
+
+        // User
+        $users = $this->addLinkRoute($menu, 'Utilisateur', 'Politizr_AdminBundle_PUser_list');
+
+        // Document
+        $document = $this->addDropdown($menu, 'Document');
+        $this->addLinkRoute(
+            $document,
+            'Sujet',
+            'Politizr_AdminBundle_PDDebate_list'
+        );
+        $this->addLinkRoute(
+            $document,
+            'Réponse',
+            'Politizr_AdminBundle_PDReaction_list'
+        );
+        $this->addLinkRoute(
+            $document,
+            'Média',
+            'Politizr_AdminBundle_PDMedia_list'
+        );
+
+        // Commentaires
+        $comment = $this->addDropdown($menu, 'Commentaire');
+        $this->addLinkRoute(
+            $comment,
+            'Sujet',
+            'Politizr_AdminBundle_PDDComment_list'
+        );
+        $this->addLinkRoute(
+            $comment,
+            'Réponse',
+            'Politizr_AdminBundle_PDRComment_list'
+        );
+
+        // Groupes
+        $circle = $this->addDropdown($menu, 'Groupes');
+        $this->addLinkRoute(
+            $circle,
+            'Client',
+            'Politizr_AdminBundle_PCOwner_list'
+        );
+        $this->addLinkRoute(
+            $circle,
+            'Groupe',
+            'Politizr_AdminBundle_PCircle_list'
+        );
+        $this->addLinkRoute(
+            $circle,
+            'Discussions',
+            'Politizr_AdminBundle_PCTopic_list'
+        );
+
+        // Tags
+        $tags = $this->addLinkRoute($menu, 'Tag', 'Politizr_AdminBundle_PTag_list');
+
+        // Monitoring
+        $monitoring = $this->addDropdown($menu, 'Suivi');
+        $this->addLinkRoute(
+            $monitoring,
+            'Message direct',
+            'Politizr_AdminBundle_PDDirect_list'
+        );
+        $this->addLinkRoute(
+            $monitoring,
+            'Demande de modification',
+            'Politizr_AdminBundle_PMAskForUpdate_list'
+        );
+        $this->addLinkRoute(
+            $monitoring,
+            'Abus',
+            'Politizr_AdminBundle_PMAbuseReporting_list'
+        );
+
+        // Documents juridiques
+        $legals = $this->addDropdown($menu, 'Juridique');
+        $this->addLinkRoute(
+            $legals,
+            'CGU',
+            'Politizr_AdminBundle_PMCgu_list'
+        );
+        $this->addLinkRoute(
+            $legals,
+            'Charte',
+            'Politizr_AdminBundle_PMCharte_list'
         );
         
         return $menu;
