@@ -177,9 +177,14 @@ class XhrModal
                 throw new InconsistentDataException(sprintf('Circle %s not found', $uuid));
             }
 
-            $legal = PMCharteQuery::create()->filterByPCircleId($circle->getId())->findOne();            
+            $legal = PMCharteQuery::create()->filterByPCircleId($circle->getId())->findOne();
+
+            // global if none found
+            if (!$legal) {
+                $legal = PMCharteQuery::create()->findPk(GlobalConstants::GLOBAL_CHARTE_ID);
+            }
         } else {
-            $legal = PMCharteQuery::create()->findPk(GlobalConstants::GLOBAL_CHARTE_ID);            
+            $legal = PMCharteQuery::create()->findPk(GlobalConstants::GLOBAL_CHARTE_ID);
         }
 
         $html = $this->templating->render(
