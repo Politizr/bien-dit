@@ -427,4 +427,50 @@ class NotificationService
 
         return $debates;
     }
+
+    /**
+     * Get most interesting debates from user
+     *
+     * @param PUser $user
+     * @param DateTime $beginAt
+     * @param DateTime $endAt
+     * @param int $limit
+     */
+    public function getMostInterestingDebates(PUser $user, \DateTime $beginAt, \DateTime $endAt, $limit)
+    {
+        if (!$user) {
+            throw new InconsistentDataException('Can get most interesting debates - user null');
+        }
+
+        // Compute IN string for SQL query
+        $debateIds = $this->getFollowedDebatesIdsArray($user->getId());
+        $inQueryDebateIds = $this->globalTools->getInQuery($debateIds);
+
+        $userIds = $this->getFollowedUsersIdsArray($user->getId());
+        $inQueryUserIds = $this->globalTools->getInQuery($userIds);
+        
+        $tagIds = $this->getFollowedTagsIdsArray($user->getId());
+        $inQueryTagIds = $this->globalTools->getInQuery($tagIds);
+
+        // Topics
+        $topicIds = $this->circleService->getTopicIdsByUserId($user->getId());
+        $inQueryTopicIds = null;
+        if (!empty($topicIds)) {
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
+
+        // Retrieve debates
+        $debates = $this->notificationManager->generateMostInterestingDebates(
+            $inQueryDebateIds,
+            $inQueryUserIds,
+            $inQueryTagIds, 
+            $inQueryTopicIds,
+            $user->getId(),
+            $beginAt->format('Y-m-d H:i:s'),
+            $endAt->format('Y-m-d H:i:s'),
+            $limit
+        );
+
+        return $debates;
+    }
 }

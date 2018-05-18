@@ -39,6 +39,7 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
     private $mailer;
     private $transport;
     private $templating;
+    private $geoActive;
 
     protected function configure()
     {
@@ -76,6 +77,7 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
         $this->mailer = $this->getContainer()->get('mailer');
         $this->transport = $this->getContainer()->get('swiftmailer.transport.real');
         $this->templating = $this->getContainer()->get('templating');
+        $this->geoActive = $this->getContainer()->getParameter('geo_active');
 
         // initialize begin & end dates
         $beginAt = $input->getArgument('beginAt');
@@ -113,15 +115,24 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
 
             $puNotifications = $this->notificationService->getUserNotificationsForEmailing($user, $beginAt, $endAt);
 
-            // Nearest elected users
-            $nearestUsers = $this->notificationService->getNearestQualifiedUsers($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_ELECTED_USERS);
+            if ($this->geoActive) {
+                // Nearest elected users
+                $nearestUsers = $this->notificationService->getNearestQualifiedUsers($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_ELECTED_USERS);
 
-            $nearestUsersPart = $this->getNearestUsersRendering($user, $nearestUsers);
+                $nearestUsersPart = $this->getNearestUsersRendering($user, $nearestUsers);
 
-            // Nearest debates
-            $nearestDebates = $this->notificationService->getNearestDebates($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_PUBLICATIONS);
+                // Nearest debates
+                $nearestDebates = $this->notificationService->getNearestDebates($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_PUBLICATIONS);
 
-            $nearestDebatesPart = $this->getNearestDebatesRendering($user, $nearestDebates);
+                $nearestDebatesPart = $this->getNearestDebatesRendering($user, $nearestDebates);
+            } else {
+                $nearestUsersPart = array();
+                
+                // Interesting debates
+                $nearestDebates = $this->notificationService->getMostInterestingDebates($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_PUBLICATIONS);
+
+                $nearestDebatesPart = $this->getNearestDebatesRendering($user, $nearestDebates);                
+            }
 
             // Emailing
             if (sizeof($nearestUsersPart) > 0

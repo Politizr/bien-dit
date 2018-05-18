@@ -652,6 +652,80 @@ LIMIT :limit
         return $sql;
     }
 
+    /**
+     * Most interesting user's debates during period
+     *
+     * @see app/sql/newsNotifications.sql
+     *
+     * @param string $inQueryDebateIds
+     * @param string $inQueryUserIds
+     * @param string $inQueryTagIds
+     * @param string $inQueryTopicIds
+     * @return string
+     */
+    private function createMostInterestingDebatesRawSql($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds, $inQueryTopicIds)
+    {
+        // Topic subrequest
+        $subrequestTopic = "AND p_d_debate.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+        }
+
+        // Requête SQL
+        $sql = "
+SELECT DISTINCT
+".ObjectTypeConstants::SQL_P_D_DEBATE_COLUMNS.",
+    nb_users
+FROM (
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 1 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_u_follow_d_d
+        ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
+    LEFT JOIN p_d_d_tagged_t
+        ON p_d_debate.id = p_d_d_tagged_t.p_d_debate_id
+WHERE
+    p_d_debate.online = 1 
+    AND p_d_debate.published = 1
+    $subrequestTopic
+    AND p_d_debate.created_at > :begin_at
+    AND p_d_debate.created_at < :end_at
+    AND p_d_d_tagged_t.p_tag_id IN ($inQueryTagIds)
+    AND p_d_debate.id NOT IN ($inQueryDebateIds)
+    AND p_d_debate.p_user_id NOT IN ($inQueryUserIds)
+    AND p_d_debate.p_user_id <> :p_user_id
+GROUP BY p_d_debate.id
+)
+
+UNION DISTINCT
+
+( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 2 as unionsorting
+FROM p_d_debate
+    LEFT JOIN p_u_follow_d_d
+        ON p_d_debate.id = p_u_follow_d_d.p_d_debate_id
+WHERE
+    p_d_debate.online = 1
+    AND p_d_debate.published = 1
+    $subrequestTopic
+    AND p_d_debate.created_at > :begin_at2
+    AND p_d_debate.created_at < :end_at2
+    AND p_d_debate.id NOT IN ($inQueryDebateIds)
+    AND p_d_debate.p_user_id NOT IN ($inQueryUserIds)
+    AND p_d_debate.p_user_id <> :p_user_id2
+GROUP BY p_d_debate.id
+HAVING nb_users >= :min_nb_followers
+)
+
+ORDER BY unionsorting ASC, note_pos DESC, note_neg ASC, nb_users DESC, published_at DESC
+) unionsorting
+
+GROUP BY p_user_id
+ORDER BY unionsorting ASC, note_pos DESC, note_neg ASC, nb_users DESC, published_at DESC
+
+LIMIT :limit
+";
+
+        return $sql;
+    }
 
     /* ######################################################################################################## */
     /*                                            RAW SQL OPERATIONS                                            */
@@ -859,7 +933,7 @@ LIMIT :limit
     }
 
     /**
-     * Nearest user's qualified users listing
+     * Nearest user's debates listing
      *
      * @param string $inQueryDebateIds
      * @param string $inQueryUserIds
@@ -911,6 +985,60 @@ LIMIT :limit
         $stmt->bindValue(':end_at3', $endAt, \PDO::PARAM_STR);
         $stmt->bindValue(':end_at4', $endAt, \PDO::PARAM_STR);
         $stmt->bindValue(':end_at5', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':min_nb_followers', EmailConstants::NB_MIN_FOLLOWERS, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $debates = new \PropelCollection();
+        foreach ($result as $row) {
+            $debate = new PDDebate();
+            $debate->hydrate($row);
+
+            $debates->append($debate);
+        }
+
+
+        return $debates;
+    }
+
+    /**
+     * Most interesting user's debates listing
+     *
+     * @param string $inQueryDebateIds
+     * @param string $inQueryUserIds
+     * @param string $inQueryTagIds
+     * @param string $inQueryTopicIds
+     * @param int $userId
+     * @param string $beginAt
+     * @param string $endAt
+     * @param integer $limit
+     * @return PropelCollection
+     */
+    public function generateMostInterestingDebates($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds, $inQueryTopicIds, $userId, $beginAt, $endAt, $limit)
+    {
+        $this->logger->info('*** generateNearestQualifiedUsers');
+        $this->logger->info('$inQueryDebateIds = ' . print_r($inQueryDebateIds, true));
+        $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
+        $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
+        $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
+        $this->logger->info('$userId = ' . print_r($userId, true));
+        $this->logger->info('$beginAt = ' . print_r($beginAt, true));
+        $this->logger->info('$endAt = ' . print_r($endAt, true));
+        $this->logger->info('$limit = ' . print_r($limit, true));
+
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+
+        $stmt = $con->prepare($this->createMostInterestingDebatesRawSql($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds, $inQueryTopicIds));
+
+        $stmt->bindValue(':p_user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':p_user_id2', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':begin_at', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':begin_at2', $beginAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at', $endAt, \PDO::PARAM_STR);
+        $stmt->bindValue(':end_at2', $endAt, \PDO::PARAM_STR);
         $stmt->bindValue(':min_nb_followers', EmailConstants::NB_MIN_FOLLOWERS, \PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_STR);
 
