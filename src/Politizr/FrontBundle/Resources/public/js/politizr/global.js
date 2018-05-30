@@ -7,6 +7,8 @@ $(function() {
     fullImgLiquid();
     $('#ajaxGlobalLoader').hide();
     $('.bubblesHelper').hide();
+
+    $('.headerGrpMenu').hide();
 });
 
 // mobile
@@ -77,15 +79,30 @@ $("body").on("click", "[action='hideHelper']", function() {
 // toggle grp menu
 $("body").on("mousedown touchstart", function(e) {
 //$(document).mousedown(function (e) {
-    var container = $("#headerGrpMenu, [action='toggleGrpMenu']");
+    var container = $(".headerGrpMenu, [action='toggleGrpMenuCms']");
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
-        $('#headerGrpMenu').hide();     
+        $('.headerGrpMenu').hide();
     }
 });
-$("body").on("click", "[action='toggleGrpMenu']", function() {
-    $('#headerGrpMenu').toggle();
+$("body").on("click", "[action='toggleGrpMenuCms']", function() {
+    $(this).find('.headerGrpMenu').toggle();
+    $('body.css700 #headerMenu').hide();    
+});
+
+// toggle grp menu
+$("body").on("mousedown touchstart", function(e) {
+//$(document).mousedown(function (e) {
+    var container = $(".headerGrpMenu, [action='toggleGrpMenuGroup']");
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        $('.headerGrpMenu').hide();     
+    }
+});
+$("body").on("click", "[action='toggleGrpMenuGroup']", function() {
+    $(this).find('.headerGrpMenu').toggle();
     $('body.css700 #headerMenu').hide();    
 });
 

@@ -17,12 +17,12 @@
                         <!-- header -->
                         <tr>
                             <td colspan="2" style="text-align: center; padding: 20px 0">
-                                <a href="{{ url('Homepage') }}" target="_blank"><img src="{{ absolute_url(asset('bundles/politizrfront/imagesMail/logoPolitizr.png')) }}" alt="Rendez-vous sur politizr.com" style="width: 60%; min-width: 240px; max-width: 320px;"/></a>
+                                <a href="{{ url('Homepage') }}" target="_blank"><img src="{{ absolute_url(asset('bundles/politizrfront/imagesMail/logoGeneric.png')) }}" style="width: 60%; min-width: 240px; max-width: 320px;"/></a>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2" style="text-align: center; padding: 0 0 10px 0; color: #808080;">
-                                Vos alertes POLITIZR du {{ "now" | localizeddate('medium', 'short', 'fr', "Europe/Paris", "d MMMM yyyy" ) }}
+                                Vos alertes {{ client.name }} du {{ "now" | localizeddate('medium', 'short', 'fr', "Europe/Paris", "d MMMM yyyy" ) }}
                             </td>
                         </tr>
 

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Bienvenue chez Politizr!</title>
+        <title>Bienvenue sur le site de consultation de {{ client.name }}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body bgcolor="#2D2D2D" style="-webkit-text-size-adjust: 80%; margin: 0; font-size: 12px; font-family: Tahoma, Geneva, sans-serif; color: #2D2D2D;">
@@ -16,37 +16,18 @@
                         <!-- header -->
                         <tr>
                             <td colspan="2" style="text-align: center; padding: 20px 0 40px 0">
-                                <a href="http://www.politizr.com" target="_blank"><img src="{{ absolute_url(asset('bundles/politizrfront/imagesMail/logoPolitizr.jpg')) }}" alt="Rendez-vous sur politizr.com" style="width: 55%"/></a>
+                                <a href="{{ url('Homepage') }}" target="_blank"><img src="{{ absolute_url(asset('bundles/politizrfront/imagesMail/logoGeneric.png')) }}" style="width: 55%"/></a>
                             </td>
                         </tr>
                          <tr style="background-color: #FFFFFF; width: 100%;">
                             <td colspan="2" style="padding: 40px 40px 40px 40px;  line-height: 180%;">
 Bonjour {{ user }},<br/><br/>
 
-Je suis {% if user.qualified %}Lionel Bouzonville{% else %}Thomas Champion{% endif %}, co-fondateur de Politizr.<br/><br/>
-Chez Politizr, nous pensons que citoyens et élus doivent échanger pour oeuvrer à l’intérêt général: nous voulons faire évoluer les pratiques politiques pour favoriser des échanges constructifs, basés sur la transparence, le respect et la bienveillance.<br/><br/>
+Merci pour votre inscription sur notre site.<br/><br/>
 
-{% if user.qualified %}
-Un des points fort de Politizr est de permettre de générer des discussions de fond sur des problématiques précises, pour permettre d’échanger sur des points de vue et avoir des retours sur des bonnes pratiques de la part d'élus de toute la France.<br/><br/>
+Commencez dès aujourd'hui à vous <a href="{{ url('Homepage') }}" target="_blank">exprimer</a>!<br/><br/>
 
-En complément, nous proposons désormais aux collectivités, de tout type et de toute taille, un service intégré à POLITIZR pour leur permettre d’avoir des retours de leurs administrés: je reviendrai vers vous prochainement avec une documentation complète !<br/><br/>
-
-{% else %}
-
-Grâce à Politizr, vous pourrez exprimer votre opinion sur les sujets qui vous semblent importants sur votre territoire et obtenir des retours de vos élus.<br/><br/>
-
-{% endif %} 
-
-Commencez dès aujourd'hui à vous <a href="{{ url('DebateDraftNew') }}">exprimer</a>!<br/><br/>
-
-{% if user.qualified %}
-Lionel Bouzonville<br>
-Co Fondateur @ Politizr<br>
-Ex-Conseiller Municipal de Foix (2007-2014)
-{% else %}
-Thomas Champion<br>
-Co Fondateur @ Politizr
-{% endif %} 
+{{ client.name }}
                             </td>
                         </tr>
                         <!-- footer -->

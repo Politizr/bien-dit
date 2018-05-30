@@ -35,7 +35,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="modalPublish" style="display: none">
+    <div class="modalPublish{% if not geo.active %} modalPublish2cols{% endif %}" style="display: none">
         <div class="modalPublishContent">
             <div class="modalPublishContentHeader"><span>Qualifiez votre publication</span><a action="closeModalPublish"><i class="icon-cross"></i></a></div>
             <div class="modalPublishScrollable">

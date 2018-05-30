@@ -1,6 +1,16 @@
-{% for route in cmsRoutes %}
-    <a href="{{ route['url'] }}"{% if false %} class="currentPage"{% endif %}>{{ route['label'] }}</a>
-{% endfor %}
+<div class="headerGrp" action="toggleGrpMenuCms">
+    <span>Présentation</span><i class="icon-arrow-down"></i>
+    <div class="headerGrpMenu" style="display: block;">
+        <div class="headerGrpMenuArrow"><i class="icon-arrow-up"></i></div>
+        <div class="innerMenu">
+            <div class="primaryMenu">
+                {% for route in cmsRoutes %}
+                    <a href="{{ route['url'] }}"{% if false %} class="currentPage"{% endif %}>{{ route['label'] }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
 
 {% for route in publicationsRoutes %}
     <a href="{{ route['url'] }}"{% if false %} class="currentPage"{% endif %}>{{ route['label'] }}</a>

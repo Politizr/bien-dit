@@ -1,27 +1,13 @@
 {% extends 'PolitizrFrontBundle::layoutError.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style type="text/css" media="screen" >
-        #bg {
-            position: fixed; 
-            left: 0; 
-            top: 0; 
-            width: 100%; 
-            height: 100%; 
-            z-index: -1; 
-            background-size: cover; 
-            background-position: center top;
-            background-image: url('/bundles/politizrfront/images/maintenance.jpg');
-        }
-    </style>
-{% endblock %}
-
-{% block main %}
-    <center>
-        <i class="iconPltzrLogoAlt"></i><br>
-        <span>Serveur en travaux, merci de repasser plus tard</span><br>
-        <h1>Site en cours de maintenance</h1>
-    </center>        
-    <div id="bg"></div>
-{% endblock main %}
+{% block content %}
+    <div id="unplugged">
+        <div class="center">
+            <div class="unplugText">
+                <img src="{{ asset('bundles/politizrfront/images/cone.svg') }}" alt="404" width="140">
+                <h1>Site en cours de maintenance</h1>
+                <p>Serveur en travaux, merci de repasser plus tard...</p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

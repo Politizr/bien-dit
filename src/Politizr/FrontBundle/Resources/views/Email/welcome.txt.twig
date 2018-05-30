@@ -1,28 +1,9 @@
 Bonjour {{ user }},
 
-Je suis {% if user.qualified %}Lionel Bouzonville{% else %}Thomas Champion{% endif %}, co-fondateur de Politizr.
-Chez Politizr, nous pensons que citoyens et élus doivent échanger pour oeuvrer à l’intérêt général: nous voulons faire évoluer les pratiques politiques pour favoriser des échanges constructifs, basés sur la transparence, le respect et la bienveillance.
+Merci pour votre inscription sur notre site.
 
-{% if user.qualified %}
-Un des points fort de Politizr est de permettre de générer des discussions de fond sur des problématiques précises, pour permettre d’échanger sur des points de vue et avoir des retours sur des bonnes pratiques de la part d'élus de toute la France.
+Commencez dès aujourd'hui à vous <a href="{{ url('Homepage') }}" target="_blank">exprimer</a>!
 
-En complément, nous proposons désormais aux collectivités, de tout type et de toute taille, un service intégré à POLITIZR pour leur permettre d’avoir des retours de leurs administrés: je reviendrai vers vous prochainement avec une documentation complète !
-
-{% else %}
-
-Grâce à Politizr, vous pourrez exprimer votre opinion sur les sujets qui vous semblent importants sur votre territoire et obtenir des retours de vos élus.
-
-{% endif %} 
-
-Commencez dès aujourd'hui à vous <a href="{{ url('DebateDraftNew') }}">exprimer</a>!
-
-{% if user.qualified %}
-Lionel Bouzonville
-Co Fondateur @ Politizr
-Ex-Conseiller Municipal de Foix (2007-2014)
-{% else %}
-Thomas Champion
-Co Fondateur @ Politizr
-{% endif %} 
+{{ client.name }}
 
 {% include 'PolitizrFrontBundle:Email:_signature.txt.twig' %}

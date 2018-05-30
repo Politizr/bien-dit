@@ -1,22 +1,21 @@
-<div class="headerSeparator"></div>
-<div id="headerGrp" action="toggleGrpMenu">
+<div class="headerGrp" action="toggleGrpMenuGroup">
     <i class="icon-grp"></i><span>Consultations</span><i class="icon-arrow-down"></i>
-</div>
-<div id="headerGrpMenu" style="display: none;">
-    <div id="headerGrpMenuArrow"><i class="icon-arrow-up"></i></div>
-    <div class="innerMenu">
-        <div class="primaryMenu">
-            {% for ownerCircles in ownersCircles %}
-                <span>{{ ownerCircles[0].title }}</span>
-                {% for circle in ownerCircles[1] %}
-                    <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
+    <div class="headerGrpMenu" style="display: block;">
+        <div class="headerGrpMenuArrow"><i class="icon-arrow-up"></i></div>
+        <div class="innerMenu">
+            <div class="primaryMenu">
+                {% for ownerCircles in ownersCircles %}
+                    <span>{{ ownerCircles[0].title }}</span>
+                    {% for circle in ownerCircles[1] %}
+                        <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-        </div>
-        {% if manageGroup %}
-            <div class="secondaryMenu">
-                <a href="{{ path('MenuCircle') }}">Gérer mes consultations</a>
             </div>
-        {% endif %}
+            {% if manageGroup %}
+                <div class="secondaryMenu">
+                    <a href="{{ path('MenuCircle') }}">Gérer mes consultations</a>
+                </div>
+            {% endif %}
+        </div>
     </div>
 </div>

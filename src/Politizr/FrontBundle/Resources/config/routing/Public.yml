@@ -14,9 +14,9 @@ Concept:
     defaults: { _controller: PolitizrFrontBundle:Public:concept }
 
 Cgu:
-    pattern:  /cgu-politizr
+    pattern:  /cgu-generations-eric
     defaults: { _controller: PolitizrFrontBundle:Public:cgu }
 
 Charte:
-    pattern:  /charte-politizr
+    pattern:  /charte-generations-eric
     defaults: { _controller: PolitizrFrontBundle:Public:charte }

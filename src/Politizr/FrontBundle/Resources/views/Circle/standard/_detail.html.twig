@@ -23,6 +23,8 @@
                         <span>{{ topic.title }}</span>
                         {% if topic.fileName %}
                             <img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ topic.fileName) | imagine_filter('topic_list') }}" alt="{{ topic.title }}">
+                        {% else %}
+                            <img src="{{ asset('bundles/politizrfront/images/generic-grpConsult.jpg') }}">
                         {% endif %}
                     </a>
                 </div>

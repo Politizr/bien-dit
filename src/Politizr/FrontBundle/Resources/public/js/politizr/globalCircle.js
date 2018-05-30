@@ -40,7 +40,7 @@ $(window).scroll(function(){
                 padding:'7px 0 5px 0'
             },600);
             $('body.css #grpMenu .center').stop().animate({
-                paddingBottom:'7px'
+                paddingBottom:'0px'
             },600);
             $('#grpMenu img').stop().animate({
                 height:'40px'

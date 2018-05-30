@@ -28,6 +28,7 @@ security:
         Politizr\Model\PUser:               sha512
 
     role_hierarchy:
+        ROLE_ELECTED:     ROLE_CITIZEN
         ROLE_ADMIN:       ROLE_USER
         ROLE_CLIENT:      ROLE_ADMIN
         ROLE_SYSTEM:      ROLE_ADMIN

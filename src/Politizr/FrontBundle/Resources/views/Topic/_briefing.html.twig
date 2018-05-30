@@ -1,13 +1,18 @@
 <div id="grpBrief">
     <div id="grpBriefHeader">
         <div class="center">
-            {{ topic.summary | raw }}
+            <h1>{{ topic.summary | raw }}</h1>
             <div class="showBriefLink" action="showBrief">Afficher le dossier de présentation</div>
             <div class="hideBriefLink" action="hideBrief">Masquer le dossier de présentation</div>
         </div>
         <div id="grpBriefHeaderImg">
             <div id="grpBriefHeaderImgShadow"></div>
-            <img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ topic.fileName) }}">
+            
+            {% if topic.fileName %}
+                <img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ topic.fileName) }}">
+            {% else %}
+                <img src="{{ asset('bundles/politizrfront/images/generic-grpHeader.jpg') }}">
+            {% endif %}
         </div>
     </div>
     
