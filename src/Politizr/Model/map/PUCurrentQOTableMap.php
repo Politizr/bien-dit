@@ -40,12 +40,11 @@ class PUCurrentQOTableMap extends TableMap
         $this->setPhpName('PUCurrentQO');
         $this->setClassname('Politizr\\Model\\PUCurrentQO');
         $this->setPackage('src.Politizr.Model');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         $this->setIsCrossRef(true);
         // columns
-        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', true, null, null);
-        $this->addForeignKey('p_q_organization_id', 'PQOrganizationId', 'INTEGER', 'p_q_organization', 'id', true, null, null);
+        $this->addForeignPrimaryKey('p_user_id', 'PUserId', 'INTEGER' , 'p_user', 'id', true, null, null);
+        $this->addForeignPrimaryKey('p_q_organization_id', 'PQOrganizationId', 'INTEGER' , 'p_q_organization', 'id', true, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators

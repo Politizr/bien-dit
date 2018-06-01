@@ -7,10 +7,17 @@ use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\ListingConstants;
 use Politizr\Constant\TagConstants;
+use Politizr\Constant\PathConstants;
 
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
+use Politizr\Model\PDDComment;
+use Politizr\Model\PDRComment;
 use Politizr\Model\PDMedia;
+use Politizr\Model\PMDebateHistoric;
+use Politizr\Model\PMReactionHistoric;
+use Politizr\Model\PMDCommentHistoric;
+use Politizr\Model\PMRCommentHistoric;
 
 use Politizr\Model\PDRTaggedT;
 
@@ -24,6 +31,8 @@ use Politizr\Model\PDReactionQuery;
  */
 class DocumentManager
 {
+    private $kernel;
+
     private $tagManager;
 
     private $globalTools;
@@ -32,15 +41,19 @@ class DocumentManager
 
     /**
      *
+     * @param @kernel
      * @param @politizr.manager.tag
      * @param @politizr.tools.global
      * @param @logger
      */
     public function __construct(
+        $kernel,
         $tagManager,
         $globalTools,
         $logger
     ) {
+        $this->kernel = $kernel;
+
         $this->tagManager = $tagManager;
 
         $this->globalTools = $globalTools;
@@ -2202,5 +2215,125 @@ GROUP BY p_d_debate_id
         $media->save();
 
         return $media;
+    }
+
+    /**
+     * Create an archive of input debate
+     *
+     * @param PDDebate $debate
+     * @return PMDebateHistoric
+     */
+    public function createDebateArchive(PDDebate $debate) {
+        if ($debate == null) {
+            return null;
+        }
+
+        $mDebate = new PMDebateHistoric();
+
+        $mDebate->setPUserId($debate->getPUserId());
+        $mDebate->setPDDebateId($debate->getId());
+        $mDebate->setPObjectId($debate->getId());
+        $mDebate->setTitle($debate->getTitle());
+        $mDebate->setDescription($debate->getDescription());
+        $mDebate->setCopyright($debate->getCopyright());
+
+        // File copy
+        // @deprecated w. Media management
+        if ($debate->getFileName()) {
+            $destFileName = $this->globalTools->copyFile(
+                $this->kernel->getRootDir() .
+                PathConstants::KERNEL_PATH_TO_WEB .
+                PathConstants::DEBATE_UPLOAD_WEB_PATH .
+                $debate->getFileName()
+            );
+            $mDebate->setFileName($destFileName);
+        }
+
+        $mDebate->save();
+
+        return $mDebate;
+    }
+
+    /**
+     * Create an archive of input reaction
+     *
+     * @param PDReaction $reaction
+     * @return PMReactionHistoric
+     */
+    public function createReactionArchive(PDReaction $reaction) {
+        if ($reaction == null) {
+            return null;
+        }
+
+        $mReaction = new PMReactionHistoric();
+
+        $mReaction->setPUserId($reaction->getPUserId());
+        $mReaction->setPDReactionId($reaction->getId());
+        $mReaction->setPObjectId($reaction->getId());
+        $mReaction->setTitle($reaction->getTitle());
+        $mReaction->setDescription($reaction->getDescription());
+        $mReaction->setCopyright($reaction->getCopyright());
+
+        // File copy
+        // @deprecated w. Media management
+        if ($reaction->getFileName()) {
+            $destFileName = $this->globalTools->copyFile(
+                $this->kernel->getRootDir() .
+                PathConstants::KERNEL_PATH_TO_WEB .
+                PathConstants::REACTION_UPLOAD_WEB_PATH .
+                $reaction->getFileName()
+            );
+            $mReaction->setFileName($destFileName);
+        }
+
+        $mReaction->save();
+
+        return $mReaction;
+    }
+
+    /**
+     * Create an archive of input comment
+     *
+     * @param PDDComment $comment
+     * @return PMDCommentHistoric
+     */
+    public function createDCommentArchive(PDDComment $comment) {
+        if ($comment == null) {
+            return null;
+        }
+
+        $mComment = new PMDCommentHistoric();
+
+        $mComment->setPUserId($comment->getPUserId());
+        $mComment->setPDDCommentId($comment->getId());
+        $mComment->setPObjectId($comment->getId());
+        $mComment->setDescription($comment->getDescription());
+
+        $mComment->save();
+
+        return $mComment;
+    }
+
+    /**
+     * Create an archive of input comment
+     *
+     * @param PDRComment $comment
+     * @return PMDCommentHistoric
+     */
+    public function createRCommentArchive(PDRComment $comment) {
+        if ($comment == null) {
+            return null;
+        }
+
+        $mComment = new PMRCommentHistoric();
+
+        $mComment->setPUserId($comment->getPUserId());
+        $mComment->setPDRCommentId($comment->getId());
+        $mComment->setPObjectId($comment->getId());
+        $mComment->setDescription($comment->getDescription());
+
+        $mComment->save();
+
+        return $mComment;
     }
 }

@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\PMReactionHistoric
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -50,16 +51,16 @@ builders:
                 "Contenu":
                     "Images":                   [ block_file_name ]
                     "Texte":                    [ title, description, copyright ]
-                "Objets":
-                    "Réaction":                 [ block_p_d_reaction ]
+                "Contexte":
+                    "Réponse":                 [ block_p_d_reaction ]
                     "Utilisateur":              [ block_p_user ]
                 "Attributs":
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 block_file_name:
                     label:                      "Image"
                 block_p_d_reaction:
-                    label:                      "Réaction"
+                    label:                      "Réponse"
                 block_p_user:
                     label:                      "Auteur"
             actions:

@@ -4,6 +4,7 @@ params:
     namespace_prefix:       Politizr
     concurrency_lock:       ~
     bundle_name:            AdminBundle
+    credentials:            ROLE_SYSTEM
     pk_requirement:         ~
     fields:
         id:
@@ -53,12 +54,12 @@ builders:
             tabs:
                 "Contenu":
                     "Texte":                    [ [ line, file ], [ code, message ] ]
-                "Objets":
+                "Contexte":
                     "Utilisateur":              [ block_p_user ]
                 "Pile":
                     "Pile exception":           [ stack_trace ]
                 "Attributs":
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 block_p_user:
                     label:                      "Utilisateur impacté"

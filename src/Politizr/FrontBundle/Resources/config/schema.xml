@@ -701,6 +701,8 @@
         <column name="validated" type="boolean" defaultValue="false" />
         <column name="nb_id_check" type="integer" />
 
+        <column name="organization" type="boolean" defaultValue="false" />
+
         <column name="online" type="boolean" />
         <column name="homepage" type="boolean" />
 
@@ -959,30 +961,12 @@
         </unique>
     </table>
 
-    <table name="p_u_affinity_q_o" isCrossRef="true">
-        <behavior name="timestampable" />
-        <behavior name="query_cache" />
-
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="p_user_id" type="integer" required="true" />
-        <column name="p_q_organization_id" type="integer" required="true" />
-
-        <foreign-key foreignTable="p_user" phpName="PUAffinityQOPUser" refPhpName="PUAffinityQOPUser" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_user_id" foreign="id" />
-        </foreign-key>
-        <foreign-key foreignTable="p_q_organization" phpName="PUAffinityQOPQOrganization" refPhpName="PUAffinityQOPQOrganization" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="p_q_organization_id" foreign="id" />
-        </foreign-key>
-
-    </table>
-
     <table name="p_u_current_q_o" isCrossRef="true">
         <behavior name="timestampable" />
         <behavior name="query_cache" />
 
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="p_user_id" type="integer" required="true" />
-        <column name="p_q_organization_id" type="integer" required="true" />
+        <column name="p_user_id" type="integer" primaryKey="true" />
+        <column name="p_q_organization_id" type="integer" primaryKey="true" />
 
         <foreign-key foreignTable="p_user" phpName="PUCurrentQOPUser" refPhpName="PUCurrentQOPUser" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -990,7 +974,6 @@
         <foreign-key foreignTable="p_q_organization" phpName="PUCurrentQOPQOrganization" refPhpName="PUCurrentQOPQOrganization" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_q_organization_id" foreign="id" />
         </foreign-key>
-
     </table>
 
     <table name="p_u_notification" isCrossRef="true">
@@ -1032,9 +1015,8 @@
     <table name="p_u_subscribe_p_n_e" isCrossRef="true">
         <behavior name="timestampable" />
 
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="p_user_id" type="integer" required="true" />
-        <column name="p_n_email_id" type="integer" required="true" />
+        <column name="p_user_id" type="integer" primaryKey="true" />
+        <column name="p_n_email_id" type="integer" primaryKey="true" />
 
         <foreign-key foreignTable="p_user" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_user_id" foreign="id" />
@@ -1043,7 +1025,6 @@
             <reference local="p_n_email_id" foreign="id" />
         </foreign-key>
     </table>
-
 
 
     <table name="p_d_debate">

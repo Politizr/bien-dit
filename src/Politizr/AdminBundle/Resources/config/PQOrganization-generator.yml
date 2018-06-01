@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\PQOrganization
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -48,6 +49,13 @@ builders:
             title:                              Liste des organisations
             max_per_page:                       50
             sort:                               [ sortable_rank, ASC ]
+            scopes:
+                group_1: 
+                    "Tous":                     ~
+                    "Partis politiques":
+                        default:                1
+                        filters: 
+                            p_q_type_id:        1
             display:                            [ file_name, p_q_type_id, initials, title ]
             filters:                            [ p_q_type, p_q_type_id, initials ]
             actions:
@@ -87,8 +95,8 @@ builders:
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ p_q_type ]
-                    "En ligne":                 [ online ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "État":                 [ online ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 p_q_type:
                     dbType:                     model
@@ -121,7 +129,7 @@ builders:
     #             "Contenu":
     #                 "Texte":                    [ [ title, score_evolution ], [ description ] ]
     #             "Attributs":
-    #                 "Création":                 [ [ created_at, updated_at ] ]
+    #                 "Dates":                 [ [ created_at, updated_at ] ]
     #         fields:
     #             block_badges:
     #                 label:                      "Badges"

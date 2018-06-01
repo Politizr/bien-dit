@@ -1,6 +1,5 @@
 {% extends_admingenerated "PolitizrAdminBundle:PTagShow:index.html.twig" %}
 
-{# Objets #}
 {% block show_column_block_p_user %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PTag.PUserId) }}
 {% endblock %}
@@ -22,4 +21,12 @@
 {# Users tags block #}
 {% block show_column_block_users %}
     {{ adminTagUsers(PTag) }}
+{% endblock %}
+
+
+{# Block moderation alert listing #}
+{% block show_column_block_moderation_alert_listing %}
+    <div id="moderationListing">
+        {{ adminModerationAlertListing(PTag.PUserId) }}
+    </div>
 {% endblock %}

@@ -49,7 +49,7 @@ $("body").on("change", "#fileNameIdCheck", function() {
 });
 
 // id check validate ZLA
-$("body").on("click", "button[action='validateIdZla']", function(e) {
+$("body").on("click", "[action='validateIdZla']", function(e) {
     console.log('click submitPerso');
 
     var form = $(this).closest('form');

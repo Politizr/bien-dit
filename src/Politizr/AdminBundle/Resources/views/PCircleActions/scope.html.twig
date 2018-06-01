@@ -1,0 +1,71 @@
+{% extends "PolitizrAdminBundle::base_admin.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Autorisations
+{% endblock title %}
+
+{% block page_header_content %}
+    <h1>Gestion des autorisations pour {{ circle.title }}</h1>
+{% endblock page_header_content %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="form-model form-model-document col-md-12">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li>
+                            <a data-toggle="tab" href="#" data-target=".tab-pane-model-users">
+                                Utilisateurs
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#" data-target=".tab-pane-model-group">
+                                Droits d'accès au groupe
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#" data-target=".tab-pane-model-admin">
+                                Droits d'accès d'animateur
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content form-model-content">
+                        <fieldset class="form-model-tab-pane tab-pane-model-users tab-pane">
+                            <legend><span>Liste complète des utilisateurs</span></legend>
+                            <div class="form-model col-md-12" id="circleUsersForms1">
+                                {% include 'PolitizrAdminBundle:PCircleActions:_circleUsersForms1.html.twig' %}
+                            </div>
+                        </fieldset>
+                        <fieldset class="form-model-tab-pane tab-pane-model-group tab-pane">
+                            <legend><span>Liste des utilisateurs ayant accès au groupe</span></legend>
+                            <div class="form-model col-md-12" id="circleUsersForms2">
+                                {% include 'PolitizrAdminBundle:PCircleActions:_circleUsersForms2.html.twig' %}
+                            </div>
+                        </fieldset>
+                        <fieldset class="form-model-tab-pane tab-pane-model-admin tab-pane">
+                            <legend><span>Liste des animateurs du groupe</span></legend>
+                            <div class="form-model col-md-12" id="circleUsersForms3">
+                                {% include 'PolitizrAdminBundle:PCircleActions:_circleUsersForms3.html.twig' %}
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="form-model-actions row">
+                        <div class="form-model-actions-generic col-md-12 text-right" role="generic-actions">
+                            <a class="btn btn-default" href="{{ path("Politizr_AdminBundle_PCircle_list") }}">
+                                <i class="fa fa-fw fa-list-alt"></i> Retour à la liste
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+{% endblock page_content %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/circle/circle.js') }}"></script>
+{% endblock javascripts %}

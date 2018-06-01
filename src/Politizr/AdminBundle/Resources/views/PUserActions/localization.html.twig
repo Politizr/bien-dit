@@ -1,0 +1,67 @@
+{% extends "PolitizrAdminBundle::base_admin.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Localisation
+{% endblock title %}
+
+{% block page_header_content %}
+    <h1>Localisation de {{ user.firstname }} {{ user.name }}</h1>
+{% endblock page_header_content %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="form-model form-model-puser col-md-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li>
+                        <a data-toggle="tab" href="#" data-target=".tab-pane-model-localization">
+                            Localisation
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content form-model-content">
+                    <fieldset class="form-model-tab-pane tab-pane-model-localization tab-pane">
+                        <legend><span>Ville de l'utilisateur</span></legend>
+                        <div class="row">
+                            <div class="form-model col-md-6">
+                                <form name="userLocalization" method="post">
+                                    {{ form_errors(form) }}
+
+                                    {{ form_widget(form.localization) }}
+                                    {{ form_rest(form) }}
+
+                                    <br/><br/>
+                                    <a class="btn btn-primary" action="updateLocalization">
+                                        Mettre à jour
+                                    </a>
+                                </form>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="form-model-actions row">
+                    <div class="form-model-actions-generic col-md-12 text-right" role="generic-actions">
+                        <a class="btn btn-default" href="{{ path("Politizr_AdminBundle_PUser_list") }}">
+                            <i class="fa fa-fw fa-list-alt"></i> Retour à la liste
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {# localization js #}
+    <script>
+        // User localization vars
+        var xhrRouteCity = ADMIN_ROUTE_CITY_LISTING;
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/localization/edit.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/user/localization.js') }}"></script>  
+
+{% endblock javascripts %}

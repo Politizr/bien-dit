@@ -23,15 +23,15 @@ params:
         p_user:
             label:          Utilisateur
         p_d_debate_id:
-            label:          ID Débat associé
+            label:          ID Sujet associé
         p_d_debate:
-            label:          Débat associé
+            label:          Sujet associé
         parent_reaction_id:
-            label:          ID Réaction associée
+            label:          ID Réponse associée
         parent_reaction:
-            label:          Réaction associée
+            label:          Réponse associée
         parent:
-            label:          Réaction associée
+            label:          Réponse associée
         p_l_city_id:
             label:          Ville
         p_l_city:
@@ -48,8 +48,12 @@ params:
             label:          Pays
         p_l_country:
             label:          Pays
+        p_c_topic_id:
+            label:          Discussion
+        p_c_topic:
+            label:          Discussion
         fb_ad_id:
-            label:          ID Pub Facebook
+            label:          Identifiant Facebook
         file_name:
             label:          Image
         copyright:
@@ -71,7 +75,7 @@ params:
         published_at:
             label:          Publication
         published_by:
-            label:          Auteur
+            label:          Publicateur
         online:
             label:          En ligne
         homepage:
@@ -88,6 +92,19 @@ params:
             label:          Mis à jour
         indexed_at:
             label:          Indexé le
+        # active / aggregration of online + published + moderated
+        active:
+            label:          Actif
+            sortable:       false
+            dbType:         BOOLEAN
+        localizations:
+            label:          Zonage géographique
+            sortable:       false
+            dbType:         VARCHAR
+            addFormOptions:
+                mapped:     false
+                disabled:   true
+                read_only:  true
     object_actions:
         delete:             ~
     batch_actions:
@@ -100,40 +117,32 @@ builders:
             sort:                               [ published_at, DESC ]
             scopes:
                 group_1: 
-                    "Publiés":
+                group_1: 
+                    "Actifs":
                         default:                1
-                        filters:
-                            published:          1
+                        filters:                [ active ]
+                    "Modérés":
+                        filters:                [ moderated ]
                     "Brouillons":
-                        filters:                [ notPublished ]
-                            # left_value:         1
-                            # published:          0
-            display:                            [ file_name, id, p_user_id, p_d_debate_id, parent_reaction_id, p_l_city_id, p_l_department_id, p_l_region_id, title, homepage, published, published_at, created_at ]
+                        filters:                [ draft ]
+                    "Inactifs":
+                        filters:                [ inactive ]
+            display:                            [ title, p_user_id, p_d_debate_id, parent_reaction_id, p_c_topic, active, published_at, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, p_user_id, p_l_department, p_l_region, p_l_country, p_d_debate_id, parent_reaction_id, tree_level, title, online, homepage, published, want_boost, created_at, published_at ]
-            fields:
-                PDRTaggedT:
-                    dbType:                     model
-                    formType:                   model
-                    label:                      Tags associés
-                    addFormOptions:
-                        multiple:               true
-                        required:               false
-                        class:                  Politizr\Model\PTag
-                        query:                  \Politizr\Model\PTagQuery::create()->filterByOnline(1)->orderByTitle()
+            filters:                            [ id, uuid, p_user_id, p_d_debate_id, parent_reaction_id, p_c_topic, p_l_department, p_l_region, title, active, published_at, created_at ]
             object_actions:
-                homepage:
-                    label:    En page d'accueil
-                    icon:     fa-star-o
                 show:                           ~
                 edit:                           ~
+                moderation:
+                    label:                      Modération
+                    icon:                       fa-ban
+                localization:
+                    label:                      Localisation
+                    icon:                       fa-map-marker
                 delete:                         ~
             actions:
                 new:                            ~
                 excel:                          ~
-            batch_actions:
-                homepage:
-                    label:    En page d'accueil
     excel:
         params:
             display:                            [ title, p_user, slug, published_at ]
@@ -146,7 +155,7 @@ builders:
         params:
             title:                              "Création d'une réaction"
             display:
-                "Champs principaux":            [ [ title ], [ p_user ], [ p_d_debate, parent_reaction ] ]
+                "Champs principaux":            [ [ title, p_user ], [ p_c_topic, p_d_debate, parent_reaction ] ]
                 "Champs secondaires":           [ [ description ] ]
             fields:
                 p_user:
@@ -156,11 +165,20 @@ builders:
                         multiple:               false
                         required:               true
                         class:                  Politizr\Model\PUser
-                        query:                  \Politizr\Model\PUserQuery::create()->online()->filterByQualified(true)->orderByName()
+                        query:                  \Politizr\Model\PUserQuery::create()->online()->orderByName()
+                p_c_topic:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PCTopic
+                        query:                  \Politizr\Model\PCTopicQuery::create()->orderByPCircleId()->orderByRank()
                 p_d_debate:
                     dbType:                     model
                     formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
+                        mapped:                 false
                         multiple:               false
                         required:               true
                         class:                  Politizr\Model\PDDebate
@@ -186,26 +204,17 @@ builders:
             title:                              "Edition du contenu réponse '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ block_file_name, copyright, title, description ]
-                "Objets":
-                    "Utilisateur":              [ p_user ]
-                    "Sujet":                    [ p_d_debate ]
-                    "Réaction parente":         [ parent_reaction ]
-                "Tags":
-                    "Tags associés":            [ block_tags ]
-                    "Localisation":             [ block_loc ]
-                "Statut":
-                    "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
-                    "Vues":                     [ nb_views ]
-                    "Notes":                    [ [ note_pos, note_neg ] ]
-                "Modération":
-                    "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
+                    "Auteur":                   [ [ p_user, published_by ] ]
+                    "Texte":                    [ title, description ]
+                "Contexte":
+                    "Liste des thématiques":    [ block_tags ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "En ligne":                 [ online ]
+                    "État":                     [ online, published, moderated ]
+                    "Popularité":               [ nb_views, [ note_pos, note_neg ] ]
                     "Notification":             [ block_notifications ]
-                    "Mise en avant":            [ [ want_boost ], [ homepage, fb_ad_id ] ]
-                    "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
+                    "Branchement avec Facebook":    [ [ want_boost, fb_ad_id ] ]
+                    "Dates":                    [ [ created_at, updated_at, published_at ], [ indexed_at ] ]
             fields:
                 block_file_name:
                     label:                      "Image"
@@ -216,16 +225,6 @@ builders:
                         mapped:                 false
                 p_user:
                     addFormOptions:
-                        disabled:               true
-                        read_only:              true
-                p_d_debate:
-                    addFormOptions:
-                        disabled:               true
-                        read_only:              true
-                parent_reaction:
-                    dbType:                     model
-                    addFormOptions:
-                        class:                  Politizr\Model\PDReaction
                         disabled:               true
                         read_only:              true
                 block_tags:
@@ -261,6 +260,14 @@ builders:
                     # formType:                   afe_datetime_picker
                     addFormOptions:
                       widget:                   single_text
+                want_boost:
+                    credentials:                ROLE_SYSTEM
+                    formType:                   Symfony\Component\Form\Extension\Core\Type\ChoiceType
+                    addFormOptions:
+                        multiple:               false
+                        required:               true
+                        choices:                { 'Non répondu': 0, 'Oui': 1, 'Non': 2 }
+                        choices_as_values:      true
                 id:
                     addFormOptions:
                         read_only:              true
@@ -276,6 +283,7 @@ builders:
             actions:
                 save:                           ~
                 archive:
+                    credentials:                ROLE_SYSTEM
                     label:                      Archiver
                     icon:                       fa-archive
                     params:
@@ -288,47 +296,48 @@ builders:
             title:                              "Visualisation du contenu réponse '{{ PDReaction.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Texte":                    [ block_file_name, copyright, title, description ]
-                "Objets":
-                    "Utilisateur":              [ block_p_user ]
-                    "Document":                 [ block_p_d_debate, block_parent ]
-                "Commentaires":
-                    "Commentaires associés":    [ block_comments ]
-                "Tags":
-                    "Tags associés":            [ block_tags ]
-                    "Localisation":             [ block_loc ]
-                "Statut":
-                    "Publication":              [ [ published ], [ published_by ], [ published_at ] ]
-                    "Vues":                     [ nb_views ]
-                    "Notes":                    [ [ note_pos, note_neg ] ]
+                    "Auteur":                   [ [ block_p_user, published_by ] ]
+                    "Texte":                    [ title, description ]
+                    "Médias":                   [ block_p_d_medias ]
+                "Contexte":
+                    "Publications":             [ [ block_p_c_topic, block_p_d_debate, block_parent ] ]
+                    "Liste des thématiques":    [ block_tags ]
+                    "Réponses":                [ block_reactions ]
+                    "Commentaires":             [ block_comments ]
                 "Modération":
-                    "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
-                    "Notification":             [ block_moderation_alert_new  ]
-                    "Précédentes notifications": [ block_moderation_alert_listing  ]
+                    "Situation":                [ moderated, moderated_partial ]
+                    "Historique de l utilisateur":  [ block_moderation_alert_listing ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "En ligne":                 [ online ]
-                    "Mise en avant":            [ [ block_want_boost ], [ homepage, fb_ad_id ] ]
-                    "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
+                    "État":                     [ online, published ]
+                    "Localisation":             [ localizations ]
+                    "Popularité":               [ nb_views, [ note_pos, note_neg ] ]
+                    "Branchement avec Facebook":    [ [ block_want_boost, fb_ad_id ] ]
+                    "Dates":                    [ [ created_at, updated_at, published_at ], [ indexed_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]
             fields:
                 block_want_boost:
+                    credentials:                ROLE_SYSTEM
                     label:                      "Boost demandé"
+                block_p_d_medias:
+                    label:                      "Images"
                 block_file_name:
                     label:                      "Image"
                 block_p_user:
                     label:                      "Auteur"
                 block_p_d_debate:
-                    label:                      "Débat"
+                    label:                      "Sujet"
                 block_parent:
-                    label:                      "Réaction parente"
+                    label:                      "Réponse parente"
+                block_reactions:
+                    label:                      "Réponses"
                 block_comments:
                     label:                      "Commentaires"
+                block_p_c_topic:
+                    label:                      "Discussions"
                 block_tags:
                     label:                      "Tags"
-                block_loc:
-                    label:                      "Localisation"
                 block_moderation_alert_new:
                     label:                      "Alerte"
                 block_moderation_alert_listing:
@@ -342,8 +351,8 @@ builders:
     actions:
         params:
             object_actions:
-                homepage:                       ~
+                moderation:                     ~
+                localization:                   ~
                 delete: ~
             batch_actions:
-                homepage:                       ~
                 delete: ~

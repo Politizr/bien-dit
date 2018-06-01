@@ -40,12 +40,11 @@ class PUSubscribePNETableMap extends TableMap
         $this->setPhpName('PUSubscribePNE');
         $this->setClassname('Politizr\\Model\\PUSubscribePNE');
         $this->setPackage('src.Politizr.Model');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         $this->setIsCrossRef(true);
         // columns
-        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('p_user_id', 'PUserId', 'INTEGER', 'p_user', 'id', true, null, null);
-        $this->addForeignKey('p_n_email_id', 'PNEmailId', 'INTEGER', 'p_n_email', 'id', true, null, null);
+        $this->addForeignPrimaryKey('p_user_id', 'PUserId', 'INTEGER' , 'p_user', 'id', true, null, null);
+        $this->addForeignPrimaryKey('p_n_email_id', 'PNEmailId', 'INTEGER' , 'p_n_email', 'id', true, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators

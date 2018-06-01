@@ -11,13 +11,13 @@ params:
         uuid:
             label:          UUID
         p_d_debate_id:
-            label:          ID Débat
+            label:          ID Sujet
         p_d_reaction_id:
-            label:          ID Réaction
+            label:          ID Réponse
         p_d_debate:
-            label:          Débat
+            label:          Sujet
         p_d_reaction:
-            label:          Réaction
+            label:          Réponse
         path:
             label:          Chemin
         file_name:
@@ -60,17 +60,15 @@ builders:
             title:                              "Edition du média '{{ PDMedia.fileName }}'"
             tabs:
                 "Média":
-                    "Image":                    [ uploadedFileName ]
-                    "Fichier":                  [ [ path, file_name, extension ] ]
-                    "Caractéristiques":         [ [ size, width, height ] ]
-                "Objets":
+                    "Image":                    [ block_file_name ]
+                "Contexte":
                     "Sujet":                    [ p_d_debate ]
                     "Réponse":                  [ p_d_reaction ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid ] ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
-                uploadedFileName:
+                block_file_name:
                     label:                      "Image"
                     grid_class:                 "col-md-12"
                     formType:                   hidden
@@ -78,6 +76,9 @@ builders:
                     addFormOptions:
                         mapped:                 false
                 id:
+                    addFormOptions:
+                        read_only:              true
+                uuid:
                     addFormOptions:
                         read_only:              true
                 p_d_debate:
@@ -106,14 +107,21 @@ builders:
             title:                              "Visualisation du média '{{ PDMedia.fileName }}'"
             tabs:
                 "Média":
-                    "Image":                    [ file_name ]
-                    "Caractéristiques":         [ [ size, width, height ] ]
-                "Objets":
-                    "Sujet":                    [ p_d_debate ]
-                    "Réponse":                  [ p_d_reaction ]
+                    "Image":                    [ block_file_name ]
+                    "Caractéristiques":         [ [ file_name ] , [ size, width, height ] ]
+                "Contexte":
+                    "Sujet":                    [ block_p_d_debate ]
+                    "Réponse":                  [ block_p_d_reaction ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid ] ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
+            fields:
+                block_file_name:
+                    label:                      "Image"
+                block_p_d_debate:
+                    label:                      "Sujet"
+                block_p_d_reaction:
+                    label:                      "Réponse"
             actions:
                 list:                           ~
                 edit:                           ~

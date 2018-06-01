@@ -20,7 +20,23 @@ class PDRCommentQuery extends BasePDRCommentQuery
      */
     public function online()
     {
-        return $this->filterByOnline(true);
+        return $this
+            ->filterByOnline(true)
+            ->filterByModerated(false)
+            ->_or()
+            ->filterByModerated(null);
+    }
+
+    /**
+     *
+     * @return PDDCommentQuery
+     */
+    public function offline()
+    {
+        return $this
+            ->filterByOnline(false)
+            ->_or()
+            ->filterByModerated(true);
     }
 
     /**

@@ -1,18 +1,16 @@
-<div class="userMandates">
+<div class="form-model col-md-6 userMandates">
     {% if user.isQualified %}
         <div class="formBlock">
-            <div class="formBlockHeader">
-                <label>Mandats</label>
-                {% include 'PolitizrFrontBundle:Navigation\\Helper:_mandates.html.twig' %}
-            </div>
             <div class="mandateItem withLoaderInside" id="newMandate">
-                {% include 'PolitizrFrontBundle:User:_newMandate.html.twig' with { 'user': user } %}
+                {% include 'PolitizrAdminBundle:Fragment\\User:_newMandate.html.twig' with { 'user': user } %}
             </div>
-
             <div id="editMandates">
-                {% include 'PolitizrFrontBundle:User:_editMandates.html.twig' %}
+                {% include 'PolitizrAdminBundle:Fragment\\User:_editMandates.html.twig' %}
             </div>
         </div>
+        <i class="fa fa-exclamation-triangle" aria-hidden="true">
+            Date de fin de mandat: laissez vide en cas de mandat en cours.
+        </i>
     {% else %}
         L'utilisateur doit être "élu" pour éditer les mandats.
     {% endif %}

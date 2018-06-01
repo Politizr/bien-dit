@@ -1,95 +1,67 @@
-// on document ready
-$(function() {
-    if (typeof uploadZones === "undefined") {
-        uploadZones = 1;
-    }
+Dropzone.autoDiscover = false;
+var filePreviewHtml = $('.dz-file-preview').html();
+$('.dz-file-preview').hide();
+$("#dropzone").dropzone({
+    paramName: "file",
+    maxFiles: 1,
+    acceptedFiles: 'image/*',
+    url: $('#dropzone').attr('path'),
+    thumbnailWidth: 250,
+    thumbnailMethod: 'contain',
+    previewTemplate: filePreviewHtml,
+    previewsContainer: "#dz-preview-container",
+    init: function() {
+        this.on("success", function(file, response) {
+            this.emit('thumbnail', file, response.filePath + response.thbFileName);
 
-    for (uploadZone = 1; uploadZone <= uploadZones; uploadZone++) {
-        // console.log('init zone '+uploadZone);
+            // upd file name with new one (for removedfile)
+            file.previewElement.id = response.filename;
 
-        $("#formUploadImage"+uploadZone).ajaxForm(options);
-    }
-});
-
-// Delete message
-$("body").on("click", ".uploadMessage", function() {
-    $(this).html('');
-});
-
-// Upload simple
-$("body").on("change", ".fileName", function() {
-    // console.log('change file name');
-    $(this).closest("form").submit();
-});
-
-// Options Jquery Form JS > upload ajax
-var options = {
-    // iframe: true,
-    beforeSend: function() 
-    {
-        // console.log('*** beforeSend');
-        // console.log(this);
-        $('.uploadMessage').html('Upload en cours...');
-    },
-    success: function(responseText, statusText, xhr, form)
-    {
-        $('.uploadMessage').trigger('click');
-        // console.log('*** success');
-        // console.log(responseText);
-        
-        data = $.parseJSON( responseText );
-        // console.log(data['html']);
-
-        // // console.log(statusText);
-        // // console.log(xhr);
-        // console.log(form);
-
-        if ( 'success' == statusText ) {
-            // console.log('status success');
-            $(form).prev('.uploadedImage').html(data['html']);
-        }
-
-    },
-    error: function(data)
-    {
-        // console.log('*** error');
-        // console.log( data );
-        $('.uploadMessage').html('Upload en erreur!');
-    }
-}; 
-
-// Delete image
-$('body').on('click', "[action='fileDelete']", function(e){
-    // console.log('*** click file delete');
-
-    var xhrPath = getXhrPath(
-        ADMIN_ROUTE_DELETE_IMAGE,
-        'admin',
-        'adminImageDelete',
-        RETURN_BOOLEAN
-        );
-
-    var id = $(this).attr('subjectId');
-    var queryClass = $(this).attr('queryClass');
-    var setter = $(this).attr('setter');
-
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url : xhrPath,
-        context: this,
-        data: { 'id': id, 'queryClass': queryClass, 'setter': setter },
-        beforeSend: function ( xhr ) { xhrBeforeSend( xhr, 1 ); },
-        statusCode: { 404: function () { xhr404(); }, 500: function() { xhr500(); } },
-        error: function ( jqXHR, textStatus, errorThrown ) { xhrError(jqXHR, textStatus, errorThrown); },
-        success: function(data) {
-            $('#ajaxGlobalLoader').hide();
-            if (data['error']) {
-                $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
-                $('#infoBoxHolder .boxError').show();
-            } else {
-                $(this).closest('.photoDelete').prevAll('.uploadedImage').html('');
+            $('.dz-progress').hide();
+            $('.uploadLink').hide();
+        });
+        this.on("error", function(file, response) {
+            msg = response;
+            if($.type(response) !== "string") {
+                msg = response['error'];
             }
+            $('#infoBoxHolder .boxError .notifBoxText').html('Erreur : ' + msg);
+            $('#infoBoxHolder .boxError').show();
+
+            $(file.previewElement).remove();
+            $('#dropzone').removeClass('dz-max-files-reached');
+            this.removeFile(file);
+
+            $('.dz-progress').hide();
+        });
+        this.on("removedfile", function(file) {
+            // upd file name (rename in upload process)
+            var name = file.previewElement.id;
+            $.ajax({
+                url: $('#dropzone').attr('deletePath'),
+            });
+            $('#dropzone').removeClass('dz-max-files-reached');
+            $('.uploadLink').show();
+        });
+        // preload existing file image cf https://github.com/enyo/dropzone/wiki/FAQ#how-to-show-files-already-stored-on-server
+        var currentFileName = $('#dropzone').attr('currentFileName');
+        if (typeof currentFileName !== typeof undefined && currentFileName !== false) {
+            var currentFile = { name: currentFileName, size: $('#dropzone').attr('fileSize') };
+            var uploadPath = $('#dropzone').attr('uploadPath');
+
+            // Call the default addedfile event handler
+            this.emit("addedfile", currentFile);
+
+            // And optionally show the thumbnail of the file:
+            this.emit("thumbnail", currentFile, uploadPath + currentFileName);
+
+            // Make sure that there is no progress bar, etc...
+            this.emit("complete", currentFile);
+
+            // @info pb w. new upload, bad maxFiles management from dropzone
+            $('#dropzone').addClass('dz-max-files-reached');
+            $('.dz-progress').hide();
+            $('.uploadLink').hide();
         }
-    });
+    }
 });

@@ -23,7 +23,14 @@ class PDReactionQuery extends BasePDReactionQuery
      */
     public function online()
     {
-        return $this->filterByOnline(true)->filterByPublished(true);
+        return $this
+            ->filterByOnline(true)
+            ->filterByModerated(false)
+            ->_or()
+            ->filterByModerated(null)
+            ->filterByPublished(true)
+            ->filterByPublishedAt(null, \Criteria::NOT_EQUAL)
+            ->filterByTreeLevel(0, \Criteria::NOT_EQUAL);
     }
 
     /**
@@ -35,7 +42,11 @@ class PDReactionQuery extends BasePDReactionQuery
         return $this
             ->filterByOnline(false)
             ->_or()
-            ->filterByPublished(false);
+            ->filterByModerated(true)
+            ->_or()
+            ->filterByPublished(false)
+            ->_or()
+            ->filterByPublishedAt(null);
     }
 
     /**

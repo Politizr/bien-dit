@@ -13,7 +13,6 @@ use Politizr\Model\PQOrganization;
 use Politizr\Model\PQOrganizationPeer;
 use Politizr\Model\PQOrganizationQuery;
 use Politizr\Model\PQTypePeer;
-use Politizr\Model\PUAffinityQOPeer;
 use Politizr\Model\PUCurrentQOPeer;
 use Politizr\Model\PUMandatePeer;
 use Politizr\Model\map\PQOrganizationTableMap;
@@ -440,9 +439,6 @@ abstract class BasePQOrganizationPeer
         // Invalidate objects in PUMandatePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUMandatePeer::clearInstancePool();
-        // Invalidate objects in PUAffinityQOPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PUAffinityQOPeer::clearInstancePool();
         // Invalidate objects in PUCurrentQOPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PUCurrentQOPeer::clearInstancePool();

@@ -16,14 +16,6 @@ params:
             label:          ID Type
         p_t_tag_type:
             label:          Type
-        # not used anymore
-        # PTagRelatedByPTParentId:
-        #     label:              Tag parent
-        #     addFormOptions:
-        #         empty_value:    ""
-        #         query:          \Politizr\Model\PTagQuery::create()->filterByPTTagTypeId(1)->where("p_tag.id > ?", 22)->where("p_tag.id < ?", 129)->orderById() 
-        #         # group_by:       p_t_parent_id
-        #         # property:       title
         p_user_id:
             label:          ID Créé par
         p_user:
@@ -51,7 +43,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des tags
+            title:                              Liste des thématiques
             max_per_page:                       50
             sort:                               [ created_at, DESC ]
             scopes:
@@ -62,37 +54,40 @@ builders:
                     "Famille":
                         filters:
                             p_t_tag_type_id:    4
-                    "Thématique":
+                    "Thème":
                         default:                true
                         filters:
                             p_t_tag_type_id:    2
                     "Privé":
                         filters:
                             p_t_tag_type_id:    5
-            display:                            [ title, p_t_tag_type, countDebates, countReactions, countUsers, created_at, online ]
+            display:                            [ title, p_t_tag_type, countDebates, countReactions, countUsers, online, moderated, created_at ]
             filtersMode:                        modal
             filters:                            [ title, p_t_tag_type_id, p_t_tag_type, online, created_at ]
             fields:
                 countDebates:
-                    label:                      Débats
+                    label:                      Sujets
                 countReactions:
-                    label:                      Réactions
+                    label:                      Réponses
                 countUsers:
                     label:                      Profils
-            actions:
-                new:                            ~
             object_actions:
                 show:                           ~
                 edit:                           ~
+                moderation:
+                    label:                      Modération
+                    icon:                       fa-ban
                 delete:                         ~
+            actions:
+                new:                            ~
     excel:
         params: ~
         filename: ~
         filetype: ~
     new:
-        # TODO: contrôle d'univité du champs titre sur le type donné
+        # @todo contrôle d'unicité du champs "titre" sur le type donné
         params:
-            title:                              "Création d'un tag"
+            title:                              "Création d'une thématique"
             display:
                 "Champs principaux":            [ p_t_tag_type, p_owner, title ]
             fields:
@@ -112,29 +107,33 @@ builders:
               list:                             ~
     edit:
         params:
-            title:                              "Edition du tag '{{ PTag.title }}'"
+            title:                              "Edition de la thématique '{{ PTag.title }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ] ]
-                "Objets":
+                "Contexte":
                     "Auteur":                   [ p_user ]
                     "Propriétaire":             [ p_owner ]
-                "Modération":
-                    "Portée":                   [ [ moderated, moderated_at ] ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ p_t_tag_type ]
-                    "En ligne":                 [ online ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "État":                     [ online, moderated ]
+                    "Dates":                    [ [ created_at, updated_at ] ]
             fields:
                 p_user:
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
-                        disabled:               true
-                        read_only:              true
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PUser
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName()
                 p_owner:
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
-                        disabled:               true
-                        read_only:              true
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PUser
+                        query:                  \Politizr\Model\PUserQuery::create()->orderByName()
                 p_t_tag_type:
                     addFormOptions:
                         query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle()
@@ -157,25 +156,24 @@ builders:
                 delete:                         ~
     show:
         params:
-            title:                              "Visualisation du tag {{ PTag.title }}"
+            title:                              "Visualisation de la thématique {{ PTag.title }}"
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ] ]
-                "Objets":
-                    "Utilisateur":              [ block_p_user ]
+                "Contexte":
+                    "Auteur":                   [ block_p_user ]
                     "Propriétaire":             [ block_p_owner ]
-                "Publication":
-                    "Débats":                   [ block_debates ]
-                    "Réactions":                [ block_reactions ]
-                "Modération":
-                    "Portée":                   [ [ moderated, moderated_at ] ]
-                "Utilisateurs":
+                    "Sujets":                   [ block_debates ]
+                    "Réponses":                 [ block_reactions ]
                     "Profils":                  [ block_users ]
+                "Modération":
+                    "Situation":                [ moderated ]
+                    "Historique de l utilisateur":  [ block_moderation_alert_listing ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ p_t_tag_type ]
-                    "En ligne":                 [ online ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "État":                     [ online ]
+                    "Dates":                    [ [ created_at, updated_at ] ]
             fields:
                 block_p_user:
                     label:                      "Auteur"
@@ -187,6 +185,8 @@ builders:
                     label:                      "Taggés"
                 block_users:
                     label:                      "Taggés"
+                block_moderation_alert_listing:
+                    label:                      "Historique de l'utilisateur"
             actions:
                 list:                           ~
                 edit:                           ~
@@ -194,6 +194,7 @@ builders:
     actions:
         params:
             object_actions:
-                delete: ~
+                moderation:                     ~
+                delete:                         ~
             batch_actions:
-                delete: ~
+                delete:                         ~

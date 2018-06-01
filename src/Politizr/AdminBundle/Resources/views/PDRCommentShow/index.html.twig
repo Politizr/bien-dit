@@ -12,11 +12,6 @@
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDRComment.PDReactionId) }}
 {% endblock %}
 
-{# Block moderation new alert #}
-{% block show_column_block_moderation_alert_new %}
-    {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION_COMMENT'), PDRComment.Id, PDRComment.PUserId) }}
-{% endblock %}
-
 {# Block moderation alert listing #}
 {% block show_column_block_moderation_alert_listing %}
     <div id="moderationListing">
@@ -32,8 +27,3 @@
         Hors ligne
     {% endif %}
 {% endblock %}
-
-{% block object_actions_script_container %}
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>  
-{% endblock object_actions_script_container %}
-

@@ -81,4 +81,24 @@ class PDDComment extends BasePDDComment implements PDCommentInterface
     {
         return $this->getPDocument()->getCircle();
     }
+
+    /**
+     * Check if comment is active
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        $active = PDDCommentQuery::create()
+                    ->online()
+                    ->filterById($this->getId())
+                    ->count()
+                    ;
+
+        if ($active) {
+            return true;
+        }
+
+        return false;
+    }
 }

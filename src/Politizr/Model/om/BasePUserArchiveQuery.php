@@ -61,6 +61,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery orderByQualified($order = Criteria::ASC) Order by the qualified column
  * @method PUserArchiveQuery orderByValidated($order = Criteria::ASC) Order by the validated column
  * @method PUserArchiveQuery orderByNbIdCheck($order = Criteria::ASC) Order by the nb_id_check column
+ * @method PUserArchiveQuery orderByOrganization($order = Criteria::ASC) Order by the organization column
  * @method PUserArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PUserArchiveQuery orderByHomepage($order = Criteria::ASC) Order by the homepage column
  * @method PUserArchiveQuery orderBySupportGroup($order = Criteria::ASC) Order by the support_group column
@@ -119,6 +120,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchiveQuery groupByQualified() Group by the qualified column
  * @method PUserArchiveQuery groupByValidated() Group by the validated column
  * @method PUserArchiveQuery groupByNbIdCheck() Group by the nb_id_check column
+ * @method PUserArchiveQuery groupByOrganization() Group by the organization column
  * @method PUserArchiveQuery groupByOnline() Group by the online column
  * @method PUserArchiveQuery groupByHomepage() Group by the homepage column
  * @method PUserArchiveQuery groupBySupportGroup() Group by the support_group column
@@ -183,6 +185,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method PUserArchive findOneByQualified(boolean $qualified) Return the first PUserArchive filtered by the qualified column
  * @method PUserArchive findOneByValidated(boolean $validated) Return the first PUserArchive filtered by the validated column
  * @method PUserArchive findOneByNbIdCheck(int $nb_id_check) Return the first PUserArchive filtered by the nb_id_check column
+ * @method PUserArchive findOneByOrganization(boolean $organization) Return the first PUserArchive filtered by the organization column
  * @method PUserArchive findOneByOnline(boolean $online) Return the first PUserArchive filtered by the online column
  * @method PUserArchive findOneByHomepage(boolean $homepage) Return the first PUserArchive filtered by the homepage column
  * @method PUserArchive findOneBySupportGroup(boolean $support_group) Return the first PUserArchive filtered by the support_group column
@@ -241,6 +244,7 @@ use Politizr\Model\PUserArchiveQuery;
  * @method array findByQualified(boolean $qualified) Return PUserArchive objects filtered by the qualified column
  * @method array findByValidated(boolean $validated) Return PUserArchive objects filtered by the validated column
  * @method array findByNbIdCheck(int $nb_id_check) Return PUserArchive objects filtered by the nb_id_check column
+ * @method array findByOrganization(boolean $organization) Return PUserArchive objects filtered by the organization column
  * @method array findByOnline(boolean $online) Return PUserArchive objects filtered by the online column
  * @method array findByHomepage(boolean $homepage) Return PUserArchive objects filtered by the homepage column
  * @method array findBySupportGroup(boolean $support_group) Return PUserArchive objects filtered by the support_group column
@@ -357,7 +361,7 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_u_status_id`, `p_l_city_id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `indexed_at`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `support_group`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_u_status_id`, `p_l_city_id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `indexed_at`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `organization`, `online`, `homepage`, `support_group`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_user_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -2004,6 +2008,33 @@ abstract class BasePUserArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PUserArchivePeer::NB_ID_CHECK, $nbIdCheck, $comparison);
+    }
+
+    /**
+     * Filter the query on the organization column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByOrganization(true); // WHERE organization = true
+     * $query->filterByOrganization('yes'); // WHERE organization = true
+     * </code>
+     *
+     * @param     boolean|string $organization The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserArchiveQuery The current query, for fluid interface
+     */
+    public function filterByOrganization($organization = null, $comparison = null)
+    {
+        if (is_string($organization)) {
+            $organization = in_array(strtolower($organization), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserArchivePeer::ORGANIZATION, $organization, $comparison);
     }
 
     /**

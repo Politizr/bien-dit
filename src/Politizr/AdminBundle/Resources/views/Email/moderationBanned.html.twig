@@ -27,7 +27,11 @@
                             </td>
                         </tr>
 
-                        {{ user | linkedBanned(constant('Politizr\\Constant\\ModerationConstants::TYPE_EMAIL_HTML')) }}
+                        <tr style="background-color: #FFFFFF; width: 100%;">
+                            <td colspan="2" style="padding: 0 40px 40px 40px;  line-height: 180%;">
+                                Vous avez été banni de Politizr.
+                            </td>
+                        </tr>
                         
                         <!-- footer -->
                         {% include 'PolitizrFrontBundle:Email:_signature.html.twig' %}

@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\PEOperation
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -82,7 +83,7 @@ builders:
                 "Contenu":
                     "Bandeau":                  [ uploadedFileName ]
                     "Texte":                    [ title, description, editing_description ]
-                "Objets":
+                "Contexte":
                     "Client":                   [ p_user ]
                 "Thématiques":
                     "Tags associés":            [ block_tags ]
@@ -92,8 +93,8 @@ builders:
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Options":                  [ [ geo_scoped, timeline, new_subject_link ] ]
-                    "En ligne":                 [ online ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "État":                 [ online ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 uploadedFileName:
                     dbType:                     VARCHAR
@@ -160,7 +161,7 @@ builders:
                 "Contenu":
                     "Bandeau":                  [ file_name ]
                     "Texte":                    [ title, description, editing_description ]
-                "Objets":
+                "Contexte":
                     "Client":                   [ block_p_user ]
                 "Thématiques":
                     "Tags associés":            [ block_tags ]
@@ -169,8 +170,8 @@ builders:
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Options":                  [ [ geo_scoped, timeline, new_subject_link ] ]
-                    "En ligne":                 [ online ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "État":                 [ online ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 block_p_user:
                     label:                      "Client"

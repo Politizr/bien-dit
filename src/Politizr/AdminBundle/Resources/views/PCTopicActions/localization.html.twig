@@ -1,0 +1,57 @@
+{% extends "PolitizrAdminBundle::base_admin.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Localisation
+{% endblock title %}
+
+{% block page_header_content %}
+    <h1>Localisation de {{ topic.title }}</h1>
+{% endblock page_header_content %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="form-model form-model-document col-md-12">
+            <form action="{{ path('Politizr_AdminBundle_PCTopic_localization_update', { 'pk': topic.id }) }}" method="POST">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li>
+                            <a data-toggle="tab" href="#" data-target=".tab-pane-model-type">
+                                Localisation
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content form-model-content">
+                        {{ form_errors(form) }}
+                        <fieldset class="form-model-tab-pane tab-pane-model-type tab-pane">
+                            <legend><span>Type de modération</span></legend>
+                            <div class="row">
+                                <div class="form-model col-md-6">
+                                    {{ form_row(form['force_geoloc_type']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-model col-md-6">
+                                    {{ form_row(form['force_geoloc_id']) }}
+                                </div>
+                            </div>
+
+                        </fieldset>
+                        {{ form_rest(form) }}
+                    </div>
+
+                    <div class="form-model-actions row">
+                        <div class="form-model-actions-generic col-md-12 text-right" role="generic-actions">
+                            <button type="submit" name="save" class="generic-action btn btn-success">
+                                <i class="fa fa-fw fa-check"></i> Valider
+                            </button>
+                            <a class="btn btn-default" href="{{ path("Politizr_AdminBundle_PCTopic_list") }}">
+                                <i class="fa fa-fw fa-list-alt"></i> Retour à la liste
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock page_content %}

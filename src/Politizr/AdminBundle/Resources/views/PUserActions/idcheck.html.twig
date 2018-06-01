@@ -1,0 +1,117 @@
+{% extends "PolitizrAdminBundle::base_admin.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Contrôle d'identité
+{% endblock title %}
+
+{% block page_header_content %}
+    <h1>Contrôle d'identité de {{ user.firstname }} {{ user.name }}</h1>
+{% endblock page_header_content %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="form-model form-model-puser col-md-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li>
+                        <a data-toggle="tab" href="#" data-target=".tab-pane-model-data">
+                            Données vérifiées
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#" data-target=".tab-pane-model-upload">
+                            Upload
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#" data-target=".tab-pane-model-manual">
+                            Manuel
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content form-model-content">
+                    <fieldset class="form-model-tab-pane tab-pane-model-data tab-pane">
+                        <legend><span>Informations contrôlées</span></legend>
+                        <div class="form-group">
+                            <div>
+                                <label class="control-label">Prénom</label><br/>
+                                {{ user.firstname }}<br/><br/>
+                                <label class="control-label">Nom</label><br/>
+                                {{ user.name }}<br/><br/>
+                                <label class="control-label">Date de naissance</label><br/>
+                                {{ user.birthday | date() }}<br/><br/>
+                            </div>
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true">
+                                Ces informations doivent être remplies et valides avant de pouvoir procéder au contrôle de l'identité.
+                            </i>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-model-tab-pane tab-pane-model-upload tab-pane">
+                        <legend><span>Méthode 1: upload</span></legend>
+                        <div class="row">
+                            <div class="form-model col-md-12" id="idCheck" userId="{{ user.id }}">
+                                <label class="control-label">Télécharger une photo de la CNI</label>
+                                <div class="card">
+                                    <div class="formBlock">
+                                        <form action="{{ path('AdminXhrGeneric', {'xhrRoute': constant('Politizr\\Constant\\XhrConstants::ADMIN_ROUTE_USER_VALIDATE_PHOTO_UPLOAD'), 'xhrService': 'admin', 'xhrMethod': 'idCheckPhotoUpload', 'xhrType': constant('Politizr\\Constant\\XhrConstants::RETURN_HTML')}) }}" name="user" id="formIdCheckPhoto" method="post" enctype="multipart/form-data">
+                                            <div class="uploadCNI btn btn-default">
+                                                <input type="file" name="fileNameIdCheck" id="fileNameIdCheck">
+                                            </div>
+                                        </form>
+                                        <br/><br/>
+                                        <i class="fa fa-exclamation-triangle">
+                                            Face comportant la photo: l'image fournie doit être nette et dans le sens de la lecture. Format: jpg. Taille max: 10Mo
+                                        </i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-model-tab-pane tab-pane-model-manual tab-pane">
+                        <legend><span>Méthode 2: saisie manuelle</span></legend>
+                        <div class="row">
+                            <div class="form-model col-md-12" id="idCheck" userId="{{ user.id }}">
+                                <img src="{{ asset('bundles/politizrfront/images/cni.jpg') }}">
+                                <br/><br/>
+                                <form class="zlaBox" name="user" method="post" id="formPerso4">
+                                    <div class="zlaInputs">
+                                        {{ form_row(form.zla1, { 'attr': { 'placeholder': '36 caractères de la ligne 1' }}) }}
+                                        {{ form_row(form.zla2, { 'attr': { 'placeholder': '36 caractères de la ligne 2' }}) }}
+                                    </div>
+                                    {{ form_rest(form) }}
+
+                                    <button type="button" action="validateIdZla" class="submit btn btn-danger">
+                                        Valider l'identité
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+
+                <div class="form-model-actions row">
+                    <div class="form-model-actions-generic col-md-12 text-right" role="generic-actions">
+                        <a class="btn btn-default" href="{{ path("Politizr_AdminBundle_PUser_list") }}">
+                            <i class="fa fa-fw fa-list-alt"></i> Retour à la liste
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {# upload js #}
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery.form.min.js') }}"></script>  
+
+    {# idcheck js #}
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/textcounter.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/user/idCheck.js') }}"></script>  
+{% endblock javascripts %}

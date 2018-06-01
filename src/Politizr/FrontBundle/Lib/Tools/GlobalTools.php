@@ -155,11 +155,12 @@ class GlobalTools
      * @param  string      $destPath             chemin absolu de destination
      * @param  int         $maxWidth             largeur max > utilisé pour resize
      * @param  int         $maxHeight            hauteur max > utilisé pour resize
+     * @param  string      $destFileName         force file name dest if set
      * @param  int         $sizeLimit            Taille limite du fichier > 20 * 1024 * 1024 (20Mo)
      * @param  array|string $mimeTypes Types MIME http://www.iana.org/assignments/media-types/media-types.xhtml
      *
      */
-    public function uploadXhrImage(Request $request, $inputName, $destPath, $maxWidth, $maxHeight, $sizeLimit = 20971520, $mimeTypes = 'image/*')
+    public function uploadXhrImage(Request $request, $inputName, $destPath, $maxWidth, $maxHeight, $destFileName = null, $sizeLimit = 20971520, $mimeTypes = 'image/*')
     {
         // $this->logger->info('*** uploadXhrImage');
 
@@ -190,6 +191,9 @@ class GlobalTools
             // Construct file name
             $ext = $myRequestedFile->guessExtension();
             $fileName = md5(uniqid()) . '.' . $ext;
+            if ($destFileName) {
+                $fileName = $destFileName;
+            }
 
             //move the uploaded file to uploads folder;
             $movedFile = $myRequestedFile->move($destPath, $fileName);
@@ -946,5 +950,29 @@ class GlobalTools
         $ret = substr($ret, 0, 0-strlen($glue));
 
         return $ret;
+    }
+
+    /**
+     * Clear image cache dir from filename
+     * /!\ recursive
+     *
+     * @return string $folder
+     * @return string $fileName
+     */
+    public function clearFilesFromFolder($folder, $fileName)
+    {
+        if (is_dir($folder)) {
+            $objects = scandir($folder);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                    if (filetype($folder . "/" . $object) == "dir") {
+                        $this->clearFilesFromFolder($folder . "/" . $object, $fileName);
+                    } elseif ($object == $fileName) {
+                        unlink($folder . "/" . $object);
+                    }
+                }
+            }
+            reset($objects);
+        }
     }
 }

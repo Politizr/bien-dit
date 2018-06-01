@@ -1,1 +1,14 @@
 {% extends_admingenerated "PolitizrAdminBundle:PCTopicEdit:form.html.twig" %}
+
+{# Image block #}
+{% block form_row_block_file_name %}
+    <div class="form-group col-md-4">
+        <label class="control-label">Image</label>
+        <div id="dropzone" class="dropzone" path="{{ path('Politizr_AdminBundle_PCTopic_filename_upload', {'pk': PCTopic.id}) }}" deletePath="{{ path('Politizr_AdminBundle_PCTopic_filename_delete', {'pk': PCTopic.id}) }}" {% if PCTopic.FileName %}currentFileName="{{ constant('Politizr\\Constant\\DocumentConstants::DOC_THUMBNAIL_PREFIX') }}{{ PCTopic.FileName }}" uploadPath="{{ constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') }}" fileSize="{{ PCTopic | topicFileSize }}"{% endif %}>
+            <div class="dz-message uploadLink" data-dz-message><span class="btn btn-primary">Télécharger</span></div>
+        </div>
+        <div id="dz-preview-container">
+        </div>
+        {% include "PolitizrAdminBundle:Fragment:_dropzoneTemplate.html.twig" %}
+    </div>
+{% endblock %}

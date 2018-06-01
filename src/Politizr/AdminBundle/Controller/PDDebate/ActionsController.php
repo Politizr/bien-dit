@@ -4,14 +4,18 @@ namespace Politizr\AdminBundle\Controller\PDDebate;
 
 use Admingenerated\PolitizrAdminBundle\BasePDDebateController\ActionsController as BaseActionsController;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Politizr\Constant\PathConstants;
+use Politizr\Constant\ObjectTypeConstants;
 
+use Politizr\AdminBundle\Form\Type\AdminPDocumentModerationType;
+
+use Politizr\Model\PDDebate;
 use Politizr\Model\PMDebateHistoric;
 
 use Politizr\Model\PDDebateQuery;
-use Politizr\Model\PDDebate;
 
 use Politizr\Exception\InconsistentDataException;
 
@@ -23,27 +27,126 @@ class ActionsController extends BaseActionsController
     /**
      *
      * @param PDDebate $debate
+     * @return Response
      */
-    public function executeObjectHomepage(PDDebate $debate)
+    protected function successObjectLocalization(PDDebate $debate)
     {
-        $debate->setHomepage(!$debate->getHomepage());
-        $debate->save();
+
+        $form = $this->createForm(
+            $this->get('politizr.form.type.document_localization'),
+            $debate,
+            array(
+                'data_class' => ObjectTypeConstants::TYPE_DEBATE,
+                'user' => $debate->getUser(),
+            )
+        );
+
+        return $this->render('PolitizrAdminBundle:PDDebateActions:localization.html.twig', array(
+            'debate' => $debate,
+            'form' => $form->createView(),
+        ));
     }
 
     /**
      *
-     * @param array $debatesId
+     * @param PDDebate $debate
+     * @return Response
      */
-    protected function executeBatchHomepage(array $debatesId)
+    protected function successObjectModeration(PDDebate $debate)
     {
-        foreach ($debatesId as $pk) {
-            $debate = PDDebateQuery::create()->findPk($pk);
-            if (!$debate) {
-                throw new InconsistentDataException('PDDebateQuery pk-'.$pk.' not found.');
-            }
-            $debate->setHomepage(!$debate->getHomepage());
-            $debate->save();
+        $form = $this->createForm(new AdminPDocumentModerationType($debate));
+
+        return $this->render('PolitizrAdminBundle:PDDebateActions:moderation.html.twig', array(
+            'debate' => $debate,
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     *
+     * @param $request
+     * @param $pk
+     * @return Response
+     */
+    public function moderationUpdateAction(Request $request, $pk)
+    {
+        $debate = PDDebateQuery::create()->findPk($pk);
+        if (!$debate) {
+            throw new InconsistentDataException('PDDebate pk-'.$pk.' not found.');
         }
+
+        $form = $this->createForm(new AdminPDocumentModerationType($debate));
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $data = $form->getData();
+                $moderationType = $data['p_m_moderation_type'];
+
+                $this->get('politizr.functional.moderation')->archiveDebate($debate);
+
+                // moderation updating
+                if ($data['moderation_level'] == 1) {
+                    $debate->setModeratedPartial(true);
+                    $debate->setModeratedAt(new \DateTime());
+
+                    $debate->setTitle($data['title']);
+                    $debate->setDescription($data['description']);
+
+                    $debate->save();
+                } elseif ($data['moderation_level'] == 2) {
+                    $debate->setModerated(true);
+                    $debate->setModeratedAt(new \DateTime());
+                    $debate->setOnline(false);
+
+                    $debate->save();
+                }
+
+                // user relative actions
+                $user = $debate->getPUser();
+
+                if ($user) {
+                    $userModerated = $this->get('politizr.functional.moderation')->addUserModerated(
+                        $user,
+                        $moderationType->getId(),
+                        ObjectTypeConstants::TYPE_DEBATE,
+                        $debate->getId(),
+                        $data['score_evolution']
+                    );
+
+                    $this->get('politizr.functional.moderation')->updateUserReputation($user, $data['score_evolution']);
+
+                    if ($data['ban']) {
+                        $this->get('politizr.functional.moderation')->banUser($user);
+                    } 
+
+                    if ($data['send_email']) {
+                        $this->get('politizr.functional.moderation')->notifUser($user, $userModerated);
+                    }
+
+                    $abuseLevel = $user->getAbuseLevel();
+                    if (!$abuseLevel) {
+                        $abuseLevel = 0;
+                    }
+                    $user->setAbuseLevel($abuseLevel + 1);
+                    $user->save();
+                }
+
+                $this->get('session')->getFlashBag()->add('success', 'Le document a été modéré avec succès.');
+
+                return $this->redirect(
+                    $this->generateUrl("Politizr_AdminBundle_PDDebate_list")
+                );
+
+            } catch (\Exception $e) {
+                $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+            }
+        }
+
+        return $this->render('PolitizrAdminBundle:PDDebateActions:moderation.html.twig', array(
+            'debate' => $debate,
+            'form' => $form->createView(),
+        ));
     }
 
     /**
@@ -58,27 +161,7 @@ class ActionsController extends BaseActionsController
         }
 
         try {
-            $mDebate = new PMDebateHistoric();
-
-            $mDebate->setPUserId($debate->getPUserId());
-            $mDebate->setPDDebateId($debate->getId());
-            $mDebate->setPObjectId($debate->getId());
-            $mDebate->setTitle($debate->getTitle());
-            $mDebate->setDescription($debate->getDescription());
-            $mDebate->setCopyright($debate->getCopyright());
-
-            // File copy
-            if ($debate->getFileName()) {
-                $destFileName = $this->get('politizr.tools.global')->copyFile(
-                    $this->get('kernel')->getRootDir() .
-                    PathConstants::KERNEL_PATH_TO_WEB .
-                    PathConstants::DEBATE_UPLOAD_WEB_PATH .
-                    $debate->getFileName()
-                );
-                $mDebate->setFileName($destFileName);
-            }
-
-            $mDebate->save();
+            $this->get('politizr.functional.moderation')->archiveDebate($debate);
 
             $this->get('session')->getFlashBag()->add('success', 'L\'archive a bien été créée.');
         } catch (\Exception $e) {

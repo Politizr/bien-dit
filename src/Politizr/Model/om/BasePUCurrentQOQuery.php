@@ -20,13 +20,11 @@ use Politizr\Model\PUCurrentQOQuery;
 use Politizr\Model\PUser;
 
 /**
- * @method PUCurrentQOQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PUCurrentQOQuery orderByPUserId($order = Criteria::ASC) Order by the p_user_id column
  * @method PUCurrentQOQuery orderByPQOrganizationId($order = Criteria::ASC) Order by the p_q_organization_id column
  * @method PUCurrentQOQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PUCurrentQOQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
- * @method PUCurrentQOQuery groupById() Group by the id column
  * @method PUCurrentQOQuery groupByPUserId() Group by the p_user_id column
  * @method PUCurrentQOQuery groupByPQOrganizationId() Group by the p_q_organization_id column
  * @method PUCurrentQOQuery groupByCreatedAt() Group by the created_at column
@@ -52,7 +50,6 @@ use Politizr\Model\PUser;
  * @method PUCurrentQO findOneByCreatedAt(string $created_at) Return the first PUCurrentQO filtered by the created_at column
  * @method PUCurrentQO findOneByUpdatedAt(string $updated_at) Return the first PUCurrentQO filtered by the updated_at column
  *
- * @method array findById(int $id) Return PUCurrentQO objects filtered by the id column
  * @method array findByPUserId(int $p_user_id) Return PUCurrentQO objects filtered by the p_user_id column
  * @method array findByPQOrganizationId(int $p_q_organization_id) Return PUCurrentQO objects filtered by the p_q_organization_id column
  * @method array findByCreatedAt(string $created_at) Return PUCurrentQO objects filtered by the created_at column
@@ -109,10 +106,11 @@ abstract class BasePUCurrentQOQuery extends ModelCriteria
      * Go fast if the query is untouched.
      *
      * <code>
-     * $obj  = $c->findPk(12, $con);
+     * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param array $key Primary key to use for the query
+                         A Primary key composition: [$p_user_id, $p_q_organization_id]
      * @param     PropelPDO $con an optional connection object
      *
      * @return   PUCurrentQO|PUCurrentQO[]|mixed the result, formatted by the current formatter
@@ -122,7 +120,7 @@ abstract class BasePUCurrentQOQuery extends ModelCriteria
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = PUCurrentQOPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = PUCurrentQOPeer::getInstanceFromPool(serialize(array((string) $key[0], (string) $key[1]))))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
@@ -140,20 +138,6 @@ abstract class BasePUCurrentQOQuery extends ModelCriteria
     }
 
     /**
-     * Alias of findPk to use instance pooling
-     *
-     * @param     mixed $key Primary key to use for the query
-     * @param     PropelPDO $con A connection object
-     *
-     * @return                 PUCurrentQO A model object, or null if the key is not found
-     * @throws PropelException
-     */
-     public function findOneById($key, $con = null)
-     {
-        return $this->findPk($key, $con);
-     }
-
-    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
@@ -165,10 +149,11 @@ abstract class BasePUCurrentQOQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `p_user_id`, `p_q_organization_id`, `created_at`, `updated_at` FROM `p_u_current_q_o` WHERE `id` = :p0';
+        $sql = 'SELECT `p_user_id`, `p_q_organization_id`, `created_at`, `updated_at` FROM `p_u_current_q_o` WHERE `p_user_id` = :p0 AND `p_q_organization_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -178,7 +163,7 @@ abstract class BasePUCurrentQOQuery extends ModelCriteria
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
             $obj = new PUCurrentQO();
             $obj->hydrate($row);
-            PUCurrentQOPeer::addInstanceToPool($obj, (string) $key);
+            PUCurrentQOPeer::addInstanceToPool($obj, serialize(array((string) $key[0], (string) $key[1])));
         }
         $stmt->closeCursor();
 
@@ -207,7 +192,7 @@ abstract class BasePUCurrentQOQuery extends ModelCriteria
     /**
      * Find objects by primary key
      * <code>
-     * $objs = $c->findPks(array(12, 56, 832), $con);
+     * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
      * </code>
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
@@ -237,8 +222,10 @@ abstract class BasePUCurrentQOQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
+        $this->addUsingAlias(PUCurrentQOPeer::P_USER_ID, $key[0], Criteria::EQUAL);
+        $this->addUsingAlias(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, $key[1], Criteria::EQUAL);
 
-        return $this->addUsingAlias(PUCurrentQOPeer::ID, $key, Criteria::EQUAL);
+        return $this;
     }
 
     /**
@@ -250,50 +237,17 @@ abstract class BasePUCurrentQOQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-
-        return $this->addUsingAlias(PUCurrentQOPeer::ID, $keys, Criteria::IN);
-    }
-
-    /**
-     * Filter the query on the id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterById(1234); // WHERE id = 1234
-     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id >= 12
-     * $query->filterById(array('max' => 12)); // WHERE id <= 12
-     * </code>
-     *
-     * @param     mixed $id The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PUCurrentQOQuery The current query, for fluid interface
-     */
-    public function filterById($id = null, $comparison = null)
-    {
-        if (is_array($id)) {
-            $useMinMax = false;
-            if (isset($id['min'])) {
-                $this->addUsingAlias(PUCurrentQOPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($id['max'])) {
-                $this->addUsingAlias(PUCurrentQOPeer::ID, $id['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
+        if (empty($keys)) {
+            return $this->add(null, '1<>1', Criteria::CUSTOM);
+        }
+        foreach ($keys as $key) {
+            $cton0 = $this->getNewCriterion(PUCurrentQOPeer::P_USER_ID, $key[0], Criteria::EQUAL);
+            $cton1 = $this->getNewCriterion(PUCurrentQOPeer::P_Q_ORGANIZATION_ID, $key[1], Criteria::EQUAL);
+            $cton0->addAnd($cton1);
+            $this->addOr($cton0);
         }
 
-        return $this->addUsingAlias(PUCurrentQOPeer::ID, $id, $comparison);
+        return $this;
     }
 
     /**
@@ -632,7 +586,9 @@ abstract class BasePUCurrentQOQuery extends ModelCriteria
     public function prune($pUCurrentQO = null)
     {
         if ($pUCurrentQO) {
-            $this->addUsingAlias(PUCurrentQOPeer::ID, $pUCurrentQO->getId(), Criteria::NOT_EQUAL);
+            $this->addCond('pruneCond0', $this->getAliasedColName(PUCurrentQOPeer::P_USER_ID), $pUCurrentQO->getPUserId(), Criteria::NOT_EQUAL);
+            $this->addCond('pruneCond1', $this->getAliasedColName(PUCurrentQOPeer::P_Q_ORGANIZATION_ID), $pUCurrentQO->getPQOrganizationId(), Criteria::NOT_EQUAL);
+            $this->combine(array('pruneCond0', 'pruneCond1'), Criteria::LOGICAL_OR);
         }
 
         return $this;

@@ -27,6 +27,7 @@ class PUserQuery extends BasePUserQuery
     {
         return $this
             ->filterByOnline(true)
+            ->filterByBanned(false)
             ->filterByPUStatusId(UserConstants::STATUS_ACTIVED);
     }
 
@@ -39,7 +40,10 @@ class PUserQuery extends BasePUserQuery
         return $this
             ->filterByOnline(false)
             ->_or()
-            ->filterByPUStatusId(UserConstants::STATUS_ACTIVED, "<>");
+            ->filterByPUStatusId(UserConstants::STATUS_ACTIVED, "<>")
+            ->_or()
+            ->filterByBanned(true)
+            ;
     }
 
     /**

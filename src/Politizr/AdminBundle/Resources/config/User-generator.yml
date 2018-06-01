@@ -3,6 +3,7 @@ params:
     model:                                      FOS\UserBundle\Propel\User
     namespace_prefix:                           Politizr
     concurrency_lock:                           ~
+    credentials:                                ROLE_SYSTEM
     bundle_name:                                AdminBundle
     pk_requirement:                             ~
     fields:         
@@ -10,18 +11,6 @@ params:
             label:                              Login
         enabled:            
             label:                              Activé
-        # roles:          
-        #     label:                              Liste des rôles
-        #     dbType:                             ARRAY
-        #     formType:                           collection
-        #     addFormOptions:         
-        #         type:                           text
-        #         allow_add:                      true
-        #         allow_delete:                   true
-        #         by_reference:                   false
-        #         # new_label:                      " - Nouveau rôle"
-        #         options:            
-        #             label:                      Rôle
         roles:
             label:                              Liste des rôles de l'utilisateur
             formType:                           choice
@@ -29,9 +18,10 @@ params:
                 expanded:                       true
                 multiple:                       true
                 choices:                
-                    ROLE_ADMIN:                 'Admin'
-                    ROLE_SYSTEM:                'Super Admin'
+                    ROLE_USER:                  'Utilisateur'
                     ROLE_CLIENT:                'Client'
+                    ROLE_ADMIN:                 'Administrateur'
+                    ROLE_SYSTEM:                'System'
         plainPassword:          
             label:                              label.plainPassword
             dbType:                             VARCHAR

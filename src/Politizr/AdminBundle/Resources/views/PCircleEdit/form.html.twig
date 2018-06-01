@@ -1,1 +1,14 @@
 {% extends_admingenerated "PolitizrAdminBundle:PCircleEdit:form.html.twig" %}
+
+{# Image block #}
+{% block form_row_block_logo_file_name %}
+    <div class="form-group col-md-4">
+        <label class="control-label">Image</label>
+        <div id="dropzone" class="dropzone" path="{{ path('Politizr_AdminBundle_PCircle_filename_upload', {'pk': PCircle.id}) }}" deletePath="{{ path('Politizr_AdminBundle_PCircle_filename_delete', {'pk': PCircle.id}) }}" {% if PCircle.LogoFileName %}currentFileName="{{ PCircle.LogoFileName }}" uploadPath="{{ constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') }}" fileSize="{{ PCircle | circleFileSize }}"{% endif %}>
+            <div class="dz-message uploadLink" data-dz-message><span class="btn btn-primary">Télécharger</span></div>
+        </div>
+        <div id="dz-preview-container">
+        </div>
+        {% include "PolitizrAdminBundle:Fragment:_dropzoneTemplate.html.twig" %}
+    </div>
+{% endblock %}

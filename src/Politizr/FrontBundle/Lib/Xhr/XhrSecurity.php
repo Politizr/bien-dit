@@ -138,7 +138,7 @@ class XhrSecurity
             // Event
             $dispatcher = $this->eventDispatcher->dispatch('lost_password_email', new GenericEvent($user));
         } else {
-            $errors = $this->globalTools->getAjaxFormErrors($form);
+            $errors = StaticTools::getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -272,7 +272,7 @@ class XhrSecurity
                 return false;
             }
         } else {
-            $errors = $this->globalTools->getAjaxFormErrors($form);
+            $errors = StaticTools::getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
     }
@@ -343,7 +343,7 @@ class XhrSecurity
                 $redirect = true;
                 $redirectUrl = $this->router->generate('Homepage'.$this->globalTools->computeProfileSuffix());
             } else {
-                $errors = $this->globalTools->multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
+                $errors = StaticTools::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
                 $success = false;
                 $redirect = false;
                 $redirectUrl = false;
@@ -395,7 +395,7 @@ class XhrSecurity
                 $redirect = true;
                 $redirectUrl = $this->router->generate('Homepage'.$this->globalTools->computeProfileSuffix());
             } else {
-                $errors = $this->globalTools->multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
+                $errors = StaticTools::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
                 $success = false;
                 $redirect = false;
                 $redirectUrl = false;
@@ -438,7 +438,7 @@ class XhrSecurity
         if ($this->isValidIdZla($request, $user, false)) {
             $success = true;
         } else {
-            $errors = $this->globalTools->multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
+            $errors = StaticTools::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
             $success = false;
         }
 
@@ -469,7 +469,7 @@ class XhrSecurity
         if ($this->isValidIdPhoto($request, $user, false)) {
             $success = true;
         } else {
-            $errors = $this->globalTools->multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
+            $errors = StaticTools::multiImplode($this->idcheck->getErrorMsg(), ' <br/> ');
             $success = false;
         }
 
@@ -500,6 +500,7 @@ class XhrSecurity
             $path,
             5000,
             5000,
+            null,
             20971520,
             [ 'image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg' ]
         );

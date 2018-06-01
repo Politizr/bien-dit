@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\PMEmailing
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -55,11 +56,11 @@ builders:
             tabs:
                 "Contenu":
                     "Texte":                    [ target_email, title, html_body ]
-                "Objets":
+                "Contexte":
                     "Utilisateur":              [ block_p_user ]
                     "Type notif":               [ p_n_email_id ]
                 "Attributs":
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 block_p_user:
                     label:                      "Utilisateur impacté"

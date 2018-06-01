@@ -890,8 +890,8 @@ fos_http_cache:
                 headers:
                     cache_control:
                         public: true
-                        max_age: 900
-                        s_maxage: 900
+                        max_age: 60
+                        s_maxage: 60
                     last_modified: "-1 day"
 
             # match everything to set defaults

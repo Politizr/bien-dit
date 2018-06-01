@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\PMRCommentHistoric
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -45,11 +46,11 @@ builders:
             tabs:
                 "Contenu":
                     "Texte":                    [ description ]
-                "Objets":
+                "Contexte":
                     "Commentaire":              [ block_p_d_r_comment ]
                     "Utilisateur":              [ block_p_user ]
                 "Attributs":
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 block_p_d_r_comment:
                     label:                      "Commentaire"

@@ -183,7 +183,7 @@ class EmailListener
             }
 
             $message = \Swift_Message::newInstance()
-                    ->setSubject('[ Politizr ] Contenu modéré')
+                    ->setSubject('[ Politizr ] Modération')
                     ->setFrom(array($this->contactEmail => 'Support@Politizr'))
                     ->setTo($user->getEmail())
                     ->setBody($htmlBody, 'text/html', 'utf-8')

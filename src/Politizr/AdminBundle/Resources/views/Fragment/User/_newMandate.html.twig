@@ -1,0 +1,22 @@
+<form method="POST" name="formMandateCreate" id="formMandateCreate">
+    {{ form_errors(formMandate) }}
+    <label>Fonction</label>
+    <div class="styledSelect">
+        {{ form_widget(formMandate.p_q_mandate) }}
+    </div>
+
+    <label>Lieu ou circonscription</label>
+    {{ form_widget(formMandate.localization, { 'attr': {'placeholder': 'Ex: Corbelin (38630), Lot (1ère circo), ...'}}) }}
+    <div class="mandatePeriod">
+        <span class="dea">de</span>
+        {{ form_widget(formMandate.begin_at, { 'maxlength': 4, 'attr': {'placeholder': 'AAAA'}}) }}
+        <span class="dea">à</span>
+        {{ form_widget(formMandate.end_at, { 'maxlength': 4, 'attr': {'placeholder': 'AAAA*'}}) }}
+    </div>
+    <div class="mandateActions">
+        <br><br>
+        <a class="editMandateCreate btn btn-success" action="mandateCreate" uuid="{{ user.uuid }}">Ajouter</a>
+        <br><br>
+    </div>
+    {{ form_rest(formMandate) }}
+</form>

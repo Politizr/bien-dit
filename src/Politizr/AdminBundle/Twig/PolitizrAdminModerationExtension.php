@@ -52,26 +52,6 @@ class PolitizrAdminModerationExtension extends \Twig_Extension
 
 
     /**
-     *  Renvoie la liste des filtres
-     */
-    public function getFilters()
-    {
-        return array(
-            new \Twig_SimpleFilter(
-                'linkedModeration',
-                array($this, 'linkedModeration'),
-                array('is_safe' => array('html'), 'needs_environment' => true)
-            ),
-            new \Twig_SimpleFilter(
-                'linkedBanned',
-                array($this, 'linkedBanned'),
-                array('is_safe' => array('html'), 'needs_environment' => true)
-            ),
-        );
-    }
-
-
-    /**
      *  Renvoie la liste des fonctions
      */
     public function getFunctions()
@@ -90,91 +70,6 @@ class PolitizrAdminModerationExtension extends \Twig_Extension
         );
     }
 
-
-    /* ######################################################################################################## */
-    /*                                              FILTERS                                                     */
-    /* ######################################################################################################## */
-
-    /**
-     * Moderation notification HTML rendering
-     *
-     * @param PMUserModerated $userModerated
-     * @param string $type html or txt mail
-     * @return html
-     */
-    public function linkedModeration(\Twig_Environment $env, PMUserModerated $userModerated, $type)
-    {
-        // $this->logger->info('*** linkedModeration');
-        // $this->logger->info('$userModerated = '.print_r($userModerated, true));
-        // $this->logger->info('$type = '.print_r($type, true));
-
-        // User
-        $author = PUserQuery::create()->findPk($userModerated->getPUserId());
-
-        if ($author->isQualified()) {
-            $profileSuffix = 'E';
-        } else {
-            $profileSuffix = 'C';
-        }
-
-        $authorUrl = null;
-        if ($author) {
-            $authorUrl = $this->router->generate('UserDetail', array('slug' => $author->getSlug()), true);
-        }
-
-        // Update attributes depending of context
-        $attr = $this->documentService->computeDocumentContextAttributes(
-            $userModerated->getPObjectName(),
-            $userModerated->getPObjectId()
-        );
-
-        $subject = $attr['subject'];
-        $title = $attr['title'];
-        $url = $attr['url'];
-        $document = $attr['document'];
-        $documentUrl = $attr['documentUrl'];
-
-        $html = $env->render(
-            'PolitizrAdminBundle:Fragment\\Moderation:_notification.html.twig',
-            array(
-                'type' => $type,
-                'userModerated' => $userModerated,
-                'subject' => $subject,
-                'title' => $title,
-                'url' => $url,
-                'author' => $author,
-                'authorUrl' => $authorUrl,
-                'document' => $document,
-                'documentUrl' => $documentUrl,
-            )
-        );
-
-        return $html;
-    }
-
-    /**
-     * Moderation banned HTML rendering
-     *
-     * @param PUser $user
-     * @param string $type html or txt mail
-     * @return html
-     */
-    public function linkedBanned(\Twig_Environment $env, PUser $user, $type)
-    {
-        // $this->logger->info('*** linkedBanned');
-        // $this->logger->info('$user = '.print_r($user, true));
-        // $this->logger->info('$type = '.print_r($type, true));
-
-        $html = $env->render(
-            'PolitizrAdminBundle:Fragment\\Moderation:_banned.html.twig',
-            array(
-                'type' => $type,
-                'user' => $user,
-            )
-        );
-
-        return $html;
-    }
 
     /* ######################################################################################################## */
     /*                                              FUNCTIONS                                                   */

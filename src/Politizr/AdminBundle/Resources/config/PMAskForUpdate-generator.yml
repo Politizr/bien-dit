@@ -46,11 +46,11 @@ builders:
             tabs:
                 "Contenu":
                     "Texte":                    [ message ]
-                "Objets":
+                "Contexte":
                     "Utilisateur":              [ [ p_user ] ]
                     "Objet associé":            [ [ block_p_object ] ]
                 "Attributs":
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 block_p_object:
                     label:                      "Objet"

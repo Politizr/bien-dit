@@ -2,6 +2,7 @@ services:
     politizr.manager.user:
         class: Politizr\FrontBundle\Lib\Manager\UserManager
         arguments:
+            - @kernel
             - @security.encoder_factory
             - @fos_user.util.username_canonicalizer
             - @fos_user.util.email_canonicalizer
@@ -11,6 +12,7 @@ services:
     politizr.manager.document:
         class: Politizr\FrontBundle\Lib\Manager\DocumentManager
         arguments:
+            - @kernel
             - @politizr.manager.tag
             - @politizr.tools.global
             - @logger

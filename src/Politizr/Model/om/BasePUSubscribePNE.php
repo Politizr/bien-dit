@@ -43,12 +43,6 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
-     * The value for the id field.
-     * @var        int
-     */
-    protected $id;
-
-    /**
      * The value for the p_user_id field.
      * @var        int
      */
@@ -101,17 +95,6 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
-
-    /**
-     * Get the [id] column value.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-
-        return $this->id;
-    }
 
     /**
      * Get the [p_user_id] column value.
@@ -214,27 +197,6 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
         return $dt->format($format);
 
     }
-
-    /**
-     * Set the value of [id] column.
-     *
-     * @param  int $v new value
-     * @return PUSubscribePNE The current object (for fluent API support)
-     */
-    public function setId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->id !== $v) {
-            $this->id = $v;
-            $this->modifiedColumns[] = PUSubscribePNEPeer::ID;
-        }
-
-
-        return $this;
-    } // setId()
 
     /**
      * Set the value of [p_user_id] column.
@@ -364,11 +326,10 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
     {
         try {
 
-            $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->p_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->p_n_email_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->updated_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->p_user_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->p_n_email_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->created_at = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->updated_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -378,7 +339,7 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = PUSubscribePNEPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = PUSubscribePNEPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PUSubscribePNE object", $e);
@@ -622,15 +583,8 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = PUSubscribePNEPeer::ID;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PUSubscribePNEPeer::ID . ')');
-        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PUSubscribePNEPeer::ID)) {
-            $modifiedColumns[':p' . $index++]  = '`id`';
-        }
         if ($this->isColumnModified(PUSubscribePNEPeer::P_USER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`p_user_id`';
         }
@@ -654,9 +608,6 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`id`':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
-                        break;
                     case '`p_user_id`':
                         $stmt->bindValue($identifier, $this->p_user_id, PDO::PARAM_INT);
                         break;
@@ -676,13 +627,6 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
         }
-
-        try {
-            $pk = $con->lastInsertId();
-        } catch (Exception $e) {
-            throw new PropelException('Unable to get autoincrement id.', $e);
-        }
-        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -730,18 +674,15 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
-                break;
-            case 1:
                 return $this->getPUserId();
                 break;
-            case 2:
+            case 1:
                 return $this->getPNEmailId();
                 break;
-            case 3:
+            case 2:
                 return $this->getCreatedAt();
                 break;
-            case 4:
+            case 3:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -767,17 +708,16 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PUSubscribePNE'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['PUSubscribePNE'][serialize($this->getPrimaryKey())])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PUSubscribePNE'][$this->getPrimaryKey()] = true;
+        $alreadyDumpedObjects['PUSubscribePNE'][serialize($this->getPrimaryKey())] = true;
         $keys = PUSubscribePNEPeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
-            $keys[1] => $this->getPUserId(),
-            $keys[2] => $this->getPNEmailId(),
-            $keys[3] => $this->getCreatedAt(),
-            $keys[4] => $this->getUpdatedAt(),
+            $keys[0] => $this->getPUserId(),
+            $keys[1] => $this->getPNEmailId(),
+            $keys[2] => $this->getCreatedAt(),
+            $keys[3] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -826,18 +766,15 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
-                break;
-            case 1:
                 $this->setPUserId($value);
                 break;
-            case 2:
+            case 1:
                 $this->setPNEmailId($value);
                 break;
-            case 3:
+            case 2:
                 $this->setCreatedAt($value);
                 break;
-            case 4:
+            case 3:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -864,11 +801,10 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
     {
         $keys = PUSubscribePNEPeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPUserId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPNEmailId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[0], $arr)) $this->setPUserId($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPNEmailId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setCreatedAt($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setUpdatedAt($arr[$keys[3]]);
     }
 
     /**
@@ -880,7 +816,6 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
     {
         $criteria = new Criteria(PUSubscribePNEPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PUSubscribePNEPeer::ID)) $criteria->add(PUSubscribePNEPeer::ID, $this->id);
         if ($this->isColumnModified(PUSubscribePNEPeer::P_USER_ID)) $criteria->add(PUSubscribePNEPeer::P_USER_ID, $this->p_user_id);
         if ($this->isColumnModified(PUSubscribePNEPeer::P_N_EMAIL_ID)) $criteria->add(PUSubscribePNEPeer::P_N_EMAIL_ID, $this->p_n_email_id);
         if ($this->isColumnModified(PUSubscribePNEPeer::CREATED_AT)) $criteria->add(PUSubscribePNEPeer::CREATED_AT, $this->created_at);
@@ -900,29 +835,36 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
     public function buildPkeyCriteria()
     {
         $criteria = new Criteria(PUSubscribePNEPeer::DATABASE_NAME);
-        $criteria->add(PUSubscribePNEPeer::ID, $this->id);
+        $criteria->add(PUSubscribePNEPeer::P_USER_ID, $this->p_user_id);
+        $criteria->add(PUSubscribePNEPeer::P_N_EMAIL_ID, $this->p_n_email_id);
 
         return $criteria;
     }
 
     /**
-     * Returns the primary key for this object (row).
-     * @return int
+     * Returns the composite primary key for this object.
+     * The array elements will be in same order as specified in XML.
+     * @return array
      */
     public function getPrimaryKey()
     {
-        return $this->getId();
+        $pks = array();
+        $pks[0] = $this->getPUserId();
+        $pks[1] = $this->getPNEmailId();
+
+        return $pks;
     }
 
     /**
-     * Generic method to set the primary key (id column).
+     * Set the [composite] primary key.
      *
-     * @param  int $key Primary key.
+     * @param array $keys The elements of the composite key (order must match the order in XML file).
      * @return void
      */
-    public function setPrimaryKey($key)
+    public function setPrimaryKey($keys)
     {
-        $this->setId($key);
+        $this->setPUserId($keys[0]);
+        $this->setPNEmailId($keys[1]);
     }
 
     /**
@@ -932,7 +874,7 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return null === $this->getId();
+        return (null === $this->getPUserId()) && (null === $this->getPNEmailId());
     }
 
     /**
@@ -966,7 +908,6 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
 
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1119,7 +1060,6 @@ abstract class BasePUSubscribePNE extends BaseObject implements Persistent
      */
     public function clear()
     {
-        $this->id = null;
         $this->p_user_id = null;
         $this->p_n_email_id = null;
         $this->created_at = null;

@@ -1,10 +1,9 @@
 {% extends_admingenerated "PolitizrAdminBundle:PUserEdit:index.html.twig" %}
 
-{% block javascripts %}
+{% block stylesheets %}
     {{ parent() }}
 
-    {# TinyMCE #}
-    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+    <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/dropzone.css') }}">
 {% endblock %}
 
 {% block generic_actions_script_container %}
@@ -14,8 +13,12 @@
         var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
     </script>
 
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/autocomplete-tools') }}"></script>    
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/autocomplete-tools.js') }}"></script>    
     <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
 
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/reputation/user.js') }}"></script>  
+    
+    {# Upload #}
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/dropzone.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
 {% endblock generic_actions_script_container %}

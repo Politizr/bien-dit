@@ -1,4 +1,3 @@
-Vous avez été banni
 {{ user.updatedAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}
-{{ user | linkedBanned(constant('Politizr\\Constant\\ModerationConstants::TYPE_EMAIL_TXT')) }}
+Vous avez été banni
 {% include 'PolitizrFrontBundle:Email:_signature.txt.twig' %}

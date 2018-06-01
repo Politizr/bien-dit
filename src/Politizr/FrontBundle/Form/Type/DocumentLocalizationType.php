@@ -69,7 +69,7 @@ class DocumentLocalizationType extends AbstractType
                 }
             } else {
                 // If user is out of France, default is "circonscription" / other case > "city"
-                if ($this->localizationManager->isOutOfFranceByCityId($user->getPLCityId())) {
+                if ($user && $this->localizationManager->isOutOfFranceByCityId($user->getPLCityId())) {
                     $currentType = LocalizationConstants::TYPE_CIRCONSCRIPTION;
                 } else {
                     $currentType = LocalizationConstants::TYPE_CITY;
@@ -119,7 +119,7 @@ class DocumentLocalizationType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'current_uuid' => $currentUuid,
-                'user_city_id' => $user->getPLCityId(),
+                'user_city_id' => $user?$user->getPLCityId():null,
             ));
 
             // Localization department type
@@ -128,7 +128,7 @@ class DocumentLocalizationType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'current_uuid' => $currentUuid,
-                'user_city_id' => $user->getPLCityId(),
+                'user_city_id' => $user?$user->getPLCityId():null,
             ));
 
             // Localization region type
@@ -137,7 +137,7 @@ class DocumentLocalizationType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'current_uuid' => $currentUuid,
-                'user_city_id' => $user->getPLCityId(),
+                'user_city_id' => $user?$user->getPLCityId():null,
             ));
 
             // Localization circonscription type
@@ -146,7 +146,7 @@ class DocumentLocalizationType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'current_uuid' => $currentUuid,
-                'user_city_id' => $user->getPLCityId(),
+                'user_city_id' => $user?$user->getPLCityId():null,
             ));
 
             $event->setData($document);

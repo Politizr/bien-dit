@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\POSubscription
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -72,7 +73,7 @@ builders:
                     "Prix":                     [ price ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                    "Dates":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
                 price:
                     formType:                   money
@@ -103,7 +104,7 @@ builders:
                     "Souscription":             [ ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                    "Dates":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
                 price:
                     formType:                   money

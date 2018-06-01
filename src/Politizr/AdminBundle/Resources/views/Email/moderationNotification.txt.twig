@@ -1,4 +1,3 @@
-Une de vos publications a été modérée
 {{ userModerated.createdAt | localizeddate('medium', 'short', app.request.locale, "Europe/Paris", "EEEE d MMMM à HH'h'mm" ) | capitalize }}
-{{ userModerated | linkedModeration(constant('Politizr\\Constant\\ModerationConstants::TYPE_EMAIL_TXT')) }}
+Certains de vos propos ne sont pas conformes à notre charte et ont été modérés.
 {% include 'PolitizrFrontBundle:Email:_signature.txt.twig' %}

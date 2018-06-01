@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\POrder
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -139,7 +140,7 @@ builders:
             tabs:
                 "Commande":
                     "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description ], [ subscription_begin_at, subscription_end_at ], [ information ] ]
-                "Objets":
+                "Contexte":
                     "Utilisateur":              [ p_user ]
                 "Utilisateur":
                     "Coordonnées":              [ [ gender, firstname, name ], [ phone, email ] ]
@@ -154,7 +155,7 @@ builders:
                     "Actuel":                   [ [ p_o_order_state ] ]
                 "Attributs":
                     "Identifiants":             [ id, uuid ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 uploadedSupportingDocument:
                     dbType:                     VARCHAR
@@ -204,7 +205,7 @@ builders:
             tabs:
                 "Commande":
                     "Type":                     [ [ p_o_subscription ], [ price, promotion, total ], [ subscription_title, subscription_description ], [ subscription_begin_at, subscription_end_at ], [ information ] ]
-                "Objets":
+                "Contexte":
                     "Utilisateur":              [ block_p_user ]
                 "Utilisateur":
                     "Coordonnées":              [ [ gender, firstname, name ], [ phone, email ] ]
@@ -215,7 +216,7 @@ builders:
                     "Actuel":                   [ [ p_o_order_state ] ]
                 "Attributs":
                     "Identifiants":             [ id, uuid ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 block_p_user:
                     label:                      "Auteur"

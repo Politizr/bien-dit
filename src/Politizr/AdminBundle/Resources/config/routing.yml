@@ -30,13 +30,6 @@ AdminXhrGeneric:
         xhrRoute:       ".+"
         xhrType:        \d
 
-# ADMIN DEDICATED XHR
-Politizr_AdminBundle_New_UpdPDDebate:
-    pattern:  /PDReaction/xhr/updatePDDebate.json
-    defaults: { _controller: PolitizrAdminBundle:PDReaction\Actions:updatePDReaction }
-    requirements:
-        _method:        POST
-
 # Accueil
 PolitizrAdminHomepage:
     pattern:  /
@@ -51,21 +44,120 @@ Politizr_AdminBundle_POrder_mail:
     pattern:  /POrder/{pk}/mail
     defaults: { _controller: PolitizrAdminBundle:POrder/Actions:mail }
 
+# Utilisateurs
+Politizr_AdminBundle_PUser_moderation_update:
+    pattern:  /PUser/{pk}/moderation/update
+    defaults: { _controller: PolitizrAdminBundle:PUser/Actions:moderationUpdate }
+    requirements:
+        _method:        POST
 
-# Débats
+Politizr_AdminBundle_PUser_filename_upload:
+    pattern:  /PUser/{pk}/filename/upload
+    defaults: { _controller: PolitizrAdminBundle:PUser/Actions:filenameUpload }
+    requirements:
+        _method:        POST
+
+Politizr_AdminBundle_PUser_filename_delete:
+    pattern:  /PUser/{pk}/filename/delete
+    defaults: { _controller: PolitizrAdminBundle:PUser/Actions:filenameDelete }
+
+# Sujets
 Politizr_AdminBundle_PDDebate_Comments:
     pattern:  /PDDebate/{pk}/comments
     defaults: { _controller: PolitizrAdminBundle:PDDebate/Actions:comments }
 
+Politizr_AdminBundle_PDDebate_moderation_update:
+    pattern:  /PDDebate/{pk}/moderation/update
+    defaults: { _controller: PolitizrAdminBundle:PDDebate/Actions:moderationUpdate }
+    requirements:
+        _method:        POST
 
-# Réactions
-# Politizr_AdminBundle_PDReaction_NewNode:
-#     pattern:  /PDReaction/{pk}/new_node
-#     defaults: { _controller: PolitizrAdminBundle:PDReaction/Actions:newNode }
-
+# Réponses
 Politizr_AdminBundle_PDReaction_Comments:
     pattern:  /PDReaction/{pk}/comments
     defaults: { _controller: PolitizrAdminBundle:PDReaction/Actions:comments }
+
+Politizr_AdminBundle_PDReaction_moderation_update:
+    pattern:  /PDReaction/{pk}/moderation/update
+    defaults: { _controller: PolitizrAdminBundle:PDReaction/Actions:moderationUpdate }
+    requirements:
+        _method:        POST
+
+# Medias
+Politizr_AdminBundle_PDMedia_filename_upload:
+    pattern:  /PDMedia/{pk}/filename/upload
+    defaults: { _controller: PolitizrAdminBundle:PDMedia/Actions:filenameUpload }
+    requirements:
+        _method:        POST
+
+Politizr_AdminBundle_PDMedia_filename_delete:
+    pattern:  /PDMedia/{pk}/filename/delete
+    defaults: { _controller: PolitizrAdminBundle:PDMedia/Actions:filenameDelete }
+
+# Comments
+Politizr_AdminBundle_PDDComment_moderation_update:
+    pattern:  /PDDComment/{pk}/moderation/update
+    defaults: { _controller: PolitizrAdminBundle:PDDComment/Actions:moderationUpdate }
+    requirements:
+        _method:        POST
+
+Politizr_AdminBundle_PDRComment_moderation_update:
+    pattern:  /PDRComment/{pk}/moderation/update
+    defaults: { _controller: PolitizrAdminBundle:PDRComment/Actions:moderationUpdate }
+    requirements:
+        _method:        POST
+
+# Circles
+Politizr_AdminBundle_PCircle_addUsersToCircle:
+    pattern:  /PCircle/addUsersToCircle
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:addUsersToCircle }
+
+Politizr_AdminBundle_PCircle_removeUsersFromCircle:
+    pattern:  /PCircle/removeUsersFromCircle
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:removeUsersFromCircle }
+
+Politizr_AdminBundle_PCircle_addUsersIsAuthorizedReactionToCircle:
+    pattern:  /PCircle/addUsersIsAuthorizedReactionToCircle
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:addUsersIsAuthorizedReactionToCircle }
+
+Politizr_AdminBundle_PCircle_removeUsersIsAuthorizedReactionToCircle:
+    pattern:  /PCircle/removeUsersIsAuthorizedReactionToCircle
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:removeUsersIsAuthorizedReactionToCircle }
+
+Politizr_AdminBundle_PCircle_filename_upload:
+    pattern:  /PCircle/{pk}/filename/upload
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:filenameUpload }
+    requirements:
+        _method:        POST
+
+Politizr_AdminBundle_PCircle_filename_delete:
+    pattern:  /PCircle/{pk}/filename/delete
+    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:filenameDelete }
+
+# Topics
+Politizr_AdminBundle_PCTopic_filename_upload:
+    pattern:  /PCTopic/{pk}/filename/upload
+    defaults: { _controller: PolitizrAdminBundle:PCTopic/Actions:filenameUpload }
+    requirements:
+        _method:        POST
+
+Politizr_AdminBundle_PCTopic_filename_delete:
+    pattern:  /PCTopic/{pk}/filename/delete
+    defaults: { _controller: PolitizrAdminBundle:PCTopic/Actions:filenameDelete }
+
+Politizr_AdminBundle_PCTopic_localization_update:
+    pattern:  /PCTopic/{pk}/localization/update
+    defaults: { _controller: PolitizrAdminBundle:PCTopic/Actions:localizationUpdate }
+    requirements:
+        _method:        POST
+
+# Tags
+Politizr_AdminBundle_PTag_moderation_update:
+    pattern:  /PTag/{pk}/moderation/update
+    defaults: { _controller: PolitizrAdminBundle:PTag/Actions:moderationUpdate }
+    requirements:
+        _method:        POST
+
 
 # Archivage
 Politizr_AdminBundle_PDDComment_archive:
@@ -87,24 +179,6 @@ Politizr_AdminBundle_PDReaction_archive:
 Politizr_AdminBundle_PUser_archive:
     pattern:  /PUser/{pk}/archive
     defaults: { _controller: PolitizrAdminBundle:PUser/Actions:archive }
-
-
-# Circles
-Politizr_AdminBundle_PCircle_addUsersToCircle:
-    pattern:  /PCircle/addUsersToCircle
-    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:addUsersToCircle }
-
-Politizr_AdminBundle_PCircle_removeUsersFromCircle:
-    pattern:  /PCircle/removeUsersFromCircle
-    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:removeUsersFromCircle }
-
-Politizr_AdminBundle_PCircle_addUsersIsAuthorizedReactionToCircle:
-    pattern:  /PCircle/addUsersIsAuthorizedReactionToCircle
-    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:addUsersIsAuthorizedReactionToCircle }
-
-Politizr_AdminBundle_PCircle_removeUsersIsAuthorizedReactionToCircle:
-    pattern:  /PCircle/removeUsersIsAuthorizedReactionToCircle
-    defaults: { _controller: PolitizrAdminBundle:PCircle/Actions:removeUsersIsAuthorizedReactionToCircle }
 
 
 ################################################################################
@@ -344,3 +418,4 @@ Politizr_AdminBundle_PMCharte:
     resource: "@PolitizrAdminBundle/Controller/PMCharte/"
     type:     admingenerator
     prefix:   /PMCharte
+

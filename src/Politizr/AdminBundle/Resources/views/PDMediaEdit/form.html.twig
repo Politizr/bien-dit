@@ -1,9 +1,14 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDMediaEdit:form.html.twig" %}
 
-{# Bloc tags #}
-{% block form_row_uploadedfilename %}
-    {% if PDMedia.fileName %}
-        <img src="{{ asset('/uploads/documents/'~PDMedia.fileName) | imagine_filter('admin_banner_thumb') }}" alt="{{ PDMedia.fileName }}">
-    {% endif %}
+{# Image block #}
+{% block form_row_block_file_name %}
+    <div class="form-group col-md-4">
+        <label class="control-label">Image</label>
+        <div id="dropzone" class="dropzone" path="{{ path('Politizr_AdminBundle_PDMedia_filename_upload', {'pk': PDMedia.id}) }}" deletePath="{{ path('Politizr_AdminBundle_PDMedia_filename_delete', {'pk': PDMedia.id}) }}" {% if PDMedia | fileExists %}currentFileName="{{ constant('Politizr\\Constant\\DocumentConstants::DOC_THUMBNAIL_PREFIX') }}{{ PDMedia.FileName }}" uploadPath="{{ constant('Politizr\\Constant\\PathConstants::DOCUMENT_UPLOAD_WEB_PATH') }}" fileSize="{{ PDMedia.size }}"{% endif %}>
+            <div class="dz-message uploadLink" data-dz-message><span class="btn btn-primary">Télécharger</span></div>
+        </div>
+        <div id="dz-preview-container">
+        </div>
+        {% include "PolitizrAdminBundle:Fragment:_dropzoneTemplate.html.twig" %}
+    </div>
 {% endblock %}
-

@@ -1,14 +1,20 @@
 {% spaceless %}
-<div class="addTag withLoaderInside" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" uuid="{{ object.uuid }}" newTag="{{ newTag }}" withHidden="{{ withHidden }}" path="{{ pathCreate }}">
+<div class="addTag withLoaderInside form-group col-md-12" id="editTagZone-{{ zoneId }}" tagTypeId="{{ tagTypeId }}" uuid="{{ object.uuid }}" newTag="{{ newTag }}" withHidden="{{ withHidden }}" path="{{ pathCreate }}">
     {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
 
-    <div class="formAddTag">
-        <input type="text" class="selectedTag" placeholder="Saisissez une nouvelle thématique" />
+    <div class="formAddTag col-md-6">
+        <input type="text" class="form-control col-md-4 selectedTag" placeholder="Saisissez une nouvelle thématique" />
         <input type="hidden" class="selectedTagUuid" />
-        <button type="button" action="addTag">Ajouter</i></button>
+    </div>
+    <div class="col-md-6">
+        <button type="button" action="addTag" class="col-md-2 btn btn-primary">Ajouter</i></button>
     </div>
 
-    <div class="editableTagList">
+    <div class="col-md-12">
+        <hr>
+    </div>
+
+    <div class="editableTagList col-md-12">
         {% for tag in tags %}
             {% include 'PolitizrAdminBundle:Fragment\\Tag:_detailEditable.html.twig' with { 'uuid': object.uuid, 'tag': tag } %}
         {% endfor %}

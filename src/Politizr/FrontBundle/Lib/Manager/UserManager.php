@@ -6,12 +6,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\UserConstants;
+use Politizr\Constant\PathConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUFollowDD;
 use Politizr\Model\PUFollowU;
 use Politizr\Model\PUMandate;
 use Politizr\Model\PUSubscribePNE;
+use Politizr\Model\PMUserHistoric;
+use Politizr\Model\PMUserModerated;
 
 use Politizr\Model\PUserQuery;
 use Politizr\Model\PUFollowDDQuery;
@@ -25,6 +28,8 @@ use Politizr\Model\PNotificationQuery;
  */
 class UserManager
 {
+    private $kernel;
+
     private $encoderFactory;
     private $usernameCanonicalizer;
     private $emailCanonicalizer;
@@ -34,14 +39,17 @@ class UserManager
 
     /**
      *
+     * @param @kernel
      * @param @security.encoder_factory
      * @param @fos_user.util.username_canonicalizer
      * @param @fos_user.util.email_canonicalizer
      * @param @politizr.tools.global
      * @param @logger
      */
-    public function __construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $globalTools, $logger)
+    public function __construct($kernel, $encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $globalTools, $logger)
     {
+        $this->kernel = $kernel;
+
         $this->encoderFactory = $encoderFactory;
         $this->usernameCanonicalizer = $usernameCanonicalizer;
         $this->emailCanonicalizer = $emailCanonicalizer;
@@ -1266,5 +1274,70 @@ LIMIT :offset, :limit
 
             $puSubscribePne->save();
         }
+    }
+
+    /**
+     * Create an archive of input user
+     *
+     * @param PUser $user
+     * @return PMUserHistoric
+     */
+    public function createArchive(PUser $user) {
+        if ($user == null) {
+            return null;
+        }
+
+        $mUser = new PMUserHistoric();
+
+        $mUser->setPUserId($user->getId());
+        $mUser->setPObjectId($user->getId());
+        $mUser->setSubtitle($user->getSubtitle());
+        $mUser->setBiography($user->getBiography());
+        $mUser->setCopyright($user->getCopyright());
+
+        // File copy
+        if ($user->getFileName()) {
+            $destFileName = $this->globalTools->copyFile(
+                $this->kernel->getRootDir() .
+                PathConstants::KERNEL_PATH_TO_WEB .
+                PathConstants::USER_UPLOAD_WEB_PATH .
+                $user->getFileName()
+            );
+            $mUser->setFileName($destFileName);
+        }
+
+        $mUser->save();
+
+        return $mUser;
+    }
+
+    /**
+     * Create a PMUserModerated object
+     *
+     * @param int $userId
+     * @param int $moderationTypeId
+     * @param string $objectName
+     * @param int $objectId
+     * @param int $scoreEvolution
+     * @return PMUserModerated
+     */
+    public function createUserModerated(
+        $userId,
+        $moderationTypeId,
+        $objectName,
+        $objectId,
+        $scoreEvolution
+    ) {
+        $mUser = new PMUserModerated();
+
+        $mUser->setPUserId($userId);
+        $mUser->setPMModerationTypeId($moderationTypeId);
+        $mUser->setPObjectName($objectName);
+        $mUser->setPObjectId($objectId);
+        $mUser->setScoreEvolution($scoreEvolution);
+
+        $mUser->save();
+
+        return $mUser;
     }
 }

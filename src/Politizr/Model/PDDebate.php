@@ -87,11 +87,23 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
     }
 
     /**
-     * @see PDocumentInterface::isDisplayed
+     * Check if debate is active
+     *
+     * @return boolean
      */
-    public function isDisplayed()
+    public function isActive()
     {
-        return $this->getOnline() && $this->getPublished();
+        $active = PDDebateQuery::create()
+                    ->online()
+                    ->filterById($this->getId())
+                    ->count()
+                    ;
+
+        if ($active) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -273,6 +285,24 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
         }
 
         return $localizations;
+    }
+
+    /**
+     * Stringifier of localizations
+     * 
+     * @return string
+     */
+    public function getLocalizations()
+    {
+        $localizations = $this->getPLocalizations();
+
+        if (count($localizations) > 1) {
+            return implode(' - ', $localizations);
+        } elseif (count($localizations) == 1) {
+            return $localizations[0];
+        }
+
+        return 'Aucune';
     }
 
     /* ######################################################################################################## */

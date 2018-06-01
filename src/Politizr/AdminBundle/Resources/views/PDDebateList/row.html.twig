@@ -1,33 +1,5 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateList:row.html.twig" %}
 
-{% block list_td_column_file_name %}
-    {{ PDDebate | image('admin_list_thumb', false) }}
-{% endblock list_td_column_file_name %}
-
 {% block list_td_column_p_user_id %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDDebate.PUserId) }}
-{% endblock %}
-
-{% block list_td_column_p_l_city_id %}
-    {% if PDDebate.PLCityId %}
-        {{ PDDebate.PLCity }}
-    {% endif %}
-{% endblock %}
-
-{% block list_td_column_p_l_department_id %}
-    {% if PDDebate.PLDepartmentId %}
-        {{ PDDebate.PLDepartment }}
-    {% elseif PDDebate.PLCityId %}
-        {{ PDDebate.PLCity.PLDepartment }}
-    {% endif %}
-{% endblock %}
-
-{% block list_td_column_p_l_region_id %}
-    {% if PDDebate.PLRegionId %}
-        {{ PDDebate.PLRegion }}
-    {% elseif PDDebate.PLDepartmentId %}
-        {{ PDDebate.PLDepartment.PLRegion }}
-    {% elseif PDDebate.PLCityId %}
-        {{ PDDebate.PLCity.PLDepartment.PLRegion }}
-    {% endif %}
 {% endblock %}

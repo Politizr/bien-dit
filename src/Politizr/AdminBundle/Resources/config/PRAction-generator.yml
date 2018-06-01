@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\PRAction
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -64,7 +65,7 @@ builders:
                     "Texte":                    [ [ title, score_evolution ], [ description ] ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 id:
                     addFormOptions:
@@ -88,7 +89,7 @@ builders:
     #             "Contenu":
     #                 "Texte":                    [ [ title, score_evolution ], [ description ] ]
     #             "Attributs":
-    #                 "Création":                 [ [ created_at, updated_at ] ]
+    #                 "Dates":                 [ [ created_at, updated_at ] ]
     #         fields:
     #             block_badges:
     #                 label:                      "Badges"

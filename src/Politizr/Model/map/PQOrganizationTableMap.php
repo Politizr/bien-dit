@@ -65,9 +65,7 @@ class PQOrganizationTableMap extends TableMap
     {
         $this->addRelation('PQType', 'Politizr\\Model\\PQType', RelationMap::MANY_TO_ONE, array('p_q_type_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('PUMandate', 'Politizr\\Model\\PUMandate', RelationMap::ONE_TO_MANY, array('id' => 'p_q_organization_id', ), 'SET NULL', 'CASCADE', 'PUMandates');
-        $this->addRelation('PUAffinityQOPQOrganization', 'Politizr\\Model\\PUAffinityQO', RelationMap::ONE_TO_MANY, array('id' => 'p_q_organization_id', ), 'CASCADE', 'CASCADE', 'PUAffinityQOPQOrganizations');
         $this->addRelation('PUCurrentQOPQOrganization', 'Politizr\\Model\\PUCurrentQO', RelationMap::ONE_TO_MANY, array('id' => 'p_q_organization_id', ), 'CASCADE', 'CASCADE', 'PUCurrentQOPQOrganizations');
-        $this->addRelation('PUAffinityQOPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUAffinityQOPUsers');
         $this->addRelation('PUCurrentQOPUser', 'Politizr\\Model\\PUser', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'PUCurrentQOPUsers');
     } // buildRelations()
 

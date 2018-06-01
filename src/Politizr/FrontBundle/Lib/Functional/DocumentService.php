@@ -17,6 +17,7 @@ use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PDDebate;
 use Politizr\Model\PDReaction;
 use Politizr\Model\PUser;
+use Politizr\Model\PDMedia;
 
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
@@ -686,6 +687,35 @@ class DocumentService
 
         return false;
     }
+
+    /**
+     * Update a media object by updating relative file & attributes
+     *
+     * @param PDMedia $media
+     * @param string $absolutePath
+     * @return PDMedia
+     */
+    public function updateMediaFile(PDMedia $media, $absolutePath)
+    {
+        if (!$media || !$absolutePath) {
+            throw new InconsistentDataException('Media and/or absolutePath null');
+        }
+
+        $image = new SimpleImage();
+        $image->load($absolutePath);
+
+        $media->setPath($image->getPath());
+        $media->setFileName($image->getBasename());
+        $media->setExtension($image->getExtension());
+        $media->setSize($image->getSize());
+        $media->setWidth($image->getWidth());
+        $media->setHeight($image->getHeight());
+
+        $media->save();
+
+        return $media;
+    }
+
 
     /* ######################################################################################################## */
     /*                                CONTEXT DOCUMENT COMPUTING                                                */

@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints\Range;
 use Politizr\Model\PMModerationTypeQuery;
 
 /**
- *
+ * @deprecated
  * @author Lionel Bouzonville
  */
 class PMUserModeratedType extends AbstractType
@@ -49,7 +49,7 @@ class PMUserModeratedType extends AbstractType
         
         $builder->add('score_evolution', 'text', array(
             'required' => false,
-            'label' => 'Evolution de réputation',
+            'label' => 'Évolution de réputation',
             'constraints' => array(
                 new Range(array('max' => '0', 'maxMessage' => 'Nombre négatif')),
             ),

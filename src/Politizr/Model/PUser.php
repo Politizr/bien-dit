@@ -93,6 +93,26 @@ class PUser extends BasePUser implements UserInterface
     }
 
     /**
+     * Check if profile is active
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        $active = PUserQuery::create()
+                    ->online()
+                    ->filterById($this->getId())
+                    ->count()
+                    ;
+
+        if ($active) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      *
      */
     public function getFullName()
@@ -627,6 +647,27 @@ class PUser extends BasePUser implements UserInterface
     // ************************************************************************************ //
     //                                          ORGANIZATIONS
     // ************************************************************************************ //
+
+    /**
+     *
+     * @param PUser $user
+     * @return PUser
+     */
+    public function addCurrentOrganization(PQOrganization $organization)
+    {
+        return parent::addPUCurrentQOPQOrganization($organization);
+    }
+
+    /**
+     *
+     * @param PUser $user
+     * @return PUser
+     */
+    public function removeCurrentOrganization(PQOrganization $organization)
+    {
+        return parent::removePUCurrentQOPQOrganization($organization);
+    }
+
 
     /**
      * User's current organizations

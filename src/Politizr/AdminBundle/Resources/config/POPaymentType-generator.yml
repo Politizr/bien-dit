@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\POPaymentType
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -57,7 +58,7 @@ builders:
                 "Contenu":
                     "Texte":                    [ [ title ], [ description ] ]
                 "Attributs":
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                    "Dates":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
                 created_at:
                     addFormOptions:
@@ -75,7 +76,7 @@ builders:
                 "Contenu":
                     "Texte":                    [ [ title ], [ description ] ]
                 "Attributs":
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                    "Dates":                 [ [ online ], [ created_at, updated_at ] ]
             actions:
               list:                             ~
               delete:                           ~

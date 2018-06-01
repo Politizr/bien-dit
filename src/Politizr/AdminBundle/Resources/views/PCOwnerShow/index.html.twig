@@ -1,1 +1,9 @@
 {% extends_admingenerated "PolitizrAdminBundle:PCOwnerShow:index.html.twig" %}
+
+{% block show_column_summary %}
+    {{ PCOwner.summary | purify }}
+{% endblock %}
+
+{% block show_column_description %}
+    {{ PCOwner.description | purify }}
+{% endblock %}

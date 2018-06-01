@@ -25,6 +25,12 @@ class PathConstants
     // ************************************************************************************ //
     //                                        DEBATES
     // ************************************************************************************ //
+    const DOCUMENT_UPLOAD_PATH = '/../../../web/uploads/documents/';
+    const DOCUMENT_UPLOAD_WEB_PATH = '/uploads/documents/';
+
+    // ************************************************************************************ //
+    //                                        DEBATES
+    // ************************************************************************************ //
     const DEBATE_UPLOAD_PATH = '/../../../web/uploads/documents/';
     const DEBATE_UPLOAD_WEB_PATH = '/uploads/documents/';
     const DEBATE_DEFAULT_PATH = 'bundles/politizrfront/images/';

@@ -14,6 +14,8 @@ Politizr\Model\CmsPage:
         title:
             - NotBlank:     ~
 
+
+
 ####################################### USER #####################################
 
 Politizr\Model\PUser:
@@ -45,10 +47,10 @@ Politizr\Model\POrder:
 #         title:
 #             - NotBlank:     ~
 
-Politizr\Model\PDReaction:
-    properties:
-        p_d_debate_id:
-            - NotBlank:     ~
+# Politizr\Model\PDReaction:
+#     properties:
+#         p_d_debate_id:
+#             - NotBlank:     ~
 #         p_user_id:
 #             - NotBlank:     ~
 #         title:

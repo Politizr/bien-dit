@@ -1,7 +1,26 @@
 {% extends_admingenerated "PolitizrAdminBundle:PCircleShow:index.html.twig" %}
 
-{# Objets #}
+{% block show_column_block_logo_file_name %}
+    {% if PCircle.LogoFileName %}
+        {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ PCircle.LogoFileName} %}
+    {% else %}
+        Aucune image
+    {% endif %}
+{% endblock %}
+
+{% block show_column_description %}
+    {{ PCircle.getDescription | purify }}
+{% endblock %}
+
 {% block show_column_block_p_c_owner %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_CIRCLE_OWNER'), PCircle.PCOwnerId) }}
 {% endblock %}
 
+{# Block front link #}
+{% block show_column_block_front %}
+    {% if PCircle.online %}
+        <a href="{{ path('CircleDetail', {'slug': PCircle.slug}) }}" target="_blank">Consulter</a>
+    {% else %}
+        Hors ligne
+    {% endif %}
+{% endblock %}

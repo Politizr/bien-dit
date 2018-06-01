@@ -1,7 +1,7 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDMediaList:row.html.twig" %}
 
 {% block list_td_column_file_name %}
-    {% if PDMedia.fileName %}
+    {% if PDMedia | fileExists %}
         <img src="{{ asset('/uploads/documents/'~PDMedia.fileName) | imagine_filter('admin_banner_thumb') }}" alt="{{ PDMedia.fileName }}">
     {% endif %}
 {% endblock list_td_column_file_name %}

@@ -10,7 +10,6 @@
 {% endif %}
 
 <div class="tagLabel tagLabel btn btn-{{ twbLabel }}{% if tag.hasVirtualColumn('hidden') and tag.virtualColumn('hidden') %} tagInvisible{% endif %}" tagUuid="{{ tag.uuid }}" uuid="{{ uuid }}">
-{{ tag.title }}{% if withHidden %}<a action="hideTag" path="{{ pathHide }}"><i class="fa fa-eye-slash"></i></a>{% endif %}
-<a action="deleteTag" path="{{ pathDelete }}"><i class="fa fa-close"></i></a>
-</div>
+{{ tag.title }}&nbsp;<a action="deleteTag" path="{{ pathDelete }}"><i class="fa fa-close"></i></a>
+</div>&nbsp;&nbsp;
 {% endspaceless %}

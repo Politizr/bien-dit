@@ -55,7 +55,7 @@ builders:
                 "Contenu":
                     "Texte":                    [ description ]
                 "Attributs":
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                    "Dates":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
                 summary:
                     grid_class:                 "col-md-12"

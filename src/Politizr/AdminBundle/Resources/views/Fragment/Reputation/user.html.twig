@@ -1,8 +1,15 @@
-<label class="control-label">Score de réputation</label>
-<div id="reputationUserScore">{{ user.getReputationScore }}</div>
-<label class="control-label">Mise à jour admin de la réputation</label>
-<div id="reputationUserManagement">
-    <div class="helper">Indiquer une variation de la réputation à appliquer, par exemple "10" ou "-5"</div>
-    <input type="text" id="reputationUserEvolution" />
-    <a action="updateReputationUser" subjectId="{{ user.id }}">Faire évoluer</a>
+<div class="form-group">
+    <label class="control-label">Score de réputation</label>
+    <div id="reputationUserScore">
+        {{ user.getReputationScore }}
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label">Mise à jour</label>
+    <div id="reputationUserManagement">
+        <input type="text" id="reputationUserEvolution" />
+        <a action="updateReputationUser" subjectId="{{ user.id }}" class="btn btn-primary">Appliquer</a><br/><br/>
+        <i class="fa fa-exclamation-triangle" aria-hidden="true">&nbsp;Indiquer une variation de la réputation à appliquer, par exemple "10" ou "-5", et cliquer sur "Appliquer"</i>
+    </div>
 </div>

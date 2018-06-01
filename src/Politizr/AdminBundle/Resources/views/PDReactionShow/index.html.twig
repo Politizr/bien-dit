@@ -1,15 +1,27 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDReactionShow:index.html.twig" %}
 
-{# Image upload #}
-{% block show_column_block_file_name %}
-    {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 1, 'fileName': PDReaction.fileName,'subjectId': PDReaction.id, 'queryClass': 'Politizr\\Model\\PDReactionQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::REACTION_UPLOAD_WEB_PATH')} %}
+{# Contenus #}
+{% block show_column_summary %}
+    {{ PDReaction.getSummary | purify }}
 {% endblock %}
 
-{% block show_column_copyright %}
-    {{ PDReaction.getCopyright | purify }}
+{% block show_column_description %}
+    {{ PDReaction.getDescription | purify }}
 {% endblock %}
 
-{# Objets #}
+{% block show_column_block_p_d_medias %}
+    {% if PDReaction.countPDMedias > 0 %}
+        <ol>
+            {% for media in PDReaction.PDMedias %}
+                <li>{{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_MEDIA'), media.id) }}</li>
+            {% endfor %}
+        </ol>
+        <i class="fa fa-exclamation-triangle" aria-hidden="true">&nbsp;Note: suivez les liens pour mettre à jour les images du document.</i>
+    {% else %}
+        Aucune
+    {% endif %}
+{% endblock %}
+
 {% block show_column_block_p_user %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDReaction.PUserId) }}
 {% endblock %}
@@ -22,28 +34,19 @@
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDReaction.ParentReactionId) }}
 {% endblock %}
 
-{# Contenus #}
-{% block show_column_summary %}
-    {{ PDReaction.getSummary | purify }}
+{% block show_column_block_p_c_topic %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_TOPIC'), PDReaction.PCTopicId) }}
 {% endblock %}
 
-{% block show_column_description %}
-    {{ PDReaction.getDescription | purify }}
-{% endblock %}
+
+{# Bloc réactions #}
+{% block show_column_block_reactions %}
+    {{ adminReactionReactions(PDReaction, 'show') }}
+{% endblock show_column_block_reactions %}
 
 {# Bloc tags #}
 {% block show_column_block_tags %}
     {{ adminReactionTags(PDReaction, null, 1, mode='show') }}
-{% endblock %}
-
-{# Bloc loc #}
-{% block show_column_block_loc %}
-    {{ adminDocumentLoc(PDReaction, constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION')) }}
-{% endblock %}
-
-{# Block moderation new alert #}
-{% block show_column_block_moderation_alert_new %}
-    {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDReaction.Id, PDReaction.PUserId) }}
 {% endblock %}
 
 {# Block moderation alert listing #}
@@ -64,11 +67,9 @@
     {% endif %}
 {% endblock %}
 
-
-
 {# Block front link #}
 {% block show_column_block_front %}
-    {% if PDReaction.online and PDReaction.published %}
+    {% if PDReaction.active %}
         <a href="{{ path('ReactionDetail', {'slug': PDReaction.slug}) }}" target="_blank">Consulter</a>
     {% else %}
         Hors ligne
@@ -79,18 +80,3 @@
 {% block show_column_block_comments %}
     {{ adminReactionComments(PDReaction) }}
 {% endblock %}
-
-{% block object_actions_script_container %}
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery.form.min.js') }}"></script>  
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
-
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>  
-
-    {# localization js #}
-    <script>
-        // User localization vars
-        var xhrRouteCity = ADMIN_ROUTE_CITY_LISTING;
-    </script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/localization/edit.js') }}"></script>  
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/document/localization.js') }}"></script>  
-{% endblock object_actions_script_container %}

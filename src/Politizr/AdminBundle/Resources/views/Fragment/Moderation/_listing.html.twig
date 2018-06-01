@@ -5,11 +5,13 @@
         <tr>
             <th>Type</th>
             <th>Objet associé</th>
+            <th>Date</th>
         </tr>
         {% for moderation in moderations %}
             <tr>
                 <td>{{ moderation.PMModerationType }}</td>
                 <td>{{ adminCreatePath(moderation.PObjectName, moderation.PObjectId, true) }}</td>
+                <td>{{ moderation.createdAt | date('d/m/Y H:i:s') }}</td>
             </tr>
         {% endfor %}
     </table>

@@ -1,10 +1,8 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDReactionNew:form.html.twig" %}
 
 {# Bloc tags #}
-{% block form_row_title %}
-    <div id="help">
-        <b>Attention! L'enregistrement d'une réaction déclenche sa mise en ligne - l'envoi des notifications se gère sur l'écran d'édition.</b><br/>
-        Process: "titre" et "description" à BIEN remplir tout de suite, "image" et "tags" (à maj) sur l'écran d'édition.
-    </div>
+{% block form_row_description %}
     {{ parent() }}
+
+    <i class="fa fa-exclamation-triangle" aria-hidden="true">&nbsp;Note: l'enregistrement d'une réaction déclenche sa mise en ligne. Mise à jour des thématiques sur l'écran d'édition.</i>
 {% endblock %}

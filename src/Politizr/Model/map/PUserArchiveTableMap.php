@@ -92,6 +92,7 @@ class PUserArchiveTableMap extends TableMap
         $this->addColumn('qualified', 'Qualified', 'BOOLEAN', false, 1, null);
         $this->addColumn('validated', 'Validated', 'BOOLEAN', false, 1, false);
         $this->addColumn('nb_id_check', 'NbIdCheck', 'INTEGER', false, null, null);
+        $this->addColumn('organization', 'Organization', 'BOOLEAN', false, 1, false);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);
         $this->addColumn('homepage', 'Homepage', 'BOOLEAN', false, 1, null);
         $this->addColumn('support_group', 'SupportGroup', 'BOOLEAN', false, 1, null);

@@ -4,6 +4,8 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BaseCmsCategory;
 
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
+
 class CmsCategory extends BaseCmsCategory
 {
     /**
@@ -20,7 +22,7 @@ class CmsCategory extends BaseCmsCategory
      */
     protected function createRawSlug()
     {
-        $toSlug =  \StudioEchoBundles\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug =  StaticTools::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         $slug = $this->limitSlugSize($slug);
         $slug = $this->makeSlugUnique($slug);

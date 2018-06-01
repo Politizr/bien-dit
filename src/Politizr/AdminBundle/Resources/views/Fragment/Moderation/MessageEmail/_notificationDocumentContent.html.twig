@@ -1,6 +1,0 @@
-<tr style="background-color: #FFFFFF; width: 100%; padding-bottom: 20px;">
-    {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailAuthorPhoto.html.twig' with {'author': author, 'authorUrl': authorUrl } only %}
-    <td style="padding: 0 40px 0 0; line-height: 140%;" valign="top">
-        {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailContent.html.twig' with {'url': url, 'description': title} only %}
-    </td>
-</tr>

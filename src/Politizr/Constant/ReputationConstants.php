@@ -15,6 +15,9 @@ class ReputationConstants
     const USER_ELECTED_NOT_VALIDATED = 1;
     const SCORE_NOT_REACHED = 2;
 
+    const DEFAULT_CITIZEN_REPUTATION = 100;
+    const DEFAULT_ELECTED_REPUTATION = 150;
+
 
     // ******************************************************** //
     //            PRBADGETYPE OBJECT ID CONSTANTS

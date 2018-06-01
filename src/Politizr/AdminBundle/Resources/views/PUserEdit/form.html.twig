@@ -2,35 +2,16 @@
 
 {# Image block #}
 {% block form_row_block_file_name %}
-    <div class="form-group">
+    <div class="form-group col-md-4">
         <label class="control-label">Image</label>
-        <div class="show-image">
-            {% if PUser.FileName %}
-                {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH') ~ PUser.FileName} %}
-            {% else %}
-                Aucune image
-            {% endif %}
+        <div id="dropzone" class="dropzone" path="{{ path('Politizr_AdminBundle_PUser_filename_upload', {'pk': PUser.id}) }}" deletePath="{{ path('Politizr_AdminBundle_PUser_filename_delete', {'pk': PUser.id}) }}" {% if PUser.FileName %}currentFileName="{{ PUser.FileName }}" uploadPath="{{ constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH') }}" fileSize="{{ PUser | userFileSize }}"{% endif %}>
+            <div class="dz-message uploadLink" data-dz-message><span class="btn btn-primary">Télécharger</span></div>
         </div>
-        <i>Note: gestion de l'upload depuis l'écran "Montrer"</i>
+        <div id="dz-preview-container">
+        </div>
+        {% include "PolitizrAdminBundle:Fragment:_dropzoneTemplate.html.twig" %}
     </div>
 {% endblock %}
-
-{# User's localization #}
-{% block form_row_block_localization %}
-    <div class="form-group">
-        <label class="control-label">Localisation</label>
-        <div>
-            {% if PUser.PLCity %}
-                {{ PUser.PLCity.NameReal }}
-            {% else %}
-                Aucune ville renseignée
-            {% endif %}
-            <br/>
-            <i>Note: gestion de la localisation depuis l'écran "Montrer"</i>
-        </div>
-    </div>
-{% endblock %}
-
 
 {# User's tag #}
 {% block form_row_block_tags_public %}

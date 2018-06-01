@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\CmsContentAdmin
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:

@@ -1,1 +1,19 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDMediaShow:index.html.twig" %}
+
+{# Image upload #}
+{% block show_column_block_file_name %}
+    {% if PDMedia | fileExists %}
+        {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::DOCUMENT_UPLOAD_WEB_PATH') ~ PDMedia.FileName} %}
+    {% else %}
+        Aucune image
+    {% endif %}
+{% endblock %}
+
+{% block show_column_block_p_d_debate %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE'), PDMedia.PDDebateId) }}
+{% endblock %}
+
+
+{% block show_column_block_p_d_reaction %}
+    {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDMedia.PDReactionId) }}
+{% endblock %}

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Une de vos publications a été modérée</title>
+        <title>Modération</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body bgcolor="#2D2D2D" style="-webkit-text-size-adjust: 80%; margin: 0; font-size: 12px; font-family: Tahoma, Geneva, sans-serif; color: #2D2D2D;">
@@ -27,7 +27,11 @@
                             </td>
                         </tr>
 
-                        {{ userModerated | linkedModeration(constant('Politizr\\Constant\\ModerationConstants::TYPE_EMAIL_HTML')) }}
+                        <tr style="background-color: #FFFFFF; width: 100%;">
+                            <td colspan="2" style="padding: 0 40px 40px 40px;  line-height: 180%;">
+                                Certains de vos propos ne sont pas conformes à notre charte et ont été modérés.
+                            </td>
+                        </tr>
                         
                         <!-- footer -->
                         {% include 'PolitizrAdminBundle:Email:_signature.html.twig' %}

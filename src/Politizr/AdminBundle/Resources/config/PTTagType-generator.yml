@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\PTTagType
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -53,7 +54,7 @@ builders:
                 "Contenu":
                     "Texte":                    [ [ title ], [ description ] ]
                 "Attributs":
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 created_at:
                     addFormOptions:
@@ -73,7 +74,7 @@ builders:
                 "Tags":
                     "Tags associés":            [ block_tags ]
                 "Attributs":
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 block_tags:
                     label:                      "Tags"

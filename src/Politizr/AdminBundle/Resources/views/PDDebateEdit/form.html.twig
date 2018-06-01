@@ -1,55 +1,12 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateEdit:form.html.twig" %}
 
-{# Image block #}
-{% block form_row_block_file_name %}
-    <div class="form-group">
-        <label class="controle-label">Image</label>
-        <div class="show-image">
-            {% if PDDebate.FileName %}
-                {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::DEBATE_UPLOAD_WEB_PATH') ~ PDDebate.fileName} %}
-            {% else %}
-                Aucune image
-            {% endif %}
-        </div>
-        <i>Note: gestion de l'upload depuis l'écran "Montrer"</i>
-    </div>
-{% endblock %}
-
 {# Bloc tags #}
 {% block form_row_block_tags %}
     {{ adminDebateTags(PDDebate, null, 1, true) }}
-{% endblock %}
-
-{# Bloc loc #}
-{% block form_row_block_loc %}
-    <div class="form-group">
-        <label class="control-label">Localisation</label>
-        <div>
-            {% if (PDDebate.PLCityId) %}
-                {{ PDDebate.PLCity }}
-            {% elseif (PDDebate.PLDepartmentId) %}
-                {{ PDDebate.PLDepartment }}
-            {% elseif (PDDebate.PLRegionId) %}
-                {{ PDDebate.PLRegion }}
-            {% elseif (PDDebate.PLCountryId) %}
-                {{ PDDebate.PLCountry }}
-            {% else %}
-                Aucune localisation renseignée
-            {% endif %}
-            <br/>
-            <i>Note: gestion de la localisation depuis l'écran "Montrer"</i>
-        </div>
-    </div>
 {% endblock %}
 
 {# Bloc notifications #}
 {% block form_row_block_notifications %}
     {{ form_row(form['block_notifications']) }}
     <i class="fa fa-exclamation-triangle" aria-hidden="true">&nbsp;Note: cochez cette case génère les notifications "screen" liées à sa <b>publication</b></i>
-{% endblock %}
-
-{# Bloc want boost #}
-{% block form_row_want_boost %}
-    {{ form_row(form['want_boost']) }}
-    <i class="fa fa-exclamation-triangle" aria-hidden="true">&nbsp;0 = Non répondu / 1 = Oui / 2 = Non</i>
 {% endblock %}

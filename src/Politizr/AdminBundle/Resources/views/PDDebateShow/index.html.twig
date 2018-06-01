@@ -1,16 +1,5 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDDebateShow:index.html.twig" %}
 
-{# Image upload #}
-{% block show_column_block_file_name %}
-    {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 1, 'fileName': PDDebate.fileName,'subjectId': PDDebate.id, 'queryClass': 'Politizr\\Model\\PDDebateQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::DEBATE_UPLOAD_WEB_PATH')} %}
-{% endblock %}
-
-{% block show_column_copyright %}
-    {{ PDDebate.getCopyright | purify }}
-{% endblock %}
-
-
-{# Objets #}
 {% block show_column_block_p_user %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDDebate.PUserId) }}
 {% endblock %}
@@ -28,6 +17,19 @@
     {{ PDDebate.getDescription | purify }}
 {% endblock %}
 
+{% block show_column_block_p_d_medias %}
+    {% if PDDebate.countPDMedias > 0 %}
+        <ol>
+            {% for media in PDDebate.PDMedias %}
+                <li>{{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_MEDIA'), media.id) }}</li>
+            {% endfor %}
+        </ol>
+        <i class="fa fa-exclamation-triangle" aria-hidden="true">&nbsp;Note: suivez les liens pour mettre à jour les images du document.</i>
+    {% else %}
+        Aucune
+    {% endif %}
+{% endblock %}
+
 {# Bloc réactions #}
 {% block show_column_block_reactions %}
     {{ adminDebateReactions(PDDebate, 'show') }}
@@ -43,11 +45,6 @@
     {{ adminDebateTags(PDDebate, null, 1, mode='show') }}
 {% endblock %}
 
-{# Bloc loc #}
-{% block show_column_block_loc %}
-    {{ adminDocumentLoc(PDDebate, constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE')) }}
-{% endblock %}
-
 {# Bloc followers élus #}
 {% block show_column_block_followers_q %}
     {{ adminDebateFollowersQ(PDDebate) }}
@@ -56,11 +53,6 @@
 {# Bloc followers citoyens #}
 {% block show_column_block_followers_c %}
     {{ adminDebateFollowersC(PDDebate) }}
-{% endblock %}
-
-{# Block moderation new alert #}
-{% block show_column_block_moderation_alert_new %}
-    {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE'), PDDebate.Id, PDDebate.PUserId) }}
 {% endblock %}
 
 {# Block moderation alert listing #}
@@ -85,34 +77,9 @@
 
 {# Block front link #}
 {% block show_column_block_front %}
-    {% if PDDebate.online and PDDebate.published %}
+    {% if PDDebate.active %}
         <a href="{{ path('DebateDetail', {'slug': PDDebate.slug}) }}" target="_blank">Consulter</a>
     {% else %}
         Hors ligne
     {% endif %}
 {% endblock %}
-
-
-{% block object_actions_script_container %}
-    <script>
-        var nbZones = 1;
-        var service = 'admin';
-        var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
-    </script>
-
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/autocomplete-tools') }}"></script>    
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
-
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery.form.min.js') }}"></script>  
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
-
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>
-
-    {# localization js #}
-    <script>
-        // User localization vars
-        var xhrRouteCity = ADMIN_ROUTE_CITY_LISTING;
-    </script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/localization/edit.js') }}"></script>  
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/document/localization.js') }}"></script>  
-{% endblock object_actions_script_container %}

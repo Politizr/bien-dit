@@ -12,7 +12,6 @@ use Politizr\Constant\DocumentConstants;
 
 use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
-
 /**
  *
  * @see https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/custom_logic.md
@@ -84,8 +83,8 @@ class UploadListener
         try {
             $image = $this->globalTools->resizeImage(
                 $file->getRealPath(),
-                1200,
-                1200
+                DocumentConstants::DOC_IMAGE_MAX_WIDTH,
+                DocumentConstants::DOC_IMAGE_MAX_HEIGHT
             );
 
             // create thumbnail
@@ -96,8 +95,8 @@ class UploadListener
             );
             $this->globalTools->resizeImage(
                 $thumbnailRealPath,
-                150,
-                150
+                DocumentConstants::DOC_THUMBNAIL_MAX_WIDTH,
+                DocumentConstants::DOC_THUMBNAIL_MAX_HEIGHT
             );
 
             // persist media
@@ -138,7 +137,7 @@ class UploadListener
         ]];
         
         if (is_array($msgErrors)) {
-            $response['error'] = $this->globalTools->multiImplode($msgErrors, ' <br/> ');
+            $response['error'] = StaticTools::multiImplode($msgErrors, ' <br/> ');
         } else {
             $response['error'] = $msgErrors;
         }

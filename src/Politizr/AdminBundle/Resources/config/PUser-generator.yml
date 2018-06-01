@@ -65,6 +65,8 @@ params:
             label:          Dernière activité
         p_r_badges:
             label:          Badges
+        organization:
+            label:          Compte Collectivité
         qualified:
             label:          Profil élu
         validated:
@@ -86,7 +88,7 @@ params:
         abuse_level:
             label:          Niveau d'abus
         roles:
-            label:                              Liste des rôles de l'utilisateur
+            label:                              Rôles
             formType:                           choice
             addFormOptions:
                 expanded:                       true
@@ -98,6 +100,11 @@ params:
             label:          Mis à jour
         indexed_at:
             label:          Indexé le
+        # active / aggregration of online + banned + status
+        active:
+            label:                      Actif
+            sortable:                   false
+            dbType:                     BOOLEAN
     object_actions:
         delete:             ~
     batch_actions:
@@ -118,8 +125,8 @@ builders:
                     "Citoyens":
                         filters: 
                             qualified:          0
-            display:                            [ file_name, name, firstname, p_l_city, qualified, validated, nb_id_check, reputation_score, online, homepage, last_activity, created_at ]
-            filters:                            [ id, uuid, email, name, qualified, validated, p_u_status, online, homepage, created_at, last_login ]
+            display:                            [ file_name, name, firstname, p_l_city, qualified, reputation_score, active, last_activity, created_at ]
+            filters:                            [ id, uuid, email, name, qualified, validated, active, created_at, last_login ]
             filtersMode:                        modal
             fields:
                 p_l_city:
@@ -129,18 +136,28 @@ builders:
                     label:                      Score
                     sortable:                   false
             object_actions:
-                homepage:
-                    label:    En page d'accueil
-                    icon:     fa-star-o
                 show:                           ~
                 edit:                           ~
+                moderation:
+                    label:                      Modération
+                    icon:                       fa-ban
+                localization:
+                    label:                      Localisation
+                    icon:                       fa-map-marker
+                mandate:
+                    credentials:                ROLE_SYSTEM
+                    label:                      Mandats
+                    icon:                       fa-graduation-cap
+                idcheck:
+                    credentials:                ROLE_SYSTEM
+                    label:                      Identité
+                    icon:                       fa-user
                 delete:                         ~
             actions:
                 new:                            ~
                 excel:                          ~
             batch_actions:
-                homepage:
-                    label:    En page d'accueil
+                delete:                         ~
     excel:
         params:
             display:                            [ qualified, gender, name, first_name, cityStr, departmentStr, birthday, email, phone, email, website, twitter, facebook, reputation_score, provider, provider_id ]
@@ -153,24 +170,22 @@ builders:
         params:
             title:                              "Création d'un utilisateur"
             display:
-                "Champs principaux":            [ [ qualified, p_u_status, email ], [ gender, firstname, name ], [ username ], [ plainPassword ], [ roles ] ]
+                "Champs principaux":            [ [ qualified ], [ gender, firstname, name ], [ email ], [ username , plainPassword ], [ roles, p_u_status_id ] ]
             fields:
-                p_u_status:
-                    dbType:                     model
+                p_u_status_id:
+                    dbType:                     VARCHAR
+                    formType:                   hidden
                     addFormOptions:
-                        multiple:               false
-                        required:               false
-                        class:                  Politizr\Model\PUStatus
-                #         query:                  \Politizr\Model\PUStatusQuery::create()->orderById()
+                        data:                   1
                 plainPassword:          
-                    dbType:                             VARCHAR
-                    formType:                           repeated
+                    dbType:                     VARCHAR
+                    formType:                   repeated
                     addFormOptions:         
                         first_options:          
-                            label:                      Mot de passe
+                            label:              Mot de passe
                         second_options:         
-                            label:                      Confirmation
-                        type:                           password
+                            label:              Confirmation
+                        type:                   password
             actions:
               save:                             ~
               list:                             ~
@@ -179,47 +194,28 @@ builders:
             title:                              "Edition de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Civilité":                 [ [ block_file_name ], [ gender ], [ firstname, name ], [ birthday ], [ block_localization ] ]
-                    "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
+                    "Civilité":                 [ [ block_file_name ], [ gender, firstname, name ], [ birthday ] ]
+                    "Contact":                  [ email ]
+                    "Informations":             [ [ biography ], [ website, twitter, facebook ] ]
                 "Connexion":
-                    "Connexion":                [ username, plainPassword ]
-                "Descriptif":
-                    "Informations":             [ subtitle, biography ]
-                "Tag":
-                    "Tags associés":            [ block_tags_public ]
+                    "Connexion":                [ [ username, plainPassword ] ]
+                "Thématiques":
+                    "Liste des thématiques associées":            [ block_tags_public ]
                 "Réputation":
                     "Score":                    [ block_reputation ]
                     "Badges":                   [ badges ]
-                "Abonnement":
-                    "Followers":                [ followers ]
-                    "Abonnements":              [ subscribers ]
-                "Modération":
-                    "Bannissement":             [ [ banned, banned_nb_days_left ] ]
-                    "Risque user":              [ abuse_level ]
-                "Statut":
-                    "Actuel":                   [ p_u_status ]
-                    "Activité":                 [ last_login, last_activity ]
-                "Rôles":
-                    "Rôles":                    [ roles ]
+                "Listes":
+                    "Liste des personnes qui suivent":  [ followers ]
+                    "Liste des personnes suivies":      [ subscribers ]
+                    "Liste des organisations":          [ current_organizations ]
+                    "Liste des rôles":                  [ roles ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "Type":                     [ qualified ]
-                    "En ligne":                 [ [ online, homepage] ]
-                    "Groupe":                   [ support_group ]
-                    "Validé":                   [ validated, nb_id_check ]
-                    "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
+                    "État":                     [ online, banned, p_u_status, abuse_level ]
+                    "Type":                     [ qualified, organization, validated, nb_id_check, support_group ]
+                    "Abonnements notifications": [ p_n_emails ]
+                    "Dates":                    [ [ created_at, updated_at ], [ last_activity, indexed_at ] ]
             fields:
-                block_back_file_name:
-                    label:                      "Image de fond"
-                    grid_class:                 "col-md-12"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
-                copyright:
-                    grid_class:                 "col-md-12"
-                    addFormOptions:
-                        attr:                   { class : tinymce }
                 block_file_name:
                     label:                      "Image"
                     grid_class:                 "col-md-12"
@@ -227,14 +223,9 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
-                block_localization:
-                    label:                      "Localisation"
-                    grid_class:                 "col-md-12"
-                    formType:                   hidden
-                    dbType:                     VARCHAR
-                    addFormOptions:
-                        mapped:                 false
                 followers:
+                    credentials:                ROLE_SYSTEM
+                    label:                      Abonnés
                     dbType:                     model
                     addFormOptions:
                         multiple:               true
@@ -242,12 +233,31 @@ builders:
                         class:                  Politizr\Model\PUser
                 #         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
                 subscribers:
+                    credentials:                ROLE_SYSTEM
+                    label:                      Abonnements
                     dbType:                     model
                     addFormOptions:
                         multiple:               true
                         required:               false
                         class:                  Politizr\Model\PUser
                 #         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
+                current_organizations:
+                    label:                      Organisations
+                    dbType:                     model
+                    addFormOptions:
+                        multiple:               true
+                        required:               false
+                        property:               title
+                        class:                  Politizr\Model\PQOrganization
+                p_n_emails:
+                    label:                      Notifications mail
+                    dbType:                     model
+                    addFormOptions:
+                        multiple:               true
+                        expanded:               true
+                        required:               false
+                        property:               title
+                        class:                  Politizr\Model\PNEmail
                 uploadedFileName:
                     dbType:                     VARCHAR
                     label:                      Photo
@@ -264,20 +274,10 @@ builders:
                         second_options:         
                             label:                      Confirmation
                         type:                           password
-                p_u_status:
-                    dbType:                     model
-                    addFormOptions:
-                        multiple:               false
-                        required:               false
-                        class:                  Politizr\Model\PUStatus
-                #         query:                  \Politizr\Model\PUStatusQuery::create()->orderById()
-                subtitle:
-                    grid_class:                 "col-md-12"
                 biography:
-                    grid_class:                 "col-md-12"
-                    addFormOptions:
-                        attr:                   { class : tinymce }
+                    grid_class:                 "col-md-9"
                 block_tags_public:
+                    credentials:                ROLE_SYSTEM
                     label:                      "Tags publiques"
                     grid_class:                 "col-md-12"
                     formType:                   hidden
@@ -285,6 +285,7 @@ builders:
                     addFormOptions:
                         mapped:                 false
                 badges:
+                    credentials:                ROLE_SYSTEM
                     dbType:                     model
                     addFormOptions:
                         multiple:               true
@@ -298,20 +299,20 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
-                last_login:
-                    label:                      Date de dernière connexion
-                    addFormOptions:
-                        widget:                 single_text
                 last_activity:
                     label:                      Date de dernière activité
                     addFormOptions:
                         widget:                 single_text
+                support_group:
+                    credentials:                ROLE_SYSTEM
                 id:
                     addFormOptions:
                         read_only:              true
                 uuid:
                     addFormOptions:
                         read_only:              true
+                nb_id_check:
+                    credentials:                ROLE_SYSTEM
                 created_at:
                     addFormOptions:
                         widget:                 single_text
@@ -321,6 +322,7 @@ builders:
             actions:
                 save:                           ~
                 archive:
+                    credentials:                ROLE_SYSTEM
                     label:                      Archiver
                     icon:                       fa-archive
                     params:
@@ -333,90 +335,48 @@ builders:
             title:                              "Visualisation de l'utilisateur {{ PUser.firstname }} {{ PUser.name }}"
             tabs:
                 "Identité":
-                    "Type":                     [ qualified ]
                     "Civilité":                 [ [ block_file_name ], [ gender, firstname, name ], [ birthday ], [ block_localization ] ]
-                    "Contacts":                 [ [ phone, email ], [ website ], [ twitter, facebook ] ]
-                    "Validation IdCheck":       [ block_id_check ]
-                "Descriptif":
-                    "Informations":             [ biography ]
-                "Tag":
-                    "Tags associés":            [ block_tags_public ]
-                "Réputation":
-                    "Score":                    [ reputationScore ]
-                    "Badges":                   [ block_badges_debat, block_badges_comment, block_badges_participation, block_badges_moderation, block_badges_autre ]
-                "Publication":
-                    "Débats":                   [ block_debates ]
-                    "Réactions":                [ block_reactions ]
-                    "Commentaires":             [ block_d_comments, block_r_comments ]
-                "Abonnement":
-                    "Followers":                [ block_followers ]
-                    "Abonnements":              [ block_subscribers ]
-                "Mandats":
-                    "Mandats":                  [ block_mandates ]
-                "Statut":
-                    "Actuel":                   [ [ p_u_status ] ]
-                    "Connexion":                [ last_login, last_activity ]
+                    "Réputation":               [ reputationScore ]
+                    "Contact":                  [ email ]
+                    "Informations":             [ [ biography ], [ website, twitter, facebook ] ]
                 "Modération":
-                    "Bannissement":             [ [ banned, banned_nb_days_left, banned_nb_total ], [ block_moderation_banned ] ]
-                    "Niveau de risque user":    [ abuse_level ]
-                    "Notification":             [ block_moderation_alert_new  ]
-                    "Précédentes notifications": [ block_moderation_alert_listing  ]
+                    "Situation":                [ banned, abuse_level ]
+                    "Historique de l utilisateur":  [ block_moderation_alert_listing ]
+                "Listes":
+                    "Liste des personnes qui suivent":  [ followers ]
+                    "Liste des personnes suivies":      [ subscribers ]
+                    "Liste des organisations":          [ current_organizations ]
+                    "Liste des rôles":                  [ roles ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "En ligne":                 [ [ online, homepage] ]
-                    "Groupe":                   [ support_group ]
-                    "Validé":                   [ validated, nb_id_check ]
-                    "Rôles":                    [ roles ]
-                    "Dates":                    [ [ created_at, updated_at ], [ indexed_at ] ]
+                    "État":                     [ active, p_u_status ]
+                    "Type":                     [ qualified, organization, validated, nb_id_check, support_group ]
+                    "Dates":                    [ [ created_at, updated_at ], [ last_activity, indexed_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]
             fields:
-                block_back_file_name:
-                    label:                      "Image de fond"
+                followers:
+                    credentials:                ROLE_SYSTEM
+                    label:                      Abonnés
+                subscribers:
+                    credentials:                ROLE_SYSTEM
+                    label:                      Abonnements
+                current_organizations:
+                    label:                      Organisations
+                p_n_emails:
+                    label:                      Notifications mail
                 block_file_name:
                     label:                      "Image"
                 block_localization:
                     label:                      "Localisation"
-                block_tags_public:
-                    label:                      "Tags publiques"
                 reputationScore:
                     label:                      "Score"
-                block_badges_debat:
-                    label:                      "Débat"
-                block_badges_comment:
-                    label:                      "Commentaire"
-                block_badges_participation:
-                    label:                      "Participation"
-                block_badges_moderation:
-                    label:                      "Communautaire"
-                block_badges_autre:
-                    label:                      "Autres"
-                block_debates:
-                    label:                      "Débats"
-                block_reactions:
-                    label:                      "Réactions"
-                block_d_comments:
-                    label:                      "Commentaires de débat"
-                block_r_comments:
-                    label:                      "Commentaires de réaction"
-                block_followers:
-                    label:                      "Followers"
-                block_subscribers:
-                    label:                      "Abonnements"
-                block_mandates:
-                    label:                      "Mandats"
-                block_id_check:
-                    label:                      "Vérification de l'identité"
-                block_moderation_banned:
-                    label:                      "Bannissement"
-                block_moderation_alert_new:
-                    label:                      "Nouvelle alerte"
                 block_moderation_alert_listing:
-                    label:                      "Historique de l'utilisateur"
+                    label:                      " "
                 block_front:
                     label:                      "Rendu front"
-                last_login:
-                    label:                      Date de dernière connexion
+                nb_id_check:
+                    credentials:                ROLE_SYSTEM
                 last_activity:
                     label:                      Date de dernière activité
             actions:
@@ -426,8 +386,10 @@ builders:
     actions:
         params:
             object_actions:
-                homepage:                       ~
-                delete: ~
+                moderation:                     ~
+                localization:                   ~
+                mandate:                        ~
+                idcheck:                        ~
+                delete:                         ~
             batch_actions:
-                homepage:                       ~
-                delete: ~
+                delete:                         ~

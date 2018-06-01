@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\PNotification
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -64,7 +65,7 @@ builders:
                     "Texte":                    [ [ p_n_type  ], [ title, description ] ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid ] ]
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                    "Dates":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
                 p_r_badge_family:
                     addFormOptions:
@@ -93,7 +94,7 @@ builders:
 #                 "Utilisation":
 #                     "Utilisateurs badgés":      [ block_users ]
 #                 "Attributs":
-#                     "Création":                 [ [ online ], [ created_at, updated_at ] ]
+#                     "Dates":                 [ [ online ], [ created_at, updated_at ] ]
 #             fields:
 #                 block_users:
 #                     label:                      "Utilisateurs"

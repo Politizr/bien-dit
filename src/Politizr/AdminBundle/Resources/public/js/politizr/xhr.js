@@ -52,6 +52,9 @@ var ADMIN_ROUTE_CITY_LISTING = 'admin/villes/listing';
 var ADMIN_ROUTE_USER_CITY = 'admin/utilisateur/ville/update';
 var ADMIN_ROUTE_DOC_LOC = 'admin/document/localization/update';
 
+// DOCUMENT
+var ADMIN_ROUTE_REACTION_CREATE_FORM_INIT = 'admin/reaction/create/form/init';
+
 // OPERATION
 var ADMIN_ROUTE_OPERATION_CITIES = 'admin/operation/villes';
 var ADMIN_ROUTE_OPERATION_CITIES_SEARCH_LISTING = 'admin/operation/villes/recherche';

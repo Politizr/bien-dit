@@ -31,11 +31,14 @@ use Politizr\Model\PUMandateQuery;
 use Politizr\Model\PLCityQuery;
 use Politizr\Model\PEOPresetPTQuery;
 use Politizr\Model\PEOperationQuery;
+use Politizr\Model\PCircleQuery;
 
 use Politizr\AdminBundle\Form\Type\PMUserModeratedType;
 use Politizr\AdminBundle\Form\Type\AdminPUserLocalizationType;
 use Politizr\AdminBundle\Form\Type\PUsersFiltersType;
 use Politizr\AdminBundle\Form\Type\PCirclePUsersSelectListType;
+use Politizr\AdminBundle\Form\Type\PDReaction\SelectDebateType;
+use Politizr\AdminBundle\Form\Type\PDReaction\SelectReactionType;
 
 use Politizr\FrontBundle\Form\Type\PUMandateType;
 
@@ -677,7 +680,7 @@ class XhrAdmin
             $newMandate = $form->getData();
             $newMandate->save();
         } else {
-            $errors = $this->globalTools->getAjaxFormErrors($form);
+            $errors = StaticTools::getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -689,7 +692,7 @@ class XhrAdmin
 
         // Rendering
         $newMandate = $this->templating->render(
-            'PolitizrFrontBundle:User:_newMandate.html.twig',
+            'PolitizrAdminBundle:Fragment\\User:_newMandate.html.twig',
             array(
                 'formMandate' => $form->createView(),
                 'user' => $user,
@@ -698,7 +701,7 @@ class XhrAdmin
 
         // Rendering
         $editMandates = $this->templating->render(
-            'PolitizrFrontBundle:User:_editMandates.html.twig',
+            'PolitizrAdminBundle:Fragment\\User:_editMandates.html.twig',
             array(
                 'formMandateViews' => $formMandateViews
             )
@@ -731,7 +734,7 @@ class XhrAdmin
             $mandate = $form->getData();
             $mandate->save();
         } else {
-            $errors = $this->globalTools->getAjaxFormErrors($form);
+            $errors = StaticTools::getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -745,7 +748,7 @@ class XhrAdmin
 
         // Rendering
         $editMandates = $this->templating->render(
-            'PolitizrFrontBundle:User:_editMandates.html.twig',
+            'PolitizrAdminBundle:Fragment\\User:_editMandates.html.twig',
             array(
                 'formMandateViews' => $formMandateViews
             )
@@ -783,7 +786,7 @@ class XhrAdmin
 
         // Rendering
         $editMandates = $this->templating->render(
-            'PolitizrFrontBundle:User:_editMandates.html.twig',
+            'PolitizrAdminBundle:Fragment\\User:_editMandates.html.twig',
             array(
                 'formMandateViews' => $formMandateViews
             )
@@ -833,6 +836,7 @@ class XhrAdmin
 
     /**
      * Create new user's moderation + update reputation
+     * @deprecated cf ModerationService
      */
     public function userModeratedNew(Request $request)
     {
@@ -870,7 +874,7 @@ class XhrAdmin
             // mail user
             $this->eventDispatcher->dispatch('moderation_notification', new GenericEvent($userModerated));
         } else {
-            $errors = $this->globalTools->getAjaxFormErrors($form);
+            $errors = StaticTools::getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -1007,6 +1011,7 @@ class XhrAdmin
             $path,
             5000,
             5000,
+            null,
             20971520,
             [ 'image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg' ]
         );
@@ -1041,7 +1046,7 @@ class XhrAdmin
             // $this->localizationManager->updateUserCity($user, $form->get('localization')->getData()['city']);
             $this->localizationService->updateUserGeoloc($user, $form);
         } else {
-            $errors = $this->globalTools->getAjaxFormErrors($form);
+            $errors = StaticTools::getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -1206,10 +1211,6 @@ class XhrAdmin
         return true;
     }
 
-    /* ######################################################################################################## */
-    /*                                               OPERATION                                                  */
-    /* ######################################################################################################## */
-
     /**
      * Apply a filter to a circle's users select list
      */
@@ -1220,6 +1221,11 @@ class XhrAdmin
         // Request arguments
         $formNo = $request->get('no');
         $circleId = $request->get('circleId');
+
+        $circle = PCircleQuery::create()->findPk($circleId);
+        if (!$circle) {
+            throw new InconsistentDataException('Circle not found');
+        }
 
         $formFilter = $this->formFactory->create(new PUsersFiltersType());
         $formFilter->handleRequest($request);
@@ -1240,9 +1246,9 @@ class XhrAdmin
         );
 
         $html = $this->templating->render(
-            'PolitizrAdminBundle:Fragment\\Circle:_circleUsersForms'.$formNo.'.html.twig',
+            'PolitizrAdminBundle:PCircleActions:_circleUsersForms'.$formNo.'.html.twig',
             array(
-                'circleId' => $circleId,
+                'circle' => $circle,
                 'formFilter'.$formNo => $formFilter->createView(),
                 'formUsers'.$formNo => $formUsers->createView(),
             )
@@ -1251,6 +1257,61 @@ class XhrAdmin
         // Renvoi de l'ensemble des blocs HTML maj
         return array(
             'html' => $html
+        );
+    }
+
+    /* ######################################################################################################## */
+    /*                                               DOCUMENT                                                   */
+    /* ######################################################################################################## */
+
+    /**
+     * Update debate form list by topic
+     */
+    public function updateFormDebatesByTopic(Request $request)
+    {
+        $this->logger->info('*** updateFormDebatesByTopic');
+
+        $topicId = $request->get('topicId');
+        if (empty($topicId)) {
+            $topicId = null;
+        }
+
+        $form = $this->formFactory->create(new SelectDebateType($topicId));
+        $formView = $form->createView();
+
+        $selectRendering = $this->templating->render(
+            'PolitizrAdminBundle:PDReactionNew:_p_d_debate.html.twig',
+            array(
+                'form' => $form->createView()
+            )
+        );
+
+        return array(
+            'p_d_debate' => $selectRendering
+        );
+    }
+
+    /**
+     * Update reaction form list by debate
+     */
+    public function updateFormReactionsByDebate(Request $request)
+    {
+        $this->logger->info('*** updateFormReactionsByDebate');
+
+        $debateId = $request->get('debateId');
+
+        $form = $this->formFactory->create(new SelectReactionType($debateId));
+        $formView = $form->createView();
+
+        $selectRendering = $this->templating->render(
+            'PolitizrAdminBundle:PDReactionNew:_parent_reaction.html.twig',
+            array(
+                'form' => $form->createView()
+            )
+        );
+
+        return array(
+            'parent_reaction' => $selectRendering
         );
     }
 }

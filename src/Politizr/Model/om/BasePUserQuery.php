@@ -40,7 +40,6 @@ use Politizr\Model\PQualification;
 use Politizr\Model\PRAction;
 use Politizr\Model\PRBadge;
 use Politizr\Model\PTag;
-use Politizr\Model\PUAffinityQO;
 use Politizr\Model\PUBadge;
 use Politizr\Model\PUBookmarkDD;
 use Politizr\Model\PUBookmarkDR;
@@ -109,6 +108,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery orderByQualified($order = Criteria::ASC) Order by the qualified column
  * @method PUserQuery orderByValidated($order = Criteria::ASC) Order by the validated column
  * @method PUserQuery orderByNbIdCheck($order = Criteria::ASC) Order by the nb_id_check column
+ * @method PUserQuery orderByOrganization($order = Criteria::ASC) Order by the organization column
  * @method PUserQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PUserQuery orderByHomepage($order = Criteria::ASC) Order by the homepage column
  * @method PUserQuery orderBySupportGroup($order = Criteria::ASC) Order by the support_group column
@@ -166,6 +166,7 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery groupByQualified() Group by the qualified column
  * @method PUserQuery groupByValidated() Group by the validated column
  * @method PUserQuery groupByNbIdCheck() Group by the nb_id_check column
+ * @method PUserQuery groupByOrganization() Group by the organization column
  * @method PUserQuery groupByOnline() Group by the online column
  * @method PUserQuery groupByHomepage() Group by the homepage column
  * @method PUserQuery groupBySupportGroup() Group by the support_group column
@@ -244,10 +245,6 @@ use Politizr\Model\PUserQuery;
  * @method PUserQuery leftJoinPUMandate($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUMandate relation
  * @method PUserQuery rightJoinPUMandate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUMandate relation
  * @method PUserQuery innerJoinPUMandate($relationAlias = null) Adds a INNER JOIN clause to the query using the PUMandate relation
- *
- * @method PUserQuery leftJoinPUAffinityQOPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUAffinityQOPUser relation
- * @method PUserQuery rightJoinPUAffinityQOPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUAffinityQOPUser relation
- * @method PUserQuery innerJoinPUAffinityQOPUser($relationAlias = null) Adds a INNER JOIN clause to the query using the PUAffinityQOPUser relation
  *
  * @method PUserQuery leftJoinPUCurrentQOPUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the PUCurrentQOPUser relation
  * @method PUserQuery rightJoinPUCurrentQOPUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PUCurrentQOPUser relation
@@ -389,6 +386,7 @@ use Politizr\Model\PUserQuery;
  * @method PUser findOneByQualified(boolean $qualified) Return the first PUser filtered by the qualified column
  * @method PUser findOneByValidated(boolean $validated) Return the first PUser filtered by the validated column
  * @method PUser findOneByNbIdCheck(int $nb_id_check) Return the first PUser filtered by the nb_id_check column
+ * @method PUser findOneByOrganization(boolean $organization) Return the first PUser filtered by the organization column
  * @method PUser findOneByOnline(boolean $online) Return the first PUser filtered by the online column
  * @method PUser findOneByHomepage(boolean $homepage) Return the first PUser filtered by the homepage column
  * @method PUser findOneBySupportGroup(boolean $support_group) Return the first PUser filtered by the support_group column
@@ -446,6 +444,7 @@ use Politizr\Model\PUserQuery;
  * @method array findByQualified(boolean $qualified) Return PUser objects filtered by the qualified column
  * @method array findByValidated(boolean $validated) Return PUser objects filtered by the validated column
  * @method array findByNbIdCheck(int $nb_id_check) Return PUser objects filtered by the nb_id_check column
+ * @method array findByOrganization(boolean $organization) Return PUser objects filtered by the organization column
  * @method array findByOnline(boolean $online) Return PUser objects filtered by the online column
  * @method array findByHomepage(boolean $homepage) Return PUser objects filtered by the homepage column
  * @method array findBySupportGroup(boolean $support_group) Return PUser objects filtered by the support_group column
@@ -567,7 +566,7 @@ abstract class BasePUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_u_status_id`, `p_l_city_id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `indexed_at`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `online`, `homepage`, `support_group`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_u_status_id`, `p_l_city_id`, `provider`, `provider_id`, `nickname`, `realname`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `roles`, `last_activity`, `file_name`, `back_file_name`, `copyright`, `gender`, `firstname`, `name`, `birthday`, `subtitle`, `biography`, `website`, `twitter`, `facebook`, `phone`, `newsletter`, `last_connect`, `nb_connected_days`, `indexed_at`, `nb_views`, `qualified`, `validated`, `nb_id_check`, `organization`, `online`, `homepage`, `support_group`, `banned`, `banned_nb_days_left`, `banned_nb_total`, `abuse_level`, `created_at`, `updated_at`, `slug` FROM `p_user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -2221,6 +2220,33 @@ abstract class BasePUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the organization column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByOrganization(true); // WHERE organization = true
+     * $query->filterByOrganization('yes'); // WHERE organization = true
+     * </code>
+     *
+     * @param     boolean|string $organization The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PUserQuery The current query, for fluid interface
+     */
+    public function filterByOrganization($organization = null, $comparison = null)
+    {
+        if (is_string($organization)) {
+            $organization = in_array(strtolower($organization), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PUserPeer::ORGANIZATION, $organization, $comparison);
+    }
+
+    /**
      * Filter the query on the online column
      *
      * Example usage:
@@ -3755,80 +3781,6 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->joinPUMandate($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PUMandate', '\Politizr\Model\PUMandateQuery');
-    }
-
-    /**
-     * Filter the query by a related PUAffinityQO object
-     *
-     * @param   PUAffinityQO|PropelObjectCollection $pUAffinityQO  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PUserQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPUAffinityQOPUser($pUAffinityQO, $comparison = null)
-    {
-        if ($pUAffinityQO instanceof PUAffinityQO) {
-            return $this
-                ->addUsingAlias(PUserPeer::ID, $pUAffinityQO->getPUserId(), $comparison);
-        } elseif ($pUAffinityQO instanceof PropelObjectCollection) {
-            return $this
-                ->usePUAffinityQOPUserQuery()
-                ->filterByPrimaryKeys($pUAffinityQO->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPUAffinityQOPUser() only accepts arguments of type PUAffinityQO or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PUAffinityQOPUser relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PUserQuery The current query, for fluid interface
-     */
-    public function joinPUAffinityQOPUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PUAffinityQOPUser');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PUAffinityQOPUser');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PUAffinityQOPUser relation PUAffinityQO object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Politizr\Model\PUAffinityQOQuery A secondary query class using the current class as primary query
-     */
-    public function usePUAffinityQOPUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinPUAffinityQOPUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PUAffinityQOPUser', '\Politizr\Model\PUAffinityQOQuery');
     }
 
     /**
@@ -5683,23 +5635,6 @@ abstract class BasePUserQuery extends ModelCriteria
         return $this
             ->usePURoleQQuery()
             ->filterByPQualification($pQualification, $comparison)
-            ->endUse();
-    }
-
-    /**
-     * Filter the query by a related PQOrganization object
-     * using the p_u_affinity_q_o table as cross reference
-     *
-     * @param   PQOrganization $pQOrganization the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   PUserQuery The current query, for fluid interface
-     */
-    public function filterByPUAffinityQOPQOrganization($pQOrganization, $comparison = Criteria::EQUAL)
-    {
-        return $this
-            ->usePUAffinityQOPUserQuery()
-            ->filterByPUAffinityQOPQOrganization($pQOrganization, $comparison)
             ->endUse();
     }
 

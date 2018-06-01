@@ -4,6 +4,8 @@ namespace Politizr\Model;
 
 use Politizr\Model\om\BaseCmsContent;
 
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
+
 class CmsContent extends BaseCmsContent
 {
 
@@ -13,7 +15,7 @@ class CmsContent extends BaseCmsContent
      */
     protected function createRawSlug()
     {
-        $toSlug =  \StudioEchoBundles\Lib\StudioEchoUtils::transliterateString($this->getTitle());
+        $toSlug =  StaticTools::transliterateString($this->getTitle());
         $slug = $this->cleanupSlugPart($toSlug);
         $slug = $this->limitSlugSize($slug);
         $slug = $this->makeSlugUnique($slug);

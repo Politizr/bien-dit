@@ -12,36 +12,20 @@ use Politizr\Model\PLDepartmentQuery;
  */
 class ListController extends BaseListController
 {
-    /**
-     *
-     */
-    protected function scopeNotPublished($queryFilter)
+   /**
+    * Add filters to the query for active
+    *
+    * @param QueryFilterInterface The queryFilter
+    * @param mixed The value
+    */
+    protected function filterActive($queryFilter, $value)
     {
-        $queryFilter->getQuery()
-            ->filterByPublished(false)
-            ->filterByTreeLevel(null)
-        ;
+        if ($value) {
+            $queryFilter->getQuery()->online();
+        } else {
+            $queryFilter->getQuery()->offline();
+        }
     }
-
-//     /**
-//      * Add the filters to the query for PTags
-//      *
-//      * @param queryFilter The queryFilter
-//      * @param mixed The value
-//      */
-//     protected function filterPTags($queryFilter, $values)
-//     {
-//         $ids = [];
-//         foreach ($values as $tag) {
-//             $ids[] = $tag->getId();
-//         }
-// 
-//         $queryFilter->getQuery()
-//             ->usePDRTaggedTQuery()
-//                 ->filterByPTagId($ids, \Criteria::IN)
-//             ->endUse()
-//         ;
-//     }
 
     /**
      * Add the filters to the query for PLDepartment > includes cities in department
@@ -98,5 +82,54 @@ class ListController extends BaseListController
             ->_or()
             ->filterByPLCityId($cityIds, " IN ")
         ;
+    }
+
+    /**
+     * Add filters to active scope
+     *
+     * @param queryFilter
+     */
+    protected function scopeActive($queryFilter)
+    {
+      $queryFilter->getQuery()
+        ->online(true);
+    }
+
+    /**
+     * Add filters to moderated scope
+     *
+     * @param queryFilter
+     */
+    protected function scopeModerated($queryFilter)
+    {
+      $queryFilter->getQuery()
+        ->filterByModerated(true)
+        ->_or()
+        ->filterByModeratedPartial(true);
+    }
+
+    /**
+     * Add filters to draft scope
+     *
+     * @param queryFilter
+     */
+    protected function scopeDraft($queryFilter)
+    {
+      $queryFilter->getQuery()
+        ->filterByOnline(true)
+        ->filterByPublished(false)
+        ->filterByPublishedAt(null);
+    }
+
+    /**
+     * Add filters to inactive scope
+     *
+     * @param queryFilter
+     */
+    protected function scopeInactive($queryFilter)
+    {
+      $queryFilter->getQuery()
+        ->offline(true)
+        ->filterByTreeLevel(0, \Criteria::NOT_EQUAL);
     }
 }

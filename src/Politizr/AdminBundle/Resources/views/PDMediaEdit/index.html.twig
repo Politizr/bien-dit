@@ -1,1 +1,14 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDMediaEdit:index.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/dropzone.css') }}">
+{% endblock %}
+
+
+{% block generic_actions_script_container %}
+    {# Upload #}
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/dropzone.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
+{% endblock generic_actions_script_container %}

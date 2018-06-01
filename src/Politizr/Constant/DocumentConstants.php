@@ -47,6 +47,10 @@ class DocumentConstants
     // ******************************************************** //
     //                      DOC MEDIAS                          //
     // ******************************************************** //
+    const DOC_IMAGE_MAX_WIDTH = 1200;
+    const DOC_IMAGE_MAX_HEIGHT = 1200;
+    const DOC_THUMBNAIL_MAX_WIDTH = 250;
+    const DOC_THUMBNAIL_MAX_HEIGHT = 250;
     const DOC_THUMBNAIL_PREFIX = 'thb-';
     const DOC_MAIN_IMAGE_MIN_WIDTH = 250;
     const DOC_IMAGE_UPLOAD_FAILED = 'broken_image.jpg';

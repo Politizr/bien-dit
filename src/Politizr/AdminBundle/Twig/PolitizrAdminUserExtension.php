@@ -5,6 +5,7 @@ use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\ObjectTypeConstants;
 use Politizr\Constant\QualificationConstants;
+use Politizr\Constant\PathConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PUMandate;
@@ -21,6 +22,8 @@ use Politizr\AdminBundle\Form\Type\AdminPUserLocalizationType;
  */
 class PolitizrAdminUserExtension extends \Twig_Extension
 {
+    protected $kernel;
+
     protected $documentService;
     private $globalTools;
 
@@ -30,6 +33,7 @@ class PolitizrAdminUserExtension extends \Twig_Extension
 
     /**
      *
+     * @param @kernel
      * @param politizr.functional.document
      * @param politizr.tools.global
      * @param form.factory
@@ -37,12 +41,15 @@ class PolitizrAdminUserExtension extends \Twig_Extension
      * @param logger
      */
     public function __construct(
+        $kernel,
         $documentService,
         $globalTools,
         $formFactory,
         $router,
         $logger
     ) {
+        $this->kernel = $kernel;
+
         $this->documentService = $documentService;
         $this->globalTools = $globalTools;
 
@@ -53,6 +60,23 @@ class PolitizrAdminUserExtension extends \Twig_Extension
 
     /* ######################################################################################################## */
     /*                                              FONCTIONS ET FILTRES                                        */
+    /* ######################################################################################################## */
+    /**
+     * Filters list
+     *
+     * @return array
+     */
+    public function getFilters()
+    {
+        return array(
+            new \Twig_SimpleFilter(
+                'userFileSize',
+                array($this, 'userFileSize'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+        );
+    }
+
     /* ######################################################################################################## */
 
     /**
@@ -103,6 +127,30 @@ class PolitizrAdminUserExtension extends \Twig_Extension
             ),
         );
     }
+
+    /* ######################################################################################################## */
+    /*                                              FILTERS                                                     */
+    /* ######################################################################################################## */
+
+    /**
+     * Compute user's file size
+     *
+     * @param PUser $user
+     * @return html
+     */
+    public function userFileSize(\Twig_Environment $env, PUser $user)
+    {
+        if ($fileName = $user->getFileName()) {
+            if (file_exists($this->kernel->getRootDir() . '/../web' . PathConstants::USER_UPLOAD_WEB_PATH.$fileName)) {
+                $fileSize = fileSize($this->kernel->getRootDir() . '/../web' . PathConstants::USER_UPLOAD_WEB_PATH.$fileName);
+
+                return $fileSize;
+            }
+        }
+
+        return null;
+    }
+
 
     /* ######################################################################################################## */
     /*                                              FUNCTIONS                                                   */

@@ -6,28 +6,6 @@
     <!-- TinyMCE -->
     {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
 
-    <!-- Reaction xhr reloading -->
-    <script>
-        $("body").on("change", "#new_adminbundle_pdreaction_p_d_debate", function(e) {
-            console.log('*** click change debate');
-            var select = $('#new_adminbundle_pdreaction_parent_reaction');
-            $.ajax({
-                type: 'POST',
-                url: '{{ path("Politizr_AdminBundle_New_UpdPDDebate") }}',
-                data: { 'debateId': $(this).val() },
-                dataType: 'json',
-                beforeSend: function ( xhr ) { 
-                    $(select).html('<option>Chargement en cours...</option>');
-                    $(select).selectpicker('refresh');
-                },
-                statusCode: { 404: function () { console.log('404'); }, 500: function() { console.log('500'); } },
-                error: function ( jqXHR, textStatus, errorThrown ) { console.log('error '+textStatus); },
-                success: function(data) {
-                    // console.log('success');
-                    $(select).html(data['parent_reaction']);
-                    $(select).selectpicker('refresh');
-                }
-            });
-        });
-    </script>
+    <!-- Form updates -->
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/document/reaction.js') }}"></script>
 {% endblock %}

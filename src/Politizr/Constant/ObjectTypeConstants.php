@@ -28,6 +28,7 @@ class ObjectTypeConstants
     const TYPE_CIRCLE_OWNER = 'Politizr\Model\PCOwner';
     const TYPE_TOPIC = 'Politizr\Model\PCTopic';
     const TYPE_OPERATION = 'Politizr\Model\PEOperation';
+    const TYPE_MEDIA = 'Politizr\Model\PDMedia';
 
     const CONTEXT_DEBATE = 'debate';
     const CONTEXT_REACTION = 'reaction';

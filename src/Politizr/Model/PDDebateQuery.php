@@ -27,7 +27,11 @@ class PDDebateQuery extends BasePDDebateQuery
     {
         return $this
             ->filterByOnline(true)
-            ->filterByPublished(true);
+            ->filterByModerated(false)
+            ->_or()
+            ->filterByModerated(null)
+            ->filterByPublished(true)
+            ->filterByPublishedAt(null, \Criteria::NOT_EQUAL);
     }
 
     /**
@@ -39,7 +43,11 @@ class PDDebateQuery extends BasePDDebateQuery
         return $this
             ->filterByOnline(false)
             ->_or()
-            ->filterByPublished(false);
+            ->filterByModerated(true)
+            ->_or()
+            ->filterByPublished(false)
+            ->_or()
+            ->filterByPublishedAt(null);
     }
 
     /**

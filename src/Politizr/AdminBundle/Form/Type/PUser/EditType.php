@@ -24,12 +24,12 @@ class EditType extends BaseEditType
         $options = class_exists($optionsClass) ? new $optionsClass() : null;
 
         $securityRoles = array(
-            'ROLE_OAUTH_USER' => 'Connexion OpenID',
-            'ROLE_CITIZEN_INSCRIPTION' => 'Inscription Citoyen en cours',
-            'ROLE_ELECTED_INSCRIPTION' => 'Inscription Élu en cours',
-            'ROLE_CITIZEN' => 'Citoyen',
+            // 'ROLE_OAUTH_USER' => 'Connexion OpenID',
+            // 'ROLE_CITIZEN_INSCRIPTION' => 'Inscription Citoyen en cours',
+            // 'ROLE_ELECTED_INSCRIPTION' => 'Inscription Élu en cours',
+            'ROLE_CITIZEN' => 'Utilisateur',
             'ROLE_ELECTED' => 'Élu',
-            'ROLE_PROFILE_COMPLETED' => 'Inscription terminée',
+            // 'ROLE_PROFILE_COMPLETED' => 'Inscription terminée',
         );
 
         $circles = PCircleQuery::create()->find();

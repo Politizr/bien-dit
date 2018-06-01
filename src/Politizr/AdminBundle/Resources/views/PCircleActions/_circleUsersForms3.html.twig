@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="form-model col-md-12">
+        <label>
+            <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;Vous pouvez préciser des valeurs pour filtrer des utilisateurs</li>
+        </label>
+        <form id="formAttr3" name="formAttr3">
+            <input type="hidden" id="no" name="no" value="3">
+            <input type="hidden" id="circleId" name="circleId" value="{{ circle.id }}">
+        </form>
+    </div>
+</div>
+
+{{ form_start(formFilter3, {'attr': {'id': 'filterUsers3', 'name': 'filterUsers3', 'novalidate': 'novalidate' }}) }}
+    <div class="row">
+        {{ form_errors(formFilter3) }}
+        <div class="form-model col-md-4">
+            {{ form_row(formFilter3.city_insee_code) }}
+        </div>
+        <div class="form-model col-md-4">
+            {{ form_row(formFilter3.department_code) }}
+        </div>
+        <div class="form-model col-md-4">
+            {{ form_row(formFilter3.only_elected) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-model col-md-12">
+            <br/>
+            <a class="generic-action btn btn-default" action="filterForm3">Filtrer</a>
+        </div>
+    </div>    
+{{ form_end(formFilter3) }}
+
+<div class="row">
+    <div class="form-model col-md-12">
+        <label>
+            <br/>
+            <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Liste des utilisateurs ayant l'autorisation de publier des réponses</li>
+        </label>
+    </div>
+</div>
+
+{{ form_start(formUsers3, {'action': path('Politizr_AdminBundle_PCircle_removeUsersIsAuthorizedReactionToCircle'), 'method': 'POST', 'attr': {'id': 'users3', 'name': 'users3', 'novalidate': 'novalidate' }}) }}
+    {{ form_errors(formUsers3) }}
+    {{ form_row(formUsers3.p_users) }}
+    <div class="form-model-actions row">
+        <div class="form-model-actions-generic col-md-12" role="generic-actions">
+            <button type="submit" class="generic-action btn btn-warning"><i class="fa fa-fw fa-remove"></i>Retirer l'autorisation de publier des réponses
+        </div>
+    </div>
+{{ form_end(formUsers3) }}

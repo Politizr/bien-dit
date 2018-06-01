@@ -1,9 +1,5 @@
 {% extends_admingenerated "PolitizrAdminBundle:PDReactionList:row.html.twig" %}
 
-{% block list_td_column_file_name %}
-    {{ PDReaction | image('admin_list_thumb', false) }}
-{% endblock list_td_column_file_name %}
-
 {% block list_td_column_p_user_id %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PDReaction.PUserId) }}
 {% endblock %}
@@ -14,28 +10,4 @@
 
 {% block list_td_column_parent_reaction_id %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDReaction.ParentReactionId) }}
-{% endblock %}
-
-{% block list_td_column_p_l_city_id %}
-    {% if PDReaction.PLCityId %}
-        {{ PDReaction.PLCity }}
-    {% endif %}
-{% endblock %}
-
-{% block list_td_column_p_l_department_id %}
-    {% if PDReaction.PLDepartmentId %}
-        {{ PDReaction.PLDepartment }}
-    {% elseif PDReaction.PLCityId %}
-        {{ PDReaction.PLCity.PLDepartment }}
-    {% endif %}
-{% endblock %}
-
-{% block list_td_column_p_l_region_id %}
-    {% if PDReaction.PLRegionId %}
-        {{ PDReaction.PLRegion }}
-    {% elseif PDReaction.PLDepartmentId %}
-        {{ PDReaction.PLDepartment.PLRegion }}
-    {% elseif PDReaction.PLCityId %}
-        {{ PDReaction.PLCity.PLDepartment.PLRegion }}
-    {% endif %}
 {% endblock %}

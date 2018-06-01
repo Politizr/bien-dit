@@ -107,3 +107,13 @@ services:
             - @event_dispatcher
             - @logger
             - "%geo_active%"
+
+    politizr.functional.moderation:
+        class: Politizr\FrontBundle\Lib\Functional\ModerationService
+        arguments:
+            - @event_dispatcher
+            - @politizr.manager.user
+            - @politizr.manager.document
+            - @politizr.tools.global
+            - @logger
+

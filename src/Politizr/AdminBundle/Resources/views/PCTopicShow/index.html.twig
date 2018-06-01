@@ -1,7 +1,30 @@
 {% extends_admingenerated "PolitizrAdminBundle:PCTopicShow:index.html.twig" %}
 
-{# Objets #}
+{% block show_column_block_file_name %}
+    {% if PCTopic.FileName %}
+        {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ PCTopic.FileName} %}
+    {% else %}
+        Aucune image
+    {% endif %}
+{% endblock %}
+
+{% block show_column_description %}
+    {{ PCTopic.getDescription | purify }}
+{% endblock %}
+
+{% block show_column_summary %}
+    {{ PCTopic.getSummary | purify }}
+{% endblock %}
+
 {% block show_column_block_p_circle %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_CIRCLE'), PCTopic.PCircleId) }}
 {% endblock %}
 
+{# Block front link #}
+{% block show_column_block_front %}
+    {% if PCTopic.online and PCTopic.PCircle.online %}
+        <a href="{{ path('TopicDetail', {'slug': PCTopic.slug, 'circleSlug': PCTopic.PCircle.slug}) }}" target="_blank">Consulter</a>
+    {% else %}
+        Hors ligne
+    {% endif %}
+{% endblock %}

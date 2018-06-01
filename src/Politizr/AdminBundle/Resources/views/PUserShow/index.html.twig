@@ -2,93 +2,25 @@
 
 {# Image upload #}
 {% block show_column_block_file_name %}
-    {% include 'PolitizrAdminBundle:Fragment:_uploadImage.html.twig' with {'zone': 2, 'fileName': PUser.fileName,'subjectId': PUser.id, 'queryClass': 'Politizr\\Model\\PUserQuery', 'setter': 'setFileName', 'uploadWebPath': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH')} %}
+    {% if PUser.FileName %}
+        {% include 'PolitizrAdminBundle:Fragment:_image.html.twig' with {'path': constant('Politizr\\Constant\\PathConstants::USER_UPLOAD_WEB_PATH') ~ PUser.FileName} %}
+    {% else %}
+        Aucune image
+    {% endif %}
 {% endblock %}
 
 {# User's localization #}
 {% block show_column_block_localization %}
-    {{ adminUserLocalization(PUser) }}
+    {% if PUser.PLCity %}
+        {{ PUser.PLCity.NameReal }}
+    {% else %}
+        Aucune ville renseignée
+    {% endif %}
 {% endblock %}
 
 {# Contenus #}
-{% block show_column_summary %}
-    {{ PUser.summary | purify }}
-{% endblock %}
-
 {% block show_column_biography %}
     {{ PUser.biography | purify }}
-{% endblock %}
-
-{# User's tag #}
-{% block show_column_block_tags_public %}
-    {{ adminUserTags(PUser, null, 1, true, true, 'show') }}
-{% endblock %}
-
-{# Blocs badges #}
-{% block show_column_block_badges_debat %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_DEBATE'), 1) }}
-{% endblock %}
-
-{% block show_column_block_badges_comment %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_COMMENT'), 2) }}
-{% endblock %}
-
-{% block show_column_block_badges_participation %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_PARTICIPATION'), 3) }}
-{% endblock %}
-
-{% block show_column_block_badges_moderation %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_MODERATION'), 4) }}
-{% endblock %}
-
-{% block show_column_block_badges_autre %}
-    {{ adminUserBadges(PUser, constant('\\Politizr\\Constant\\ReputationConstants::BADGE_TYPE_OTHER'), 5) }}
-{% endblock %}
-
-{# Bloc débats #}
-{% block show_column_block_debates %}
-    {{ adminUserDebates(PUser) }}
-{% endblock %}
-
-{# Bloc réactions #}
-{% block show_column_block_reactions %}
-    {{ adminUserReactions(PUser) }}
-{% endblock %}
-
-
-{# Bloc commentaires débats #}
-{% block show_column_block_d_comments %}
-    {{ adminUserDComments(PUser) }}
-{% endblock %}
-
-{# Bloc commentaires réactions #}
-{% block show_column_block_r_comments %}
-    {{ adminUserRComments(PUser) }}
-{% endblock %}
-
-{# Bloc followers #}
-{% block show_column_block_followers %}
-    {{ adminUserFollowers(PUser) }}
-{% endblock %}
-
-{# Bloc subscribers #}
-{% block show_column_block_subscribers %}
-    {{ adminUserSubscribers(PUser) }}
-{% endblock %}
-
-{# Block mandates #}
-{% block show_column_block_mandates %}
-    {{ adminUserMandates(PUser) }}
-{% endblock %}
-
-{# Block idcheck #}
-{% block show_column_block_id_check %}
-    {{ adminUserIdCheck(PUser) }}
-{% endblock %}
-
-{# Block moderation new alert #}
-{% block show_column_block_moderation_alert_new %}
-    {{ adminModerationAlertNew(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_USER'), PUser.Id, PUser.Id) }}
 {% endblock %}
 
 {# Block moderation alert listing #}
@@ -98,14 +30,31 @@
     </div>
 {% endblock %}
 
-{# Block moderation banned email #}
-{% block show_column_block_moderation_banned %}
-    {% if PUser.Banned %}
-        <a action="bannedEmail" subjectId="{{ PUser.Id }}">Alerter par email</a>
-        <br/>
-        <i>Note: envoi d'un email notifiant l'utilisateur de son bannissement.</i>
-    {% endif %}
-{% endblock %}
+{# Listes #}
+{% block show_column_followers %}
+    <ul>
+        {% for user in PUser.followers %}
+            <li>{{ user }}</li>
+        {% endfor %}
+    </ul>
+{% endblock show_column_followers %}
+
+{% block show_column_subscribers %}
+    <ul>
+        {% for user in PUser.subscribers %}
+            <li>{{ user }}</li>
+        {% endfor %}
+    </ul>
+{% endblock show_column_subscribers %}
+
+{% block show_column_current_organizations %}
+    <ul>
+        {% for organization in PUser.currentOrganizations %}
+            <li>{{ organization.title }}</li>
+        {% endfor %}
+    </ul>
+{% endblock show_column_current_organizations %}
+
 
 {# Block front link #}
 {% block show_column_block_front %}
@@ -115,63 +64,3 @@
         Hors ligne
     {% endif %}
 {% endblock %}
-
-
-{% block object_actions_script_container %}
-    {# tag js actions & lib #}
-    <script>
-        var nbZones = 2;
-        var service = 'admin';
-        var xhrRoute = ADMIN_ROUTE_TAG_LISTING;
-
-        var uploadZones = 2;
-    </script>
-
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/autocomplete-tools') }}"></script>    
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/tag/editTags.js') }}"></script>  
-
-    {# upload js #}
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/jquery.form.min.js') }}"></script>  
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>  
-
-    {# moderation js #}
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/moderation/notification.js') }}"></script>
-
-    {# idcheck js #}
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/textcounter.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/user/idCheck.js') }}"></script>  
-
-    {# mandate js #}
-    <script>
-        // Mandate creation
-        $("body").on("click", "[action='mandateCreate']", function(e) {
-            console.log('*** click mandateCreate');
-            var uuid = $(this).attr('uuid');
-            return createAdminUserMandate(uuid);
-        });
-
-        // Mandate update
-        $("body").on("click", "[action='mandateUpdate']", function(e) {
-            console.log('*** click mandateUpdate');
-            var form = $(this).closest('#formMandateUpdate');
-            return saveAdminUserMandate(form);
-        });
-
-        // Mandate deletion
-        $("body").on("click", "[action='mandateDelete']", function(e) {
-            console.log('*** click mandateDelete');
-            var uuid = $(this).attr('uuid');
-            return deleteAdminUserMandate(uuid);
-        });
-    </script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/user/mandates.js') }}"></script>
-
-
-    {# localization js #}
-    <script>
-        // User localization vars
-        var xhrRouteCity = ADMIN_ROUTE_CITY_LISTING;
-    </script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/localization/edit.js') }}"></script>  
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/user/localization.js') }}"></script>  
-{% endblock object_actions_script_container %}

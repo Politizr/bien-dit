@@ -15,9 +15,9 @@ params:
         p_user:
             label:          Utilisateur
         p_d_debate_id:
-            label:          ID Débat
+            label:          ID Sujet
         p_d_debate:
-            label:          Débat
+            label:          Sujet
         description:
             label:          Description
         paragraph_no:
@@ -26,12 +26,10 @@ params:
             label:          Notes +
         note_neg:
             label:          Notes -
-        published:
-            label:          Publié
         published_at:
             label:          Publication
         published_by:
-            label:          Auteur
+            label:          Publicateur
         online:
             label:          En ligne
         moderated:
@@ -44,6 +42,10 @@ params:
             label:          Création
         updated_at:
             label:          Mis à jour
+        active:
+            label:          Actif
+            sortable:       false
+            dbType:         BOOLEAN
     object_actions:
         delete:             ~
     batch_actions:
@@ -54,12 +56,15 @@ builders:
             title:                              Liste des commentaires sur les sujets
             max_per_page:                       50
             sort:                               [ created_at, DESC ]
-            display:                            [ id, p_user_id, p_d_debate_id, description, paragraph_no, published_at ]
+            display:                            [ description, p_user_id, p_d_debate_id, published_at, active ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, p_user_id, p_d_debate_id, moderated, moderated_partial ]
+            filters:                            [ id, uuid, p_user_id, p_d_debate_id, moderated, moderated_partial, active ]
             object_actions:
                 show:                           ~
                 edit:                           ~
+                moderation:
+                    label:                      Modération
+                    icon:                       fa-ban
                 delete:                         ~
             actions:
                 new:                            ~
@@ -71,8 +76,12 @@ builders:
         params:
             title:                              "Création d'un commentaire"
             display:
-                "Champs principaux":            [ [ description ], [ paragraph_no ], [ online ], [ p_user, p_d_debate ] ]
+                "Champs principaux":            [ [ description, paragraph_no ], [ online ], [ p_user, p_d_debate ] ]
             fields:
+                description:
+                    grid_class:                 "col-md-8"
+                paragraph_no:
+                    credentials:                ROLE_SYSTEM
                 p_user:
                     dbType:                     model
                     formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
@@ -97,19 +106,18 @@ builders:
             title:                              "Edition du commentaire de sujet id-{{ PDDComment.id }}"
             tabs:
                 "Contenu":
-                    "Texte":                    [ description, paragraph_no ]
-                "Objets":
-                    "Utilisateur":              [ p_user ]
+                    "Auteur":                   [ [ p_user, published_by ] ]
+                    "Texte":                    [ description ]
+                "Contexte":
                     "Document":                 [ p_d_debate ]
-                "Statut":
-                    "Publication":              [ [ published_by ], [ published_at ] ]
-                    "Notes":                    [ [ note_pos, note_neg ] ]
-                "Modération":
-                    "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
                 "Attributs":
-                    "Identifiants":             [ id, uuid ]
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                    "Identifiants":             [ [ id, uuid ] ]
+                    "État":                     [ online, paragraph_no ]
+                    "Popularité":               [ [ note_pos, note_neg ] ]
+                    "Dates":                    [ [ created_at, updated_at, published_at ] ]
             fields:
+                paragraph_no:
+                    credentials:                ROLE_SYSTEM
                 p_user:
                     addFormOptions:
                         disabled:               true
@@ -120,10 +128,7 @@ builders:
                         read_only:              true
                 description:
                     grid_class:                 "col-md-12"
-                    # addFormOptions:
-                    #     attr:                   { class : tinymce }
                 published_at:
-                    # formType:                   afe_datetime_picker
                     addFormOptions:
                         widget:                 single_text
                 id:
@@ -141,12 +146,11 @@ builders:
             actions:
                 save:                           ~
                 archive:
+                    credentials:                ROLE_SYSTEM
                     label:                      Archiver
                     icon:                       fa-archive
                     params:
                         pk:                     "{{ PDDComment.id }}"
-                    # options:
-                    #     title:                "Are you sure?"
                 show:                           ~
                 list:                           ~
                 delete:                         ~
@@ -155,20 +159,18 @@ builders:
             title:                              "Visualisation du commentaire de sujet id-{{ PDDComment.id }}"
             tabs:
                 "Contenu":
-                    "Texte":                    [ description, paragraph_no ]
-                "Objets":
-                    "Utilisateur":              [ block_p_user ]
+                    "Auteur":                   [ [ block_p_user, published_by ] ]
+                    "Texte":                    [ description ]
+                "Contexte":
                     "Document":                 [ block_p_d_debate ]
-                "Statut":
-                    "Publication":              [ [ published_by ], [ published_at ] ]
-                    "Notes":                    [ [ note_pos, note_neg ] ]
                 "Modération":
-                    "Portée":                   [ [ moderated, moderated_partial, moderated_at ] ]
-                    "Notification":             [ block_moderation_alert_new  ]
-                    "Précédentes notifications": [ block_moderation_alert_listing  ]
+                    "Situation":                [ moderated, moderated_partial ]
+                    "Historique de l utilisateur":  [ block_moderation_alert_listing ]
                 "Attributs":
-                    "Identifiants":             [ id, uuid ]
-                    "Création":                 [ [ online ], [ created_at, updated_at ] ]
+                    "Identifiants":             [ [ id, uuid ] ]
+                    "État":                     [ online, paragraph_no ]
+                    "Popularité":               [ [ note_pos, note_neg ] ]
+                    "Dates":                    [ [ created_at, updated_at, published_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]
             fields:
@@ -191,6 +193,7 @@ builders:
     actions:
         params:
             object_actions:
-                delete: ~
+                moderation:                     ~
+                delete:                         ~
             batch_actions:
-                delete: ~
+                delete:                         ~

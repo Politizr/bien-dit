@@ -1,0 +1,72 @@
+{% extends "PolitizrAdminBundle::base_admin.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Mandats
+{% endblock title %}
+
+{% block page_header_content %}
+    <h1>Mandats de {{ user.firstname }} {{ user.name }}</h1>
+{% endblock page_header_content %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="form-model form-model-puser col-md-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li>
+                        <a data-toggle="tab" href="#" data-target=".tab-pane-model-mandate">
+                            Mandats
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content form-model-content">
+                    <fieldset class="form-model-tab-pane tab-pane-model-mandate tab-pane">
+                        <legend><span>Liste des mandats</span></legend>
+                        <div class="row">
+                            {% include 'PolitizrAdminBundle:Fragment\\User:_mandates.html.twig' %}
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="form-model-actions row">
+                    <div class="form-model-actions-generic col-md-12 text-right" role="generic-actions">
+                        <a class="btn btn-default" href="{{ path("Politizr_AdminBundle_PUser_list") }}">
+                            <i class="fa fa-fw fa-list-alt"></i> Retour à la liste
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {# mandate js #}
+    <script>
+        // Mandate creation
+        $("body").on("click", "[action='mandateCreate']", function(e) {
+            console.log('*** click mandateCreate');
+            var uuid = $(this).attr('uuid');
+            return createAdminUserMandate(uuid);
+        });
+
+        // Mandate update
+        $("body").on("click", "[action='mandateUpdate']", function(e) {
+            console.log('*** click mandateUpdate');
+            var form = $(this).closest('#formMandateUpdate');
+            return saveAdminUserMandate(form);
+        });
+
+        // Mandate deletion
+        $("body").on("click", "[action='mandateDelete']", function(e) {
+            console.log('*** click mandateDelete');
+            var uuid = $(this).attr('uuid');
+            return deleteAdminUserMandate(uuid);
+        });
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/politizr/user/mandates.js') }}"></script>
+
+{% endblock javascripts %}

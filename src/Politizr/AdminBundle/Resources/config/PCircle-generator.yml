@@ -25,7 +25,7 @@ params:
         title:
             label:          Titre
         summary:
-            label:          Résumé
+            label:          Informations
         description:
             label:          Description
         url:
@@ -50,13 +50,15 @@ builders:
             title:                              Liste des groupes
             max_per_page:                       50
             sort:                               [ sortable_rank, ASC ]
-            display:                            [ logo_file_name, title, p_c_owner, p_circle_type, online, created_at ]
+            display:                            [ title, p_c_owner, p_circle_type, online, read_only, private_access, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, p_c_owner, p_circle_type, uuid, title, online, created_at ]
+            filters:                            [ id, p_c_owner, p_circle_type, uuid, title, online, read_only, private_access, created_at ]
             object_actions:
                 show:                           ~
                 edit:                           ~
-                scope:                          ~
+                scope:
+                    label:                      Autorisations
+                    icon:                       fa-users
                 delete:                         ~
                 moveUp:                         ~
                 moveDown:                       ~
@@ -84,9 +86,9 @@ builders:
             title:                              "Edition du groupe '{{ PCircle.title }}'"
             tabs:
                 "Contenu":
-                    "Bandeau":                  [ uploadedLogoFileName ]
-                    "Texte":                    [ title, summary, description ]
-                "Objets":
+                    "Logo":                     [ block_logo_file_name ]
+                    "Texte":                    [ [ title, summary ], description ]
+                "Contexte":
                     "Client":                   [ p_c_owner ]
                     "Offre":                    [ p_circle_type ]
                 "Options":
@@ -94,24 +96,26 @@ builders:
                     "Restrictions":             [ private_access ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "En ligne":                 [ read_only, online ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "État":                     [ read_only, online ]
+                    "Dates":                    [ [ created_at, updated_at ] ]
             fields:
-                uploadedLogoFileName:
-                    dbType:                     VARCHAR
-                    label:                      Photo
-                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\SingleUploadType
-                    addFormOptions:
-                        deleteable:             fileName
-                        data_class:             Symfony\Component\HttpFoundation\File\File
-                summary:
+                block_logo_file_name:
+                    credentials:                ROLE_SYSTEM
+                    label:                      "Image"
                     grid_class:                 "col-md-12"
+                    formType:                   hidden
+                    dbType:                     VARCHAR
                     addFormOptions:
-                        attr:                   { class : tinymce }
+                        mapped:                 false
+                summary:
+                    credentials:                ROLE_SYSTEM
+                    grid_class:                 "col-md-8"
                 description:
                     grid_class:                 "col-md-12"
                     addFormOptions:
                         attr:                   { rows: 25 }
+                url:
+                    credentials:                ROLE_SYSTEM
                 id:
                     addFormOptions:
                         read_only:              true
@@ -134,9 +138,9 @@ builders:
             title:                              "Visualisation du groupe '{{ PCircle.getTitle }}'"
             tabs:
                 "Contenu":
-                    "Bandeau":                  [ logo_file_name ]
+                    "Logo":                     [ block_logo_file_name ]
                     "Texte":                    [ title, summary, description ]
-                "Objets":
+                "Contexte":
                     "Client":                   [ block_p_c_owner ]
                     "Offre":                    [ p_circle_type ]
                 "Options":
@@ -144,11 +148,20 @@ builders:
                     "Restrictions":             [ private_access ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "En ligne":                 [ online ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "État":                     [ read_only, online ]
+                    "Dates":                    [ [ created_at, updated_at ] ]
+                "Front":
+                    "Rendu":                    [ block_front ]
             fields:
+                block_logo_file_name:
+                    credentials:                ROLE_SYSTEM
+                    label:                      "Image"
                 block_p_c_owner:
                     label:                      "Client"
+                url:
+                    credentials:                ROLE_SYSTEM
+                block_front:
+                    label:                      "Rendu front"
             actions:
                 list:                           ~
                 edit:                           ~

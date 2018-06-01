@@ -1,0 +1,134 @@
+{% extends "PolitizrAdminBundle::base_admin.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Modération
+{% endblock title %}
+
+{% block page_header_content %}
+    <h1>Modération de {{ tag.title }}</h1>
+{% endblock page_header_content %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="form-model form-model-document col-md-12">
+            <form action="{{ path('Politizr_AdminBundle_PTag_moderation_update', { 'pk': tag.id }) }}" method="POST">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li>
+                            <a data-toggle="tab" href="#" data-target=".tab-pane-model-type">
+                                Type
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#" data-target=".tab-pane-model-reputation">
+                                Réputation
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#" data-target=".tab-pane-model-part">
+                                Modération
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#" data-target=".tab-pane-model-notif">
+                                Notification
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content form-model-content">
+                        {{ form_errors(form) }}
+                        <fieldset class="form-model-tab-pane tab-pane-model-type tab-pane">
+                            <legend><span>Type de modération</span></legend>
+                            <div class="row">
+                                <div class="form-model col-md-6">
+                                    {{ form_row(form['p_m_moderation_type']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-model col-md-12">
+                                    <br/><br/>
+                                    <i class="fa fa-exclamation-triangle">
+                                        Choisissez la raison de la modération.
+                                    </i>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="form-model-tab-pane tab-pane-model-reputation tab-pane">
+                            <legend><span>Mise à jour de la réputation</span></legend>
+                            <div class="row">
+                                <div class="form-model col-md-6">
+                                    {{ form_row(form['score_evolution']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-model col-md-12">
+                                    <br/><br/>
+                                    <i class="fa fa-exclamation-triangle">
+                                        Indiquez le nombre de points de réputation à retirer à l'utilisateur (avec le signe "-").
+                                    </i>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="form-model-tab-pane tab-pane-model-part tab-pane">
+                            <legend><span>Niveau de modération</span></legend>
+                            <div class="row">
+                                <div class="form-model col-md-6">
+                                    {{ form_row(form['moderation_level']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-model col-md-6">
+                                    {{ form_row(form['ban']) }}
+                                </div>
+                            </div>
+                            <legend><span>Liste des éléments soumis à modération</span></legend>
+                            <div class="row">
+                                <div class="form-model col-md-6">
+                                    {{ form_row(form['title']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-model col-md-12">
+                                    <br/><br/>
+                                    <i class="fa fa-exclamation-triangle">
+                                        En cas de modération partielle, mettez à jour les éléments que vous désirez modérer.
+                                    </i>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="form-model-tab-pane tab-pane-model-notif tab-pane">
+                            <legend><span>Email de notification</span></legend>
+                            <div class="row">
+                                <div class="form-model col-md-6">
+                                    {{ form_row(form['send_email']) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-model col-md-12">
+                                    <br/><br/>
+                                    <i class="fa fa-exclamation-triangle">
+                                        Cochez la case pour envoyer un email à l'utilisateur lui signifiant sa modération.
+                                    </i>
+                                </div>
+                            </div>
+                        </fieldset>
+                        {{ form_rest(form) }}
+                    </div>
+
+                    <div class="form-model-actions row">
+                        <div class="form-model-actions-generic col-md-12 text-right" role="generic-actions">
+                            <button type="submit" name="save" class="generic-action btn btn-success">
+                                <i class="fa fa-fw fa-check"></i> Valider
+                            </button>
+                            <a class="btn btn-default" href="{{ path("Politizr_AdminBundle_PTag_list") }}">
+                                <i class="fa fa-fw fa-list-alt"></i> Retour à la liste
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock page_content %}

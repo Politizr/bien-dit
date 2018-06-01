@@ -1,8 +1,18 @@
 {% extends_admingenerated "PolitizrAdminBundle:PCircleEdit:index.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/dropzone.css') }}">
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
 
     {# TinyMCE #}
     {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+
+    {# Upload #}
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/dropzone.js') }}"></script>  
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/uploadImage.js') }}"></script>
 {% endblock %}

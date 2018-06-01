@@ -3,6 +3,7 @@ params:
     model:                  Politizr\Model\PQMandate
     namespace_prefix:       Politizr
     concurrency_lock:       ~
+    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -82,8 +83,8 @@ builders:
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ p_q_type ]
-                    "En ligne":                 [ online ]
-                    "Création":                 [ [ created_at, updated_at ] ]
+                    "État":                 [ online ]
+                    "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 p_q_type:
                     dbType:                     model
