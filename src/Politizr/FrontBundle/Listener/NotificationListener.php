@@ -554,7 +554,7 @@ class NotificationListener
         $adminMsg = $event->getArgument('admin_msg');
         
         $targetUserId = $subject->getId();
-        $authorUserId = UserConstants::USER_ID_ADMIN;
+        $authorUserId = null;
 
         $objectName = get_class($subject);
         $objectId = $subject->getId();

@@ -1,7 +1,11 @@
-{% if lastPUNotif %}
-    <p><em>Dernière notification générée le {{ lastPUNotif.createdAt | date('d/m/Y H:i:s') }}</em></p>
-    <label class="title">Message</label>
-    <p>
-        {{ lastPUNotif.description | raw }}
-    </p>
-{% endif %}
+<div class="row">
+    <div class="form-model col-md-12">
+        {% if lastPUNotif %}
+            <p><em>Dernière notification générée le {{ lastPUNotif.createdAt | date('d/m/Y H:i:s') }}</em></p>
+            <label class="title">Message</label>
+            <p>
+                {{ lastPUNotif.description | raw }}
+            </p>
+        {% endif %}
+    </div>
+</div>

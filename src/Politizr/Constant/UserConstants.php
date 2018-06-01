@@ -16,6 +16,4 @@ class UserConstants
     const STATUS_INSCRIPTION_PROCESS = 2;
     const STATUS_EXCLUDED = 3;
     const STATUS_ARCHIVED = 4;
-
-    const USER_ID_ADMIN = 1;
 }

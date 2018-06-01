@@ -147,7 +147,6 @@ class UserService
             ->online()
             ->filterIfCities($cityIds)
             ->filterByKeywords($keywords)
-            ->filterById(UserConstants::USER_ID_ADMIN, \Criteria::NOT_EQUAL)
             ->orderWithKeyword($filterActivity)
             ->paginate($offset, $count);
 

@@ -1,6 +1,4 @@
-{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailAuthorPhoto.txt.twig' with {'author': author, 'authorUrl': authorUrl } only %}
-
-{% include 'PolitizrFrontBundle:Notification\\MessageEmail\\Txt:_emailAuthorName.txt.twig' with {'author': author, 'authorUrl': authorUrl } only %} a envoyé une notification:
+L'administrateur a envoyé une notification:
 
 {{ notification.description | striptags }}
 

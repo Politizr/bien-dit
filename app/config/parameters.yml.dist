@@ -58,6 +58,8 @@ parameters:
 
     google_tagmanager_id: GTM-123
 
+    google_ga_view_id: 123
+
     # ID Check
     idcheck_wsdl_url: http://www.wsdl.com
     idcheck_login: 123

@@ -1,24 +1,62 @@
-<label class="help">
-    <ul>
-        <li><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;Filtrer la liste avant de saisir la notification</li>
-        <li><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;Toujours utiliser des liens absolus</li>
-        <li><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;Ajouter ```action="notificationCheck"``` dans les attributs des liens</li>
-    </ul>
-</label>
+<div class="row">
+    <div class="form-model col-md-12">
+        <label>
+            <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;Vous pouvez préciser des valeurs pour filtrer des utilisateurs</li>
+        </label>
+    </div>
+</div>
 
 {{ form_start(formFilter, {'attr': {'id': 'filterUsers', 'name': 'filterUsers', 'novalidate': 'novalidate' }}) }}
-    {{ form_errors(formFilter) }}
-    {{ form_row(formFilter.only_elected) }}
-    {{ form_row(formFilter.city_insee_code) }}
-    {{ form_row(formFilter.department_code) }}
-    <a class="generic-action btn btn-default" action="filterForm">Filtrer</a>
+    <div class="row">
+        {{ form_errors(formFilter) }}
+        <div class="form-model col-md-4">
+            {{ form_row(formFilter.city_insee_code) }}
+        </div>
+        <div class="form-model col-md-4">
+            {{ form_row(formFilter.department_code) }}
+        </div>
+        <div class="form-model col-md-4">
+            {{ form_row(formFilter.only_elected) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-model col-md-12">
+            <br/>
+            <a class="generic-action btn btn-default" action="filterForm">Filtrer</a>
+        </div>
+    </div>
 {{ form_end(formFilter) }}
 
+<div class="row">
+    <div class="form-model col-md-12">
+        <label>
+            <br/>
+            <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Sélectionnez le(s) utilisateur(s) cible(s)</li>
+        </label>
+    </div>
+</div>
+
 {{ form_start(form, {'attr': { 'id': 'formNotification', 'name': 'formNotification', 'novalidate': 'novalidate' }}) }}
-    {{ form_errors(form) }}
-
-    {{ form_row(form.p_users) }}
-    {{ form_row(form.description) }}
-
-    <a action="createAdminNotif">Envoyer</a>
+    <div class="row">
+        {{ form_errors(form) }}
+        <div class="form-model col-md-12">
+            {{ form_row(form.p_users) }}
+        </div>
+        <div class="form-model col-md-12">
+            {{ form_row(form.description) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-model col-md-12">
+            <label>
+                <br/>
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;Toujours utiliser des liens absolus si vous en insérez</li>
+            </label>
+        </div>
+    </div>
+    <div class="form-model-actions row">
+        <div class="form-model-actions-generic col-md-12" role="generic-actions">
+            <a action="createAdminNotif" class="btn btn-success">Envoyer</a>
+        </div>
+    </div>
 {{ form_end(form) }}

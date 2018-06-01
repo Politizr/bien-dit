@@ -1,7 +1,9 @@
 <tr style="background-color: #FFFFFF; width: 100%; padding-bottom: 20px;">
-    {% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailAuthorPhoto.html.twig' with {'author': author, 'authorUrl': authorUrl } only %}
+    <td width="40" style="padding: 0 20px 40px 40px;" valign="top">
+        <img src="{{ app.request.getSchemeAndHttpHost() ~ asset('bundles/politizrfront/images/default_avatar.jpg') }}" />
+    </td>
     <td style="padding: 0 40px 0 40px; line-height: 140%;" valign="top">
-        <b>{% include 'PolitizrFrontBundle:Notification\\MessageEmail:_emailAuthorName.html.twig' with {'author': author, 'authorUrl': authorUrl } only %} a envoyé une notification:</b>
+        <b><span style="color: #2D2D2D">L'administrateur</span> a envoyé une notification:</b>
         <br>
         {{ notification.description | raw }}
     </td>

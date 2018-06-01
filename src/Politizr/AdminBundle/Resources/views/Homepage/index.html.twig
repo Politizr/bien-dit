@@ -1,28 +1,91 @@
 {% extends "PolitizrAdminBundle::base_admin.html.twig" %}
 
-{% block stylesheets %}
-    {{ parent() }}
-{% endblock %}
-
 {% block title %}
     {{ parent() }} - Accueil
-{% endblock %}
+{% endblock title %}
+
+{% block page_header_content %}
+    <h1>Tableau de bord de {{ client.name }}</h1>
+{% endblock page_header_content %}
 
 {% block page_content %}
-    <div id="dashboard">
-        <div id="notificationBox">
-            <div id="adminNotifForm">
-                {% include 'PolitizrAdminBundle:Fragment\\Notification:_adminNotifForm.html.twig' %}
-            </div>
-            <div id="notificationsAdminHistory">
-                {% include 'PolitizrAdminBundle:Dashboard:_notifLast.html.twig' %}
+    <div class="row">
+        <div class="form-model form-model-document col-md-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li>
+                        <a data-toggle="tab" href="#" data-target=".tab-pane-model-analytics">
+                            Analytics
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#" data-target=".tab-pane-model-notifs">
+                            Notifications
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content form-model-content">
+                    <fieldset class="form-model-tab-pane tab-pane-model-analytics tab-pane">
+                        <div id="gaZone" clientId="{{ google.client_id }}" viewId="{{ google.ga_view_id }}">
+                            <legend><span>Compte</span></legend>
+                            <div class="row">
+                                <div class="form-model col-md-12">
+                                    <section id="auth-button"></section>
+
+                                    <div style="display:none" id="gaLogout">
+                                        <div class="gapi-analytics-auth-styles-signinbutton gapi-analytics-auth-styles-signinbutton:hover" title="Access Google Analytics">
+                                            <span class="gapi-analytics-auth-styles-signinbutton-image"></span>
+                                            <span class="gapi-analytics-auth-styles-signinbutton-buttonText" action="gaLogout">Déconnexion</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <legend><span>Sessions</span></legend>
+                            <div class="row">
+                                <div class="form-model col-md-12">
+                                    <section id="timeline" class="gaContainer"></section>
+                                </div>
+                            </div>
+                            <legend><span>Taux de rebond</span></legend>
+                            <div class="row">
+                                <div class="form-model col-md-12">
+                                    <section id="bouncerate" class="gaContainer"></section>
+                                </div>
+                            </div>
+                            {#
+                            <legend><span>Sources</span></legend>
+                            <div class="row">
+                                <div class="form-model col-md-12">
+                                    <section id="trafficsource" class="gaContainer"></section>
+                                </div>
+                            </div>
+                            #}
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-model-tab-pane tab-pane-model-notifs tab-pane">
+                        <legend><span>Envoi d'une notification "administrateur"</span></legend>
+                        <div id="notificationBox">
+                            <div class="form-model col-md-12" id="adminNotifForm">
+                                {% include 'PolitizrAdminBundle:Fragment\\Notification:_adminNotifForm.html.twig' %}
+                            </div>
+                        </div>
+                        <legend><span>Historique d'envoi</span></legend>
+                        <div class="form-model col-md-12" id="notificationsAdminHistory">
+                            {% include 'PolitizrAdminBundle:Dashboard:_notifLast.html.twig' %}
+                        </div>
+                        </div>
+                    </fieldset>
+                </div>
             </div>
         </div>
     </div>
-{% endblock %}
+{% endblock page_content %}
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/dashboard/ga.js') }}"></script>
 
     {# TinyMCE #}
     {% include "PolitizrAdminBundle::tinymce-light.html.twig" %}
