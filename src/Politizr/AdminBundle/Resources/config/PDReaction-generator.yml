@@ -146,7 +146,7 @@ builders:
     excel:
         params:
             display:                            [ title, p_user, slug, published_at ]
-            filename:                           politizr-reactions
+            filename:                           app-reactions
             filetype: ~
             datetime_format: ~
             fields: ~

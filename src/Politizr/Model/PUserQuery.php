@@ -28,6 +28,8 @@ class PUserQuery extends BasePUserQuery
         return $this
             ->filterByOnline(true)
             ->filterByBanned(false)
+            ->_or()
+            ->filterByBanned(null)
             ->filterByPUStatusId(UserConstants::STATUS_ACTIVED);
     }
 

@@ -4,7 +4,11 @@
     {{ parent() }}
 
     {# TinyMCE #}
-    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+    {% if is_granted('ROLE_SYSTEM') %}
+        {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+    {% else %}
+        {% include "PolitizrAdminBundle::tinymce-light.html.twig" %}
+    {% endif %}
 {% endblock %}
 
 {% block generic_actions_script_container %}

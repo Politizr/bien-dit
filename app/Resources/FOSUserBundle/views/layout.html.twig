@@ -6,44 +6,14 @@
         </title>
         <meta charset="UTF-8">
 
-            <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-            <!--[if lt IE 9]>
-              <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-            <![endif]-->
+        <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 
-            <!-- Latest compiled and minified CSS -->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-            <style>
-                /* Signin. */
-                body.signin {
-                    padding-top: 200px;
-                    background-color: #333;
-                }
-                img.swan {
-                    position: absolute;
-                    z-index: -1000;
-                    margin-left: 350px;
-                    margin-top: -50px;
-                    height: 300px;
-                }
-                form.form-signin {
-                    position: absolute;
-                    left: 50%;
-                    top: 50%;
-                    margin: -150px 0 0 -200px;
-                    padding: 40px;
-                    background-color: #fff;
-                    width: 250px;
-                    border-radius: 3px;
-                }
-                form.form-signin label {
-                    font-weight: normal;
-                }
-                form.form-signin .form-control:focus {
-                    border-color: #1abb9c;
-                }
-            </style>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/admin.css') }}" type="text/css" media="all" />
     </head>
     <body class="{% block body_class %}signin{% endblock %}">
 
@@ -55,14 +25,6 @@
                 </a>
             {% endif %}
         </div>
-
-        {% for type, messages in app.session.flashBag.all %}
-            {% for message in messages %}
-                <div class="{{ type }}">
-                    {{ message|trans({}, 'FOSUserBundle') }}
-                </div>
-            {% endfor %}
-        {% endfor %}
 
         <div>
             {% block fos_user_content %}

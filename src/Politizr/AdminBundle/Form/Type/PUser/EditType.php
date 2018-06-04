@@ -28,7 +28,7 @@ class EditType extends BaseEditType
             // 'ROLE_CITIZEN_INSCRIPTION' => 'Inscription Citoyen en cours',
             // 'ROLE_ELECTED_INSCRIPTION' => 'Inscription Élu en cours',
             'ROLE_CITIZEN' => 'Utilisateur',
-            'ROLE_ELECTED' => 'Élu',
+            'ROLE_ELECTED' => 'Animateur',
             // 'ROLE_PROFILE_COMPLETED' => 'Inscription terminée',
         );
 

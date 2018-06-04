@@ -11,3 +11,9 @@
 {% block list_td_column_parent_reaction_id %}
     {{ adminCreatePath(constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION'), PDReaction.ParentReactionId) }}
 {% endblock %}
+
+{% block object_action_localization %}
+    {% if geo.active or is_granted('ROLE_SYSTEM') %}
+        {{ parent() }}
+    {% endif %}    
+{% endblock object_action_localization %}

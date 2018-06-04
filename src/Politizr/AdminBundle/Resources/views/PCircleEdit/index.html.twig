@@ -10,7 +10,11 @@
     {{ parent() }}
 
     {# TinyMCE #}
-    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+    {% if is_granted('ROLE_SYSTEM') %}
+        {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+    {% else %}
+        {% include "PolitizrAdminBundle::tinymce-light.html.twig" %}
+    {% endif %}
 
     {# Upload #}
     <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/dropzone.js') }}"></script>  

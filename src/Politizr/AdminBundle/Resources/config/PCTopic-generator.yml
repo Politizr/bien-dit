@@ -23,7 +23,7 @@ params:
         file_name:
             label:          Bandeau
         summary:
-            label:          Résumé
+            label:          Accroche
         description:
             label:          Description
         online:
@@ -100,11 +100,10 @@ builders:
                     addFormOptions:
                         mapped:                 false
                 summary:
-                    grid_class:                 "col-md-12"
+                    grid_class:                 "col-md-8"
                 description:
-                    grid_class:                 "col-md-12"
                     addFormOptions:
-                        attr:                   { rows: 25 }
+                        attr:                   { class: tinymce }
                 id:
                     addFormOptions:
                         read_only:              true

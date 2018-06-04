@@ -35,7 +35,11 @@
     <div class="form-model col-md-12">
         <label>
             <br/>
-            <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Liste des utilisateurs ayant accès au groupe</li>
+            {% if circle.privateAccess %}
+                <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Liste des utilisateurs ayant accès au groupe</li>
+            {% else %}
+                <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Ce groupe est publique et tous les utisateurs y ont accès. Vous devez néanmoins ajoutez ici des utilisateurs pour pouvoir gérer les droits d'accès pour les animateurs.</li>
+            {% endif %}
         </label>
     </div>
 </div>

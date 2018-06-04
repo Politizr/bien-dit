@@ -9,7 +9,17 @@
 {% endblock list_td_column_p_u_status_id %}
 
 {% block list_td_column_p_l_city %}
-    {% if PUser.PLCityId %}
-        {{ PUser.PLCity }} ({{ PUser.PLCity.PLDepartment }})
+    {% if geo.active %}
+        {% if PUser.PLCityId %}
+            {{ PUser.PLCity }} ({{ PUser.PLCity.PLDepartment }})
+        {% endif %}
+    {% else %}
+        <i class="fa fa-times"></i>
     {% endif %}
 {% endblock list_td_column_p_l_city %}
+
+{% block object_action_localization %}
+    {% if geo.active or is_granted('ROLE_SYSTEM') %}
+        {{ parent() }}
+    {% endif %}    
+{% endblock object_action_localization %}

@@ -279,6 +279,12 @@ function fullImgLiquid() {
         horizontalAlign: "center",
         verticalAlign: "center"
     });
+    // cms content
+    $(".slideImg").imgLiquid({
+        fill: true,
+        horizontalAlign: "center",
+        verticalAlign: "center"
+    });
 }
 
 /**

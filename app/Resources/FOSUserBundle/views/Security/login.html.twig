@@ -1,9 +1,15 @@
 {% extends "FOSUserBundle::layout.html.twig" %}
 
 {% block fos_user_content %}
-	{% if error %}
-	    <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
-	{% endif %}
+
+	<div class="container" id="error-login-box">
+		<div class="row">
+			{% if error %}
+			    <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
+			    <script>document.getElementById('error-login-box').style.display = 'block';</script>
+			{% endif %}
+		</div>
+	</div>
 
 	<form action="{{ path("fos_user_security_check") }}" method="post" class="form-signin">
 	    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
@@ -14,5 +20,8 @@
 
 	    <hr>
 	    <button class="btn btn-block btn-success" type="submit">Connexion</button>
+	    <hr>
+		<div>Contactez le <a href="mailto: support@politizr.com">support</a> en cas de problème.</div>
 	</form>
+
 {% endblock fos_user_content %}

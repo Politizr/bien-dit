@@ -3,8 +3,12 @@
 {% block javascripts_head %}
     {{ parent() }}
 
-    <!-- TinyMCE -->
-    {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+    {# TinyMCE #}
+    {% if is_granted('ROLE_SYSTEM') %}
+        {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+    {% else %}
+        {% include "PolitizrAdminBundle::tinymce-light.html.twig" %}
+    {% endif %}
 
     <!-- StudioEchoMediaBundle JS -->
     <script src="{{ asset("bundles/studioechomedia/js/jquery.fineuploader-3.0.min.js") }}"></script>

@@ -1,3 +1,42 @@
+/* Signin. */
+body.signin {
+    padding-top: 200px;
+    background-color: #333;
+}
+img.swan {
+    position: absolute;
+    z-index: -1000;
+    margin-left: 350px;
+    margin-top: -50px;
+    height: 300px;
+}
+form.form-signin {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -150px 0 0 -200px;
+    padding: 40px;
+    background-color: #fff;
+    width: 250px;
+    border-radius: 3px;
+}
+form.form-signin label {
+    font-weight: normal;
+}
+form.form-signin .form-control:focus {
+    border-color: #1abb9c;
+}
+
+#error-login-box {
+	display: none;
+    position: absolute;
+    left: 50%;
+    width: 250px;
+    margin: -150px 0 0 -200px;
+    padding: 20px;
+    background-color: red;	
+}
+
 /* xhr success / error / info messages box */
 #infoBoxHolder {
 	position: fixed; 

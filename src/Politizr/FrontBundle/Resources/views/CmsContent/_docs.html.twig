@@ -1,6 +1,6 @@
-<div class="sidebar docList">
-    <h2>Documents à télécharger</h2>
+<div class="docList">
+    <h5>Documents à télécharger</h5>
     {% for document in documents %}
-        <a href="{{ asset('uploads/'~document.name) }}">{{ document.title }}</a><br/>
+        <a href="{{ asset('uploads/'~document.name) }}"><i class="icon-goto"></i>{{ document.title }}</a><br/>
     {% endfor %}
 </div>

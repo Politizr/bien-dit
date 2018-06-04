@@ -29,7 +29,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des clients
+            title:                              Liste des propriétaires
             max_per_page:                       50
             sort:                               [ created_at, DESC ]
             display:                            [ id, title, created_at ]
@@ -43,7 +43,7 @@ builders:
                 new:                            ~
     new:
         params:
-            title:                              "Création d'un client"
+            title:                              "Création d'un propriétaire"
             display:
                 "Champs principaux":            [ title ]
             actions:
@@ -51,7 +51,7 @@ builders:
               list:                             ~
     edit:
         params:
-            title:                              "Edition du client '{{ PCOwner.title }}'"
+            title:                              "Edition du propriétaire '{{ PCOwner.title }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ title, summary, description ]
@@ -86,7 +86,7 @@ builders:
                 delete:                         ~
     show:
         params:
-            title:                              "Visualisation du client '{{ PCOwner.getTitle }}'"
+            title:                              "Visualisation du propriétaire '{{ PCOwner.getTitle }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ title, summary, description ]

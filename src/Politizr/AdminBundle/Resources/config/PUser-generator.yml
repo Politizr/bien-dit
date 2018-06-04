@@ -68,9 +68,9 @@ params:
         organization:
             label:          Compte Collectivité
         qualified:
-            label:          Profil élu
+            label:          Qualifié
         validated:
-            label:          Profil validé
+            label:          Validé
         nb_id_check:
             label:          Essai(s)
         online:
@@ -115,16 +115,6 @@ builders:
             title:                              Liste des utilisateurs
             max_per_page:                       50
             sort:                               [ last_activity, DESC ]
-            scopes:
-                group_1: 
-                    "Tous":                     ~
-                    "Élus":
-                        default:                1
-                        filters: 
-                            qualified:          1
-                    "Citoyens":
-                        filters: 
-                            qualified:          0
             display:                            [ file_name, name, firstname, p_l_city, qualified, reputation_score, active, last_activity, created_at ]
             filters:                            [ id, uuid, email, name, qualified, validated, active, created_at, last_login ]
             filtersMode:                        modal
@@ -161,7 +151,7 @@ builders:
     excel:
         params:
             display:                            [ qualified, gender, name, first_name, cityStr, departmentStr, birthday, email, phone, email, website, twitter, facebook, reputation_score, provider, provider_id ]
-            filename:                           politizr-users
+            filename:                           app-users
             filetype: ~
             datetime_format: ~
             fields: ~
@@ -313,6 +303,8 @@ builders:
                         read_only:              true
                 nb_id_check:
                     credentials:                ROLE_SYSTEM
+                organization:
+                    credentials:                ROLE_SYSTEM
                 created_at:
                     addFormOptions:
                         widget:                 single_text
@@ -376,6 +368,10 @@ builders:
                 block_front:
                     label:                      "Rendu front"
                 nb_id_check:
+                    credentials:                ROLE_SYSTEM
+                organization:
+                    credentials:                ROLE_SYSTEM
+                support_group:
                     credentials:                ROLE_SYSTEM
                 last_activity:
                     label:                      Date de dernière activité

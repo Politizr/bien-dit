@@ -33,38 +33,47 @@
 {% endblock %}
 
 {% block content %}
-    <div class="center">
-        <div class="post">
-            {{ content.summary | purify }}
-        </div>
-        <div class="sidebar">
-            <h2>{{ content.moreInfoTitle | purify }}</h2>
-            {{ content.moreInfoDescription | purify }}
-        </div>
-    </div>
-    {% if medias | length > 0 %}
-        <div class="center">
-            <div id="contentSlide">
-                {% include 'PolitizrFrontBundle:CmsContent:_slider.html.twig' %}
-            </div>
-        </div>
-    {% endif %}
 
-    {% if content.urlEmbedVideo %}
-        <div class="videoEmbed">
-            {{ content.urlEmbedVideo | raw }}
-        </div>
-    {% endif %}
-    
-    <div class="center">
-        <div class="post">
+<div id="content" class="grpCMS">
+    <div class="post">
+        <div id="cardPost">
+            <h1>{{ content.title }}</h1>
+            {{ content.summary | purify }}
+            {% if medias | length > 0 %}
+                <div id="contentSlide">
+                    {% include 'PolitizrFrontBundle:CmsContent:_slider.html.twig' %}
+                </div>
+            {% endif %}
+            <script type="text/javascript">
+                $(".slideImg").imgLiquid({
+                    fill: true,
+                    horizontalAlign: "center",
+                    verticalAlign: "center"
+                });
+            </script>
             {{ content.description | purify }}
+            {% if content.urlEmbedVideo %}
+                <div class="videoEmbed">
+                    {{ content.urlEmbedVideo | raw }}
+                </div>
+            {% endif %}
         </div>
-        {% if documents | length > 0 %}
-            {% include 'PolitizrFrontBundle:CmsContent:_docs.html.twig' %}
-        {% endif %}
     </div>
+</div>
+
 {% endblock content %}
+
+{% block sidebarContent %}
+    {% if content.moreInfoTitle %}
+        <h5>{{ content.moreInfoTitle | purify }}</h5>
+    {% endif %}
+    {% if content.moreInfoDescription %}
+        {{ content.moreInfoDescription | purify }}
+    {% endif %}
+    {% if documents | length > 0 %}
+        {% include 'PolitizrFrontBundle:CmsContent:_docs.html.twig' %}
+    {% endif %}
+{% endblock %}
 
 {% block javascriptFooter %}
     {{ parent() }}
