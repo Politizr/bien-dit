@@ -26,8 +26,8 @@
                 {% if formOrga %}
                     <div class="formBlock">
                         <div class="formBlockHeader">
-                            <label>Famille politique</label>
-                            {% include 'PolitizrFrontBundle:Navigation\\Helper:_organizations.html.twig' %}
+                            <label>Organisation</label>
+                            {# include 'PolitizrFrontBundle:Navigation\\Helper:_organizations.html.twig' #}
                         </div>
                         <form method="POST" name="userOrganization" id="formUserOrganizationUpdate">
                             {{ form_errors(formOrga) }}
@@ -68,6 +68,7 @@
                     {{ form_rest(formBio) }}
                 </form>
 
+                {#
                 {% if user.isQualified %}
                     <div class="formBlock">
                         <div class="formBlockHeader">
@@ -83,6 +84,7 @@
                         </div>
                     </div>
                 {% endif %}
+                #}
         </div>
     </div>
 {% endblock content %}

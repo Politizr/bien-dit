@@ -24,20 +24,22 @@ class EditController extends BaseEditController
     protected function postSave(Form $form, PDReaction $reaction)
     {
         // Upd "parent_reaction_id" form data to "parent_reaction_id" db info
-        $sendNotifications = $form['block_notifications']->getViewData();
+        if (isset($form['block_notifications'])) {
+            $sendNotifications = $form['block_notifications']->getViewData();
 
-        // Events
-        if ($sendNotifications) {
-            $parentUserId = $reaction->getDebate()->getPUserId();
-            if ($reaction->getTreeLevel() > 1) {
-                $parentUserId = $reaction->getParent()->getPUserId();
+            // Events
+            if ($sendNotifications) {
+                $parentUserId = $reaction->getDebate()->getPUserId();
+                if ($reaction->getTreeLevel() > 1) {
+                    $parentUserId = $reaction->getParent()->getPUserId();
+                }
+                $event = new GenericEvent($reaction, array('user_id' => $reaction->getPUserId(),));
+                $dispatcher = $this->get('event_dispatcher')->dispatch('r_reaction_publish', $event);
+                $event = new GenericEvent($reaction, array('author_user_id' => $reaction->getPUserId(),));
+                $dispatcher = $this->get('event_dispatcher')->dispatch('n_reaction_publish', $event);
+                $event = new GenericEvent($reaction, array('author_user_id' => $reaction->getPUserId(), 'parent_user_id' => $parentUserId));
+                $dispatcher = $this->get('event_dispatcher')->dispatch('b_reaction_publish', $event);
             }
-            $event = new GenericEvent($reaction, array('user_id' => $reaction->getPUserId(),));
-            $dispatcher = $this->get('event_dispatcher')->dispatch('r_reaction_publish', $event);
-            $event = new GenericEvent($reaction, array('author_user_id' => $reaction->getPUserId(),));
-            $dispatcher = $this->get('event_dispatcher')->dispatch('n_reaction_publish', $event);
-            $event = new GenericEvent($reaction, array('author_user_id' => $reaction->getPUserId(), 'parent_user_id' => $parentUserId));
-            $dispatcher = $this->get('event_dispatcher')->dispatch('b_reaction_publish', $event);
         }
     }
 }

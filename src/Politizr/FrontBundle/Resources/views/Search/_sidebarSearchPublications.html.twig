@@ -6,26 +6,28 @@
             <a href="{{ path('Inscription') }}">Inscription</a>
             <span>100 %<br>gratuit</span>
         </div>
-    {% endif %}
+    {% elseif not app.user %}
+        {% include 'PolitizrFrontBundle:Navigation\\Menu:_createAccount.html.twig' %}
+    {% else %}
+        {% if geo.active %}
+            <div class="sidebarSearchMap">
+                <h5>Zone Géographique</h5>
+                <div class="mapMenu withLoaderInside" id="mapMenu">
+                    {% include 'PolitizrFrontBundle:Search\\Map:_menu.html.twig' with { 'isFom': false, 'isWorld': false } %}
+                </div>
+                <div class="mapBreadcrumbs withLoaderInside" id="mapBreadcrumb">
+                    {% include 'PolitizrFrontBundle:Search\\Map:_breadcrumb.html.twig' with { 'geoTypeObjects': null } %}
+                </div>
+                
+                <div id="mapHolder" class="withLoaderInside">
+                    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                    {% include 'PolitizrFrontBundle:Search\\Map:_routing.html.twig' with { 'type': constant('Politizr\\Constant\\LocalizationConstants::TYPE_COUNTRY'),'geoId': constant('Politizr\\Constant\\LocalizationConstants::FRANCE_ID') } %}
+                </div>
+            </div>
+        {% endif %}
 
-    {% if geo.active %}
-        <div class="sidebarSearchMap">
-            <h5>Zone Géographique</h5>
-            <div class="mapMenu withLoaderInside" id="mapMenu">
-                {% include 'PolitizrFrontBundle:Search\\Map:_menu.html.twig' with { 'isFom': false, 'isWorld': false } %}
-            </div>
-            <div class="mapBreadcrumbs withLoaderInside" id="mapBreadcrumb">
-                {% include 'PolitizrFrontBundle:Search\\Map:_breadcrumb.html.twig' with { 'geoTypeObjects': null } %}
-            </div>
-            
-            <div id="mapHolder" class="withLoaderInside">
-                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-                {% include 'PolitizrFrontBundle:Search\\Map:_routing.html.twig' with { 'type': constant('Politizr\\Constant\\LocalizationConstants::TYPE_COUNTRY'),'geoId': constant('Politizr\\Constant\\LocalizationConstants::FRANCE_ID') } %}
-            </div>
+        <div class="sidebarSearchFilters withLoaderInside">
+            {% include 'PolitizrFrontBundle:Search\\Filters:_publicationsCategory.html.twig' %}
         </div>
     {% endif %}
-
-    <div class="sidebarSearchFilters withLoaderInside">
-        {% include 'PolitizrFrontBundle:Search\\Filters:_publicationsCategory.html.twig' %}
-    </div>
 </div>

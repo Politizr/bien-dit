@@ -191,17 +191,16 @@ class DocumentService
         $documents = new \PropelCollection();
 
         $inQueryTopicIds = null;
-        if ($currentUserId) {
-            $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
-            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
-        }
-
         $inQueryCityIds = null;
         $inQueryDepartmentIds = null;
         $cityIds = null;
         $departmentIds = null;
         $regionId = null;
         $countryId = null;
+
+        $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+        $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+
         if ($geoUuid) {
             $this->localizationService->fillExtendedChildrenGeoIdsFromGeoUuid(
                 $geoUuid,

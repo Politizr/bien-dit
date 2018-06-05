@@ -61,9 +61,8 @@ builders:
                     addFormOptions:
                         mapped:                 false
                 description:
-                    grid_class:                 "col-md-12"
                     addFormOptions:
-                        attr:                   { rows: 25 }
+                        attr:                   { class: tinymce }
                 created_at:
                     addFormOptions:
                         widget:                 single_text

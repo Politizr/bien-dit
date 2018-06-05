@@ -378,7 +378,8 @@ class SecurityService
         }
 
         if (isset($twitterResult->description) && null !== $twitterResult->description) {
-            $user->setBiography($twitterResult->description);
+            $description = $this->globalTools->removeEmoji($twitterResult->description);
+            $user->setBiography($description);
         }
 
         if (isset($twitterResult->url) && null !== $twitterResult->url) {

@@ -1,16 +1,16 @@
-{% if not app.user %}
-    {% if geo.active %}
-        <div id="mapHolder" class="mapUnlogged">
-            <div class="mapUnloggedText">
-                <h1>Vous devez vous<br>inscrire pour accéder<br>au filtre par zone<br>géographique</h1>
-                <a href="{{ path('Inscription') }}">Inscription</a>
-                <span>100 %<br>gratuit</span>
-            </div>
-            <div class="svg">
-                {% include 'PolitizrFrontBundle:Search\\Map:_france.svg.twig' with { 'current': null } %}
-            </div>
+{% if not app.user and geo.active %}
+    <div id="mapHolder" class="mapUnlogged">
+        <div class="mapUnloggedText">
+            <h1>Vous devez vous<br>inscrire pour accéder<br>au filtre par zone<br>géographique</h1>
+            <a href="{{ path('Inscription') }}">Inscription</a>
+            <span>100 %<br>gratuit</span>
         </div>
-    {% endif %}
+        <div class="svg">
+            {% include 'PolitizrFrontBundle:Search\\Map:_france.svg.twig' with { 'current': null } %}
+        </div>
+    </div>
+{% elseif not app.user %}
+    {% include 'PolitizrFrontBundle:Navigation\\Menu:_createAccount.html.twig' %}
 {% else %}
     <div class="sidebarSearch">
         {% if geo.active %}

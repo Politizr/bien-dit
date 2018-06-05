@@ -27,7 +27,7 @@ class EmailListener
 
     protected $contactEmail;
     protected $supportEmail;
-
+    protected $clientName;
 
     /**
      *
@@ -36,13 +36,15 @@ class EmailListener
      * @param @logger
      * @param "%contact_email%"
      * @param "%support_email%"
+     * @param %client_name%
      */
     public function __construct(
         $mailer,
         $templating,
         $logger,
         $contactEmail,
-        $supportEmail
+        $supportEmail,
+        $clientName
     ) {
         $this->mailer = $mailer;
         $this->templating = $templating;
@@ -50,6 +52,7 @@ class EmailListener
 
         $this->contactEmail = $contactEmail;
         $this->supportEmail = $supportEmail;
+        $this->clientName = $clientName;
     }
 
     /**
@@ -109,7 +112,7 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject($subject)
-                    ->setFrom(array($this->contactEmail => 'Support@Politizr'))
+                    ->setFrom(array($this->contactEmail => sprintf('%s', $this->clientName)))
                     ->setTo($order->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
@@ -183,8 +186,8 @@ class EmailListener
             }
 
             $message = \Swift_Message::newInstance()
-                    ->setSubject('[ Politizr ] Modération')
-                    ->setFrom(array($this->contactEmail => 'Support@Politizr'))
+                    ->setSubject(sprintf('[ %s ] Modération', $this->clientName))
+                    ->setFrom(array($this->contactEmail => sprintf('%s', $this->clientName)))
                     ->setTo($user->getEmail())
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
@@ -239,7 +242,7 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject('[ Politizr ] Bannissement')
-                    ->setFrom(array($this->contactEmail => 'Support@Politizr'))
+                    ->setFrom(array($this->contactEmail => sprintf('%s', $this->clientName)))
                     ->setTo($user->getEmail())
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')

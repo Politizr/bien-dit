@@ -2,11 +2,19 @@
 
 {# Bloc Media Bundle #}
 {% block form_row_media_bundle %}
-    {{ render(controller('StudioEchoMediaBundle:UploadMedia:index', { 'objectName' : 'Politizr\\Model\\CmsContentAdmin', 'objectId' : CmsContentAdmin.id, 'mediaParameterConfigKey' : 'cms_content_admin_images', 'culture': 'fr' })) }}
+    {% if CmsContentAdmin.id == constant('Politizr\\Constant\\CmsConstants::CMS_CONTENT_ADMIN_HOMEPAGE') %}
+        {{ render(controller('StudioEchoMediaBundle:UploadMedia:index', { 'objectName' : 'Politizr\\Model\\CmsContentAdmin', 'objectId' : CmsContentAdmin.id, 'mediaParameterConfigKey' : 'cms_content_admin_images', 'culture': 'fr' })) }}
+    {% else %}
+        Non disponible
+    {% endif %}
 {% endblock %}
 
 {# Bloc Media Bundle Documents #}
 {% block form_row_media_bundle_documents %}
-    {{ render(controller('StudioEchoMediaBundle:UploadMedia:index', { 'objectName' : 'Politizr\\Model\\CmsContentAdmin', 'objectId' : CmsContentAdmin.id, 'mediaParameterConfigKey' : 'cms_content_admin_documents', 'culture': 'fr' })) }}
+    {% if CmsContentAdmin.id == constant('Politizr\\Constant\\CmsConstants::CMS_CONTENT_ADMIN_HOMEPAGE') %}
+        {{ render(controller('StudioEchoMediaBundle:UploadMedia:index', { 'objectName' : 'Politizr\\Model\\CmsContentAdmin', 'objectId' : CmsContentAdmin.id, 'mediaParameterConfigKey' : 'cms_content_admin_documents', 'culture': 'fr' })) }}
+    {% else %}
+        Non disponible
+    {% endif %}
 {% endblock %}
 

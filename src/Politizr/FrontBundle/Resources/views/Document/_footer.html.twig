@@ -14,8 +14,8 @@
         </span>
     {% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_USER_ELECTED') %}
         <span class="withActionAnswer">
-            <b>En tant qu'{{ app.user | typeGender | lower }}, vous pouvez publier une réponse à cette publication.</b><br> 
-            Cette fonctionnalité est exclusivement réservée aux élu-e-s et au citoyen-ne auteur du sujet si sa réputation est d'au moins {{ constant('Politizr\\Constant\\ReputationConstants::ACTION_REACTION_WRITE') }} points.
+            <b>En tant qu'animateur, vous pouvez publier une réponse à cette publication.</b><br> 
+            Cette fonctionnalité est exclusivement réservée aux animateurs et à l'utilisateur auteur du sujet si sa réputation est d'au moins {{ constant('Politizr\\Constant\\ReputationConstants::ACTION_REACTION_WRITE') }} points.
         </span>
         {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': document, 'checkIfAuthorized': false } only %}
     {% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_USER_OPERATION') %}
@@ -41,6 +41,6 @@
             Vous devez <a href="{{ path('IdCheckDataReviewE') }}">certifier votre identité</a> pour pouvoir publier une réponse.
         </span>
     {% else %}
-            Seuls les élu-e-s et l'auteur du sujet peuvent publier une réponse à cette publication, mais vous pouvez vous exprimer en publiant votre commentaire sur ce sujet.
+            Seuls les animateurs et l'auteur du sujet peuvent publier une réponse à cette publication, mais vous pouvez vous exprimer en publiant votre commentaire sur ce sujet.
     {% endif %}
 </div>

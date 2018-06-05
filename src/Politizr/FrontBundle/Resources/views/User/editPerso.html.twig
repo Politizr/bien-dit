@@ -4,7 +4,7 @@
 {% block title %}Mes informations personnelles - {{ parent() }}{% endblock title %}
 
 {% block headerMsgLocalization %}
-    {% if not app.user.pLCityId %}
+    {% if geo.active and not app.user.pLCityId %}
         <div id="alertLocalization">
             <div class="center">
                 <i class="icon-info"></i>
@@ -24,9 +24,9 @@
             </div>
 
             {% if isGrantedE() %} 
-                <h5>Vous disposez actuellement d'un compte élu {% if not app.user.validated %}<b>non</b> {% endif %}certifié.</h5>
+                <h5>Vous disposez actuellement d'un compte animateur {% if not app.user.validated %}<b>non</b> {% endif %}certifié.</h5>
             {% else %}
-                <h5>Vous disposez actuellement d'un compte citoyen.</h5>
+                <h5>Vous disposez actuellement d'un compte utilisateur.</h5>
             {% endif %}
 
             <div id="boxPerso1">
@@ -55,45 +55,49 @@
                     </form>
                     {% if app.user.validated %}
                         <p class="formInfo">
-                            <i class="icon-alert"></i>Vous ne pouvez pas modifier ces informations: <a href="mailto: support@politizr.com">contactez-nous</a> en cas d'erreur.
+                            <i class="icon-alert"></i>Vous ne pouvez pas modifier ces informations: <a href="mailto: {{ support.email }}">contactez-nous</a> en cas d'erreur.
                         </p>
                     {% endif %}
+                    {#
                     {% if isGrantedE() and not app.user.validated and app.user.nbIdCheck < constant('Politizr\\Constant\\IdCheckConstants::MAX_USER_TRY') %}
                         <div id="msgIdCheck">
                             <h5><b>Merci de procéder à la <a href="{{ path('IdCheckDataReviewE') }}">vérification de votre identité</a> pour valider définitivement votre compte élu.</b></h5>
                         </div>
                     {% endif %}
+                    #}
                 </div>
             </div>
 
-            <div id="boxPerso4">
-                <div class="formBlock withLoaderInside">
-                    {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-                    <div class="formBlockHeader">
-                        <label>Votre localisation</label>
-                    </div>
+            {% if geo.active %}
+                <div id="boxPerso4">
+                    <div class="formBlock withLoaderInside">
+                        {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                        <div class="formBlockHeader">
+                            <label>Votre localisation</label>
+                        </div>
 
-                    <form name="user" method="post" id="formPerso4">
-                        {{ form_errors(formPerso4) }}
+                        <form name="user" method="post" id="formPerso4">
+                            {{ form_errors(formPerso4) }}
 
-                        {{ form_widget(formPerso4.localization) }}
-                        {{ form_rest(formPerso4) }}
-            
+                            {{ form_widget(formPerso4.localization) }}
+                            {{ form_rest(formPerso4) }}
+                
 
-                        {% set isCircleMember = app.user | circleMember %}
-                        {% if not isCircleMember %}
-                            <button type="button" action="submitPerso">
-                                Mettre à jour
-                            </button>
+                            {% set isCircleMember = app.user | circleMember %}
+                            {% if not isCircleMember %}
+                                <button type="button" action="submitPerso">
+                                    Mettre à jour
+                                </button>
+                            {% endif %}
+                        </form>
+                        {% if isCircleMember %}
+                            <p class="formInfo">
+                                <i class="icon-alert"></i>Vous devez quitter tous <a href="{{ path('MenuCircle') }}">les groupes</a> auxquels vous appartenez avant de pouvoir mettre à jour cette information.
+                            </p>
                         {% endif %}
-                    </form>
-                    {% if isCircleMember %}
-                        <p class="formInfo">
-                            <i class="icon-alert"></i>Vous devez quitter tous <a href="{{ path('MenuCircle') }}">les groupes</a> auxquels vous appartenez avant de pouvoir mettre à jour cette information.
-                        </p>
-                    {% endif %}
+                    </div>
                 </div>
-            </div>            
+            {% endif %}
 
             <div id="boxPerso2">
                 <div class="formBlock withLoaderInside">

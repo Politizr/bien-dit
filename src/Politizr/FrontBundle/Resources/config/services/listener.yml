@@ -8,6 +8,7 @@ services:
             - @logger
             - "%contact_email%"
             - "%support_email%"
+            - "%client_name%"
         tags:
             - { name: kernel.event_listener, event: lost_password_email }
             - { name: kernel.event_listener, event: upd_password_email }

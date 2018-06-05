@@ -5,18 +5,18 @@ Homepage:
     pattern:  /
     defaults: { _controller: PolitizrFrontBundle:Public:homepage }
 
-WhoWeAre:
-    pattern:  /qui-sommes-nous
-    defaults: { _controller: PolitizrFrontBundle:Public:whoWeAre }
+# WhoWeAre:
+#     pattern:  /qui-sommes-nous
+#     defaults: { _controller: PolitizrFrontBundle:Public:whoWeAre }
 
-Concept:
-    pattern:  /concept
-    defaults: { _controller: PolitizrFrontBundle:Public:concept }
+# Concept:
+#     pattern:  /concept
+#     defaults: { _controller: PolitizrFrontBundle:Public:concept }
 
 Cgu:
-    pattern:  /cgu-generations-eric
+    pattern:  /conditions-generales-d-utilisation
     defaults: { _controller: PolitizrFrontBundle:Public:cgu }
 
 Charte:
-    pattern:  /charte-generations-eric
+    pattern:  /notre-charte
     defaults: { _controller: PolitizrFrontBundle:Public:charte }

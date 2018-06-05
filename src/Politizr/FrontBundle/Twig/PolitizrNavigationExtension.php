@@ -4,6 +4,7 @@ namespace Politizr\FrontBundle\Twig;
 use Politizr\Exception\InconsistentDataException;
 
 use Politizr\Constant\LabelConstants;
+use Politizr\Constant\CmsConstants;
 
 use Politizr\Model\PDocumentInterface;
 use Politizr\Model\PCTopic;
@@ -118,6 +119,11 @@ class PolitizrNavigationExtension extends \Twig_Extension
                 array($this, 'topGroupMenu'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
+            'footerGroupMenu'  => new \Twig_SimpleFunction(
+                'footerGroupMenu',
+                array($this, 'footerGroupMenu'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
         );
     }
 
@@ -193,10 +199,10 @@ class PolitizrNavigationExtension extends \Twig_Extension
 
         // CMS
         if ($this->topMenuCms) {
-            $cmsCategory = CmsCategoryQuery::create()->filterByOnline(true)->findPk(1);
+            $cmsCategory = CmsCategoryQuery::create()->filterByOnline(true)->findPk(CmsConstants::CMS_CONTENT_CATEGORY_MENU);
             $cmsContents = CmsContentQuery::create()
                                 ->filterByOnline(true)
-                                ->filterByCmsCategoryId(1)
+                                ->filterByCmsCategoryId(CmsConstants::CMS_CONTENT_CATEGORY_MENU)
                                 ->find();
 
             foreach ($cmsContents as $cmsContent) {
@@ -270,7 +276,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
             // get public circles
             $owners = $this->circleService->getAuthorizedOwnersByUser(null);
             foreach ($owners as $owner) {
-                $circles = $this->circleService->getOwnerCirclesByUser($owner, $user);
+                $circles = $this->circleService->getOwnerCirclesByUser($owner);
                 $ownersCircles[] = array($owner, $circles);
             }
         }
@@ -280,6 +286,33 @@ class PolitizrNavigationExtension extends \Twig_Extension
             array(
                 'ownersCircles' => $ownersCircles,
                 'manageGroup' => $manageGroup
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Compute footer group menu (public groups only)
+     *
+     * @return string
+     */
+    public function footerGroupMenu(\Twig_Environment $env)
+    {
+        // $this->logger->info('*** footerGroupMenu');
+
+        $ownersCircles = array();
+        // get public circles
+        $owners = $this->circleService->getAuthorizedOwnersByUser(null);
+        foreach ($owners as $owner) {
+            $circles = $this->circleService->getOwnerCirclesByUser($owner);
+            $ownersCircles[] = array($owner, $circles);
+        }
+
+        $html = $env->render(
+            'PolitizrFrontBundle:Navigation\\Menu:_footerGroupMenu.html.twig',
+            array(
+                'ownersCircles' => $ownersCircles,
             )
         );
 

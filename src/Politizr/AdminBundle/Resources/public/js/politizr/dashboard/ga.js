@@ -73,7 +73,7 @@ gapi.analytics.ready(function() {
 //   });
 
   timeline.execute();
-  bouncerate.execute();
+//   bouncerate.execute();
 //   trafficsource.execute();
 
   // Logout

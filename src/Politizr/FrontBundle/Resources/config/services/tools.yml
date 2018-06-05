@@ -11,6 +11,7 @@ services:
             - @validator
             - @liip_imagine.controller
             - @liip_imagine.cache.manager
+            - "%geo_active%"
             - @logger
 
     # ID CHECK

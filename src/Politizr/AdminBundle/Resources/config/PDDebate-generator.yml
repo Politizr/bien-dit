@@ -199,6 +199,7 @@ builders:
                         disabled:               true
                         read_only:              true
                 p_e_operation:
+                    credentials:                ROLE_SYSTEM
                     dbType:                     model
                     formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
@@ -271,7 +272,7 @@ builders:
                 "Contexte":
                     "Publications":             [ [ block_p_c_topic, p_e_operation ] ]
                     "Liste des thématiques":    [ block_tags ]
-                    "Réponses":                [ block_reactions ]
+                    "Réponses":                 [ block_reactions ]
                     "Commentaires":             [ block_comments ]
                 "Modération":
                     "Situation":                [ moderated, moderated_partial ]
@@ -295,6 +296,8 @@ builders:
                     label:                      "Auteur"
                 block_p_c_topic:
                     label:                      "Discussions"
+                p_e_operation:
+                    credentials:                ROLE_SYSTEM
                 block_reactions:
                     label:                      "Réponses"
                 block_comments:

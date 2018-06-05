@@ -37,7 +37,7 @@
 <div id="content" class="grpCMS">
     <div class="post">
         <div id="cardPost">
-            <h1>{{ content.title }}</h1>
+            <div class="grpCMStitre">{{ content.title }}</div>
             {{ content.summary | purify }}
             {% if medias | length > 0 %}
                 <div id="contentSlide">

@@ -24,16 +24,18 @@ class EditController extends BaseEditController
     protected function postSave(Form $form, PDDebate $debate)
     {
         // Upd "parent_reaction_id" form data to "parent_reaction_id" db info
-        $sendNotifications = $form['block_notifications']->getViewData();
+        if (isset($form['block_notifications'])) {
+            $sendNotifications = $form['block_notifications']->getViewData();
 
-        // Events
-        if ($sendNotifications) {
-            $user = $debate->getPUser();
-            
-            $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
-            $dispatcher = $this->get('event_dispatcher')->dispatch('r_debate_publish', $event);
-            $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
-            $dispatcher = $this->get('event_dispatcher')->dispatch('n_debate_publish', $event);
+            // Events
+            if ($sendNotifications) {
+                $user = $debate->getPUser();
+                
+                $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
+                $dispatcher = $this->get('event_dispatcher')->dispatch('r_debate_publish', $event);
+                $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
+                $dispatcher = $this->get('event_dispatcher')->dispatch('n_debate_publish', $event);
+            }
         }
     }
 }

@@ -17,16 +17,16 @@
             <div class="demoItem demoSubject">
                 <h1>Lancez des sujets!</h1>
                 {% if app.user and app.user.qualified %}
-                    Rédigez un nouveau sujet pour expliquer vos décisions ou exprimer votre vision de votre territoire. D'autres élu-e-s pourront écrire des réponses pour vous faire part de leurs points de vue et de leurs expériences.
+                    Rédigez un nouveau sujet pour exprimer votre point de vue.
                 {% else %}
-                    Rédigez un nouveau sujet pour faire réagir vos élu-e-s sur vos propositions ou exprimer vos opinions. Vous aurez l'occasion d'écrire des réponses si des élu-e-s s'emparent de votre sujet, afin de prolonger les débats. Devenez acteur de votre territoire!
+                    Rédigez un nouveau sujet pour exprimer vos opinions ou poser vos questions.
                 {% endif %}
             </div>
             {% if app.user and app.user.qualified %}
                 <div class="demoSeparator demoLeftLine"></div>
                 <div class="demoItem demoAnswer">
                     <h1>Rédigez des réponses!</h1>
-                    Répondez aux préocuppations de vos concitoyen-ne-s en répondant aux sujets publiés, pour faire valoir votre point de vue ou votre expérience sur le sujet abordé!
+                    Répondez aux préocuppations des utilisateurs en répondant aux sujets publiés, pour faire valoir votre point de vue ou votre expérience sur le sujet abordé!
                 </div>
             {% endif %}
             <div class="demoSeparator demoLeftLine"></div>

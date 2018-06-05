@@ -38,11 +38,11 @@
             <i class="icon-info"></i>
             <div id="maxIdCheckMsg">
                 {% if app.user.nbIdCheck < constant('Politizr\\Constant\\IdCheckConstants::MAX_USER_TRY') %}
-                    Vous devez maintenant procéder à la <a href="{{ path('IdCheckDataReviewE') }}"><b>vérification de votre identité</b></a> pour profiter pleinement de <b>votre compte élu</b>: vous disposez de <span id="nbTryLeft"><b>{{ constant('Politizr\\Constant\\IdCheckConstants::MAX_USER_TRY') - app.user.nbIdCheck }}</span> tentative(s) restante(s)</b>.<br>En cas d'échec, nous prendrons contact directement avec vous mais vous pouvez dès à présent être <b>accompagné-e durant cette procédure</b> en nous <a href="mailto:support@politizr.com"><b>envoyant un email</b></a> ou par téléphone au <b>09 50 42 09 34</b>.
+                    Vous devez maintenant procéder à la <a href="{{ path('IdCheckDataReviewE') }}"><b>vérification de votre identité</b></a> pour profiter pleinement de <b>votre compte élu</b>: vous disposez de <span id="nbTryLeft"><b>{{ constant('Politizr\\Constant\\IdCheckConstants::MAX_USER_TRY') - app.user.nbIdCheck }}</span> tentative(s) restante(s)</b>.<br>En cas d'échec, nous prendrons contact directement avec vous mais vous pouvez dès à présent être <b>accompagné-e durant cette procédure</b> en nous <a href="mailto:{{ contact.email }}"><b>envoyant un email</b></a> ou par téléphone au <b>09 50 42 09 34</b>.
                 {% else %}
                     <b>Nous prendrons contact directement avec vous pour valider votre identité.</b><br>
                     Merci de vérifier que votre adresse email est <a href="{{ path('EditPersoE') }}">correctement renseignée</a>.<br>
-                    Vous pouvez également prendre directement contact en nous <a href="mailto:support@politizr.com">envoyant un email</a> ou par téléphone au <b>09 50 42 09 34</b>.
+                    Vous pouvez également prendre directement contact en nous <a href="mailto:{{ contact.email }}">envoyant un email</a> ou par téléphone au <b>09 50 42 09 34</b>.
                 {% endif %}
             </div>
         </div>

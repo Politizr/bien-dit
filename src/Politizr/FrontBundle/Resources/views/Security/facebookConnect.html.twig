@@ -14,7 +14,8 @@
         FB.init({
             appId      : '{{ facebook.client_id }}',
             xfbml      : true,
-            version    : 'v2.6'
+            version    : '{{ facebook.api_version }}',
+            status     : true // set this status to true, this will fixed popup blocker issue
         });
     };
     // Load the SDK asynchronously

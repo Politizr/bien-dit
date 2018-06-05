@@ -441,9 +441,9 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         // compute labels
         if (1 === $nbElectedPublications) {
-            $labelElectedPublications = '1 réaction d\'élu-e';
+            $labelElectedPublications = '1 réaction d\'animateur';
         } else {
-            $labelElectedPublications = $this->globalTools->readeableNumber($nbElectedPublications).' réactions d\'élu-e-s';
+            $labelElectedPublications = $this->globalTools->readeableNumber($nbElectedPublications).' réactions d\'animateurs';
         }
 
         // Construction du rendu du tag

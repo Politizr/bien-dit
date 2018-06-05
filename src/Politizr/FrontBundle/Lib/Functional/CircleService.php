@@ -143,6 +143,10 @@ class CircleService
         $circles = PCircleQuery::create()
                         ->filterByOnline(true)
                         ->filterByPrivateAccess(false)
+                        ->_or()
+                        ->usePUInPCQuery()
+                            ->filterByPUserId($user->getId())                    
+                        ->endUse()
                         ->_if($this->geoActive)
                             ->usePCGroupLCQuery()
                                 ->filterByPLCityId($user->getPLCityId())
@@ -156,6 +160,7 @@ class CircleService
 
     /**
      * Get owners containing authorized circles by user
+     * @todo more tests!
      *
      * @param PUser $user
      * @return PropelCollection[PCircle]
@@ -167,21 +172,41 @@ class CircleService
         // $this->logger->info('$user->getPLCityId = '.print_r($user->getPLCityId(), true));
 
         $query = PCOwnerQuery::create();
-        if ($this->geoActive && $user) {
-            $query = $query
-                ->usePCGroupLCQuery()
-                    ->filterByPLCityId($user->getPLCityId())
-                ->endUse();
-        } elseif ($this->geoActive && $user == null) {
-            $query = $query->joinPCGroupLC();
+        if ($user) {
+            // public or authorized private
+            $query = $query->usePCircleQuery()
+                    ->filterByOnline(true)
+                    ->filterByPrivateAccess(false)
+                    ->_or()
+                    ->usePUInPCQuery()
+                        ->filterByPUserId($user->getId())                    
+                    ->endUse()
+                ->orderByRank()
+                ->endUse()
+                ;
+
+            // public w. geo scope authorized
+            if ($this->geoActive) {
+                $query = $query->usePCircleQuery()
+                    ->filterByOnline(true)
+                    ->usePCGroupLCQuery()
+                        ->filterByPLCityId($user->getPLCityId())
+                    ->endUse()
+                ->orderByRank()
+                ->endUse()
+                ;
+            }
+        } else {
+            // public only (without geo scope)
+            $query = $query->usePCircleQuery()
+                    ->filterByOnline(true)
+                    ->filterByPrivateAccess(false)
+                ->orderByRank()
+                ->endUse()
+                ;
         }
 
         $owners = $query
-                    ->usePCircleQuery()
-                        ->filterByOnline(true)
-                        ->filterByPrivateAccess(false)
-                        ->orderByRank()
-                    ->endUse()
                     ->distinct()
                     ->find();
 
@@ -420,22 +445,35 @@ class CircleService
     }
 
     /**
-     * Get topic id list by user id
+     * Get topic ids list by user id
      *
      * @param int $userId
      * @return array
      */
-    public function getTopicIdsByUserId($userId)
+    public function getTopicIdsByUserId($userId = null)
     {
-        $topicIds = PCTopicQuery::create()
-            ->select('Id')
-            ->usePCircleQuery()
-                ->usePUInPCQuery()
-                    ->filterByPUserId($userId)
-                ->endUse()
-            ->endUse()
-            ->find()
-            ->toArray();
+        $query = PCTopicQuery::create()
+                ->select('Id');
+
+        if ($userId) {
+            $query = $query
+                ->distinct()
+                ->usePCircleQuery()
+                    ->usePUInPCQuery()
+                        ->filterByPUserId($userId)                    
+                    ->endUse()
+                    ->_or()
+                    ->filterByPrivateAccess(false)
+                ->endUse();
+        } else {
+            $query = $query
+                ->distinct()
+                ->usePCircleQuery()
+                    ->filterByPrivateAccess(false)
+                ->endUse();
+        }
+
+        $topicIds = $query->find()->toArray();
 
         return $topicIds;
     }

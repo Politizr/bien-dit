@@ -163,19 +163,6 @@ class PolitizrSocialExtension extends \Twig_Extension
             // $this->logger->info('$toTweet = '.print_r($toTweet, true));
             // $tweet = substr($toTweet, 0, 100) . '...';
         } elseif ($subject->getType() == ObjectTypeConstants::TYPE_USER) {
-            if ($subject->isQualified()) {
-                $toTweet = 'Élu';
-                if ($subject->getGender() == 'Madame') {
-                    $toTweet .= 'e';
-                }
-            } else {
-                $toTweet = 'Citoyen';
-                if ($subject->getGender() == 'Madame') {
-                    $toTweet .= 'ne';
-                }
-            }
-            // $this->logger->info('$toTweet = '.print_r($toTweet, true));
-
             $toTweet .= ' ' . $subject->getFullName();
             // $this->logger->info('$toTweet = '.print_r($toTweet, true));
 

@@ -68,12 +68,15 @@ twig:
         contact:
             email:              %contact_email%
             phone:              %contact_phone%
+        support:
+            email:              %support_email%
         facebook:
             admin_ids:          %facebook_admin_ids%
             client_id:          %facebook_client_id%
             client_secret:      %facebook_client_secret%
             scope:              %facebook_scope%
             pixelcode_id:       %facebook_pixelcode_id%
+            api_version:        %facebook_graph_version%
         google:
             client_id:          %google_client_id%
             ga_view_id:         %google_ga_view_id%

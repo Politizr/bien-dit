@@ -14,8 +14,10 @@
 {% block bodyClass %} class="public visitor"{% endblock %}
 
 {% block main %}
-    <div id="homePresentation">
-        {{ content.description | raw }}
+    <div id="homePresentation" class="grpCMS">
+        <div class="center">
+            {{ content.description | raw }}
+        </div>
     </div>
 {% endblock main %}
 

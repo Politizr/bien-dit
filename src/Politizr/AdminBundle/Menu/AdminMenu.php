@@ -324,11 +324,6 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Page',
             'Politizr_AdminBundle_CmsContent_list'
         );
-        $this->addLinkRoute(
-            $cms,
-            'Catégorie',
-            'Politizr_AdminBundle_CmsCategory_list'
-        );
 
         // User
         $users = $this->addLinkRoute($menu, 'Utilisateur', 'Politizr_AdminBundle_PUser_list');

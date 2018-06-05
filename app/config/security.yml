@@ -28,7 +28,8 @@ security:
         Politizr\Model\PUser:               sha512
 
     role_hierarchy:
-        ROLE_ELECTED:     ROLE_CITIZEN
+        ROLE_CITIZEN:     ROLE_PROFILE_COMPLETED
+        ROLE_ELECTED:     [ ROLE_PROFILE_COMPLETED, ROLE_CITIZEN ]
         ROLE_ADMIN:       ROLE_USER
         ROLE_CLIENT:      ROLE_ADMIN
         ROLE_SYSTEM:      ROLE_ADMIN
@@ -98,7 +99,7 @@ security:
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY, host: "%host.admin%" }
         - { path: ^/_fos_user_context_hash, host: "%host.admin%", roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
-        - { path: ^/, roles: ROLE_ADMIN, host: "%host.admin%" }                               # Espace ADMIN
+        - { path: ^/, role: ROLE_ADMIN, host: "%host.admin%" }                               # Espace ADMIN
         - { path: ^/-u, role: ROLE_CITIZEN_INSCRIPTION, host: "%host.public%" }               # Process d'inscription citoyen
         - { path: ^/-v, role: ROLE_ELECTED_INSCRIPTION, host: "%host.public%" }               # Process d'inscription elu
         - { path: ^/espace/utilisateur, role: ROLE_CITIZEN, host: "%host.public%" }           # Espace utilisateur

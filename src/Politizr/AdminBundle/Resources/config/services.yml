@@ -19,6 +19,7 @@ services:
             - @logger
             - "%contact_email%"
             - "%support_email%"
+            - "%client_name%"
         tags:
             - { name: kernel.event_listener, event: order_email }
             - { name: kernel.event_listener, event: moderation_notification }
