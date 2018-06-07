@@ -232,10 +232,10 @@ builders:
                         class:                  Politizr\Model\PUser
                 #         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
                 organizations:
-                    label:                      Organisation
+                    label:                      Organisations
                     dbType:                     model
                     addFormOptions:
-                        multiple:               false
+                        multiple:               true
                         required:               false
                         property:               title
                         class:                  Politizr\Model\PQOrganization
