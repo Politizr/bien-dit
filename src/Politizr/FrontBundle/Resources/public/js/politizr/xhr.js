@@ -156,7 +156,6 @@ var ROUTE_USER_LISTING_BADGES = 'auteur/badges';
 
 // CIRCLES
 var ROUTE_CIRCLE_SUBSCRIPTION = '-w/circle/subscription';
-var ROUTE_CIRCLE_SUPPORT = '-w/circle/support';
 
 // TIMELINE
 var ROUTE_TIMELINE_MINE = '-w/timeline';

@@ -310,7 +310,7 @@ class XhrUser
             $puCurrentQo = new PUCurrentQO();
         }
 
-        $form = $this->formFactory->create(new PUCurrentQOType(QualificationConstants::TYPE_ELECTIV), $puCurrentQo);
+        $form = $this->formFactory->create(new PUCurrentQOType(), $puCurrentQo);
         $form->bind($request);
         if ($form->isValid()) {
             $puCurrentQo = $form->getData();

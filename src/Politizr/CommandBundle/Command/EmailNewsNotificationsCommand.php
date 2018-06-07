@@ -39,6 +39,9 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
     private $mailer;
     private $transport;
     private $templating;
+    private $contactEmail;
+    private $supportEmail;
+    private $clientName;
     private $geoActive;
 
     protected function configure()
@@ -77,6 +80,9 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
         $this->mailer = $this->getContainer()->get('mailer');
         $this->transport = $this->getContainer()->get('swiftmailer.transport.real');
         $this->templating = $this->getContainer()->get('templating');
+        $this->contactEmail = $this->getContainer()->getParameter('contact_email');
+        $this->supportEmail = $this->getContainer()->getParameter('support_email');
+        $this->clientName = $this->getContainer()->getParameter('client_name');
         $this->geoActive = $this->getContainer()->getParameter('geo_active');
 
         // initialize begin & end dates
@@ -118,21 +124,22 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
             if ($this->geoActive) {
                 // Nearest elected users
                 $nearestUsers = $this->notificationService->getNearestQualifiedUsers($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_ELECTED_USERS);
+            } else {
+                // Neawest users
+                $nearestUsers = $this->notificationService->getNewestUsers($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_ELECTED_USERS);                
+            }
 
-                $nearestUsersPart = $this->getNearestUsersRendering($user, $nearestUsers);
+            $nearestUsersPart = $this->getNearestUsersRendering($user, $nearestUsers);
 
+            if ($this->geoActive) {
                 // Nearest debates
                 $nearestDebates = $this->notificationService->getNearestDebates($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_PUBLICATIONS);
-
-                $nearestDebatesPart = $this->getNearestDebatesRendering($user, $nearestDebates);
             } else {
-                $nearestUsersPart = array();
-                
                 // Interesting debates
                 $nearestDebates = $this->notificationService->getMostInterestingDebates($user, $beginAt, $endAt, EmailConstants::NB_MAX_NEW_PUBLICATIONS);
-
-                $nearestDebatesPart = $this->getNearestDebatesRendering($user, $nearestDebates);                
             }
+
+            $nearestDebatesPart = $this->getNearestDebatesRendering($user, $nearestDebates);
 
             // Emailing
             if (sizeof($nearestUsersPart) > 0
@@ -243,7 +250,7 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
         if ($nearestUsersPart && sizeof($nearestUsersPart) > 0) {
             $nearestUsersPartHtml = $nearestUsersPart[0];
             $nearestUsersPartTxt = $nearestUsersPart[1];
-            $subject = "de nouveaux élus";
+            $subject = "de nouveaux utilisateurs";
         }
 
         $nearestDebatesPartHtml = $nearestDebatesPartTxt = null;
@@ -280,7 +287,7 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
 
             $message = \Swift_Message::newInstance()
                     ->setSubject($subject)
-                    ->setFrom(array('support@politizr.com' => 'Support@Politizr'))
+                    ->setFrom(array($this->contactEmail => sprintf('%s', $this->clientName)))
                     ->setTo($userEmail)
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')

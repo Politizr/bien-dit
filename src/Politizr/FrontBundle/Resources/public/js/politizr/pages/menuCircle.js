@@ -36,14 +36,3 @@ $("body").on("click", "[action='quitCircle']", function(e) {
         // reverseButtons: true
     });
 });
-
-// Support group
-$("body").on("click", "[action='supportGroup']", function(e) {
-    // console.log('*** click supportGroup');
-    
-    var targetElement = $(this).closest('#supportGroup');
-    var localLoader = $(this).closest('#supportGroup').find('.ajaxLoader').first();
-
-    return supportGroup(targetElement, localLoader);
-});
-

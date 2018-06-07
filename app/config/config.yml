@@ -61,9 +61,6 @@ twig:
         - 'form/fields.html.twig'
 
     # App variables
-#    globals:
-#      image_path_project:     %image_path_project%
-#      image_path_diaporama:   %image_path_diaporama%
     globals:
         contact:
             email:              %contact_email%
@@ -104,6 +101,8 @@ twig:
             tagmanager_id:      %google_tagmanager_id%
         geo:
             active:             %geo_active%
+        mandate:
+            active:             %mandate_active%
         expression:
             from_scratch:       %expression_from_scratch%
 

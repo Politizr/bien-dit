@@ -7,6 +7,7 @@ use Politizr\Constant\NotificationConstants;
 
 use Politizr\Model\PUser;
 
+use Politizr\Model\PUserQuery;
 use Politizr\Model\PUNotificationQuery;
 use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUFollowDDQuery;
@@ -366,6 +367,32 @@ class NotificationService
         }
 
         $users = $this->notificationManager->generateNearestQualifiedUsers($user->getId(), $city->getId(), $department->getId(), $region->getId(), $beginAt->format('Y-m-d H:i:s'), $endAt->format('Y-m-d H:i:s'), $limit);
+
+        return $users;
+    }
+
+    /**
+     * Get newest qualified users from user
+     *
+     * @param PUser $user
+     * @param DateTime $beginAt
+     * @param DateTime $endAt
+     * @param int $limit
+     */
+    public function getNewestUsers(PUser $user, \DateTime $beginAt, \DateTime $endAt, $limit)
+    {
+        if (!$user) {
+            throw new InconsistentDataException('Can get newest users - user null');
+        }
+
+        $users = PUserQuery::create()
+                    ->online()
+                    ->filterByCreatedAt($beginAt, '>')
+                    ->_and()
+                    ->filterByCreatedAt($endAt, '<')
+                    ->orderByMostActive()
+                    ->limit($limit)
+                    ->find();
 
         return $users;
     }

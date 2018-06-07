@@ -15,6 +15,7 @@ use Politizr\Constant\CmsConstants;
 
 use Politizr\Model\PDDirect;
 
+use Politizr\Model\CmsContentQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
@@ -165,37 +166,19 @@ class PublicController extends Controller
         $url = $this->generateUrl('Homepage');
         $urls[] = $this->generateUrlItem($url, 'weekly', '0.3');
 
-        // top
-        $url = $this->generateUrl('ListingByRecommend');
-        $urls[] = $this->generateUrlItem($url, 'weekly', '0.8');
-
-        // listing thématiques
-        $contents = PTagQuery::create()
+        // pages cms
+        $contents = CmsContentQuery::create()
             ->filterByOnline(true)
-            ->joinPDDTaggedT(null, 'left join')
-            ->distinct()
-            ->orderById('desc')
+            ->orderByCreatedAt('desc')
             ->find();
 
         foreach ($contents as $content) {
-            $url = $this->generateUrl('ListingByTag', array(
+            $url = $this->generateUrl('CmsContent', array(
                 'slug' => $content->getSlug(),
                 ));
-            $urls[] = $this->generateUrlItem($url, 'weekly', '0.5');
+            $urls[] = $this->generateUrlItem($url, 'weekly', '0.4');
         }
 
-        // listing par organisations
-        $contents = PQOrganizationQuery::create()
-            ->filterByOnline(true)
-            ->orderByRank()
-            ->find();
-
-        foreach ($contents as $content) {
-            $url = $this->generateUrl('ListingByOrganization', array(
-                'slug' => $content->getSlug(),
-                ));
-            $urls[] = $this->generateUrlItem($url, 'weekly', '0.5');
-        }
 
         // pages debats
         $contents = PDDebateQuery::create()
@@ -234,15 +217,6 @@ class PublicController extends Controller
         foreach ($contents as $content) {
             $url = $this->generateUrl('UserDetail', array(
                 'slug' => $content->getSlug(),
-                ));
-            $urls[] = $this->generateUrlItem($url, 'weekly', '0.3');
-        }
-
-        // landing pages
-        $keywords = [ 'civic-tech', 'elu-local', 'dialogue-citoyen', 'democratie-locale', 'democratie-participative', 'reseau-social-politique', 'primaires-presidentielle-2017', 'charlotte-marchandise-franquet'];
-        foreach ($keywords as $keyword) {
-            $url = $this->generateUrl('LandingPage', array(
-                'theme' => $keyword
                 ));
             $urls[] = $this->generateUrlItem($url, 'weekly', '0.3');
         }

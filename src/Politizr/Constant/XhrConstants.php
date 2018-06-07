@@ -168,7 +168,6 @@ class XhrConstants
 
     // CIRCLES
     const ROUTE_CIRCLE_SUBSCRIPTION = '-w/circle/subscription';
-    const ROUTE_CIRCLE_SUPPORT = '-w/circle/support';
 
     // TIMELINE
     const ROUTE_TIMELINE_MINE = '-w/timeline';

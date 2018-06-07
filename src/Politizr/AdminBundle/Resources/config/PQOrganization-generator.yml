@@ -49,14 +49,7 @@ builders:
             title:                              Liste des organisations
             max_per_page:                       50
             sort:                               [ sortable_rank, ASC ]
-            scopes:
-                group_1: 
-                    "Tous":                     ~
-                    "Partis politiques":
-                        default:                1
-                        filters: 
-                            p_q_type_id:        1
-            display:                            [ file_name, p_q_type_id, initials, title ]
+            display:                            [ p_q_type, title, initials ]
             filters:                            [ p_q_type, p_q_type_id, initials ]
             actions:
                 new:                            ~
@@ -95,8 +88,8 @@ builders:
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ p_q_type ]
-                    "État":                 [ online ]
-                    "Dates":                 [ [ created_at, updated_at ] ]
+                    "État":                     [ online ]
+                    "Dates":                    [ [ created_at, updated_at ] ]
             fields:
                 p_q_type:
                     dbType:                     model

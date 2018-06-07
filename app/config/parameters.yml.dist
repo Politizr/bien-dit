@@ -6,6 +6,7 @@ parameters:
     database_password: 123
     database_charset: UTF8
     database_dsn: '%database_driver%:host=%database_host%;dbname=%database_name%;charset=%database_charset%'
+
     mailer_auth_mode:  login
     mailer_port:       25
     mailer_transport:  mail
@@ -13,13 +14,9 @@ parameters:
     mailer_user:       123
     mailer_password:   123
     mailer_encryption: ssl
+
     locale: fr
     secret: 123
-
-    # Contact Support
-    contact_email: contact@politizr.com
-    contact_phone: 123
-    support_email: support@politizr.com
 
     # Hosts
     host.admin: politizr.beta.admin
@@ -74,6 +71,11 @@ parameters:
     exercise_html_purifier.config.class: Politizr\FrontBundle\Lib\HtmlPurifierConfig
 
     # client
+    # Contact Support
+    contact_email: contact@politizr.com
+    contact_phone: 123
+    support_email: support@politizr.com
+
     client_name: Générations ERIC
 
     # META
@@ -91,13 +93,15 @@ parameters:
     # Localization
     geo_active: false
 
+    # Utilisateurs
+    mandate_active: false
+
     # Niveau d'expression
     expression_from_scratch: false # true | false
     
     # Groupes
     with_group: true
     multiple_group: false
-    manage_group: false
 
     # Menu
     top_menu_cms: true # true | false

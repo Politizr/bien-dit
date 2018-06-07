@@ -195,10 +195,10 @@ builders:
                     "Score":                    [ block_reputation ]
                     "Badges":                   [ badges ]
                 "Listes":
-                    "Liste des personnes qui suivent":  [ followers ]
-                    "Liste des personnes suivies":      [ subscribers ]
-                    "Liste des organisations":          [ current_organizations ]
-                    "Liste des rôles":                  [ roles ]
+                    "Personnes qui suivent":    [ followers ]
+                    "Personnes suivies":        [ subscribers ]
+                    "Organisations":            [ organizations ]
+                    "Rôles":                    [ roles ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "État":                     [ online, banned, p_u_status, abuse_level ]
@@ -231,14 +231,15 @@ builders:
                         required:               false
                         class:                  Politizr\Model\PUser
                 #         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
-                current_organizations:
-                    label:                      Organisations
+                organizations:
+                    label:                      Organisation
                     dbType:                     model
                     addFormOptions:
-                        multiple:               true
+                        multiple:               false
                         required:               false
                         property:               title
                         class:                  Politizr\Model\PQOrganization
+                        query:                  \Politizr\Model\PQOrganizationQuery::create()->orderByPQTypeId()
                 p_n_emails:
                     label:                      Notifications mail
                     dbType:                     model
@@ -335,10 +336,10 @@ builders:
                     "Situation":                [ banned, abuse_level ]
                     "Historique de l utilisateur":  [ block_moderation_alert_listing ]
                 "Listes":
-                    "Liste des personnes qui suivent":  [ followers ]
-                    "Liste des personnes suivies":      [ subscribers ]
-                    "Liste des organisations":          [ current_organizations ]
-                    "Liste des rôles":                  [ roles ]
+                    "Personnes qui suivent":    [ followers ]
+                    "Personnes suivies":        [ subscribers ]
+                    "Organisations":            [ organizations ]
+                    "Rôles":                    [ roles ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "État":                     [ active, p_u_status ]
@@ -353,7 +354,7 @@ builders:
                 subscribers:
                     credentials:                ROLE_SYSTEM
                     label:                      Abonnements
-                current_organizations:
+                organizations:
                     label:                      Organisations
                 p_n_emails:
                     label:                      Notifications mail

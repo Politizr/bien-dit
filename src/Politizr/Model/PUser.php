@@ -649,11 +649,38 @@ class PUser extends BasePUser implements UserInterface
     // ************************************************************************************ //
 
     /**
+     * User's current organizations
+     *
+     * @param int $typeId Organization type
+     * @param boolean $online
+     * @return PropelCollection[PQOrganization]
+     */
+    public function getCurrentOrganizations($typeId = null, $online = true)
+    {
+        $query = PQOrganizationQuery::create()
+            ->_if($typeId)
+                ->filterIfPQTypeId($typeId)
+            ->_endif()
+            ->filterIfOnline($online)
+            ->setDistinct();
+
+        return parent::getPUCurrentQOPQOrganizations($query);
+    }
+
+    /**
+     * alias getPUCurrentQOPQOrganizations($query);
+     */
+    public function getOrganizations($query = null)
+    {
+        return parent::getPUCurrentQOPQOrganizations($query);
+    }
+
+    /**
      *
      * @param PUser $user
      * @return PUser
      */
-    public function addCurrentOrganization(PQOrganization $organization)
+    public function addOrganization(PQOrganization $organization)
     {
         return parent::addPUCurrentQOPQOrganization($organization);
     }
@@ -663,44 +690,9 @@ class PUser extends BasePUser implements UserInterface
      * @param PUser $user
      * @return PUser
      */
-    public function removeCurrentOrganization(PQOrganization $organization)
+    public function removeOrganization(PQOrganization $organization)
     {
         return parent::removePUCurrentQOPQOrganization($organization);
-    }
-
-
-    /**
-     * User's current organizations
-     *
-     * @param int $typeId Organization type
-     * @param boolean $online
-     * @return PropelCollection[PQOrganization]
-     */
-    public function getCurrentOrganizations($typeId = QualificationConstants::TYPE_ELECTIV, $online = true)
-    {
-        $query = PQOrganizationQuery::create()
-            ->filterIfPQTypeId($typeId)
-            ->filterIfOnline($online)
-            ->setDistinct();
-
-        return parent::getPUCurrentQOPQOrganizations($query);
-    }
-
-    /**
-     * User's affinity organizations
-     *
-     * @param int $typeId Organization type
-     * @param boolean $online
-     * @return PropelCollection[PQOrganization]
-     */
-    public function getAffinityOrganizations($typeId = QualificationConstants::TYPE_ELECTIV, $online = true)
-    {
-        $query = PQOrganizationQuery::create()
-            ->filterIfPQTypeId($typeId)
-            ->filterIfOnline($online)
-            ->setDistinct();
-
-        return parent::getPUAffinityQOPQOrganizations($query);
     }
 
     /**
@@ -710,13 +702,15 @@ class PUser extends BasePUser implements UserInterface
      * @param int $typeId Organization type
      * @return PUCurrentQO
      */
-    public function getPUCurrentQO($typeId = QualificationConstants::TYPE_ELECTIV)
+    public function getPUCurrentQO($typeId = null)
     {
         $puCurrentQo = PUCurrentQOQuery::create()
             ->filterByPUserId($this->getId())
-            ->usePUCurrentQOPQOrganizationQuery()
-                ->filterByPQTypeId(QualificationConstants::TYPE_ELECTIV)
-            ->endUse()
+            ->_if($typeId)
+                ->usePUCurrentQOPQOrganizationQuery()
+                    ->filterByPQTypeId(QualificationConstants::TYPE_ELECTIV)
+                ->endUse()
+            ->_endif()
             ->findOne();
 
         return $puCurrentQo;

@@ -21,18 +21,7 @@
                     {% endfor %}
                 {% else %}
                     <div class="noResults">
-                        Aucun groupe n'est disponible dans votre zone géographique!
-                        {% if app.user and not app.user.supportGroup %}
-                            <div class="contactMyCity withLoaderInside" id="supportGroup">
-                                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-                                {% if isGrantedE() %}
-                                    Cliquez ci dessous recevoir notre documentation complète détaillant nos services à destination des collectivités (mairie, agglo, département, etc.)<br/>
-                                {% else %}
-                                    Cliquez ci dessous pour nous aider à convaincre vos collectivités (mairie, agglo, département, etc.) d'ouvrir leurs projets à la discussion!<br/>
-                                {% endif %}
-                                <a action="supportGroup">Je suis intéressé{% if app.user.gender == 'Madame' %}e{% endif %}</a>
-                            </div>
-                        {% endif %}
+                        Aucun groupe n'est disponible
                     </div>
                 {% endfor %}
             </div>

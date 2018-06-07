@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Propel\Bundle\PropelBundle\Form\Type\ModelType;
+
 use Politizr\Constant\QualificationConstants;
 
 use Politizr\Model\PQOrganizationQuery;
@@ -19,22 +21,14 @@ use Politizr\Model\PQOrganizationQuery;
  */
 class PUCurrentQOType extends AbstractType
 {
-    // Permet de filtrer sur le type d'organisation
-    private $pqTypeId;
-
-    public function __construct($pqTypeId = QualificationConstants::TYPE_ELECTIV)
-    {
-        $this->pqTypeId = $pqTypeId;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // Liste des organisations politiques
-        $builder->add('PUCurrentQOPQOrganization', 'Propel\Bundle\PropelBundle\Form\Type\ModelType', array(
-                'required' => true,
-                'label' => 'Parti Politique',
+        $builder->add('PUCurrentQOPQOrganization', ModelType::class, array(
+                'required' => false,
+                'label' => 'Organisation',
                 'class' => 'Politizr\\Model\\PQOrganization',
-                'query' => PQOrganizationQuery::create()->filterByPQTypeId($this->pqTypeId)->filterByOnline(true)->orderByRank(),
+                'query' => PQOrganizationQuery::create()->filterByOnline(true)->orderByRank(),
                 'property' => 'title',
                 'multiple' => false,
                 'expanded' => false,

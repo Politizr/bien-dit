@@ -163,7 +163,7 @@ class PolitizrSocialExtension extends \Twig_Extension
             // $this->logger->info('$toTweet = '.print_r($toTweet, true));
             // $tweet = substr($toTweet, 0, 100) . '...';
         } elseif ($subject->getType() == ObjectTypeConstants::TYPE_USER) {
-            $toTweet .= ' ' . $subject->getFullName();
+            $toTweet = ' ' . $subject->getFullName();
             // $this->logger->info('$toTweet = '.print_r($toTweet, true));
 
             if ($biography = $subject->getBiography()) {

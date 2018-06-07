@@ -68,8 +68,7 @@
                     {{ form_rest(formBio) }}
                 </form>
 
-                {#
-                {% if user.isQualified %}
+                {% if mandate.active %}
                     <div class="formBlock">
                         <div class="formBlockHeader">
                             <label>Mandats</label>
@@ -84,7 +83,6 @@
                         </div>
                     </div>
                 {% endif %}
-                #}
         </div>
     </div>
 {% endblock content %}

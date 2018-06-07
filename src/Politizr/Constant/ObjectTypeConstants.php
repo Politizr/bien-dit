@@ -80,6 +80,7 @@ class ObjectTypeConstants
     last_connect,
     nb_connected_days,
     nb_views,
+    organization,
     qualified,
     validated,
     nb_id_check,

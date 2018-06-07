@@ -47,13 +47,13 @@
     </ul>
 {% endblock show_column_subscribers %}
 
-{% block show_column_current_organizations %}
+{% block show_column_organizations %}
     <ul>
-        {% for organization in PUser.currentOrganizations %}
+        {% for organization in PUser.organizations %}
             <li>{{ organization.title }}</li>
         {% endfor %}
     </ul>
-{% endblock show_column_current_organizations %}
+{% endblock show_column_organizations %}
 
 
 {# Block front link #}

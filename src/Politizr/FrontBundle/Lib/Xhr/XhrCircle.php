@@ -222,32 +222,4 @@ class XhrCircle
             'html' => $html
         );
     }
-
-    /**
-     * Support group
-     * code beta
-     */
-    public function supportGroup(Request $request)
-    {
-        // $this->logger->info('*** supportGroup');
-        
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-
-        $user->setSupportGroup(true);
-        $user->save();
-
-        $event = new GenericEvent($user);
-        $dispatcher =  $this->eventDispatcher->dispatch('support_group_email', $event);
-
-        $html = $this->templating->render(
-            'PolitizrFrontBundle:Circle:_supportGroupOk.html.twig',
-            array(
-            )
-        );
-
-        return array(
-            'html' => $html,
-        );
-    }
 }

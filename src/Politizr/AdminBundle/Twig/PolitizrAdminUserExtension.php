@@ -289,30 +289,6 @@ class PolitizrAdminUserExtension extends \Twig_Extension
     }
 
     /**
-     *  Gestion des affinités organisation d'un user
-     *
-     * @param $pUser        PUser
-     *
-     * @return string
-     */
-    public function adminUserAffinities(\Twig_Environment $env, PUser $pUser)
-    {
-        $this->logger->info('*** adminUserAffinities');
-        // $this->logger->info('$pUser = '.print_r($pUser, true));
-
-        // Construction du rendu du tag
-        $html = $env->render(
-            'PolitizrAdminBundle:Fragment:UserOrganizations.html.twig',
-            array(
-                'pUser' => $pUser,
-                'organizations' => $pUser->getCurrentOrganizations(),
-            )
-        );
-
-        return $html;
-    }
-
-    /**
      * User's reputation
      *
      * @param PUser $user

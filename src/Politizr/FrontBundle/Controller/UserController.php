@@ -150,13 +150,7 @@ class UserController extends Controller
         $formMandateViews = null;
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ELECTED')) {
             // Current organization
-            $puCurrentQo = PUCurrentQOQuery::create()
-                ->filterByPUserId($user->getId())
-                ->usePUCurrentQOPQOrganizationQuery()
-                    ->filterByPQTypeId(QualificationConstants::TYPE_ELECTIV)
-                ->endUse()
-                ->findOne();
-
+            $puCurrentQo = $user->getPUCurrentQO();
             if (!$puCurrentQo) {
                 $puCurrentQo = new PUCurrentQO();
             }
@@ -169,7 +163,7 @@ class UserController extends Controller
             $mandate->setPQTypeId(QualificationConstants::TYPE_ELECTIV);
 
             // Current organization & new mandate forms
-            $formOrga = $this->createForm(new PUCurrentQOType(QualificationConstants::TYPE_ELECTIV), $puCurrentQo);
+            $formOrga = $this->createForm(new PUCurrentQOType(), $puCurrentQo);
             $formMandate = $this->createForm(new PUMandateType(QualificationConstants::TYPE_ELECTIV), $mandate);
         }
 

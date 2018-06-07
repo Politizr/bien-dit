@@ -12,7 +12,7 @@
     {% else %}
         <div class="deletedAccount">utilisateur supprimé</div>
     {% endif %}
-    {% if user and user.qualified and withMandates is defined and withMandates %}
+    {% if user and user.qualified and withMandates is defined and withMandates and mandate.active %}
         <div class="profileMandats">
             {% include 'PolitizrFrontBundle:User:_mandates.html.twig' with { 'user': user, 'mandates': user.mandates } only %}
         </div>

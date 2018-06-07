@@ -124,10 +124,10 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
 
         // Groupes
-        $circle = $this->addDropdown($menu, 'Groupes');
+        $circle = $this->addDropdown($menu, 'Groupe');
         $this->addLinkRoute(
             $circle,
-            'Client',
+            'Propriétaire',
             'Politizr_AdminBundle_PCOwner_list'
         );
         $this->addLinkRoute(
@@ -137,7 +137,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $circle,
-            'Discussions',
+            'Discussion',
             'Politizr_AdminBundle_PCTopic_list'
         );
 
@@ -360,10 +360,10 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
 
         // Groupes
-        $circle = $this->addDropdown($menu, 'Groupes');
+        $circle = $this->addDropdown($menu, 'Groupe');
         $this->addLinkRoute(
             $circle,
-            'Client',
+            'Propriétaire',
             'Politizr_AdminBundle_PCOwner_list'
         );
         $this->addLinkRoute(
@@ -373,7 +373,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $circle,
-            'Discussions',
+            'Discussion',
             'Politizr_AdminBundle_PCTopic_list'
         );
 

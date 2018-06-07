@@ -15,9 +15,6 @@ use Politizr\FrontBundle\Lib\Tools\StaticTools;
  */
 class PQOrganization extends BasePQOrganization
 {
-    // simple upload management
-    public $uploadedFileName;
-
     /**
      *
      * @return string
@@ -38,91 +35,13 @@ class PQOrganization extends BasePQOrganization
         return $slug;
     }
 
-    /* ######################################################################################################## */
-    /*                                      SIMPLE UPLOAD MANAGEMENT                                            */
-    /* ######################################################################################################## */
-
     /**
-     *
-     * @param string $uploadedFileName
-     */
-    public function setUploadedFileName($uploadedFileName)
-    {
-        $this->uploadedFileName = $uploadedFileName;
-    }
-
-    /**
+     * Return type + title of current orga
      *
      * @return string
      */
-    public function getUploadedFileNameWebPath()
+    public function getTypeAndTitle()
     {
-        return PathConstants::ORGANIZATION_UPLOAD_WEB_PATH . $this->file_name;
-    }
-    
-    /**
-     *
-     * @return File
-     */
-    public function getUploadedFileName()
-    {
-        // inject file into property (if uploaded)
-        if ($this->file_name) {
-            return new File(
-                __DIR__ . PathConstants::ORGANIZATION_UPLOAD_PATH . $this->file_name
-            );
-        }
-
-        return null;
-    }
-
-    /**
-     *
-     * @param File $file
-     * @return string file name
-     */
-    public function upload($file = null)
-    {
-        if (null === $file) {
-              return;
-        }
-
-        // extension
-        $extension = $file->guessExtension();
-        if (!$extension) {
-              $extension = 'bin';
-        }
-
-        // file name
-        $fileName = 'politizr-orga-' . StaticTools::randomString() . '.' . $extension;
-
-        // move takes the target directory and then the target filename to move to
-        $fileUploaded = $file->move(__DIR__ . PathConstants::ORGANIZATION_UPLOAD_PATH, $fileName);
-
-        // file name
-        return $fileName;
-    }
-
-    /**
-     *
-     * @param string $fileName
-     */
-    public function setFileName($fileName)
-    {
-        if (null !== $fileName) {
-            $this->removeUpload();
-        }
-        parent::setFileName($fileName);
-    }
-
-    /**
-     *
-     * @param $uploadedFileName
-     */
-    public function removeUpload($uploadedFileName = true)
-    {
-        if ($uploadedFileName && $this->file_name && file_exists(__DIR__ . PathConstants::ORGANIZATION_UPLOAD_PATH . $this->file_name)) {
-            unlink(__DIR__ . PathConstants::ORGANIZATION_UPLOAD_PATH . $this->file_name);
-        }
+        return sprintf('[%s] %s', $this->getPQType()->getTitle(), $this->getTitle());
     }
 }
