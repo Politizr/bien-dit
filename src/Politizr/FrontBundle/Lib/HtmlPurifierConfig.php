@@ -5,7 +5,7 @@ use HTMLPurifier_Config as Config;
 
 /**
  * Customized HtmlPurifierConfig to manage HTML5 attributes in "HtmlPurifierBundle" purify
- * /!\ this config works for all defined filters (default & custom) > @todo manage only for specific config
+ * /!\ this config works for all defined filters (default & custom)
  *
  * cf. https://github.com/Exercise/HTMLPurifierBundle/issues/34
  * cf. https://github.com/kennberg/php-htmlpurfier-html5

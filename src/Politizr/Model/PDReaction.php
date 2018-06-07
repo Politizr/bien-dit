@@ -177,7 +177,6 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
 
     /**
      * Compute a reaction file name
-     * @todo not used for the moment
      *
      * @return string
      */

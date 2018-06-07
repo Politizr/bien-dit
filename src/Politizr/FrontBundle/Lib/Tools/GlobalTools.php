@@ -436,7 +436,6 @@ class GlobalTools
 
     /**
      * Create form views for each user's mandate
-     * @todo to refactor in a form construction dedicated service
      *
      * @param integer $userId
      * @return array|FormViewsPUMandateType

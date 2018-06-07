@@ -479,7 +479,6 @@ class XhrUser
         // get current user
         $user = $this->securityTokenStorage->getToken()->getUser();
         
-        // @todo use form type constant
         if ($formTypeId == 1) {
             $form = $this->formFactory->create(new PUserIdentityType($user), $user);
         } elseif ($formTypeId == 2) {
@@ -496,7 +495,6 @@ class XhrUser
         if ($form->isValid()) {
             $user = $form->getData();
 
-            // @todo use form type constant
             if ($formTypeId == 1) {
                 $user->setNickname($user->getFirstname() . ' ' . $user->getName());
                 $user->setRealname($user->getFirstname() . ' ' . $user->getName());
@@ -883,7 +881,6 @@ class XhrUser
             ->offset($offset)
             ->find();
 
-        // @todo create function for code above
         $moreResults = false;
         if (sizeof($users) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
@@ -985,7 +982,6 @@ class XhrUser
 
         $users = $user->getFollowers($query);
 
-        // @todo create function for code above
         $moreResults = false;
         if (sizeof($users) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
@@ -1088,7 +1084,6 @@ class XhrUser
 
         $users = $user->getSubscribers($query);
 
-        // @todo create function for code above
         $moreResults = false;
         if (sizeof($users) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
@@ -1290,7 +1285,6 @@ class XhrUser
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
 
-        // @todo create function for code above
         $moreResults = false;
         if (sizeof($users) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;

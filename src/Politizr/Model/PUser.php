@@ -183,7 +183,6 @@ class PUser extends BasePUser implements UserInterface
 
     /**
      * Compute a user file name
-     * @todo not used for the moment
      *
      * @return string
      */
@@ -199,7 +198,6 @@ class PUser extends BasePUser implements UserInterface
     // ************************************************************************************ //
 
     /**
-     * @todo which functionality use serialization/deserialization & for what? oauth?
      *
      * @return array
      */
@@ -228,7 +226,6 @@ class PUser extends BasePUser implements UserInterface
     }
 
     /**
-     * @todo which functionality use serialization/deserialization & for what? oauth?
      *
      * @param array
      */

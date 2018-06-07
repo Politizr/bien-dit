@@ -4,8 +4,6 @@ namespace Politizr\FrontBundle\Lib\Tools;
 /**
  * Usefull static functions
  *
- * @todo migration vers GlobalTools?
- *
  * @author Lionel Bouzonville
  */
 class StaticTools

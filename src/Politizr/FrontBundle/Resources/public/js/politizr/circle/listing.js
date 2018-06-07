@@ -59,7 +59,6 @@ function publicationsByTopicListing(init, offset) {
 
 /**
  * Get search filters
- * @todo
  */
 function getCurrentTopicFilters() {
     // console.log('*** getCurrentTopicFilters');

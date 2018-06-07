@@ -108,7 +108,6 @@ class DocumentService
 
     /**
      * Get array of user's PUFollowDD's ids
-     * @todo refactoring duplicate w. TimelineService
      *
      * @param integer $userId
      * @return array
@@ -126,7 +125,6 @@ class DocumentService
 
     /**
      * Get array of user's PUFollowU's ids
-     * @todo refactoring duplicate w. TimelineService
      *
      * @param integer $userId
      * @return array

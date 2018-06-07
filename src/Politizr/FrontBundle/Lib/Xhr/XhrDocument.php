@@ -261,7 +261,6 @@ class XhrDocument
     /**
      * Notation plus/minus of debate, reaction or comment
      * beta
-     * @todo refactoring
      */
     public function note(Request $request)
     {
@@ -1064,7 +1063,6 @@ class XhrDocument
         // get drafts
         $documents = $this->documentService->getMyDraftsPaginatedListing($user->getId(), $offset, ListingConstants::LISTING_CLASSIC_PAGINATION);
 
-        // @todo create function for code above
         $moreResults = false;
         if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
@@ -1109,7 +1107,6 @@ class XhrDocument
         // get drafts
         $documents = $this->documentService->getMyBookmarksPaginatedListing($user->getId(), $offset, ListingConstants::LISTING_CLASSIC_PAGINATION);
 
-        // @todo create function for code above
         $moreResults = false;
         if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
@@ -1152,7 +1149,6 @@ class XhrDocument
         $filters = $request->get('documentFilterDate');
         // $this->logger->info('$filters = ' . print_r($filters, true));
 
-        // @todo dynamic filters implementation
         $documents = $this->documentService->getTopDocumentsBestNote(
             ListingConstants::LISTING_TOP_DOCUMENTS_LIMIT
         );
@@ -1283,7 +1279,6 @@ class XhrDocument
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
 
-        // @todo create function for code above
         $moreResults = false;
         if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
@@ -1349,7 +1344,6 @@ class XhrDocument
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
 
-        // @todo create function for code above
         $moreResults = false;
         if (sizeof($documents) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
@@ -1436,7 +1430,6 @@ class XhrDocument
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
 
-        // @todo create function for code above
         $moreResults = false;
         if (sizeof($publications) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
@@ -1511,7 +1504,6 @@ class XhrDocument
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
 
-        // @todo create function for code above
         $moreResults = false;
         if (sizeof($publications) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;
@@ -1634,7 +1626,6 @@ class XhrDocument
             $url = $this->router->generate('ListingSearchPublications');
         }
 
-        // @todo create function for code above
         $moreResults = false;
         if (sizeof($publications) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;

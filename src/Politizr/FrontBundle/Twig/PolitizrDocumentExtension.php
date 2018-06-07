@@ -323,7 +323,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
     /**
      * Load an <img> html tag with the image of document and apply it a filter.
-     * @todo: check if deprecated
      *
      * @param PDocumentInterface $document
      * @param string $filterName
@@ -1480,8 +1479,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         $html = '';
         $this->timelineService->setTemplatingService($env);
-
-        // @todo refactoring w. Publication->getRelativeObject
 
         switch ($publicationRow->getType()) {
             case ObjectTypeConstants::TYPE_DEBATE:

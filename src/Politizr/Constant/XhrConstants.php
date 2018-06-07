@@ -5,7 +5,6 @@ namespace Politizr\Constant;
 /**
  * XHR constants
  * /!\ to sync w. js/politizr/xhr.js
- * @todo is this pure bullshit? route expose in "xhr.js" only?
  *
  * @author Lionel Bouzonville
  */

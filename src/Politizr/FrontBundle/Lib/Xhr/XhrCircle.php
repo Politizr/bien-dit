@@ -196,7 +196,6 @@ class XhrCircle
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
 
-        // @todo create function for code above
         $moreResults = false;
         if (sizeof($publications) == ListingConstants::LISTING_CLASSIC_PAGINATION) {
             $moreResults = true;

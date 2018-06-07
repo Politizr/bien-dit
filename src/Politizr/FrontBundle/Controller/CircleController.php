@@ -108,7 +108,6 @@ class CircleController extends Controller
         // check access granted
         $this->denyAccessUnlessGranted('topic_detail', $topic);
 
-        // @todo XHR loading
         // get topic's debates
         $debates = PDDebateQuery::create()
                     ->filterByPCTopicId($topic->getId())

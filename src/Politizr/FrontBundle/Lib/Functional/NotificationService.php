@@ -58,7 +58,6 @@ class NotificationService
 
     /**
      * Get array of user's followed user's ids
-     * @todo refactoring duplicate w. TimelineService
      *
      * @param integer $userId
      * @return array
@@ -76,7 +75,6 @@ class NotificationService
 
     /**
      * Get array of user's followed debates ids
-     * @todo refactoring duplicate w. TimelineService
      *
      * @param integer $userId
      * @return array

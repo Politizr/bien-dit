@@ -124,13 +124,11 @@ class ListingController extends Controller
 
     /**
      * Redirect 301
-     * @todo w. htaccess
      */
     public function tagClassicAction($slug)
     {
         return $this->redirect($this->generateUrl('UserDetail', array('slug' => $slug)));
     }
-
 
     /**
      * Tag listing w. minimal url or user detail
@@ -155,7 +153,6 @@ class ListingController extends Controller
         $logger->info('*** tagAction');
         $logger->info('$slug = '.print_r($slug, true));
 
-        // @todo > test si slug appartient à p_l_country / p_l_region / p_l_department / p_l_city
         // => redirect screen publications + zoom carte ok
         $country = PLCountryQuery::create()->filterBySlug($slug)->findOne();
 

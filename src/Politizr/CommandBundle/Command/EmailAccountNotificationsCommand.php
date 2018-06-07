@@ -27,8 +27,6 @@ use Politizr\Exception\PolitizrException;
  * Politizr account notifications email sending
  *
  * https://github.com/Politizr/Politizr/wiki/Liste-des-notifications-mail
- * @todo
- * - + d'aggregations pour les 3. et 4.
  * 
  * @author Lionel Bouzonville
  */

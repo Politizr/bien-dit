@@ -444,8 +444,6 @@ class SecurityService
             $user->setFirstName($googleResult->givenName);
         }
 
-        // @todo bio, website
-
         return true;
 
     }
@@ -615,7 +613,6 @@ class SecurityService
             $roles = [ 'ROLE_OAUTH_USER', 'ROLE_ELECTED_INSCRIPTION' ];
         }
 
-        // @todo to refactor
         $canonicalizer = $this->usernameCanonicalizer;
         if (null !== $user->getEmail()) {
             $canonicalizer = $this->emailCanonicalizer;

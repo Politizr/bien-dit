@@ -91,13 +91,6 @@ class TagService
 
         $tagIds = $this->tagManager->generateMostPopularTagIds($tagTypeId, $interval);
 
-        // @todo 1 query with "ORDER BY FIELD(id, 3, 11, 7, 1)"
-        // cf. http://stackoverflow.com/questions/34036279/propel-orm-order-by-field
-        // $tags = PTagQuery::create()
-        //     ->filterById($tagIds)
-        //     ->orderBy($tagIds)
-        //     ->find();
-
         $tags = [];
         $counter = 1;
         foreach ($tagIds as $tagId) {

@@ -15,7 +15,6 @@ $("body").on("click", "[action='publicationsByUserListing']", function() {
 
 
 // listing user followers
-// @todo if plug > waypoint bug (load all listing) > solution = first trigger goUp > to test
 $("body").on("click", "[action='listingContentUserFollowers']", function() {
     // console.log('*** click listingContentUserFollowers');
 
@@ -32,7 +31,6 @@ $("body").on("click", "[action='listingContentUserFollowers']", function() {
 });
 
 // listing user subscribers
-// @todo if plug > waypoint bug (load all listing)
 $("body").on("click", "[action='listingContentUserSubscribers']", function() {
     // console.log('*** click listingContentUserSubscribers');
 
@@ -50,7 +48,6 @@ $("body").on("click", "[action='listingContentUserSubscribers']", function() {
 
 
 // back to user detail
-// @todo if plug > waypoint bug (load all listing)
 $("body").on("click", "[action='detailContentUser']", function() {
     // console.log('*** click detailContentUser');
 

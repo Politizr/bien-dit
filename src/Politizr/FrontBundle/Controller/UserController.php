@@ -43,7 +43,6 @@ class UserController extends Controller
 
     /**
      * Redirect 301
-     * @todo w. htaccess
      */
     public function detailClassicAction($slug)
     {

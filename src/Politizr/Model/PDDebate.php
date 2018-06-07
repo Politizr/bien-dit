@@ -179,7 +179,6 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
 
     /**
      * Compute a debate file name
-     * @todo not used for the moment
      *
      * @return string
      */

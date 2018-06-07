@@ -98,7 +98,6 @@ class DocumentController extends Controller
      */
     public function deleteDocumentImageAction(Request $request)
     {
-        // @todo cf https://github.com/orthes/medium-editor-insert-plugin/pull/428
         // retrieve media by filename
         // example: http://politizr.beta/uploads/documents/5a391ed0c25a7.jpg
         $file = $request->get('file');

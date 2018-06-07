@@ -30,8 +30,6 @@ use Politizr\Exception\PolitizrException;
 /**
  * Politizr db indexing to Algolia
  *
- * @todo (?):
- *  - geo indexation (examples in user) => /!\ required for all records => add service to get "prefecture / dep", "ville principal / région", "toutes les grandes villes / france"  /  https://www.algolia.com/doc/guides/searching/geo-search/
  *
  * @author Lionel Bouzonville
  */
@@ -115,8 +113,6 @@ class AlgoliaSearchIndexingCommand extends ContainerAwareCommand
             $nbReinitRows = $this->initIndexedAt($userId, $debateId, $reactionId);
             $output->writeln(sprintf('<info>%s rows "indexed_at" attributes have been reinitialized.</info>', $nbReinitRows));
         }
-
-        // @todo: +tags, ?
 
         // New objects
         $indexedNewObjects = array();

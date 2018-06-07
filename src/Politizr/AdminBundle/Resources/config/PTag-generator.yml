@@ -85,7 +85,6 @@ builders:
         filename: ~
         filetype: ~
     new:
-        # @todo contrôle d'unicité du champs "titre" sur le type donné
         params:
             title:                              "Création d'une thématique"
             display:

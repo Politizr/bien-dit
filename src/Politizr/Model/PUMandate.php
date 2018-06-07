@@ -94,7 +94,6 @@ class PUMandate extends BasePUMandate
     }
 
     /**
-     * @todo dead code?
      *
      * @return string file name
      */
