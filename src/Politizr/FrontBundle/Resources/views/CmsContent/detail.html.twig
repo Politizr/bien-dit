@@ -64,12 +64,14 @@
 {% endblock content %}
 
 {% block sidebarContent %}
-    {% if content.moreInfoTitle %}
-        <h5>{{ content.moreInfoTitle | purify }}</h5>
-    {% endif %}
-    {% if content.moreInfoDescription %}
-        {{ content.moreInfoDescription | purify }}
-    {% endif %}
+    <div class="docZoom">
+        {% if content.moreInfoTitle %}
+            <h5>{{ content.moreInfoTitle | purify }}</h5>
+        {% endif %}
+        {% if content.moreInfoDescription %}
+            {{ content.moreInfoDescription | purify }}
+        {% endif %}
+    </div>
     {% if documents | length > 0 %}
         {% include 'PolitizrFrontBundle:CmsContent:_docs.html.twig' %}
     {% endif %}
