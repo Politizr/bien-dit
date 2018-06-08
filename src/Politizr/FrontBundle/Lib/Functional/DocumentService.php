@@ -295,10 +295,8 @@ class DocumentService
     public function getUserPublicationsPaginatedListing($userId, $currentUserId = null, $orderBy, $tagId = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
         $inQueryTopicIds = null;
-        if ($currentUserId) {
-            $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
-            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
-        }
+        $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+        $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
 
         $documents = $this->documentManager->generatePublicationsByUserPaginated($userId, $inQueryTopicIds, $orderBy, $tagId, $offset, $count);
 
@@ -315,7 +313,7 @@ class DocumentService
      * @param înteger $count
      * @return PropelCollection PDocument
      */
-    public function getDocumentsByRecommendPaginated($month, $year, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    public function getDocumentsByRecommendPaginated($month, $year, $currentUserId = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
         $now = new \DateTime();
         $currentMonth = $now->format('n');
@@ -327,7 +325,11 @@ class DocumentService
             $filterDate = ListingConstants::FILTER_KEYWORD_EXACT_MONTH;
         }
 
-        $documents = $this->documentManager->generateDocumentsByRecommendPaginated($filterDate, $month, $year, $offset, $count);
+        $inQueryTopicIds = null;
+        $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+        $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+
+        $documents = $this->documentManager->generateDocumentsByRecommendPaginated($inQueryTopicIds, $filterDate, $month, $year, $offset, $count);
 
         return $documents;
     }
@@ -342,9 +344,13 @@ class DocumentService
      * @param înteger $count
      * @return PropelCollection
      */
-    public function getPublicationsByOrganizationPaginated($organizationId, $orderBy = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
+    public function getPublicationsByOrganizationPaginated($organizationId, $currentUserId = null, $orderBy = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
-        $publications = $this->documentManager->generatePublicationsByOrganizationPaginated($organizationId, $orderBy, $offset, $count);
+        $inQueryTopicIds = null;
+        $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+        $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+
+        $publications = $this->documentManager->generatePublicationsByOrganizationPaginated($organizationId, $inQueryTopicIds, $orderBy, $offset, $count);
 
         return $publications;
     }
@@ -363,10 +369,8 @@ class DocumentService
     public function getDocumentsByTagsPaginated($tagIds, $currentUserId = null, $orderBy = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
         $inQueryTopicIds = null;
-        if ($currentUserId) {
-            $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
-            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
-        }
+        $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+        $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
 
         $inQueryTagIds = implode(',', $tagIds);
         if (empty($inQueryTagIds)) {
@@ -382,12 +386,17 @@ class DocumentService
      * Get top documents best notes
      * beta
      *
+     * @param int $currentUserId
      * @param înteger $count
      * @return PropelCollection PDocument
      */
-    public function getTopDocumentsBestNote($count = ListingConstants::LISTING_TOP_DOCUMENTS_LIMIT)
+    public function getTopDocumentsBestNote($currentUserId = null, $count = ListingConstants::LISTING_TOP_DOCUMENTS_LIMIT)
     {
-        $documents = $this->documentManager->generateTopDocumentsBestNote($count);
+        $inQueryTopicIds = null;
+        $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+        $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+
+        $documents = $this->documentManager->generateTopDocumentsBestNote($inQueryTopicIds, $count);
 
         return $documents;
     }

@@ -4,7 +4,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
-    AND p_d_debate.p_c_topic_id is NULL
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_debate.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -24,7 +24,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_c_topic_id is NULL
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction.p_user_id IN (
         SELECT p_user.id
@@ -48,7 +48,7 @@ WHERE
     p_d_d_comment.online = 1
     AND p_d_debate.published = 1
     AND p_d_debate.online = 1
-    AND p_d_debate.p_c_topic_id is NULL
+    AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_d_comment.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -71,7 +71,7 @@ WHERE
     p_d_r_comment.online = 1
     AND p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_c_topic_id is NULL
+    AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN (1, 2, 3, 4, 5, 6, 7, 8))
     AND p_d_r_comment.p_user_id IN (
         SELECT p_user.id
         FROM p_user

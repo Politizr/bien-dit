@@ -932,10 +932,19 @@ LIMIT :offset, :limit
      *
      * @see app/sql/topDocuments.sql
      *
+     * @param string $inQueryTopicIds
      * @return string
      */
-    private function createDocumentsByRecommendRawSql($filterDate = null, $month = null, $year = null)
+    private function createDocumentsByRecommendRawSql($inQueryTopicIds, $filterDate = null, $month = null, $year = null)
     {
+        // Topic subrequest
+        $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subrequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
+        }
+
         $subRequestCond1 = '';
         $subRequestCond2 = '';
         if ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_MONTH) {
@@ -952,7 +961,7 @@ FROM p_u_reputation
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
-    AND p_d_debate.p_c_topic_id is NULL
+    $subrequestTopic1
     AND (p_d_debate.note_pos - p_d_debate.note_neg) > 0
     AND p_u_reputation.p_r_action_id = :id_author_debate_note_pos
     $subRequestCond
@@ -968,7 +977,7 @@ FROM p_u_reputation
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_c_topic_id is NULL
+    $subrequestTopic2
     AND p_d_reaction.tree_level > 0
     AND (p_d_reaction.note_pos - p_d_reaction.note_neg) > 0
     AND p_u_reputation.p_r_action_id = :id_author_reaction_note_pos
@@ -989,11 +998,20 @@ LIMIT :offset, :limit
      *
      * @see app/sql/documentsByOrganization.sql
      *
+     * @param string $inQueryTopicIds
      * @param integer $orderBy
      * @return string
      */
-    private function createDocumentsByOrganizationRawSql($orderBy = null)
+    private function createDocumentsByOrganizationRawSql($inQueryTopicIds, $orderBy = null)
     {
+        // Topic subrequest
+        $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subrequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
+        }
+
         if ($orderBy == ListingConstants::ORDER_BY_KEYWORD_BEST_NOTE) {
             $orderBy = "ORDER BY note_pos DESC, note_neg ASC, published_at DESC";
         } elseif ($orderBy == ListingConstants::ORDER_BY_KEYWORD_LAST) {
@@ -1009,7 +1027,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
-    AND p_d_debate.p_c_topic_id is NULL
+    $subrequestTopic1
     AND p_d_debate.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -1028,7 +1046,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_c_topic_id is NULL
+    $subrequestTopic2
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction.p_user_id IN (
         SELECT p_user.id
@@ -1052,7 +1070,7 @@ WHERE
     p_d_d_comment.online = 1
     AND p_d_debate.published = 1
     AND p_d_debate.online = 1
-    AND p_d_debate.p_c_topic_id is NULL
+    $subrequestTopic1
     AND p_d_d_comment.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -1075,7 +1093,7 @@ WHERE
     p_d_r_comment.online = 1
     AND p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_c_topic_id is NULL
+    $subrequestTopic2
     AND p_d_r_comment.p_user_id IN (
         SELECT p_user.id
         FROM p_user
@@ -1163,10 +1181,19 @@ LIMIT :offset, :limit
      *
      * @see app/sql/topDocuments.sql
      *
+     * @param string $inQueryTopicIds
      * @return string
      */
-    private function createTopDocumentsBestNoteRawSql()
+    private function createTopDocumentsBestNoteRawSql($inQueryTopicIds)
     {
+        // Topic subrequest
+        $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
+        $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
+        if ($inQueryTopicIds) {
+            $subrequestTopic1 = "AND (p_d_debate.p_c_topic_id is NULL OR p_d_debate.p_c_topic_id IN ($inQueryTopicIds))";
+            $subrequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
+        }
+
         // Requête SQL
         $sql = "
 ( SELECT p_d_debate.id as id, p_d_debate.title as title, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
@@ -1174,7 +1201,7 @@ FROM p_d_debate
 WHERE
     p_d_debate.published = 1
     AND p_d_debate.online = 1 
-    AND p_d_debate.p_c_topic_id is NULL
+    $subrequestTopic1
     AND p_d_debate.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW() 
     )
 
@@ -1185,7 +1212,7 @@ FROM p_d_reaction
 WHERE
     p_d_reaction.published = 1
     AND p_d_reaction.online = 1
-    AND p_d_reaction.p_c_topic_id is NULL
+    $subrequestTopic2
     AND p_d_reaction.tree_level > 0
     AND p_d_reaction.published_at BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW() 
     )
@@ -1571,6 +1598,7 @@ GROUP BY p_d_debate_id
     /**
      * Documents by recommend
      *
+     * @param string $inQueryTopicIds
      * @param string $filterDate
      * @param integer $month
      * @param integer $year
@@ -1578,17 +1606,18 @@ GROUP BY p_d_debate_id
      * @param integer $limit
      * @return PropelCollection[PDDebate|PDReaction]
      */
-    public function generateDocumentsByRecommendPaginated($filterDate, $month, $year, $offset, $limit)
+    public function generateDocumentsByRecommendPaginated($inQueryTopicIds, $filterDate, $month, $year, $offset, $limit)
     {
-        $this->logger->info('*** generateDocumentsByRecommendPaginated');
-        $this->logger->info('$filterDate = ' . print_r($filterDate, true));
-        $this->logger->info('$month = ' . print_r($month, true));
-        $this->logger->info('$year = ' . print_r($year, true));
-        $this->logger->info('$offset = ' . print_r($offset, true));
-        $this->logger->info('$limit = ' . print_r($limit, true));
+        // $this->logger->info('*** generateDocumentsByRecommendPaginated');
+        // $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
+        // $this->logger->info('$filterDate = ' . print_r($filterDate, true));
+        // $this->logger->info('$month = ' . print_r($month, true));
+        // $this->logger->info('$year = ' . print_r($year, true));
+        // $this->logger->info('$offset = ' . print_r($offset, true));
+        // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createDocumentsByRecommendRawSql($filterDate, $month, $year));
+        $stmt = $con->prepare($this->createDocumentsByRecommendRawSql($inQueryTopicIds, $filterDate, $month, $year));
 
         $stmt->bindValue(':id_author_debate_note_pos', ReputationConstants::ACTION_ID_D_AUTHOR_DEBATE_NOTE_POS, \PDO::PARAM_INT);
         $stmt->bindValue(':id_author_reaction_note_pos', ReputationConstants::ACTION_ID_D_AUTHOR_REACTION_NOTE_POS, \PDO::PARAM_INT);
@@ -1624,21 +1653,23 @@ GROUP BY p_d_debate_id
      * Documents by organization
      *
      * @param integer $organizationId
+     * @param string $inQueryTopicIds
      * @param integer $orderBy
      * @param integer $offset
      * @param integer $limit
      * @return PropelCollection
      */
-    public function generatePublicationsByOrganizationPaginated($organizationId, $orderBy, $offset, $limit)
+    public function generatePublicationsByOrganizationPaginated($organizationId, $inQueryTopicIds, $orderBy, $offset, $limit)
     {
         // $this->logger->info('*** generatePublicationsByOrganizationPaginated');
         // $this->logger->info('$organizationId = ' . print_r($organizationId, true));
+        // $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
         // $this->logger->info('$orderBy = ' . print_r($orderBy, true));
         // $this->logger->info('$offset = ' . print_r($offset, true));
         // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createDocumentsByOrganizationRawSql($orderBy));
+        $stmt = $con->prepare($this->createDocumentsByOrganizationRawSql($inQueryTopicIds, $orderBy));
 
         $stmt->bindValue(':p_q_organization_id', $organizationId, \PDO::PARAM_INT);
         $stmt->bindValue(':p_q_organization_id2', $organizationId, \PDO::PARAM_INT);
@@ -1712,13 +1743,14 @@ GROUP BY p_d_debate_id
      * @param int $limit
      * @return PropelCollection[PDDebate|PDReaction]
      */
-    public function generateTopDocumentsBestNote($limit)
+    public function generateTopDocumentsBestNote($inQueryTopicIds, $limit)
     {
         // $this->logger->info('*** generateTopDocumentsBestNote');
+        // $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
         // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
-        $stmt = $con->prepare($this->createTopDocumentsBestNoteRawSql());
+        $stmt = $con->prepare($this->createTopDocumentsBestNoteRawSql($inQueryTopicIds));
 
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
 

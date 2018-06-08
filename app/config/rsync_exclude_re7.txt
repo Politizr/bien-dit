@@ -24,3 +24,6 @@ reload-bdd.sh
 
 /web/uploads/
 /web/html/
+
+/web/js/
+/web/assetic/

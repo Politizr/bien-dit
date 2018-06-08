@@ -1149,7 +1149,14 @@ class XhrDocument
         $filters = $request->get('documentFilterDate');
         // $this->logger->info('$filters = ' . print_r($filters, true));
 
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($currentUser)) {
+            $currentUser = null;
+        }
+
         $documents = $this->documentService->getTopDocumentsBestNote(
+            $currentUser?$currentUser->getId():null,
             ListingConstants::LISTING_TOP_DOCUMENTS_LIMIT
         );
 
@@ -1272,9 +1279,16 @@ class XhrDocument
         $year = $request->get('year');
         // $this->logger->info('$year = ' . print_r($year, true));
 
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($currentUser)) {
+            $currentUser = null;
+        }
+
         $documents = $this->documentService->getDocumentsByRecommendPaginated(
             $month,
             $year,
+            $currentUser?$currentUser->getId():null,
             $offset,
             ListingConstants::LISTING_CLASSIC_PAGINATION
         );
@@ -1417,6 +1431,12 @@ class XhrDocument
         $offset = $request->get('offset');
         // $this->logger->info('$offset = ' . print_r($offset, true));
 
+        // get current user
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($currentUser)) {
+            $currentUser = null;
+        }
+
         // Retrieve subject
         $organization = PQOrganizationQuery::create()->filterByUuid($uuid)->findOne();
         if (!$organization) {
@@ -1425,6 +1445,7 @@ class XhrDocument
 
         $publications = $this->documentService->getPublicationsByOrganizationPaginated(
             $organization->getId(),
+            $currentUser?$currentUser->getId():null,
             $orderBy,
             $offset,
             ListingConstants::LISTING_CLASSIC_PAGINATION
