@@ -88,7 +88,6 @@ $("body").on("mousedown touchstart", function(e) {
 });
 $("body").on("click", "[action='toggleGrpMenuCms']", function() {
     $(this).find('.headerGrpMenu').toggle();
-    $('body.css700 #headerMenu').hide();    
 });
 
 // toggle grp menu
@@ -103,7 +102,6 @@ $("body").on("mousedown touchstart", function(e) {
 });
 $("body").on("click", "[action='toggleGrpMenuGroup']", function() {
     $(this).find('.headerGrpMenu').toggle();
-    $('body.css700 #headerMenu').hide();    
 });
 
 

@@ -62,7 +62,6 @@ $("body").on("mousedown touchstart", function(e) {
 });
 $("body").on("click", "[action='toggleNotifBox']", function() {
     $('#notifBox').toggle();
-    $('body.css700 #headerMenu').hide();
 });
 
 // toggle menu
@@ -73,7 +72,6 @@ $("body").on("mousedown touchstart", function(e) {
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
         $('#menu').hide();
-        $('body.css700 #headerMenu').hide();
     }
 });
 

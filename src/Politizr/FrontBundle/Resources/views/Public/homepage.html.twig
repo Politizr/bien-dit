@@ -1,21 +1,34 @@
 {# beta #}
-{% extends 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% set layout = 'PolitizrFrontBundle::layoutPublic.html.twig' %}
+{% if (isGrantedE() or isGrantedC()) %}
+    {% set layout = 'PolitizrFrontBundle::layoutConnected.html.twig' %}
+{% endif %}
+{% extends layout %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/jquery.fancybox.min.css') }}">
+{% endblock %}
 
 {% block javascriptHeader %}
     {{ parent() }}
 
-    {% javascripts
-        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/home.js'
-        filter='uglifyjs2' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.swipe.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.fancybox.min.js') }}"></script>
 {% endblock %}
 
-{% block bodyClass %} class="public visitor"{% endblock %}
+{#{% block bodyClass %} class="public visitor"{% endblock %}#}
 
 {% block main %}
     <div id="homePresentation" class="grpCMS">
         <div class="center">
+            {% if medias | length > 0 %}
+                <div id="contentSlide">
+                    {% include 'PolitizrFrontBundle:CmsContent:_slider.html.twig' %}
+                </div>
+            {% endif %}
             {{ content.description | raw }}
         </div>
     </div>
@@ -24,3 +37,13 @@
 {% block postMain %}
     {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
 {% endblock postMain %}
+
+{% block javascriptFooter %}
+    {{ parent() }}
+
+    {% javascripts
+        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/home.js'
+        filter='uglifyjs2' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascriptFooter %}

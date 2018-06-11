@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 use Admingenerator\GeneratorBundle\Menu\AdmingeneratorMenuBuilder;
 
+use Politizr\Constant\CmsConstants;
+
 /**
  *
  * @author Lionel Bouzonville
@@ -319,6 +321,12 @@ class AdminMenu extends AdmingeneratorMenuBuilder
 
         // Cms Management
         $cms = $this->addDropdown($menu, 'Contenu');
+        $this->addLinkRoute(
+            $cms,
+            'Accueil',
+            'Politizr_AdminBundle_CmsContentAdmin_edit',
+            [ 'pk' => CmsConstants::CMS_CONTENT_ADMIN_HOMEPAGE ]
+        );
         $this->addLinkRoute(
             $cms,
             'Page',

@@ -3,7 +3,6 @@ params:
     model:                  Politizr\Model\CmsContentAdmin
     namespace_prefix:       Politizr
     concurrency_lock:       ~
-    credentials:            ROLE_SYSTEM
     bundle_name:            AdminBundle
     pk_requirement:         ~
     fields:
@@ -24,6 +23,7 @@ params:
 builders:
     list:
         params:
+            credentials:                        ROLE_SYSTEM
             title:                              Liste des contenus admin
             max_per_page:                       10
             sort:                               [ id, ASC ]
@@ -56,6 +56,7 @@ builders:
                     addFormOptions:
                         mapped:                 false
                 media_bundle_documents:
+                    credentials:                ROLE_SYSTEM
                     formType:                   hidden
                     dbType:                     VARCHAR
                     addFormOptions:

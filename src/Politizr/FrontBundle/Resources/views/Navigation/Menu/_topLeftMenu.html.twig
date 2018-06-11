@@ -4,8 +4,9 @@
         <div class="headerGrpMenuArrow"><i class="icon-arrow-up"></i></div>
         <div class="innerMenu">
             <div class="primaryMenu">
+                <a href="{{ path('Homepage') }}">Accueil</a>
                 {% for route in cmsRoutes %}
-                    <a href="{{ route['url'] }}"{% if false %} class="currentPage"{% endif %}>{{ route['label'] }}</a>
+                    <a href="{{ route['url'] }}">{{ route['label'] }}</a>
                 {% endfor %}
             </div>
         </div>

@@ -29,6 +29,8 @@ use Politizr\FrontBundle\Form\Type\PDDirectType;
 
 use Eko\FeedBundle\Field\Item\MediaItemField;
 
+use StudioEchoBundles\StudioEchoMediaBundle\Lib\StudioEchoMediaManager;
+
 /**
  * Public controller
  *
@@ -45,15 +47,19 @@ class PublicController extends Controller
         $logger->info('*** homepageAction');
 
         // redirect if connected
-        if ($profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix()) {
-            return $this->redirect($this->generateUrl(sprintf('Homepage%s', $profileSuffix)));
-        }
+        // if ($profileSuffix = $this->get('politizr.tools.global')->computeProfileSuffix()) {
+        //     return $this->redirect($this->generateUrl(sprintf('Homepage%s', $profileSuffix)));
+        // }
 
         $content = CmsContentAdminQuery::create()->findPk(CmsConstants::CMS_CONTENT_ADMIN_HOMEPAGE);
+
+        // Diaporamas associés
+        $medias = StudioEchoMediaManager::getMediaList($content->getId(), 'Politizr\Model\CmsContentAdmin', 'fr', 1);
 
         return $this->render('PolitizrFrontBundle:Public:homepage.html.twig', array(
             'homepage' => true,
             'content' => $content,
+            'medias' => $medias,
         ));
     }
 
