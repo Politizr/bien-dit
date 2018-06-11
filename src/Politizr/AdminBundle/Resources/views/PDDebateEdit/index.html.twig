@@ -7,7 +7,7 @@
     {% if is_granted('ROLE_SYSTEM') %}
         {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
     {% else %}
-        {% include "PolitizrAdminBundle::tinymce-light.html.twig" %}
+        {% include "PolitizrAdminBundle::tinymce-politizr.html.twig" %}
     {% endif %}
 {% endblock %}
 

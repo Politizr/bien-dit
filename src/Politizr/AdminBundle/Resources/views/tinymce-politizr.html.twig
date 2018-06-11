@@ -10,25 +10,24 @@
           width : 800,
           height : 400,
           menu: {
-            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
+            edit: {title: 'Edit', items: 'undo redo | cut copy paste | selectall | searchreplace'},
             format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | removeformat'},
             table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'},
             tools: {title: 'Tools', items: 'code'}
           },
           style_formats: [
-              {title: 'Header 1', format: 'h1'},
-              {title: 'Header 2', format: 'h2'},
-              {title: 'Header 3', format: 'h3'},
-              {title: 'Paragraph', format: 'p'}
+              {title: 'Titre', format: 'h1'},
+              {title: 'Citation', format: 'h2'},
+              {title: 'Extrait', format: 'blockquote'},
+              {title: 'Normal', format: 'p'}
           ],
-          plugins : "paste,table,link,lists,searchreplace,code",
+          plugins : "table,link,lists,searchreplace,code",
           tools: "inserttable",
-          toolbar: "styleselect | bold italic underline link | bullist numlist | alignleft aligncenter alignright alignjustify",
+          toolbar: "styleselect | bold italic underline | bullist | blockquote link",
           // content_css : '/bundles/politizrfront/css/styleUser.css',
-          paste_as_text: false,
-          paste_data_images: true,
           convert_urls: false,
           relatives_urls: false,
+          extended_valid_elements: 'span,img[src|height|width|alt|uuid]',
           branding: false,
     };
     $().ready(function() {
