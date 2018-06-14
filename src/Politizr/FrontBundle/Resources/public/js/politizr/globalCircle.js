@@ -11,6 +11,12 @@ $("body").on("click", "[action='showBrief']", function() {
     }, 600);
     $('.showBriefLink').hide();
     $('#grpBriefHeader .hideBriefLink').show();
+
+    // Waypoint reinit
+    setTimeout( function(){ 
+        Waypoint.destroyAll();
+        initPaginateNextWaypoint();
+    }, 601 );
 });
 $("body").on("click", "[action='hideBrief']", function() {
     $('body #grpBrief').stop().animate({
@@ -23,6 +29,12 @@ $("body").on("click", "[action='hideBrief']", function() {
     }, 600);
     $('.showBriefLink').show();
     $('#grpBriefHeader .hideBriefLink').hide();
+
+    // Waypoint reinit
+    setTimeout( function(){ 
+        Waypoint.destroyAll();
+        initPaginateNextWaypoint();
+    }, 601 );
 });
 
 // reduce menu grp on scroll
