@@ -24,7 +24,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des types de groupe
+            title:                              Liste des types de consultation
             max_per_page:                       50
             sort:                               [ id, ASC ]
             display:                            [ title, summary ]
@@ -40,7 +40,7 @@ builders:
         filetype: ~
     new:
         params:
-            title:                              "Création d'un type de groupe"
+            title:                              "Création d'un type de consultation"
             display:
                 "Champs principaux":            [ [ title ] ]
                 "Champs complémentaires":       [ [ summary ] ]
@@ -49,7 +49,7 @@ builders:
               list:                             ~
     edit:
         params:
-            title:                              "Edition du type de groupe '{{ PCircleType.title }}'"
+            title:                              "Edition du type de consultation '{{ PCircleType.title }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ], [ summary ] ]
@@ -67,7 +67,7 @@ builders:
                 list: ~
     show:
         params:
-            title:                              "Visualisation du type de groupe '{{ PCircleType.title }}'"
+            title:                              "Visualisation du type de consultation '{{ PCircleType.title }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ], [ summary ] ]

@@ -34,7 +34,7 @@ builders:
             sort:                               [ created_at, DESC ]
             display:                            [ id, title, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, title, created_at ]
+            filters:                            [ id, uuid, title ]
             object_actions:
                 show:                           ~
                 edit:                           ~

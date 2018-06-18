@@ -129,7 +129,7 @@ builders:
                         filters:                [ inactive ]
             display:                            [ title, p_user_id, p_d_debate_id, parent_reaction_id, p_c_topic, active, published_at, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, p_user_id, p_d_debate_id, parent_reaction_id, p_c_topic, p_l_department, p_l_region, title, active, published_at, created_at ]
+            filters:                            [ id, uuid, p_user_id, p_d_debate_id, parent_reaction_id, p_c_topic, p_l_department, p_l_region, title, active ]
             object_actions:
                 show:                           ~
                 edit:                           ~
@@ -208,6 +208,7 @@ builders:
                     "Texte":                    [ title, description ]
                 "Contexte":
                     "Liste des thématiques":    [ block_tags ]
+                    "Publications":             [ p_c_topic ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "État":                     [ online, published, moderated ]
@@ -227,6 +228,14 @@ builders:
                     addFormOptions:
                         disabled:               true
                         read_only:              true
+                p_c_topic:
+                    dbType:                     model
+                    formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+                    addFormOptions:
+                        multiple:               false
+                        required:               false
+                        class:                  Politizr\Model\PCTopic
+                        query:                  \Politizr\Model\PCTopicQuery::create()->orderByPCircleId()->orderByRank()
                 block_tags:
                     label:                      "Tags"
                     grid_class:                 "col-md-12"

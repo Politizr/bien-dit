@@ -46,7 +46,7 @@ builders:
             sort:                               [ created_at, DESC ]
             display:                            [ file_name, p_d_debate, p_d_reaction, size, width, height, created_at ]
             filtersMode:                        modal
-            filters:                            [ file_name, file_name, p_d_debate_id, p_d_reaction_id, created_at ]
+            filters:                            [ file_name, file_name, p_d_debate_id, p_d_reaction_id ]
             object_actions:
                 show:                           ~
                 edit:                           ~

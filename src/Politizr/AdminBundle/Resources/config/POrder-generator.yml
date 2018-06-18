@@ -101,7 +101,7 @@ builders:
                             p_o_order_state_id: 3
             display:                            [ id, p_o_order_state, p_o_payment_state, p_o_subscription, p_o_payment_type, p_user_id, price, promotion, total ]
             # filtersMode:                        top
-            filters:                            [ id, p_o_order_state_id, p_o_order_state, p_o_payment_state, p_o_subscription, p_o_payment_type, p_user_id, created_at ]
+            filters:                            [ id, p_o_order_state_id, p_o_order_state, p_o_payment_state, p_o_subscription, p_o_payment_type, p_user_id ]
             actions:
                 new:                            ~
             object_actions:

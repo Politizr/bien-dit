@@ -30,6 +30,13 @@ AdminXhrGeneric:
         xhrRoute:       ".+"
         xhrType:        \d
 
+# Upload TinyMCE
+Politizr_tmce_file_upload:
+    pattern:  /tmce/{pk}/filename/upload
+    defaults: { _controller: PolitizrAdminBundle:Generic:tmceFileUpload }
+    requirements:
+        _method:        POST
+
 # Accueil
 PolitizrAdminHomepage:
     pattern:  /
@@ -206,6 +213,11 @@ Politizr_AdminBundle_CmsContentAdmin:
     resource: "@PolitizrAdminBundle/Controller/CmsContentAdmin/"
     type:     admingenerator
     prefix:   /CmsContentAdmin
+
+Politizr_AdminBundle_CmsInfo:
+    resource: "@PolitizrAdminBundle/Controller/CmsInfo/"
+    type:     admingenerator
+    prefix:   /CmsInfo
 
 
 # Commandes

@@ -78,7 +78,7 @@ params:
         homepage:
             label:          Accueil
         support_group:
-            label:          Supporte la création d'un groupe pour ses collectivités
+            label:          Supporte la création d'une consultation pour ses collectivités
         banned:
             label:          Banni
         banned_nb_days_left:
@@ -116,7 +116,7 @@ builders:
             max_per_page:                       50
             sort:                               [ last_activity, DESC ]
             display:                            [ file_name, name, firstname, p_l_city, qualified, reputation_score, active, last_activity, created_at ]
-            filters:                            [ id, uuid, email, name, qualified, validated, active, created_at, last_login ]
+            filters:                            [ id, uuid, email, name, qualified, validated, active ]
             filtersMode:                        modal
             fields:
                 p_l_city:

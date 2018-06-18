@@ -35,7 +35,7 @@ builders:
             sort:                               [ title, ASC ]
             display:                            [ title, description, score_evolution, nb_users ]
             # filtersMode:                        top
-            filters:                            [ title, created_at ]
+            filters:                            [ title ]
             actions:
                 new:                            ~
             object_actions:

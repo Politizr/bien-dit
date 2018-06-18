@@ -9,9 +9,9 @@ params:
         id:
             label:          ID
         p_circle:
-            label:          Groupe
+            label:          Consultation
         p_circle_id:
-            label:          ID Groupe
+            label:          ID Consultation
         title:
             label:          Titre
         summary:

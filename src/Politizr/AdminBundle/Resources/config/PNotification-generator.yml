@@ -35,7 +35,7 @@ builders:
             sort:                               [ id, ASC ]
             display:                            [ title, description, p_n_type, online ]
             # filtersMode:                        top
-            filters:                            [ title, p_n_type, online, created_at ]
+            filters:                            [ title, p_n_type, online ]
             actions:
                 new:                            ~
             object_actions:

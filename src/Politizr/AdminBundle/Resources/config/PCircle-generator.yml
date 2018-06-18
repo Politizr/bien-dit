@@ -47,12 +47,12 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des groupes
+            title:                              Liste des consultations
             max_per_page:                       50
             sort:                               [ sortable_rank, ASC ]
             display:                            [ title, p_c_owner, p_circle_type, online, read_only, private_access, created_at ]
             filtersMode:                        modal
-            filters:                            [ id, p_c_owner, p_circle_type, uuid, title, online, read_only, private_access, created_at ]
+            filters:                            [ id, p_c_owner, p_circle_type, uuid, title, online, read_only, private_access ]
             fields:
                 p_circle_type:
                     credentials:                ROLE_SYSTEM
@@ -69,7 +69,7 @@ builders:
                 new:                            ~
     new:
         params:
-            title:                              "Création d'un groupe"
+            title:                              "Création d'une consultation"
             display:
                 "Champs principaux":            [ p_c_owner, p_circle_type, title ]
             fields:
@@ -88,7 +88,7 @@ builders:
               list:                             ~
     edit:
         params:
-            title:                              "Edition du groupe '{{ PCircle.title }}'"
+            title:                              "Edition de la consultation '{{ PCircle.title }}'"
             tabs:
                 "Contenu":
                     "Logo":                     [ block_logo_file_name ]
@@ -141,7 +141,7 @@ builders:
                 delete:                         ~
     show:
         params:
-            title:                              "Visualisation du groupe '{{ PCircle.getTitle }}'"
+            title:                              "Visualisation de la consultation '{{ PCircle.getTitle }}'"
             tabs:
                 "Contenu":
                     "Logo":                     [ block_logo_file_name ]

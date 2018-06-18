@@ -14,7 +14,10 @@ Politizr\Model\CmsPage:
         title:
             - NotBlank:     ~
 
-
+Politizr\Model\CmsInfo:
+    properties:
+        title:
+            - NotBlank:     ~
 
 ####################################### USER #####################################
 

@@ -63,7 +63,7 @@ builders:
                             p_t_tag_type_id:    5
             display:                            [ title, p_t_tag_type, countDebates, countReactions, countUsers, online, moderated, created_at ]
             filtersMode:                        modal
-            filters:                            [ title, p_t_tag_type_id, p_t_tag_type, online, created_at ]
+            filters:                            [ title, p_t_tag_type_id, p_t_tag_type, online ]
             fields:
                 countDebates:
                     label:                      Sujets

@@ -15,9 +15,9 @@ params:
         title:
             label:          Titre
         p_circle_id:
-            label:          Groupe
+            label:          Consultation
         p_circle:
-            label:          Groupe
+            label:          Consultation
             addFormOptions:
                 query:      \Politizr\Model\PCircleQuery::create()->orderByRank()
         file_name:
@@ -48,7 +48,7 @@ builders:
             sort:                               [ sortable_rank, ASC ]
             display:                            [ file_name, title, p_circle, online, created_at ]
             filtersMode:                        modal
-            filters:                            [ p_circle, uuid, title, online, created_at ]
+            filters:                            [ p_circle, uuid, title, online ]
             object_actions:
                 show:                           ~
                 edit:                           ~
@@ -86,7 +86,7 @@ builders:
                     "Bandeau":                  [ block_file_name ]
                     "Texte":                    [ title, summary, description ]
                 "Contexte":
-                    "Groupe":                   [ p_circle ]
+                    "Consultation":             [ p_circle ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "État":                     [ online ]
@@ -129,7 +129,7 @@ builders:
                     "Bandeau":                  [ block_file_name ]
                     "Texte":                    [ title, summary, description ]
                 "Contexte":
-                    "Groupe":                   [ block_p_circle ]
+                    "Consultation":             [ block_p_circle ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Localisation":             [ [ force_geoloc_type, force_geoloc_id ]]
@@ -141,7 +141,7 @@ builders:
                 block_file_name:
                     label:                      "Image"
                 block_p_circle:
-                    label:                      "Groupe"
+                    label:                      "Consultation"
                 block_front:
                     label:                      "Rendu front"
             actions:

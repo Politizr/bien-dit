@@ -46,8 +46,7 @@ builders:
             filtersMode:                        modal
             filters:                            [ cms_category, title, online ]
             actions:
-                new:                            
-                    # credentials:                'hasRole("ROLE_SYSTEM")'
+                new:                            ~
             object_actions:
                 show:                           ~
                 edit:                           ~
@@ -77,7 +76,6 @@ builders:
                     "En-tête encart":           [ more_info_title ]
                     "Texte encart":             [ more_info_description ]
                 "Médias":
-                    "Vidéo":                    [ url_embed_video ]
                     "Galerie":                  [ media_bundle ]
                     "Documents":                [ media_bundle_documents ]
                 "Attributs":
@@ -126,8 +124,6 @@ builders:
                 "Encart":
                     "En-tête encart":           [ more_info_title ]
                     "Texte encart":             [ more_info_description ]
-                "Médias":
-                    "Vidéo":                    [ url_embed_video ]
                 "Attributs":
                     "Caractéristiques":         [ online ]
                     "Dates":                    [ [ created_at, updated_at ] ]
