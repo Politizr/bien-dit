@@ -43,6 +43,12 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
+     * The value for the uuid field.
+     * @var        string
+     */
+    protected $uuid;
+
+    /**
      * The value for the id field.
      * @var        int
      */
@@ -123,6 +129,17 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $cmsContentsScheduledForDeletion = null;
+
+    /**
+     * Get the [uuid] column value.
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+
+        return $this->uuid;
+    }
 
     /**
      * Get the [id] column value.
@@ -258,6 +275,27 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
 
         return $this->slug;
     }
+
+    /**
+     * Set the value of [uuid] column.
+     *
+     * @param  string $v new value
+     * @return CmsCategory The current object (for fluent API support)
+     */
+    public function setUuid($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->uuid !== $v) {
+            $this->uuid = $v;
+            $this->modifiedColumns[] = CmsCategoryPeer::UUID;
+        }
+
+
+        return $this;
+    } // setUuid()
 
     /**
      * Set the value of [id] column.
@@ -450,13 +488,14 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
     {
         try {
 
-            $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->online = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
-            $this->sortable_rank = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->updated_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->slug = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->uuid = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
+            $this->id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->online = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
+            $this->sortable_rank = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->slug = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -466,7 +505,7 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = CmsCategoryPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = CmsCategoryPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating CmsCategory object", $e);
@@ -733,6 +772,9 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
         }
 
          // check the columns in natural order for more readable SQL queries
+        if ($this->isColumnModified(CmsCategoryPeer::UUID)) {
+            $modifiedColumns[':p' . $index++]  = '`uuid`';
+        }
         if ($this->isColumnModified(CmsCategoryPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
@@ -765,6 +807,9 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
+                    case '`uuid`':
+                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
+                        break;
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
@@ -847,24 +892,27 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
+                return $this->getUuid();
                 break;
             case 1:
-                return $this->getTitle();
+                return $this->getId();
                 break;
             case 2:
-                return $this->getOnline();
+                return $this->getTitle();
                 break;
             case 3:
-                return $this->getSortableRank();
+                return $this->getOnline();
                 break;
             case 4:
-                return $this->getCreatedAt();
+                return $this->getSortableRank();
                 break;
             case 5:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 6:
+                return $this->getUpdatedAt();
+                break;
+            case 7:
                 return $this->getSlug();
                 break;
             default:
@@ -896,13 +944,14 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
         $alreadyDumpedObjects['CmsCategory'][$this->getPrimaryKey()] = true;
         $keys = CmsCategoryPeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
-            $keys[1] => $this->getTitle(),
-            $keys[2] => $this->getOnline(),
-            $keys[3] => $this->getSortableRank(),
-            $keys[4] => $this->getCreatedAt(),
-            $keys[5] => $this->getUpdatedAt(),
-            $keys[6] => $this->getSlug(),
+            $keys[0] => $this->getUuid(),
+            $keys[1] => $this->getId(),
+            $keys[2] => $this->getTitle(),
+            $keys[3] => $this->getOnline(),
+            $keys[4] => $this->getSortableRank(),
+            $keys[5] => $this->getCreatedAt(),
+            $keys[6] => $this->getUpdatedAt(),
+            $keys[7] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -948,24 +997,27 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
+                $this->setUuid($value);
                 break;
             case 1:
-                $this->setTitle($value);
+                $this->setId($value);
                 break;
             case 2:
-                $this->setOnline($value);
+                $this->setTitle($value);
                 break;
             case 3:
-                $this->setSortableRank($value);
+                $this->setOnline($value);
                 break;
             case 4:
-                $this->setCreatedAt($value);
+                $this->setSortableRank($value);
                 break;
             case 5:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 6:
+                $this->setUpdatedAt($value);
+                break;
+            case 7:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -992,13 +1044,14 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
     {
         $keys = CmsCategoryPeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setOnline($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setSortableRank($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setSlug($arr[$keys[6]]);
+        if (array_key_exists($keys[0], $arr)) $this->setUuid($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setOnline($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setSortableRank($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setSlug($arr[$keys[7]]);
     }
 
     /**
@@ -1010,6 +1063,7 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
     {
         $criteria = new Criteria(CmsCategoryPeer::DATABASE_NAME);
 
+        if ($this->isColumnModified(CmsCategoryPeer::UUID)) $criteria->add(CmsCategoryPeer::UUID, $this->uuid);
         if ($this->isColumnModified(CmsCategoryPeer::ID)) $criteria->add(CmsCategoryPeer::ID, $this->id);
         if ($this->isColumnModified(CmsCategoryPeer::TITLE)) $criteria->add(CmsCategoryPeer::TITLE, $this->title);
         if ($this->isColumnModified(CmsCategoryPeer::ONLINE)) $criteria->add(CmsCategoryPeer::ONLINE, $this->online);
@@ -1080,6 +1134,7 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setUuid($this->getUuid());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setOnline($this->getOnline());
         $copyObj->setSortableRank($this->getSortableRank());
@@ -1396,6 +1451,7 @@ abstract class BaseCmsCategory extends BaseObject implements Persistent
      */
     public function clear()
     {
+        $this->uuid = null;
         $this->id = null;
         $this->title = null;
         $this->online = null;

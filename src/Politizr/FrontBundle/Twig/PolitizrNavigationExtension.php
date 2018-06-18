@@ -11,7 +11,7 @@ use Politizr\Model\PCTopic;
 
 use Politizr\Model\CmsContentQuery;
 use Politizr\Model\CmsCategoryQuery;
-
+use Politizr\Model\CmsInfoQuery;
 
 /**
  * App's navigation twig extension
@@ -122,6 +122,11 @@ class PolitizrNavigationExtension extends \Twig_Extension
             'footerGroupMenu'  => new \Twig_SimpleFunction(
                 'footerGroupMenu',
                 array($this, 'footerGroupMenu'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            'sliderInfos'  => new \Twig_SimpleFunction(
+                'sliderInfos',
+                array($this, 'sliderInfos'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
@@ -313,6 +318,30 @@ class PolitizrNavigationExtension extends \Twig_Extension
             'PolitizrFrontBundle:Navigation\\Menu:_footerGroupMenu.html.twig',
             array(
                 'ownersCircles' => $ownersCircles,
+            )
+        );
+
+        return $html;
+    }
+
+    /**
+     * Display cms infos slider
+     *
+     * @return string
+     */
+    public function sliderInfos(\Twig_Environment $env)
+    {
+        // $this->logger->info('*** sliderInfos');
+
+        $infos = CmsInfoQuery::create()->filterByOnline(true)->orderByRank()->find();
+        if (sizeof($infos) == 0) {
+            return null;
+        }
+
+        $html = $env->render(
+            'PolitizrFrontBundle:CmsInfo:_slider.html.twig',
+            array(
+                'infos' => $infos,
             )
         );
 

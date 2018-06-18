@@ -1,0 +1,18 @@
+{% verbatim %}
+<div id="opBanners" class="bannerNews cycle-slideshow" data-cycle-fx="scrollHorz" data-cycle-swipe="true" data-cycle-swipe-fx="scrollHorz" data-cycle-timeout="0" data-cycle-slides="> div.miniHeader" data-cycle-prev="#bannerPrev" data-cycle-next="#bannerNext" data-cycle-auto-height="container">
+{% endverbatim %}
+    {% for info in infos %}
+        <div id="op" class="miniHeader">
+            <div class="center">
+                <div class="txtOp">
+                    <h1>{{ info.title }}</h1>
+                    {{ info.description | purify }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% if infos | length > 1 %}
+        <div id="bannerPrev"><i class="icon-goleft"></i></div>
+        <div id="bannerNext"><i class="icon-goright"></i></div>
+    {% endif %}
+</div>

@@ -3,6 +3,8 @@
 {% block javascripts_head %}
     {{ parent() }}
 
+    <span id="tinmce-options" image-upload="true" image-upload-path="{{ path('Politizr_tmce_file_upload', { 'pk': CmsContent.id, 'modelClass': constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_CMS_CONTENT'), 'maxWidth': constant('Politizr\\Constant\\DocumentConstants::DOC_IMAGE_MAX_WIDTH'), 'maxHeight': constant('Politizr\\Constant\\DocumentConstants::DOC_IMAGE_MAX_HEIGHT') }) }}" />
+
     {# TinyMCE #}
     {% if is_granted('ROLE_SYSTEM') %}
         {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}

@@ -3,6 +3,8 @@
 {% block javascripts %}
     {{ parent() }}
 
+    <span id="tinmce-options" image-upload="false" />
+
     {# TinyMCE #}
     {% if is_granted('ROLE_SYSTEM') %}
         {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}

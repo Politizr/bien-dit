@@ -35,7 +35,7 @@ class NewType extends BaseNewType
         $circles = PCircleQuery::create()->find();
         $circleRoles = [];
         foreach ($circles as $circle) {
-            $circleRoles['ROLE_CIRCLE_' . $circle->getId()] = 'Membre du groupe '.$circle->getTitle().' ('.$circle->getPCOwner().')';
+            $circleRoles['ROLE_CIRCLE_' . $circle->getId()] = 'Membre de la consultation '.$circle->getTitle().' ('.$circle->getPCOwner().')';
         }
 
         $choices =array_merge($securityRoles, $circleRoles);

@@ -12,7 +12,6 @@
           plugins : "link",
           toolbar: "undo redo | bold italic | link",
           menu: {
-            file: {title: 'File', items: 'newdocument'},
             edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall'},
           },
           paste_as_text: false,
@@ -20,7 +19,7 @@
           convert_urls: false,
           relatives_urls: false,
           branding: false,
-          max_chars: 250, // max. allowed chars
+          max_chars: {{ nbCharMax }}, // max. allowed chars
           setup: function (ed) {
               var allowedKeys = [8, 37, 38, 39, 40, 46]; // backspace, delete and cursor keys
               ed.on('keydown', function (e) {

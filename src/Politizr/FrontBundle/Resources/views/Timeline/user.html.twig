@@ -13,6 +13,7 @@
 {% block headerMsg %}
     {{ parent() }}
 
+    {{ sliderInfos() }}
     {% include 'PolitizrFrontBundle:Timeline:_opBanners.html.twig' with {'operations': operations} only %}
 {% endblock %}
 

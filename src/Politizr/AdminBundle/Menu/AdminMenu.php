@@ -64,6 +64,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $cms = $this->addDropdown($menu, 'Contenu');
         $this->addLinkRoute(
             $cms,
+            'Actu',
+            'Politizr_AdminBundle_CmsInfo_list'
+        );
+        $this->addLinkRoute(
+            $cms,
             'Page',
             'Politizr_AdminBundle_CmsContent_list'
         );
@@ -126,7 +131,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
 
         // Groupes
-        $circle = $this->addDropdown($menu, 'Groupe');
+        $circle = $this->addDropdown($menu, 'Consultation');
         $this->addLinkRoute(
             $circle,
             'Propriétaire',
@@ -134,12 +139,12 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $circle,
-            'Groupe',
+            'Consultation',
             'Politizr_AdminBundle_PCircle_list'
         );
         $this->addLinkRoute(
             $circle,
-            'Discussion',
+            'Thématique',
             'Politizr_AdminBundle_PCTopic_list'
         );
 
@@ -323,6 +328,11 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $cms = $this->addDropdown($menu, 'Contenu');
         $this->addLinkRoute(
             $cms,
+            'Actu',
+            'Politizr_AdminBundle_CmsInfo_list'
+        );
+        $this->addLinkRoute(
+            $cms,
             'Accueil',
             'Politizr_AdminBundle_CmsContentAdmin_edit',
             [ 'pk' => CmsConstants::CMS_CONTENT_ADMIN_HOMEPAGE ]
@@ -368,7 +378,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
 
         // Groupes
-        $circle = $this->addDropdown($menu, 'Groupe');
+        $circle = $this->addDropdown($menu, 'Consultation');
         $this->addLinkRoute(
             $circle,
             'Propriétaire',
@@ -376,12 +386,12 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $circle,
-            'Groupe',
+            'Consultation',
             'Politizr_AdminBundle_PCircle_list'
         );
         $this->addLinkRoute(
             $circle,
-            'Discussion',
+            'Thématique',
             'Politizr_AdminBundle_PCTopic_list'
         );
 

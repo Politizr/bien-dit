@@ -41,6 +41,12 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
+     * The value for the uuid field.
+     * @var        string
+     */
+    protected $uuid;
+
+    /**
      * The value for the id field.
      * @var        int
      */
@@ -156,6 +162,17 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
      * @var        int
      */
     protected $oldScope;
+
+    /**
+     * Get the [uuid] column value.
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+
+        return $this->uuid;
+    }
 
     /**
      * Get the [id] column value.
@@ -357,6 +374,27 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
 
         return $this->slug;
     }
+
+    /**
+     * Set the value of [uuid] column.
+     *
+     * @param  string $v new value
+     * @return CmsContent The current object (for fluent API support)
+     */
+    public function setUuid($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->uuid !== $v) {
+            $this->uuid = $v;
+            $this->modifiedColumns[] = CmsContentPeer::UUID;
+        }
+
+
+        return $this;
+    } // setUuid()
 
     /**
      * Set the value of [id] column.
@@ -682,19 +720,20 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
     {
         try {
 
-            $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->cms_category_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->summary = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->more_info_title = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->more_info_description = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->url_embed_video = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->online = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
-            $this->sortable_rank = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
-            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->slug = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->uuid = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
+            $this->id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->cms_category_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->summary = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->more_info_title = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->more_info_description = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->url_embed_video = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->online = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->sortable_rank = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+            $this->created_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->updated_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->slug = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -704,7 +743,7 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 13; // 13 = CmsContentPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 14; // 14 = CmsContentPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating CmsContent object", $e);
@@ -983,6 +1022,9 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
         }
 
          // check the columns in natural order for more readable SQL queries
+        if ($this->isColumnModified(CmsContentPeer::UUID)) {
+            $modifiedColumns[':p' . $index++]  = '`uuid`';
+        }
         if ($this->isColumnModified(CmsContentPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
@@ -1033,6 +1075,9 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
+                    case '`uuid`':
+                        $stmt->bindValue($identifier, $this->uuid, PDO::PARAM_STR);
+                        break;
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
@@ -1133,42 +1178,45 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
+                return $this->getUuid();
                 break;
             case 1:
-                return $this->getCmsCategoryId();
+                return $this->getId();
                 break;
             case 2:
-                return $this->getTitle();
+                return $this->getCmsCategoryId();
                 break;
             case 3:
-                return $this->getSummary();
+                return $this->getTitle();
                 break;
             case 4:
-                return $this->getDescription();
+                return $this->getSummary();
                 break;
             case 5:
-                return $this->getMoreInfoTitle();
+                return $this->getDescription();
                 break;
             case 6:
-                return $this->getMoreInfoDescription();
+                return $this->getMoreInfoTitle();
                 break;
             case 7:
-                return $this->getUrlEmbedVideo();
+                return $this->getMoreInfoDescription();
                 break;
             case 8:
-                return $this->getOnline();
+                return $this->getUrlEmbedVideo();
                 break;
             case 9:
-                return $this->getSortableRank();
+                return $this->getOnline();
                 break;
             case 10:
-                return $this->getCreatedAt();
+                return $this->getSortableRank();
                 break;
             case 11:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 12:
+                return $this->getUpdatedAt();
+                break;
+            case 13:
                 return $this->getSlug();
                 break;
             default:
@@ -1200,19 +1248,20 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
         $alreadyDumpedObjects['CmsContent'][$this->getPrimaryKey()] = true;
         $keys = CmsContentPeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
-            $keys[1] => $this->getCmsCategoryId(),
-            $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getSummary(),
-            $keys[4] => $this->getDescription(),
-            $keys[5] => $this->getMoreInfoTitle(),
-            $keys[6] => $this->getMoreInfoDescription(),
-            $keys[7] => $this->getUrlEmbedVideo(),
-            $keys[8] => $this->getOnline(),
-            $keys[9] => $this->getSortableRank(),
-            $keys[10] => $this->getCreatedAt(),
-            $keys[11] => $this->getUpdatedAt(),
-            $keys[12] => $this->getSlug(),
+            $keys[0] => $this->getUuid(),
+            $keys[1] => $this->getId(),
+            $keys[2] => $this->getCmsCategoryId(),
+            $keys[3] => $this->getTitle(),
+            $keys[4] => $this->getSummary(),
+            $keys[5] => $this->getDescription(),
+            $keys[6] => $this->getMoreInfoTitle(),
+            $keys[7] => $this->getMoreInfoDescription(),
+            $keys[8] => $this->getUrlEmbedVideo(),
+            $keys[9] => $this->getOnline(),
+            $keys[10] => $this->getSortableRank(),
+            $keys[11] => $this->getCreatedAt(),
+            $keys[12] => $this->getUpdatedAt(),
+            $keys[13] => $this->getSlug(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1258,42 +1307,45 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
+                $this->setUuid($value);
                 break;
             case 1:
-                $this->setCmsCategoryId($value);
+                $this->setId($value);
                 break;
             case 2:
-                $this->setTitle($value);
+                $this->setCmsCategoryId($value);
                 break;
             case 3:
-                $this->setSummary($value);
+                $this->setTitle($value);
                 break;
             case 4:
-                $this->setDescription($value);
+                $this->setSummary($value);
                 break;
             case 5:
-                $this->setMoreInfoTitle($value);
+                $this->setDescription($value);
                 break;
             case 6:
-                $this->setMoreInfoDescription($value);
+                $this->setMoreInfoTitle($value);
                 break;
             case 7:
-                $this->setUrlEmbedVideo($value);
+                $this->setMoreInfoDescription($value);
                 break;
             case 8:
-                $this->setOnline($value);
+                $this->setUrlEmbedVideo($value);
                 break;
             case 9:
-                $this->setSortableRank($value);
+                $this->setOnline($value);
                 break;
             case 10:
-                $this->setCreatedAt($value);
+                $this->setSortableRank($value);
                 break;
             case 11:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 12:
+                $this->setUpdatedAt($value);
+                break;
+            case 13:
                 $this->setSlug($value);
                 break;
         } // switch()
@@ -1320,19 +1372,20 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
     {
         $keys = CmsContentPeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setCmsCategoryId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setSummary($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setMoreInfoTitle($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setMoreInfoDescription($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setUrlEmbedVideo($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setOnline($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setSortableRank($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setSlug($arr[$keys[12]]);
+        if (array_key_exists($keys[0], $arr)) $this->setUuid($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setCmsCategoryId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setSummary($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setMoreInfoTitle($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setMoreInfoDescription($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setUrlEmbedVideo($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setOnline($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setSortableRank($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setCreatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setUpdatedAt($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setSlug($arr[$keys[13]]);
     }
 
     /**
@@ -1344,6 +1397,7 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
     {
         $criteria = new Criteria(CmsContentPeer::DATABASE_NAME);
 
+        if ($this->isColumnModified(CmsContentPeer::UUID)) $criteria->add(CmsContentPeer::UUID, $this->uuid);
         if ($this->isColumnModified(CmsContentPeer::ID)) $criteria->add(CmsContentPeer::ID, $this->id);
         if ($this->isColumnModified(CmsContentPeer::CMS_CATEGORY_ID)) $criteria->add(CmsContentPeer::CMS_CATEGORY_ID, $this->cms_category_id);
         if ($this->isColumnModified(CmsContentPeer::TITLE)) $criteria->add(CmsContentPeer::TITLE, $this->title);
@@ -1420,6 +1474,7 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setUuid($this->getUuid());
         $copyObj->setCmsCategoryId($this->getCmsCategoryId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setSummary($this->getSummary());
@@ -1547,6 +1602,7 @@ abstract class BaseCmsContent extends BaseObject implements Persistent
      */
     public function clear()
     {
+        $this->uuid = null;
         $this->id = null;
         $this->cms_category_id = null;
         $this->title = null;

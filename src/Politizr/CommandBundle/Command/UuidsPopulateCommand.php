@@ -60,6 +60,10 @@ class UuidsPopulateCommand extends ContainerAwareCommand
                 'Politizr\Model\PNotificationQuery',
                 'Politizr\Model\PUNotificationQuery',
                 'Politizr\Model\PUMandateQuery',
+                'Politizr\Model\CmsCategoryQuery',
+                'Politizr\Model\CmsContentQuery',
+                'Politizr\Model\CmsContentAdminQuery',
+                'Politizr\Model\CmsInfoQuery',
                 ]
             ;
         }

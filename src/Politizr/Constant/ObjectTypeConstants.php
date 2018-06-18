@@ -29,6 +29,8 @@ class ObjectTypeConstants
     const TYPE_TOPIC = 'Politizr\Model\PCTopic';
     const TYPE_OPERATION = 'Politizr\Model\PEOperation';
     const TYPE_MEDIA = 'Politizr\Model\PDMedia';
+    const TYPE_CMS_CONTENT = 'Politizr\Model\CmsContent';
+    const TYPE_CMS_CONTENT_ADMIN = 'Politizr\Model\CmsContentAdmin';
 
     const CONTEXT_DEBATE = 'debate';
     const CONTEXT_REACTION = 'reaction';

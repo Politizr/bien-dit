@@ -18,6 +18,7 @@ use Politizr\Model\CmsCategoryQuery;
 use Politizr\Model\CmsContent;
 
 /**
+ * @method CmsCategoryQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method CmsCategoryQuery orderById($order = Criteria::ASC) Order by the id column
  * @method CmsCategoryQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method CmsCategoryQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -26,6 +27,7 @@ use Politizr\Model\CmsContent;
  * @method CmsCategoryQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method CmsCategoryQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  *
+ * @method CmsCategoryQuery groupByUuid() Group by the uuid column
  * @method CmsCategoryQuery groupById() Group by the id column
  * @method CmsCategoryQuery groupByTitle() Group by the title column
  * @method CmsCategoryQuery groupByOnline() Group by the online column
@@ -45,6 +47,7 @@ use Politizr\Model\CmsContent;
  * @method CmsCategory findOne(PropelPDO $con = null) Return the first CmsCategory matching the query
  * @method CmsCategory findOneOrCreate(PropelPDO $con = null) Return the first CmsCategory matching the query, or a new CmsCategory object populated from the query conditions when no match is found
  *
+ * @method CmsCategory findOneByUuid(string $uuid) Return the first CmsCategory filtered by the uuid column
  * @method CmsCategory findOneByTitle(string $title) Return the first CmsCategory filtered by the title column
  * @method CmsCategory findOneByOnline(boolean $online) Return the first CmsCategory filtered by the online column
  * @method CmsCategory findOneBySortableRank(int $sortable_rank) Return the first CmsCategory filtered by the sortable_rank column
@@ -52,6 +55,7 @@ use Politizr\Model\CmsContent;
  * @method CmsCategory findOneByUpdatedAt(string $updated_at) Return the first CmsCategory filtered by the updated_at column
  * @method CmsCategory findOneBySlug(string $slug) Return the first CmsCategory filtered by the slug column
  *
+ * @method array findByUuid(string $uuid) Return CmsCategory objects filtered by the uuid column
  * @method array findById(int $id) Return CmsCategory objects filtered by the id column
  * @method array findByTitle(string $title) Return CmsCategory objects filtered by the title column
  * @method array findByOnline(boolean $online) Return CmsCategory objects filtered by the online column
@@ -164,7 +168,7 @@ abstract class BaseCmsCategoryQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `online`, `sortable_rank`, `created_at`, `updated_at`, `slug` FROM `cms_category` WHERE `id` = :p0';
+        $sql = 'SELECT `uuid`, `id`, `title`, `online`, `sortable_rank`, `created_at`, `updated_at`, `slug` FROM `cms_category` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -251,6 +255,35 @@ abstract class BaseCmsCategoryQuery extends ModelCriteria
     {
 
         return $this->addUsingAlias(CmsCategoryPeer::ID, $keys, Criteria::IN);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return CmsCategoryQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(CmsCategoryPeer::UUID, $uuid, $comparison);
     }
 
     /**

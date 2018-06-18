@@ -29,13 +29,16 @@ abstract class BaseCmsContentAdminPeer
     const TM_CLASS = 'Politizr\\Model\\map\\CmsContentAdminTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 7;
+
+    /** the column name for the uuid field */
+    const UUID = 'cms_content_admin.uuid';
 
     /** the column name for the id field */
     const ID = 'cms_content_admin.id';
@@ -74,12 +77,12 @@ abstract class BaseCmsContentAdminPeer
      * e.g. CmsContentAdminPeer::$fieldNames[CmsContentAdminPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Description', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'description', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (CmsContentAdminPeer::ID, CmsContentAdminPeer::TITLE, CmsContentAdminPeer::DESCRIPTION, CmsContentAdminPeer::CREATED_AT, CmsContentAdminPeer::UPDATED_AT, CmsContentAdminPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'DESCRIPTION', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'description', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Uuid', 'Id', 'Title', 'Description', 'CreatedAt', 'UpdatedAt', 'Slug', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('uuid', 'id', 'title', 'description', 'createdAt', 'updatedAt', 'slug', ),
+        BasePeer::TYPE_COLNAME => array (CmsContentAdminPeer::UUID, CmsContentAdminPeer::ID, CmsContentAdminPeer::TITLE, CmsContentAdminPeer::DESCRIPTION, CmsContentAdminPeer::CREATED_AT, CmsContentAdminPeer::UPDATED_AT, CmsContentAdminPeer::SLUG, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('UUID', 'ID', 'TITLE', 'DESCRIPTION', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
+        BasePeer::TYPE_FIELDNAME => array ('uuid', 'id', 'title', 'description', 'created_at', 'updated_at', 'slug', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -89,12 +92,12 @@ abstract class BaseCmsContentAdminPeer
      * e.g. CmsContentAdminPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Description' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, 'Slug' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'createdAt' => 3, 'updatedAt' => 4, 'slug' => 5, ),
-        BasePeer::TYPE_COLNAME => array (CmsContentAdminPeer::ID => 0, CmsContentAdminPeer::TITLE => 1, CmsContentAdminPeer::DESCRIPTION => 2, CmsContentAdminPeer::CREATED_AT => 3, CmsContentAdminPeer::UPDATED_AT => 4, CmsContentAdminPeer::SLUG => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'DESCRIPTION' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, 'SLUG' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'description' => 2, 'created_at' => 3, 'updated_at' => 4, 'slug' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Uuid' => 0, 'Id' => 1, 'Title' => 2, 'Description' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, 'Slug' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('uuid' => 0, 'id' => 1, 'title' => 2, 'description' => 3, 'createdAt' => 4, 'updatedAt' => 5, 'slug' => 6, ),
+        BasePeer::TYPE_COLNAME => array (CmsContentAdminPeer::UUID => 0, CmsContentAdminPeer::ID => 1, CmsContentAdminPeer::TITLE => 2, CmsContentAdminPeer::DESCRIPTION => 3, CmsContentAdminPeer::CREATED_AT => 4, CmsContentAdminPeer::UPDATED_AT => 5, CmsContentAdminPeer::SLUG => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('UUID' => 0, 'ID' => 1, 'TITLE' => 2, 'DESCRIPTION' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, 'SLUG' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('uuid' => 0, 'id' => 1, 'title' => 2, 'description' => 3, 'created_at' => 4, 'updated_at' => 5, 'slug' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -168,6 +171,7 @@ abstract class BaseCmsContentAdminPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
+            $criteria->addSelectColumn(CmsContentAdminPeer::UUID);
             $criteria->addSelectColumn(CmsContentAdminPeer::ID);
             $criteria->addSelectColumn(CmsContentAdminPeer::TITLE);
             $criteria->addSelectColumn(CmsContentAdminPeer::DESCRIPTION);
@@ -175,6 +179,7 @@ abstract class BaseCmsContentAdminPeer
             $criteria->addSelectColumn(CmsContentAdminPeer::UPDATED_AT);
             $criteria->addSelectColumn(CmsContentAdminPeer::SLUG);
         } else {
+            $criteria->addSelectColumn($alias . '.uuid');
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
@@ -400,11 +405,11 @@ abstract class BaseCmsContentAdminPeer
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
         // If the PK cannot be derived from the row, return null.
-        if ($row[$startcol] === null) {
+        if ($row[$startcol + 1] === null) {
             return null;
         }
 
-        return (string) $row[$startcol];
+        return (string) $row[$startcol + 1];
     }
 
     /**
@@ -419,7 +424,7 @@ abstract class BaseCmsContentAdminPeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return (int) $row[$startcol];
+        return (int) $row[$startcol + 1];
     }
 
     /**

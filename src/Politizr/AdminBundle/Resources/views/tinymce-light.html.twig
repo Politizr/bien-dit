@@ -3,34 +3,69 @@
 
 <script type="text/javascript">
     // Initializes all textareas with the tinymce class
-    var tinyMceAttr = {
-          script_url : '{{ asset("bundles/politizradmin/js/tinymce_v4/tinymce.min.js") }}',
-          theme : "modern",
-          language : "fr_FR",
-          width : 800,
-          height : 400,
-          menu: {
-            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
-            format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | removeformat'},
-            table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'},
-            tools: {title: 'Tools', items: 'code'}
-          },
-          style_formats: [
-              {title: 'Header 1', format: 'h1'},
-              {title: 'Header 2', format: 'h2'},
-              {title: 'Header 3', format: 'h3'},
-              {title: 'Paragraph', format: 'p'}
-          ],
-          plugins : "paste,table,link,lists,searchreplace,code",
-          tools: "inserttable",
-          toolbar: "styleselect | bold italic underline link | bullist numlist | alignleft aligncenter alignright alignjustify",
-          // content_css : '/bundles/politizrfront/css/styleUser.css',
-          paste_as_text: false,
-          paste_data_images: true,
-          convert_urls: false,
-          relatives_urls: false,
-          branding: false,
-    };
+    if (($('#tinmce-options').attr('image-upload') === 'true')) {
+      var tinyMceAttr = {
+            script_url : '{{ asset("bundles/politizradmin/js/tinymce_v4/tinymce.min.js") }}',
+            theme : "modern",
+            language : "fr_FR",
+            width : 800,
+            height : 400,
+            menu: {
+              edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
+              format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | removeformat'},
+              table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'},
+              tools: {title: 'Tools', items: 'code'}
+            },
+            style_formats: [
+                {title: 'Header 1', format: 'h1'},
+                {title: 'Header 2', format: 'h2'},
+                {title: 'Header 3', format: 'h3'},
+                {title: 'Paragraph', format: 'p'}
+            ],
+            plugins : "paste,table,link,lists,searchreplace,code,image,media",
+            tools: "inserttable",
+            toolbar: "styleselect | bold italic underline link | bullist numlist | alignleft aligncenter alignright alignjustify | media image",
+            // content_css : '/bundles/politizrfront/css/styleUser.css',
+            paste_as_text: false,
+            paste_data_images: true,
+            convert_urls: false,
+            relatives_urls: false,
+            branding: false,
+            image_caption: true,
+            image_dimensions: false,
+            images_upload_url: $('#tinmce-options').attr('image-upload-path'),
+            images_upload_credentials: true
+      };
+    } else {
+      var tinyMceAttr = {
+            script_url : '{{ asset("bundles/politizradmin/js/tinymce_v4/tinymce.min.js") }}',
+            theme : "modern",
+            language : "fr_FR",
+            width : 800,
+            height : 400,
+            menu: {
+              edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
+              format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | removeformat'},
+              table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'},
+              tools: {title: 'Tools', items: 'code'}
+            },
+            style_formats: [
+                {title: 'Header 1', format: 'h1'},
+                {title: 'Header 2', format: 'h2'},
+                {title: 'Header 3', format: 'h3'},
+                {title: 'Paragraph', format: 'p'}
+            ],
+            plugins : "paste,table,link,lists,searchreplace,code",
+            tools: "inserttable",
+            toolbar: "styleselect | bold italic underline link | bullist numlist | alignleft aligncenter alignright alignjustify",
+            // content_css : '/bundles/politizrfront/css/styleUser.css',
+            paste_as_text: false,
+            paste_data_images: true,
+            convert_urls: false,
+            relatives_urls: false,
+            branding: false,
+      };
+    }
     $().ready(function() {
        $('textarea.tinymce').tinymce(tinyMceAttr);
     });

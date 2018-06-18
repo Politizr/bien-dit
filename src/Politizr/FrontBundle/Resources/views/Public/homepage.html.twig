@@ -21,6 +21,11 @@
 
 {#{% block bodyClass %} class="public visitor"{% endblock %}#}
 
+{% block headerMsg %}
+    {{ parent() }}
+    {{ sliderInfos() }}
+{% endblock headerMsg %}
+
 {% block main %}
     <div id="homePresentation" class="grpCMS">
         <div class="center">

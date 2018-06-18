@@ -15,6 +15,7 @@ use Politizr\Model\CmsContentAdminPeer;
 use Politizr\Model\CmsContentAdminQuery;
 
 /**
+ * @method CmsContentAdminQuery orderByUuid($order = Criteria::ASC) Order by the uuid column
  * @method CmsContentAdminQuery orderById($order = Criteria::ASC) Order by the id column
  * @method CmsContentAdminQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method CmsContentAdminQuery orderByDescription($order = Criteria::ASC) Order by the description column
@@ -22,6 +23,7 @@ use Politizr\Model\CmsContentAdminQuery;
  * @method CmsContentAdminQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method CmsContentAdminQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  *
+ * @method CmsContentAdminQuery groupByUuid() Group by the uuid column
  * @method CmsContentAdminQuery groupById() Group by the id column
  * @method CmsContentAdminQuery groupByTitle() Group by the title column
  * @method CmsContentAdminQuery groupByDescription() Group by the description column
@@ -36,12 +38,14 @@ use Politizr\Model\CmsContentAdminQuery;
  * @method CmsContentAdmin findOne(PropelPDO $con = null) Return the first CmsContentAdmin matching the query
  * @method CmsContentAdmin findOneOrCreate(PropelPDO $con = null) Return the first CmsContentAdmin matching the query, or a new CmsContentAdmin object populated from the query conditions when no match is found
  *
+ * @method CmsContentAdmin findOneByUuid(string $uuid) Return the first CmsContentAdmin filtered by the uuid column
  * @method CmsContentAdmin findOneByTitle(string $title) Return the first CmsContentAdmin filtered by the title column
  * @method CmsContentAdmin findOneByDescription(string $description) Return the first CmsContentAdmin filtered by the description column
  * @method CmsContentAdmin findOneByCreatedAt(string $created_at) Return the first CmsContentAdmin filtered by the created_at column
  * @method CmsContentAdmin findOneByUpdatedAt(string $updated_at) Return the first CmsContentAdmin filtered by the updated_at column
  * @method CmsContentAdmin findOneBySlug(string $slug) Return the first CmsContentAdmin filtered by the slug column
  *
+ * @method array findByUuid(string $uuid) Return CmsContentAdmin objects filtered by the uuid column
  * @method array findById(int $id) Return CmsContentAdmin objects filtered by the id column
  * @method array findByTitle(string $title) Return CmsContentAdmin objects filtered by the title column
  * @method array findByDescription(string $description) Return CmsContentAdmin objects filtered by the description column
@@ -153,7 +157,7 @@ abstract class BaseCmsContentAdminQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `created_at`, `updated_at`, `slug` FROM `cms_content_admin` WHERE `id` = :p0';
+        $sql = 'SELECT `uuid`, `id`, `title`, `description`, `created_at`, `updated_at`, `slug` FROM `cms_content_admin` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -240,6 +244,35 @@ abstract class BaseCmsContentAdminQuery extends ModelCriteria
     {
 
         return $this->addUsingAlias(CmsContentAdminPeer::ID, $keys, Criteria::IN);
+    }
+
+    /**
+     * Filter the query on the uuid column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUuid('fooValue');   // WHERE uuid = 'fooValue'
+     * $query->filterByUuid('%fooValue%'); // WHERE uuid LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $uuid The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return CmsContentAdminQuery The current query, for fluid interface
+     */
+    public function filterByUuid($uuid = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($uuid)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $uuid)) {
+                $uuid = str_replace('*', '%', $uuid);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(CmsContentAdminPeer::UUID, $uuid, $comparison);
     }
 
     /**

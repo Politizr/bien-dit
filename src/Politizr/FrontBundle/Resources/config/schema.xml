@@ -7,6 +7,7 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <column name="uuid" type="varchar" size="50" />
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 
@@ -24,6 +25,7 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <column name="uuid" type="varchar" size="50" />
         <behavior name="studioechomediabundle" />
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
@@ -52,12 +54,29 @@
         <behavior name="sluggable">
             <parameter name="slug_pattern" value="{title}" />
         </behavior>
+        <column name="uuid" type="varchar" size="50" />
         <behavior name="studioechomediabundle" />
 
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 
         <column name="title" type="varchar" size="250" />
         <column name="description" type="longvarchar" />
+    </table>
+
+    <table name="cms_info">
+        <behavior name="sortable" />
+        <behavior name="timestampable" />
+        <behavior name="sluggable">
+            <parameter name="slug_pattern" value="{title}" />
+        </behavior>
+        <column name="uuid" type="varchar" size="50" />
+
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
+        <column name="title" type="varchar" size="250" />
+        <column name="description" type="longvarchar" />
+
+        <column name="online" type="boolean" />
     </table>
 
     <table name="p_tag">

@@ -42,6 +42,7 @@ class CmsContentTableMap extends TableMap
         $this->setPackage('src.Politizr.Model');
         $this->setUseIdGenerator(true);
         // columns
+        $this->addColumn('uuid', 'Uuid', 'VARCHAR', false, 50, null);
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('cms_category_id', 'CmsCategoryId', 'INTEGER', 'cms_category', 'id', false, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 250, null);

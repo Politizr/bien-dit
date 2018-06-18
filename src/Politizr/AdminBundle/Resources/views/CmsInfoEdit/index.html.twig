@@ -1,0 +1,13 @@
+{% extends_admingenerated "PolitizrAdminBundle:CmsInfoEdit:index.html.twig" %}
+
+{% block javascripts_head %}
+    {{ parent() }}
+
+    {# TinyMCE #}
+    {% if is_granted('ROLE_SYSTEM') %}
+        {% include "PolitizrAdminBundle::tinymce-full.html.twig" %}
+    {% else %}
+        {% include "PolitizrAdminBundle::tinymce-notif.html.twig" with { 'nbCharMax': 750 } %}
+    {% endif %}
+{% endblock %}
+

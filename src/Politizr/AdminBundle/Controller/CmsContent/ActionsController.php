@@ -2,11 +2,14 @@
 
 namespace Politizr\AdminBundle\Controller\CmsContent;
 
+use Admingenerated\PolitizrAdminBundle\BaseCmsContentController\ActionsController as BaseActionsController;
+
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-use Politizr\Model\CmsContent;
+use Politizr\Constant\PathConstants;
 
-use Admingenerated\PolitizrAdminBundle\BaseCmsContentController\ActionsController as BaseActionsController;
+use Politizr\Model\CmsContent;
 
 /**
  * ActionsController
