@@ -35,6 +35,7 @@ services:
             - @politizr.functional.document
             - @politizr.functional.timeline
             - @politizr.functional.user
+            - @politizr.functional.circle
             - @form.factory
             - @politizr.tools.global
             - @logger

@@ -3,7 +3,7 @@
     <div class="profileBio">
         {% include 'PolitizrFrontBundle:User:_certification.html.twig' with { 'user': user } only %}
         {{ user.biography | purify }}
-        {{ user | localization }}
+        {% if geo.active %}{{ user | localization }}{% endif %}
     </div>
 {% elseif app.user and app.user.id == user.id %}
     <div class="profileBio defaultBio">

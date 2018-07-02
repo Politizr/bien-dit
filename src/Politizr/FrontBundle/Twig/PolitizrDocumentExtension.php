@@ -52,6 +52,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
     private $documentService;
     private $timelineService;
     private $userService;
+    private $circleService;
 
     private $formFactory;
 
@@ -66,6 +67,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
      * @politizr.functional.document
      * @politizr.functional.timeline
      * @politizr.functional.user
+     * @politizr.functional.circle
      * @form.factory
      * @politizr.tools.global
      * @logger
@@ -77,6 +79,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $documentService,
         $timelineService,
         $userService,
+        $circleService,
         $formFactory,
         $globalTools,
         $logger
@@ -89,6 +92,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $this->documentService = $documentService;
         $this->timelineService = $timelineService;
         $this->userService = $userService;
+        $this->circleService = $circleService;
 
         $this->formFactory = $formFactory;
 

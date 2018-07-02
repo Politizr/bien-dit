@@ -12,7 +12,7 @@
             <div class="profileBio">
                 {% include 'PolitizrFrontBundle:User:_certification.html.twig' with { 'user': user } only %}
                 {{ user.biography | truncate(60, true) | purify }}
-                {{ user | localization }}
+                {% if geo.active %}{{ user | localization }}{% endif %}
             </div>
         </div>
     {% else %}
