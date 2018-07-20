@@ -81,6 +81,7 @@ security:
                 login_path:                 /connexion
                 failure_path:               /connexion
                 check_path:                 /connexion_check
+                csrf_token_generator:       security.csrf.token_manager
                 remember_me:                true
             remember_me:
                 key:                        "%secret%"
