@@ -18,11 +18,11 @@
 
     {% include 'PolitizrFrontBundle:Document:_bookmarkBox.html.twig' with { 'document': debate } only %}
 
-    {% include 'PolitizrFrontBundle:Monitoring:_sidebarAbuse.html.twig' with { 'subject': debate } only %}
-
-    {% if app.user and app.user.id == debate.pUserId %}
-        {% include 'PolitizrFrontBundle:Monitoring:_sidebarAskForUpdate.html.twig' with { 'subject': debate } only %}
+    {% if app.user and app.user.id != debate.pUserId %}
+        {% include 'PolitizrFrontBundle:Monitoring:_sidebarAbuse.html.twig' with { 'subject': debate } only %}
     {% endif %}
+
+    {{ debate | updateDocument }}
 
     <div class="sidebarSubjectFollowers withLoaderInside">
         {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}

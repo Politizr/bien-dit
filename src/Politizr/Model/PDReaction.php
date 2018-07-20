@@ -148,8 +148,23 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     }
 
     /**
+     * Overide to manage update published doc without updating slug
+     *
+     * @see BasePDReaction::createSlug
+     */
+    protected function createSlug()
+    {
+        if ($this->getPublished()) {
+            return $this->getSlug();
+        }
+
+        return parent::createSlug();
+    }
+
+    /**
      * Override to manage accented characters
-     * @return string
+     *
+     * @see BasePDReaction::createRawSlug
      */
     protected function createRawSlug()
     {
@@ -415,12 +430,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     }
 
     /**
-     * Nested tree children
-     *
-     * @param boolean $online
-     * @param boolean $published
-     * @param array $usersIds
-     * @return PropelCollection[PDReaction]
+     * @see PDocumentInterface::getChildrenReactions
      */
     public function getChildrenReactions($online = null, $published = null, $usersIds = null)
     {
@@ -501,7 +511,7 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     }
 
     /**
-     * @see PDReaction::countChildrenReactions
+     * @see PDocumentInterface::countReactions
      */
     public function countReactions($online = null, $published = null, $onlyElected = false, $usersIds = null)
     {

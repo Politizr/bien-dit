@@ -85,7 +85,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $logger
     ) {
         $this->securityTokenStorage = $securityTokenStorage;
-        $this->securityAuthorizationChecker =$securityAuthorizationChecker;
+        $this->securityAuthorizationChecker = $securityAuthorizationChecker;
 
         $this->router = $router;
 
@@ -275,6 +275,11 @@ class PolitizrDocumentExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'newSubject',
                 array($this, 'newSubject'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
+            new \Twig_SimpleFilter(
+                'updateDocument',
+                array($this, 'updateDocument'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
@@ -1214,7 +1219,10 @@ class PolitizrDocumentExtension extends \Twig_Extension
         $operation = $debate->getPEOperation();
         $topic = $debate->getPCTopic();
 
-        if ($operation) {
+        if ($document->getPublished()) {
+            // update doc > no more banner
+            return null;
+        } elseif ($operation) {
             // Operation banner
             $html = $env->render(
                 'PolitizrFrontBundle:Document:_opBannerEdit.html.twig',
@@ -1283,6 +1291,47 @@ class PolitizrDocumentExtension extends \Twig_Extension
     }
 
     /**
+     * Display link "Edit my publication" or "Ask for update" form
+     *
+     * @param PDocumentInterface $document
+     * @return string
+     */
+    public function updateDocument(\Twig_Environment $env, PDocumentInterface $document)
+    {
+        $html = null;
+
+        if (!$document) {
+            throw new InconsistentDataException('Document null');
+        }
+
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
+
+        if ($user && $user->getId() == $document->getPUserId()) {
+            if ($this->documentService->isDocumentEditable($document)) {
+                $html = $env->render(
+                    'PolitizrFrontBundle:Document:_editDocumentLink.html.twig',
+                    array(
+                        'document' => $document,
+                    )
+                );
+            } else {
+                $html = $env->render(
+                    'PolitizrFrontBundle:Monitoring:_sidebarAskForUpdate.html.twig',
+                    array(
+                        'subject' => $document,
+                    )
+                );
+            }
+        }
+
+        return $html;
+    }
+
+    /**
      * Display boost question
      *
      * @param PDocument $subject
@@ -1324,6 +1373,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
 
         return $html;
     }
+
 
     /* ######################################################################################################## */
     /*                                             FONCTIONS                                                    */

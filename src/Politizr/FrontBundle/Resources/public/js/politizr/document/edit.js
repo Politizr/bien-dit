@@ -1,7 +1,14 @@
 // beta
+$(function() {
+    // auto resize text area
+    autosize($('.formBlock textarea'));
 
-// auto resize text area
-autosize($('.formBlock textarea'));
+    // auto save > create mode only
+    var mode = $('.editionPostCard').attr('mode');
+    if (mode == 'create') {
+        $('#debate_title, #reaction_title, .editable.description').on('keyup', delayRequest);
+    }
+});
 
 /**
  * Auto save
@@ -16,13 +23,11 @@ function dataRequest() {
     return triggerSaveDocument();
 }
 
-$('#debate_title, #reaction_title, .editable.description').on('keyup', delayRequest);
-
 /**
  *
  */
 function delayRequest(ev) {
-    // console.log('*** autoSaveDelay');
+    console.log('*** autoSaveDelay');
     $('.actionSave').removeClass('saved');
 
     if(delayRequest.timeout) {
@@ -40,28 +45,20 @@ function delayRequest(ev) {
 
 // dlblick editor event
 $('.editable.description').on('dblclick', function() {
-    // console.log('dblclick event');
+    console.log('dblclick event');
     $('.actionSave').removeClass('saved');
-    // delayRequest(this);
 });
 
 // mouseup editor event
 $('.editable.description').on('mouseup', function() {
-    // console.log('mouseup event');
+    console.log('mouseup event');
     $('.actionSave').removeClass('saved');
-    // delayRequest(this);
 });
-
-// // change checkbox type event
-// $('#formTagType :checkbox').on('change', function() {
-//     // console.log('checkbox change');
-//     delayRequest(this);
-// });
 
 
 function triggerSaveDocument()
 {
-    // console.log('*** triggerSaveDocument');
+    console.log('*** triggerSaveDocument');
 
     var documentSave = $('.actionSave').find('a').attr('action');
     return $('[action="'+documentSave+'"]').trigger('click');
@@ -73,9 +70,9 @@ function triggerSaveDocument()
  */
 function saveDocumentAttr(uuid, type)
 {
-    // console.log('*** saveDocumentAttr');
-    // console.log(uuid);
-    // console.log(type);
+    console.log('*** saveDocumentAttr');
+    console.log(uuid);
+    console.log(type);
 
     saveDocumentAttrDocLoc(uuid, type);
     saveDocumentAttrTagType(uuid, type);
@@ -87,9 +84,9 @@ function saveDocumentAttr(uuid, type)
  */
 function saveDocumentAttrDocLoc(uuid, type)
 {
-    // console.log('*** saveDocumentAttrDocLoc');
-    // console.log(uuid);
-    // console.log(type);
+    console.log('*** saveDocumentAttrDocLoc');
+    console.log(uuid);
+    console.log(type);
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_UPDATE,
@@ -117,9 +114,9 @@ function saveDocumentAttrDocLoc(uuid, type)
  */
 function saveDocumentAttrTagType(uuid, type)
 {
-    // console.log('*** saveDocumentAttrTagType');
-    // console.log(uuid);
-    // console.log(type);
+    console.log('*** saveDocumentAttrTagType');
+    console.log(uuid);
+    console.log(type);
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_UPDATE,
@@ -147,9 +144,9 @@ function saveDocumentAttrTagType(uuid, type)
  */
 function saveDocumentAttrTagFamily(uuid, type)
 {
-    // console.log('*** saveDocumentAttrTagFamily');
-    // console.log(uuid);
-    // console.log(type);
+    console.log('*** saveDocumentAttrTagFamily');
+    console.log(uuid);
+    console.log(type);
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_UPDATE,
@@ -177,8 +174,8 @@ function saveDocumentAttrTagFamily(uuid, type)
  */
 function publishDebate(uuid)
 {
-    // console.log('*** publishDebate');
-    // console.log(uuid);
+    console.log('*** publishDebate');
+    console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_PUBLISH,
@@ -209,8 +206,8 @@ function publishDebate(uuid)
  */
 function publishReaction(uuid)
 {
-    // console.log('*** publishReaction');
-    // console.log(uuid);
+    console.log('*** publishReaction');
+    console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_REACTION_PUBLISH,
@@ -241,10 +238,10 @@ function publishReaction(uuid)
  */
 function saveDebate()
 {
-    // console.log('*** saveDebate');
+    console.log('*** saveDebate');
 
     var description = descriptionEditor.serialize();
-    // console.log(description['element-0']['value']);
+    console.log(description['element-0']['value']);
 
     $('#debate_description').val(description['element-0']['value']);
 
@@ -281,10 +278,10 @@ function saveDebate()
  */
 function saveReaction()
 {
-    // console.log('*** saveReaction');
+    console.log('*** saveReaction');
 
     var description = descriptionEditor.serialize();
-    // console.log(description['element-0']['value']);
+    console.log(description['element-0']['value']);
 
     $('#reaction_description').val(description['element-0']['value']);
 
@@ -321,8 +318,8 @@ function saveReaction()
  */
 function deleteDebate(uuid)
 {
-    // console.log('*** deleteDebate');
-    // console.log(uuid);
+    console.log('*** deleteDebate');
+    console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_DEBATE_DELETE,
@@ -354,8 +351,8 @@ function deleteDebate(uuid)
  */
 function deleteReaction(uuid)
 {
-    // console.log('*** deleteReaction');
-    // console.log(uuid);
+    console.log('*** deleteReaction');
+    console.log(uuid);
 
     var xhrPath = getXhrPath(
         ROUTE_REACTION_DELETE,
@@ -389,8 +386,8 @@ function deleteReaction(uuid)
  */
 function updateDebateTagsZone(uuid)
 {
-    // console.log('*** updateDebateTagsZone');
-    // console.log(uuid);
+    console.log('*** updateDebateTagsZone');
+    console.log(uuid);
 
     var localLoader = $('.tagList').find('.ajaxLoader').first();
     var targetElement = $('.tagList');
@@ -423,8 +420,8 @@ function updateDebateTagsZone(uuid)
  */
 function updateReactionTagsZone(uuid)
 {
-    // console.log('*** updateReactionTagsZone');
-    // console.log(uuid);
+    console.log('*** updateReactionTagsZone');
+    console.log(uuid);
 
     var localLoader = $('.tagList').find('.ajaxLoader').first();
     var targetElement = $('.tagList');
@@ -454,34 +451,34 @@ function updateReactionTagsZone(uuid)
  * Show / hide div attributes relative to zone choice
  */
 function locShowHideAttr() {
-    // console.log('*** locShowHideAttr');
+    console.log('*** locShowHideAttr');
 
     if ($('#document_localization_loc_type_0').is(':checked')) {
-        // console.log('document_localization_loc_type_0 :checked');
+        console.log('document_localization_loc_type_0 :checked');
         $('#document_localization_localization_city').show();
         $('#document_localization_localization_department').hide();
         $('#document_localization_localization_region').hide();
         $('#document_localization_localization_circonscription').hide();
     } else if ($('#document_localization_loc_type_1').is(':checked')) {
-        // console.log('document_localization_loc_type_1 :checked');
+        console.log('document_localization_loc_type_1 :checked');
         $('#document_localization_localization_city').hide();
         $('#document_localization_localization_department').show();
         $('#document_localization_localization_region').hide();
         $('#document_localization_localization_circonscription').hide();
     } else if ($('#document_localization_loc_type_2').is(':checked')) {
-        // console.log('document_localization_loc_type_2 :checked');
+        console.log('document_localization_loc_type_2 :checked');
         $('#document_localization_localization_city').hide();
         $('#document_localization_localization_department').hide();
         $('#document_localization_localization_region').show();
         $('#document_localization_localization_circonscription').hide();
     } else if ($('#document_localization_loc_type_3').is(':checked')) {
-        // console.log('document_localization_loc_type_3 :checked');
+        console.log('document_localization_loc_type_3 :checked');
         $('#document_localization_localization_city').hide();
         $('#document_localization_localization_department').hide();
         $('#document_localization_localization_region').hide();
         $('#document_localization_localization_circonscription').hide();
     } else if ($('#document_localization_loc_type_4').is(':checked')) {
-        // console.log('document_localization_loc_type_4 :checked');
+        console.log('document_localization_loc_type_4 :checked');
         $('#document_localization_localization_city').hide();
         $('#document_localization_localization_department').hide();
         $('#document_localization_localization_region').hide();

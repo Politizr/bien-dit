@@ -2068,6 +2068,25 @@ GROUP BY p_d_debate_id
     }
 
     /**
+     * Update Published reaction
+     *
+     * @param PDDebate $reaction
+     * @return PDDebate
+     */
+    public function updatePublishedDebate(PDDebate $debate)
+    {
+        if ($debate) {
+            $description = $this->globalTools->removeEmptyParagraphs($debate->getDescription());
+
+            $debate->setDescription($description);
+
+            $debate->save();
+        }
+
+        return $debate;
+    }
+
+    /**
      * Delete debate
      *
      * @param PDDebate $debate
@@ -2178,6 +2197,31 @@ GROUP BY p_d_debate_id
             $reaction->setOnline(true);
             $reaction->setPublished(true);
             $reaction->setPublishedAt(time());
+            $reaction->save();
+        }
+
+        return $reaction;
+    }
+
+    /**
+     * Update Published reaction
+     *
+     * @param PDReaction $reaction
+     * @return PDReaction
+     */
+    public function updatePublishedReaction(PDReaction $reaction)
+    {
+        if ($reaction) {
+            // get associated debate
+            $debate = PDDebateQuery::create()->findPk($reaction->getPDDebateId());
+            if (!$debate) {
+                throw new InconsistentDataException('Debate n°'.$debateId.' not found.');
+            }
+
+            $description = $this->globalTools->removeEmptyParagraphs($reaction->getDescription());
+
+            $reaction->setDescription($description);
+
             $reaction->save();
         }
 

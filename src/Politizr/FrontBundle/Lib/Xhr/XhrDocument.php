@@ -387,18 +387,9 @@ class XhrDocument
         $uuid = $request->get('debate')['uuid'];
         // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
-        if (!$debate) {
-            throw new InconsistentDataException('Debate '.$uuid.' not found.');
-        }
-        if (!$debate->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
-        }
-        if ($debate->getPublished()) {
-            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
+        if (!$this->documentService->isDocumentEditable($debate)) {
+            throw new InconsistentDataException('Document can\'t be updated anymore.');
         }
 
         // Debate
@@ -428,14 +419,8 @@ class XhrDocument
         $user = $this->securityTokenStorage->getToken()->getUser();
         
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
-        if (!$debate) {
-            throw new InconsistentDataException('Debate '.$uuid.' not found.');
-        }
-        if (!$debate->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
-        }
-        if ($debate->getPublished()) {
-            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
+        if (!$this->documentService->isDocumentEditable($debate)) {
+            throw new InconsistentDataException('Document can\'t be updated anymore.');
         }
 
         // Validation
@@ -457,15 +442,27 @@ class XhrDocument
             throw new BoxErrorException($errorString);
         }
 
+        // 1st publication vs update
+        $docUpdate = false;
+        if ($debate->getPublished()) {
+            $docUpdate = true;
+        }
+
         // Publication
-        $this->documentManager->publishDebate($debate);
+        if (!$docUpdate) {
+            $this->documentManager->publishDebate($debate);
+        } else {
+            $this->documentManager->updatePublishedDebate($debate);
+        }
         $this->session->getFlashBag()->add('success', 'Objet publié avec succès.');
 
         // Events
-        $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
-        $dispatcher = $this->eventDispatcher->dispatch('r_debate_publish', $event);
-        $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
-        $dispatcher = $this->eventDispatcher->dispatch('n_debate_publish', $event);
+        if (!$docUpdate) {
+            $event = new GenericEvent($debate, array('user_id' => $user->getId(),));
+            $dispatcher = $this->eventDispatcher->dispatch('r_debate_publish', $event);
+            $event = new GenericEvent($debate, array('author_user_id' => $user->getId(),));
+            $dispatcher = $this->eventDispatcher->dispatch('n_debate_publish', $event);
+        }
 
         $redirectUrl = $this->router->generate('DebateDetail', array('slug' => $debate->getSlug()));
 
@@ -486,18 +483,9 @@ class XhrDocument
         $uuid = $request->get('uuid');
         // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
-        if (!$debate) {
-            throw new InconsistentDataException('Debate '.$uuid.' not found.');
-        }
-        if ($debate->getPublished()) {
-            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
-        }
-        if (!$debate->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
+        if (!$this->documentService->isDocumentEditable($debate)) {
+            throw new InconsistentDataException('Document can\'t be updated anymore.');
         }
 
         $this->documentManager->deleteDebate($debate);
@@ -518,18 +506,9 @@ class XhrDocument
         $uuid = $request->get('uuid');
         // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
-        if (!$debate) {
-            throw new InconsistentDataException('Debate '.$uuid.' not found.');
-        }
-        if ($debate->getPublished()) {
-            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
-        }
-        if (!$debate->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
+        if (!$this->documentService->isDocumentEditable($debate)) {
+            throw new InconsistentDataException('Document can\'t be updated anymore.');
         }
 
         $html = $this->templating->render(
@@ -562,18 +541,9 @@ class XhrDocument
         $uuid = $request->get('reaction')['uuid'];
         // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
         $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-        if (!$reaction) {
-            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
-        }
-        if (!$reaction->isOwner($user->getId())) {
-            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
-        }
-        if ($reaction->getPublished()) {
-            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
+        if (!$this->documentService->isDocumentEditable($reaction)) {
+            throw new InconsistentDataException('Document can\'t be updated anymore.');
         }
 
         $form = $this->formFactory->create(new PDReactionType(), $reaction);
@@ -602,14 +572,8 @@ class XhrDocument
         $user = $this->securityTokenStorage->getToken()->getUser();
         
         $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-        if (!$reaction) {
-            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
-        }
-        if (!$reaction->isOwner($user->getId())) {
-            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
-        }
-        if ($reaction->getPublished()) {
-            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
+        if (!$this->documentService->isDocumentEditable($reaction)) {
+            throw new InconsistentDataException('Document can\'t be updated anymore.');
         }
 
         // Validation
@@ -631,21 +595,33 @@ class XhrDocument
             throw new BoxErrorException($errorString);
         }
 
+        // 1st publication vs update
+        $docUpdate = false;
+        if ($reaction->getPublished()) {
+            $docUpdate = true;
+        }
+
         // Publication
-        $this->documentManager->publishReaction($reaction);
+        if (!$docUpdate) {
+            $this->documentManager->publishReaction($reaction);
+        } else {
+            $this->documentManager->updatePublishedReaction($reaction);
+        }
         $this->session->getFlashBag()->add('success', 'Objet publié avec succès.');
 
         // Events
-        $parentUserId = $reaction->getDebate()->getPUserId();
-        if ($reaction->getTreeLevel() > 1) {
-            $parentUserId = $reaction->getParent()->getPUserId();
+        if (!$docUpdate) {
+            $parentUserId = $reaction->getDebate()->getPUserId();
+            if ($reaction->getTreeLevel() > 1) {
+                $parentUserId = $reaction->getParent()->getPUserId();
+            }
+            $event = new GenericEvent($reaction, array('user_id' => $user->getId(),));
+            $dispatcher = $this->eventDispatcher->dispatch('r_reaction_publish', $event);
+            $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(),));
+            $dispatcher = $this->eventDispatcher->dispatch('n_reaction_publish', $event);
+            $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(), 'parent_user_id' => $parentUserId));
+            $dispatcher = $this->eventDispatcher->dispatch('b_reaction_publish', $event);
         }
-        $event = new GenericEvent($reaction, array('user_id' => $user->getId(),));
-        $dispatcher = $this->eventDispatcher->dispatch('r_reaction_publish', $event);
-        $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(),));
-        $dispatcher = $this->eventDispatcher->dispatch('n_reaction_publish', $event);
-        $event = new GenericEvent($reaction, array('author_user_id' => $user->getId(), 'parent_user_id' => $parentUserId));
-        $dispatcher = $this->eventDispatcher->dispatch('b_reaction_publish', $event);
 
         $redirectUrl = $this->router->generate('ReactionDetail', array('slug' => $reaction->getSlug()));
 
@@ -668,22 +644,21 @@ class XhrDocument
         $uuid = $request->get('uuid');
         // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
         $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-        if (!$reaction) {
-            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
-        }
-        if ($reaction->getPublished()) {
-            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
-        }
-        if (!$reaction->isOwner($user->getId())) {
-            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
+        if (!$this->documentService->isDocumentEditable($reaction)) {
+            throw new InconsistentDataException('Document can\'t be updated anymore.');
         }
 
         $this->documentManager->deleteReaction($reaction);
         $this->session->getFlashBag()->add('success', 'Objet supprimé avec succès.');
+
+        if ($reaction->getPublished()) {
+            $debate = $reaction->getDebate();
+            
+            return array(
+                'redirectUrl' => $this->router->generate('DebateDetail', array('slug' => $debate->getSlug())),
+            );
+        }
 
         // Renvoi de l'url de redirection
         return array(
@@ -701,18 +676,9 @@ class XhrDocument
         $uuid = $request->get('uuid');
         // $this->logger->info('$uuid = ' . print_r($uuid, true));
 
-        // get current user
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        
         $reaction = PDReactionQuery::create()->filterByUuid($uuid)->findOne();
-        if (!$reaction) {
-            throw new InconsistentDataException('Reaction '.$uuid.' not found.');
-        }
-        if ($reaction->getPublished()) {
-            throw new InconsistentDataException('Reaction '.$uuid.' is published and cannot be edited anymore.');
-        }
-        if (!$reaction->isOwner($user->getId())) {
-            throw new InconsistentDataException('Reaction '.$uuid.' is not yours.');
+        if (!$this->documentService->isDocumentEditable($reaction)) {
+            throw new InconsistentDataException('Document can\'t be updated anymore.');
         }
 
         $html = $this->templating->render(
@@ -756,14 +722,8 @@ class XhrDocument
                 throw new InconsistentDataException('Document '.$type.' unknown.');
             }
 
-            if (!$document) {
-                throw new InconsistentDataException('Debate '.$uuid.' not found.');
-            }
-            if (!$document->isOwner($user->getId())) {
-                throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
-            }
-            if ($document->getPublished()) {
-                throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
+            if (!$this->documentService->isDocumentEditable($document)) {
+                throw new InconsistentDataException('Document can\'t be updated anymore.');
             }
         
             // Document's localization
@@ -809,14 +769,8 @@ class XhrDocument
             throw new InconsistentDataException('Document '.$type.' unknown.');
         }
 
-        if (!$document) {
-            throw new InconsistentDataException('Debate '.$uuid.' not found.');
-        }
-        if (!$document->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
-        }
-        if ($document->getPublished()) {
-            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
+        if (!$this->documentService->isDocumentEditable($document)) {
+            throw new InconsistentDataException('Document can\'t be updated anymore.');
         }
         
         // Document's tags type
@@ -861,14 +815,8 @@ class XhrDocument
             throw new InconsistentDataException('Document '.$type.' unknown.');
         }
 
-        if (!$document) {
-            throw new InconsistentDataException('Debate '.$uuid.' not found.');
-        }
-        if (!$document->isOwner($user->getId())) {
-            throw new InconsistentDataException('Debate '.$uuid.' is not yours.');
-        }
-        if ($document->getPublished()) {
-            throw new InconsistentDataException('Debate '.$uuid.' is published and cannot be edited anymore.');
+        if (!$this->documentService->isDocumentEditable($document)) {
+            throw new InconsistentDataException('Document can\'t be updated anymore.');
         }
 
         // Document's tags family

@@ -5,15 +5,25 @@
             <a action="openModalPublish"><i class="icon-publish"></i>Publier</a>
         </div>
 
-        <div class="actionSave withLoaderInside saved">
-            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-            <a action="debateSave" uuid="{{ debate.uuid }}"><i class="icon-draft"></i>Enregistrer</a>
-        </div>
+        {% if debate.published %}
+            <div class="actionSave">
+                Vos modifications seront enregistrées à la publication.
+                <a action="debateSave" uuid="{{ debate.uuid }}" style="display: none">&nbsp;</a>
+            </div>
+        {% else %}
+            <div class="actionSave withLoaderInside saved">
+                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                <a action="debateSave" uuid="{{ debate.uuid }}"><i class="icon-draft"></i>Enregistrer</a>
+            </div>
+        {% endif %}
 
         <div class="secondaryActions">
-            <!--<a href="#">Prévisualiser la publication</a>-->
-            <a action="debateDelete" uuid="{{ debate.uuid }}">Supprimer mon brouillon</a>
-            <a href="{{ path('Drafts'~profileSuffix()) }}">Liste de mes brouillons</a>
+            {% if debate.published %}
+                <a href="{{ path('DebateDetail', { 'slug': debate.slug }) }}">Retour</a>
+            {% else %}
+                <a href="{{ path('Drafts'~profileSuffix()) }}">Liste de mes brouillons</a>
+            {% endif %}
+            <a action="debateDelete" uuid="{{ debate.uuid }}">Supprimer</a>
         </div>
     </div>
 </div>

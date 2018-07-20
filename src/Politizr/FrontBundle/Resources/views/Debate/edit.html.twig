@@ -86,7 +86,7 @@
         </div>
     </div>
     <div id="content">
-        <div class="editionPostCard">
+        <div class="editionPostCard" mode="{% if debate.published %}update{% else %}create{% endif %}">
             <form method="POST" name="debate" id="formDebateUpdate" class="autoSubmitForm" uuid="{{ debate.uuid }}" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') }}">
                 <div class="formBlock">
                     <div class="formBlockHeader">

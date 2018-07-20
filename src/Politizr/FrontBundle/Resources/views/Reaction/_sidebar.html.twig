@@ -18,9 +18,9 @@
 
     {% include 'PolitizrFrontBundle:Document:_bookmarkBox.html.twig' with { 'document': reaction } only %}
 
-    {% include 'PolitizrFrontBundle:Monitoring:_sidebarAbuse.html.twig' with { 'subject': reaction } only %}
-
-    {% if app.user and app.user.id == reaction.pUserId %}
-        {% include 'PolitizrFrontBundle:Monitoring:_sidebarAskForUpdate.html.twig' with { 'subject': reaction } only %}
+    {% if app.user and app.user.id != reaction.pUserId %}
+        {% include 'PolitizrFrontBundle:Monitoring:_sidebarAbuse.html.twig' with { 'subject': reaction } only %}
     {% endif %}
+
+    {{ reaction | updateDocument }}
 </div>

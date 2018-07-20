@@ -728,6 +728,45 @@ class DocumentService
     /* ######################################################################################################## */
     
     /**
+     * Check if document can be updated / deleted by current user
+     * Document can be if current user is author and document has no responses.
+     *
+     * @param PDocumentInterface $document
+     * @return boolean
+     */
+    public function isDocumentEditable(PDocumentInterface $document)
+    {
+        $currentUser = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($currentUser)) {
+            return false;
+        }
+
+        if (!$document) {
+            return false;
+        }
+
+        if (!$document->isOwner($currentUser->getId())) {
+            return false;
+        }
+
+        if ($document->getPublished()) {
+            $nbReactions = $document->countReactions(true, true);
+            if ($nbReactions > 0) {
+                return false;
+            }
+            $nbComments = $document->countComments(true);
+            if ($nbComments > 0) {
+                return false;
+            }
+            if ($document->getNotePos() > 0 || $document->getNoteNeg() > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Compute and return the main image for a document
      * return fileName if it exists (BC), else get the image in the first div if it exists
      *

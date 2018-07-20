@@ -47,6 +47,16 @@ interface PDocumentInterface
     public function getDebate();
 
     /**
+     * Nested tree children
+     *
+     * @param boolean $online
+     * @param boolean $published
+     * @param array $usersIds
+     * @return PropelCollection[PDReaction]
+     */
+     public function getChildrenReactions($online = null, $published = null, $usersIds = null);
+
+    /**
      * Filter the document's comments
      *
      * @param boolean $online
@@ -55,6 +65,17 @@ interface PDocumentInterface
      * @return PropelCollection d'objets PDDComment
      */
     public function getComments($online = true, $paragraphNo = null, $orderBy = null);
+
+    /**
+     * Count the number of reactions
+     *
+     * @param boolean $online
+     * @param boolean $published
+     * @param boolean $onlyElected
+     * @param array $usersIds   Users ids
+     * @return int
+     */
+    public function countReactions($online = null, $published = null, $onlyElected = false, $usersIds = null);
 
     /**
      * Count the number of comments

@@ -42,7 +42,7 @@ $("body").on("click", "[action='showTab']:last-of-type", function() {
 
 // Modal show / hide
 $('body').on('click', "[action='openModalPublish']", function(e){
-    // console.log('*** click open modal publish');
+    console.log('*** click open modal publish');
 
     $.when(triggerSaveDocument()).done(function(r1) {
         $('.modalPublish').show();
@@ -50,7 +50,7 @@ $('body').on('click', "[action='openModalPublish']", function(e){
 });
 
 $('body').on('click', "[action='closeModalPublish']", function(e){
-    // console.log('*** click close modal publish');
+    console.log('*** click close modal publish');
 
     updateReactionTagsZone(uuid);
 
@@ -61,30 +61,30 @@ $('body').on('click', "[action='closeModalPublish']", function(e){
 // Modal doc loc management
 // change checkbox type event
 $('#formDocLoc :radio').on('change', function() {
-    // console.log('*** formDocLoc change');
+    console.log('*** formDocLoc change');
     locShowHideAttr();
-    saveDocumentAttr();
+    saveDocumentAttr(uuid, type);
 });
 
 // change checkbox type event
 $('#formTagType :checkbox, #formTagFamily :checkbox').on('change', function() {
-    // console.log('*** formTagType change');
-    saveDocumentAttr();
+    console.log('*** formTagType change');
+    saveDocumentAttr(uuid, type);
 });
 
 
 // Save reaction
 $("body").on("click", "[action='reactionSave']", function(e) {
-    // console.log('*** click reaction save');
+    console.log('*** click reaction save');
 
     return saveReaction();
 });
 
 // Delete reaction
 $('body').on('click', "[action='reactionDelete']", function(e){
-    // console.log('*** click delete reaction');
+    console.log('*** click delete reaction');
 
-    var confirmMsg = "Êtes-vous sûr de vouloir supprimer votre brouillon?";
+    var confirmMsg = "Êtes-vous sûr de vouloir supprimer?";
     smoke.confirm(confirmMsg, function(e) {
         if (e) {
             return deleteReaction(uuid);            
@@ -99,9 +99,9 @@ $('body').on('click', "[action='reactionDelete']", function(e){
 
 // Publish reaction from attr > final publication
 $('body').on('click', "[action='reactionPublish']", function(e){
-    // console.log('*** click publish reaction');
+    console.log('*** click publish reaction');
 
-    $.when(saveDocumentAttr()).done(function(r1) {
+    $.when(saveDocumentAttr(uuid, type)).done(function(r1) {
         return publishReaction(uuid);
     });
 });

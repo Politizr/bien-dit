@@ -1,0 +1,10 @@
+{% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_DEBATE') %}
+    {% set detailPath = path('DebateDraftEdit'~profileSuffix(), { 'uuid': document.uuid }) %}
+{% elseif document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %}
+    {% set detailPath = path('ReactionDraftEdit'~profileSuffix(), { 'uuid': document.uuid }) %}
+{% endif %}
+
+<div class="sidebarAskForModification askForUpdateBox">
+    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+    <a href="{{ detailPath }}">Modifier ma publication</a>
+</div>

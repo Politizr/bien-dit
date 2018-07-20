@@ -702,9 +702,9 @@
         <column name="subtitle" type="longvarchar" />
         <column name="biography" type="longvarchar" />
 
-        <column name="website" type="varchar" size="150" />
-        <column name="twitter" type="varchar" size="150" />
-        <column name="facebook" type="varchar" size="150" />
+        <column name="website" type="varchar" size="250" />
+        <column name="twitter" type="varchar" size="250" />
+        <column name="facebook" type="varchar" size="250" />
         <column name="phone" type="varchar" size="30" />
 
         <column name="newsletter" type="boolean" />

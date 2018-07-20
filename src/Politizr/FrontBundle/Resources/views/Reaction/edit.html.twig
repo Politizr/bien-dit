@@ -39,30 +39,32 @@
         <div class="modalPublishContent">
             <div class="modalPublishContentHeader"><span>Qualifiez votre publication</span><a action="closeModalPublish"><i class="icon-cross"></i></a></div>
             <div class="modalPublishScrollable">
-                <div class="docLocChoice">
-                    <h5>1. Zonage de publication</h5>
-                    <div class="notice">
-                        <i class="icon-info"></i><b>Cette publication concerne:</b>
+                {% if formLocalization %}
+                    <div class="docLocChoice">
+                        <h5>1. Zonage de publication</h5>
+                        <div class="notice">
+                            <i class="icon-info"></i><b>Cette publication concerne:</b>
+                        </div>
+                        <form id="formDocLoc">
+                            {{ form_errors(formLocalization) }}
+                            {% for type in formLocalization.loc_type %}
+                                {{ form_row(type) }}
+                                {% if loop.index == 1 %}
+                                    {{ form_widget(formLocalization.localization_city) }}<br/>
+                                {% elseif loop.index == 2 %}
+                                    {{ form_widget(formLocalization.localization_department) }}<br/>
+                                {% elseif loop.index == 3 %}
+                                    {{ form_widget(formLocalization.localization_region) }}<br/>
+                                {% elseif loop.index == 4 %}
+                                    &nbsp;
+                                {% elseif loop.index == 5 %}
+                                    {{ form_widget(formLocalization.localization_circonscription) }}<br/>
+                                {% endif %}
+                            {% endfor %}
+                            {{ form_rest(formLocalization) }}
+                        </form>
                     </div>
-                    <form id="formDocLoc">
-                        {{ form_errors(formLocalization) }}
-                        {% for type in formLocalization.loc_type %}
-                            {{ form_row(type) }}
-                            {% if loop.index == 1 %}
-                                {{ form_widget(formLocalization.localization_city) }}<br/>
-                            {% elseif loop.index == 2 %}
-                                {{ form_widget(formLocalization.localization_department) }}<br/>
-                            {% elseif loop.index == 3 %}
-                                {{ form_widget(formLocalization.localization_region) }}<br/>
-                            {% elseif loop.index == 4 %}
-                                &nbsp;
-                            {% elseif loop.index == 5 %}
-                                {{ form_widget(formLocalization.localization_circonscription) }}<br/>
-                            {% endif %}
-                        {% endfor %}
-                        {{ form_rest(formLocalization) }}
-                    </form>
-                </div>
+                {% endif %}
                 <div class="docTypes">
                     <h5>2. Type de publication</h5>
                     <div class="notice">
@@ -84,7 +86,7 @@
         </div>
     </div>
     <div id="content">
-        <div class="editionPostCard">
+        <div class="editionPostCard" mode="{% if reaction.published %}update{% else %}create{% endif %}">
             <form method="POST" name="debate" id="formReactionUpdate" class="autoSubmitForm" uuid="{{ reaction.uuid }}" type="{{ constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') }}">
                 <div class="formBlock">
                     <div class="formBlockHeader">

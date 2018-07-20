@@ -5,15 +5,25 @@
             <a action="openModalPublish"><i class="icon-publish"></i>Publier</a>
         </div>
 
-        <div class="actionSave withLoaderInside saved">
-            {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
-            <a action="reactionSave" uuid="{{ reaction.uuid }}"><i class="icon-draft"></i>Enregistrer</a>
-        </div>
+        {% if reaction.published %}
+            <div class="actionSave">
+                Vos modifications seront enregistrées à la publication.
+                <a action="reactionSave" uuid="{{ reaction.uuid }}" style="display: none">&nbsp;</a>
+            </div>
+        {% else %}
+            <div class="actionSave withLoaderInside saved">
+                {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
+                <a action="reactionSave" uuid="{{ reaction.uuid }}"><i class="icon-draft"></i>Enregistrer</a>
+            </div>
+        {% endif %}
 
         <div class="secondaryActions">
-            <!--<a href="#">Prévisualiser la publication</a>-->
-            <a action="reactionDelete" uuid="{{ reaction.uuid }}">Supprimer mon brouillon</a>
-            <a href="{{ path('Drafts'~profileSuffix()) }}">Liste de mes brouillons</a>
+            {% if reaction.published %}
+                <a href="{{ path('ReactionDetail', { 'slug': reaction.slug }) }}">Retour</a>
+            {% else %}
+                <a href="{{ path('Drafts'~profileSuffix()) }}">Liste de mes brouillons</a>
+            {% endif %}
+            <a action="reactionDelete" uuid="{{ reaction.uuid }}">Supprimer</a>
         </div>
     </div>
 
