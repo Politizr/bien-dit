@@ -28,11 +28,11 @@
             {{ topGroupMenu() }}
 
             <div class="headerSeparator"></div>
-            <div id="userLogged" action="toggleMenu">
+            <div id="userLogged" action="toggleAvatarMenu">
                 {# <span class="userName">{{ app.user.firstname }} {{ app.user.name }}</span> #}
                 <span class="avatar30">{{ app.user | photo('user_30', withLink = false, withBubble = false) }}</span>
             </div>
-            <div id="menu" style="display: none;">
+            <div id="menu" class="avatarMenu" style="display: none;">
                 <div id="menuArrow"><i class="icon-arrow-up"></i></div>
                 <div class="innerMenu">
                     <div class="primaryMenu">

@@ -67,16 +67,16 @@ $("body").on("click", "[action='toggleNotifBox']", function() {
 // toggle menu
 $("body").on("mousedown touchstart", function(e) {
 //$(document).mousedown(function (e) {
-    var container = $("body.css700 #headerMenu, #menu, [action='toggleMenu']");
+    var container = $(".avatarMenu, [action='toggleAvatarMenu']");
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
-        $('#menu').hide();
+        $('.avatarMenu').hide();
     }
 });
 
-$("body").on("click", "[action='toggleMenu']", function() {
-    $('#menu, body.css700 #headerMenu').toggle();
+$("body").on("click", "[action='toggleAvatarMenu']", function() {
+    $('.avatarMenu').toggle();
 });
 
 // check notification

@@ -83,11 +83,11 @@ $("body").on("mousedown touchstart", function(e) {
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
-        $('.headerGrpMenu').hide();
+        $('.cmsMenu').hide();
     }
 });
 $("body").on("click", "[action='toggleGrpMenuCms']", function() {
-    $(this).find('.headerGrpMenu').toggle();
+    $(this).find('.cmsMenu').toggle();
 });
 
 // toggle grp menu
@@ -97,11 +97,11 @@ $("body").on("mousedown touchstart", function(e) {
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
-        $('.headerGrpMenu').hide();     
+        $('.circleMenu').hide();     
     }
 });
 $("body").on("click", "[action='toggleGrpMenuGroup']", function() {
-    $(this).find('.headerGrpMenu').toggle();
+    $(this).find('.circleMenu').toggle();
 });
 
 
