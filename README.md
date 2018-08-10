@@ -1,4 +1,4 @@
-POLITIZR GENERIC TOOL
+BIEN DIT
 =====================
 
 Version marque blanche de POLITIZR
