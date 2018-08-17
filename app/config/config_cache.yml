@@ -8,7 +8,7 @@ fos_http_cache:
         symfony:
             http:
                 servers: [ 127.0.0.1 ]
-                base_url: politizr.serres
+                base_url: %http_cache_base_url_dev%
 
     user_context:
         enabled: true

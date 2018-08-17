@@ -26,6 +26,16 @@ parameters:
     router.request_context.host: politizr.beta
     router.request_context.scheme: http
 
+    # Config parameters
+    session_name: session_name
+    feed_title: 'Nouvelles publications'
+    feed_description: 'Nouvelles publications'
+    feed_author: 'Auteur'
+    http_cache_base_url_dev: www.monsite.com
+    http_cache_base_url_re7: www.monsite.com
+    http_cache_base_url_prod: www.monsite.com
+    cookie_name: REMEMBERME
+
     # Algolia
     algolia_app_id: APPID
     algolia_admin_api_key: API_KEY

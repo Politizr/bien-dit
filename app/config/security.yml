@@ -85,14 +85,14 @@ security:
                 remember_me:                true
             remember_me:
                 key:                        "%secret%"
-                name:                       MYSERRES
+                name:                       %cookie_name%
                 secure:                     false
                 httponly:                   true
                 always_remember_me:         true
             logout:
                 invalidate_session:         true
                 delete_cookies:
-                    MYSERRES:               { path: null, domain: null}
+                    %cookie_name%:          { path: null, domain: null}
                 path:                       /deconnexion
                 target:                     /
             anonymous:                      true
