@@ -25,7 +25,7 @@ framework:
 
     # http://symfony.com/doc/current/reference/configuration/framework.html#session
     session:
-        name: ptzr-eric
+        name: ptzr-serres
         # 3 months
         cookie_lifetime: 7776000
         # 3 hours
@@ -748,13 +748,13 @@ lexik_maintenance:
 eko_feed:
     feeds:
         debates:
-            title:       'Nouvelles publications - Générations ERIC'
-            description: 'Nouveaux publications sur Générations ERIC'
+            title:       'Nouvelles publications - Serres-sur-Arget'
+            description: 'Nouvelles publications de Serres-sur-Arget'
             link:
                 route_name: RssFeed
                 # route_params: {id: 2} # necessary if route cantains required parameters
             encoding:    'utf-8'
-            author:      'Générations ERIC'
+            author:      'Mairie de Serres-sur-Arget'
 
 # File upload JS
 # cf. https://github.com/1up-lab/OneupUploaderBundle/blob/master/Resources/doc/index.md
@@ -914,7 +914,7 @@ fos_http_cache:
         symfony:
             http:
                 servers: [ 127.0.0.1 ]
-                base_url: www.politizr.com
+                # base_url: www.politizr.com
 
     user_context:
         enabled: true

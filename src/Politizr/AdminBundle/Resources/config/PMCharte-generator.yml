@@ -85,6 +85,7 @@ builders:
                         attr:                   { class : tinymce }
                 p_circle:
                     addFormOptions:
+                        required:               false
                         disabled:               true
                         read_only:              true
                 created_at:

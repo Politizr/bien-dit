@@ -80,9 +80,9 @@ class PUserArchiveTableMap extends TableMap
         $this->addColumn('birthday', 'Birthday', 'DATE', false, null, null);
         $this->addColumn('subtitle', 'Subtitle', 'LONGVARCHAR', false, null, null);
         $this->addColumn('biography', 'Biography', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('website', 'Website', 'VARCHAR', false, 150, null);
-        $this->addColumn('twitter', 'Twitter', 'VARCHAR', false, 150, null);
-        $this->addColumn('facebook', 'Facebook', 'VARCHAR', false, 150, null);
+        $this->addColumn('website', 'Website', 'VARCHAR', false, 250, null);
+        $this->addColumn('twitter', 'Twitter', 'VARCHAR', false, 250, null);
+        $this->addColumn('facebook', 'Facebook', 'VARCHAR', false, 250, null);
         $this->addColumn('phone', 'Phone', 'VARCHAR', false, 30, null);
         $this->addColumn('newsletter', 'Newsletter', 'BOOLEAN', false, 1, null);
         $this->addColumn('last_connect', 'LastConnect', 'TIMESTAMP', false, null, null);

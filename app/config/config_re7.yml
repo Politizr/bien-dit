@@ -51,4 +51,4 @@ fos_http_cache:
         symfony:
             http:
                 servers: [ 127.0.0.1 ]
-                base_url: generationseric.bugsugar.com
+                base_url: serres.bugsugar.com

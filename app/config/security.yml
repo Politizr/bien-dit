@@ -85,14 +85,14 @@ security:
                 remember_me:                true
             remember_me:
                 key:                        "%secret%"
-                name:                       POLITIZRME
+                name:                       MYSERRES
                 secure:                     false
                 httponly:                   true
                 always_remember_me:         true
             logout:
                 invalidate_session:         true
                 delete_cookies:
-                    POLITIZRME:             { path: null, domain: null}
+                    MYSERRES:               { path: null, domain: null}
                 path:                       /deconnexion
                 target:                     /
             anonymous:                      true
