@@ -96,7 +96,7 @@ parameters:
     meta_og_title: Mon projet
     meta_og_description: Une description succinte et précise de mon projet
     meta_og_url: http://politzr.monprojet
-    meta_tw_site: @MonProjet
+    meta_tw_site: null
     meta_tw_title: Mon Projet
     meta_tw_description: Une description succinte et précise de mon projet
 

@@ -1,8 +1,8 @@
 {
-    "name": "politizr/politizr",
+    "name": "politizr/biendit",
     "license": "proprietary",
     "type": "project",
-    "description": "Politizr web app",
+    "description": "Bien Dit by Politizr",
     "autoload": {
         "psr-4": { "": "src/" }
     },
