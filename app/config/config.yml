@@ -77,6 +77,7 @@ twig:
         google:
             client_id:          %google_client_id%
             ga_view_id:         %google_ga_view_id%
+            tagmanager_id:      %google_tagmanager_id%
         pagerfanta_opts:
             previous_message:   '< page précédente'
             next_message:       'page suivante >'
@@ -97,8 +98,6 @@ twig:
             tw_site:            %meta_tw_site%
             tw_title:           %meta_tw_title%
             tw_description:     %meta_tw_description%
-        google:
-            tagmanager_id:      %google_tagmanager_id%
         geo:
             active:             %geo_active%
         mandate:
@@ -914,7 +913,7 @@ fos_http_cache:
         symfony:
             http:
                 servers: [ 127.0.0.1 ]
-                base_url: %http_cache_base_url_prod%
+                base_url: %http_cache_base_url%
 
     user_context:
         enabled: true

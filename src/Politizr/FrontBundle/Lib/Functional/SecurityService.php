@@ -162,7 +162,7 @@ class SecurityService
     private function computeRedirectUrl(PUser $user)
     {
         $redirectUrl = null;
-        if ($user->hasRole('ROLE_PROFILE_COMPLETED')) {
+        if ($user->hasRole('ROLE_PROFILE_COMPLETED') || $user->hasRole('ROLE_CITIZEN') || $user->hasRole('ROLE_ELECTED')) {
             $user->setLastLogin(new \DateTime());
             $user->save();
 

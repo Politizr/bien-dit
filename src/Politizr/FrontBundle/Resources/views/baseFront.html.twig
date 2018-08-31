@@ -72,9 +72,7 @@
         {% endblock %}
 
         {# Google Trackers #}
-        {% if app.environment == 'prod' %}
-            {% include 'PolitizrFrontBundle:Navigation\\Social:_gTagManager.html.twig' %}
-        {% endif %}
+        {% include 'PolitizrFrontBundle:Navigation\\Social:_gTagManager.html.twig' %}
     </head>
     {% block body %}
         <body{% block bodyClass %}{% endblock %}>

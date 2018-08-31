@@ -44,11 +44,3 @@ swiftmailer:
 #     disable_delivery: true
 #     delivery_address: thomas@ecologic-com.com
     delivery_address: lionel.bouzonville@gmail.com
-
-# app/config/config.yml
-fos_http_cache:
-    proxy_client:
-        symfony:
-            http:
-                servers: [ 127.0.0.1 ]
-                base_url: %http_cache_base_url_re7%

@@ -2,5 +2,5 @@
 {% if app.user %}
     {% set homePath = path('Homepage'~profileSuffix()) %}
 {% endif %}
-<div id="logo"><a href="{{ homePath }}"><img src="{{ asset('uploads/default_logo.jpg') }}"/><span>{% if app.environment == 'demo' %}<span class="betaMarker">demo</span>{% endif %}</span></a></div>
+<div id="logo"><a href="{{ homePath }}"><img src="{{ asset('uploads/default_logo.jpg') }}"/></a></div>
 
