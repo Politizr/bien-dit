@@ -22,6 +22,9 @@
 {#{% block bodyClass %} class="public visitor"{% endblock %}#}
 
 {% block headerMsg %}
+    {% if app.environment == 'demo' %}
+        {% include 'PolitizrFrontBundle:Navigation\\Header:_demoMsg.html.twig' %}
+    {% endif %}
     {{ parent() }}
     {{ sliderInfos() }}
 {% endblock headerMsg %}
