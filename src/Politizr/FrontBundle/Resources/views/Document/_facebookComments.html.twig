@@ -2,22 +2,22 @@
     <h5><i class="icon-social-fb"></i>Impact sur Facebook</h5>
     {% if impressions > 0 %}<b>{{ impressions }} personnes atteintes</b> • {% endif %}{% if interactions > 0 %}{{ interactions }} interactions • {% endif %}{% if nbComments > 0 %}{{ nbComments }} commentaires • {% endif %}{% if nbEmotions > 0 %}{{ nbEmotions }} réactions • {% endif %}{% if nbShares > 0 %}{{ nbShares }} partages{% endif %}
     <div class="likesFB">
-        {% if emotions['like'] %}
+        {% if emotions.like is defined and emotions['like'] %}
             <div class="likeFB">{{ emotions['like'] }}</div>
         {% endif %}
-        {% if emotions['love'] %}
+        {% if emotions.love is defined and emotions['love'] %}
             <div class="loveFB">{{ emotions['love'] }}</div>
         {% endif %}
-        {% if emotions['wow'] %}
+        {% if emotions.wow is defined and emotions['wow'] %}
             <div class="wowFB">{{ emotions['wow'] }}</div>
         {% endif %}
-        {% if emotions['haha'] %}
+        {% if emotions.haha is defined and emotions['haha'] %}
             <div class="hahaFB">{{ emotions['haha'] }}</div>
         {% endif %}
-        {% if emotions['sorry'] %}
+        {% if emotions.sorry is defined and emotions['sorry'] %}
             <div class="sorryFB">{{ emotions['sorry'] }}</div>
         {% endif %}
-        {% if emotions['anger'] %}
+        {% if emotions.anger is defined and emotions['anger'] %}
             <div class="angerFB">{{ emotions['anger'] }}</div>
         {% endif %}
     </div>
