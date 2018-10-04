@@ -136,12 +136,15 @@ class FacebookService
                 }
             }
         } catch (FacebookResponseException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When Graph returns an error
             throw new InconsistentDataException(sprintf('FacebookResponseException - msg = %s', $e->getMessage()));
         } catch (FacebookSDKException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When validation fails or other local issues
             throw new InconsistentDataException(sprintf('FacebookSDKException - msg = %s', $e->getMessage()));
         } catch (\Exception $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             throw new InconsistentDataException(sprintf('Exception - msg = %s', $e->getMessage()));
         }
 
@@ -164,7 +167,7 @@ class FacebookService
                 $this->facebookApp,
                 $this->facebook->getDefaultAccessToken(),
                 'GET',
-                $this->fbPageId . '_' . $fbAdId . '/insights/post_consumptions',
+                $this->fbPageId . '_' . $fbAdId . '/insights/post_clicks',
                 array()
             );
             $response = $this->facebookClient->sendRequest($request);
@@ -175,12 +178,15 @@ class FacebookService
                 }
             }
         } catch (FacebookResponseException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When Graph returns an error
             throw new InconsistentDataException(sprintf('FacebookResponseException - msg = %s', $e->getMessage()));
         } catch (FacebookSDKException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When validation fails or other local issues
             throw new InconsistentDataException(sprintf('FacebookSDKException - msg = %s', $e->getMessage()));
         } catch (\Exception $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             throw new InconsistentDataException(sprintf('Exception - msg = %s', $e->getMessage()));
         }
 
@@ -214,12 +220,15 @@ class FacebookService
                 }
             }
         } catch (FacebookResponseException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When Graph returns an error
             throw new InconsistentDataException(sprintf('FacebookResponseException - msg = %s', $e->getMessage()));
         } catch (FacebookSDKException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When validation fails or other local issues
             throw new InconsistentDataException(sprintf('FacebookSDKException - msg = %s', $e->getMessage()));
         } catch (\Exception $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             throw new InconsistentDataException(sprintf('Exception - msg = %s', $e->getMessage()));
         }
 
@@ -273,12 +282,15 @@ class FacebookService
                 $nbComments = $graphEdge->getMetaData()['summary']['total_count'];
             }
         } catch (FacebookResponseException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When Graph returns an error
             throw new InconsistentDataException(sprintf('FacebookResponseException - msg = %s', $e->getMessage()));
         } catch (FacebookSDKException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When validation fails or other local issues
             throw new InconsistentDataException(sprintf('FacebookSDKException - msg = %s', $e->getMessage()));
         } catch (\Exception $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             throw new InconsistentDataException(sprintf('Exception - msg = %s', $e->getMessage()));
         }
 
@@ -310,11 +322,14 @@ class FacebookService
                 $nbShares = $data['shares']['count'];
             }
         } catch (FacebookResponseException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             throw new InconsistentDataException(sprintf('FacebookResponseException - msg = %s', $e->getMessage()));
         } catch (FacebookSDKException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When validation fails or other local issues
             throw new InconsistentDataException(sprintf('FacebookSDKException - msg = %s', $e->getMessage()));
         } catch (\Exception $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             throw new InconsistentDataException(sprintf('Exception - msg = %s', $e->getMessage()));
         }
 
@@ -348,21 +363,28 @@ class FacebookService
             $graphEdge = $response->getGraphEdge();
             foreach ($graphEdge as $node) {
                 $fromNode = $node->getField('from');
-                $fbUserId = $fromNode->getField('id');
 
-                $name = $fromNode->getField('name');
-                $picture = $this->getUserPicture($fbUserId);
-                $fbAuthor = [ 'name' => $name, 'picture' => $picture ];
+                if ($fromNode) {
+                    $fbUserId = $fromNode->getField('id');
+                    $name = $fromNode->getField('name');
+                    $picture = $this->getUserPicture($fbUserId);
+                    $fbAuthor = [ 'name' => $name, 'picture' => $picture ];
+                } else {
+                    $fbAuthor = [ 'name' => 'undefined', 'picture' => null ];
+                }
 
                 $comments[] = ['author' => $fbAuthor, 'message' => $node->getField('message')];
             }
         } catch (FacebookResponseException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When Graph returns an error
             throw new InconsistentDataException(sprintf('FacebookResponseException - msg = %s', $e->getMessage()));
         } catch (FacebookSDKException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When validation fails or other local issues
             throw new InconsistentDataException(sprintf('FacebookSDKException - msg = %s', $e->getMessage()));
         } catch (\Exception $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             throw new InconsistentDataException(sprintf('Exception - msg = %s', $e->getMessage()));
         }
 
@@ -393,12 +415,15 @@ class FacebookService
                 $picture = $data['data']['url'];
             }
         } catch (FacebookResponseException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When Graph returns an error
             throw new InconsistentDataException(sprintf('FacebookResponseException - msg = %s', $e->getMessage()));
         } catch (FacebookSDKException $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             // When validation fails or other local issues
             throw new InconsistentDataException(sprintf('FacebookSDKException - msg = %s', $e->getMessage()));
         } catch (\Exception $e) {
+            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
             throw new InconsistentDataException(sprintf('Exception - msg = %s', $e->getMessage()));
         }
 

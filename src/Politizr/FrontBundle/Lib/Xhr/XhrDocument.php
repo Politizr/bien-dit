@@ -1728,17 +1728,30 @@ class XhrDocument
             );
         }
 
+        $impressions = $interactions = $nbEmotions = $nbComments = $nbShares = 0;
         try {
             $impressions = $this->facebookService->getImpressions($fbAdId);
+        } catch (\Exception $e) {
+        }
+
+        try {
             $interactions = $this->facebookService->getInteractions($fbAdId);
+        } catch (\Exception $e) {
+        }
+
+        try {
             $nbEmotions = $this->facebookService->getNbEmotions($fbAdId);
+        } catch (\Exception $e) {
+        }
+
+        try {
             $nbComments = $this->facebookService->getNbComments($fbAdId);
+        } catch (\Exception $e) {
+        }
+
+        try {
             $nbShares = $this->facebookService->getNbShares($fbAdId);
         } catch (\Exception $e) {
-            $this->logger->error('Exception FB - msg = '.print_r($e->getMessage(), true));
-            return array(
-                'html' => ''
-            );
         }
 
         // Construction du rendu du tag
@@ -1789,19 +1802,41 @@ class XhrDocument
             );
         }
 
+        $impressions = $interactions = $nbEmotions = $nbComments = $nbShares = 0;
+        $emotions = $comments = null;
         try {
             $impressions = $this->facebookService->getImpressions($fbAdId);
+        } catch (\Exception $e) {
+        }
+
+        try {
             $interactions = $this->facebookService->getInteractions($fbAdId);
-            $emotions = $this->facebookService->getEmotions($fbAdId);
-            $nbComments = $this->facebookService->getNbComments($fbAdId);
-            $comments = $this->facebookService->getComments($fbAdId);
+        } catch (\Exception $e) {
+        }
+
+        try {
             $nbEmotions = $this->facebookService->getNbEmotions($fbAdId);
+        } catch (\Exception $e) {
+        }
+
+        try {
+            $nbComments = $this->facebookService->getNbComments($fbAdId);
+        } catch (\Exception $e) {
+        }
+
+        try {
             $nbShares = $this->facebookService->getNbShares($fbAdId);
         } catch (\Exception $e) {
-            // dump($e);
-            return array(
-                'html' => ''
-            );
+        }
+
+        try {
+            $emotions = $this->facebookService->getEmotions($fbAdId);
+        } catch (\Exception $e) {
+        }
+
+        try {
+            $comments = $this->facebookService->getComments($fbAdId);
+        } catch (\Exception $e) {
         }
 
         // Construction du rendu du tag
