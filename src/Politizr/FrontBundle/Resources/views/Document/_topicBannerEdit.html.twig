@@ -3,7 +3,7 @@
         <div class="txtTopic">
             <div class="txtTopic">
                 <i class="icon-grp"></i>{{ owner.title }}
-                <span>Rédigez ici vos opinions ou questions sur le sujet de <b>"{{ topic.title }}"</b>.</span>
+                <span>Rédigez ici vos opinions ou questions sur le sujet de <b>{% if nbTopics > 1 %}"{{ topic.title }}"{% else %}"{{ circle.title }}"{% endif %}</b>.</span>
             </div>
         </div>
     </div>

@@ -68,14 +68,14 @@
                 <div class="docTypes">
                     <h5>2. Type de publication</h5>
                     <div class="notice">
-                        <i class="icon-info"></i><b>Cochez le(s) type(s) associé(s) à votre publication.</b>
+                        <i class="icon-info"></i><b>Option: cochez le(s) type(s) associé(s) à votre publication.</b>
                     </div>
                     {{ reaction | editTagTypeForm }}
                 </div>
                 <div class="docTags">
                     <h5>3. Thématiques abordées</h5>
                     <div class="notice">
-                        <i class="icon-info"></i><b>Ajouter des thématiques de votre choix et/ou cochez parmi les rubriques associées à votre publication (5 thématiques maximum)</b>
+                        <i class="icon-info"></i><b>Option: ajoutez des thématiques de votre choix et/ou cochez parmi les rubriques associées à votre publication (5 thématiques maximum)</b>
                     </div>
                     {{ reactionTagsEdit(reaction, constant('Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'), 1, true) }}
                     {{ reaction | editTagFamilyForm }}

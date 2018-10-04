@@ -2,8 +2,10 @@
     <div id="grpBriefHeader">
         <div class="center">
             <h1>{{ topic.summary | raw }}</h1>
-            <div class="showBriefLink" action="showBrief">Afficher le dossier de présentation</div>
-            <div class="hideBriefLink" action="hideBrief">Masquer le dossier de présentation</div>
+            {% if topic.description is not empty %}
+                <div class="showBriefLink" action="showBrief">Afficher</div>
+                <div class="hideBriefLink" action="hideBrief">Masquer</div>
+            {% endif %}
         </div>
         <div id="grpBriefHeaderImg">
             <div id="grpBriefHeaderImgShadow"></div>
@@ -17,11 +19,13 @@
     </div>
     
     <div class="center">            
-        <div id="grpBriefCard">
-            {{ topic.description | raw }}
-        </div>
-        <div id="grpBriefFooter">
-            <div class="hideBriefLink" action="hideBrief">Masquer le dossier de présentation</div>
-        </div>
+        {% if topic.description is not empty %}
+            <div id="grpBriefCard">
+                {{ topic.description | raw }}
+            </div>
+            <div id="grpBriefFooter">
+                <div class="hideBriefLink" action="hideBrief">Masquer</div>
+            </div>
+        {% endif %}
     </div>
 </div>

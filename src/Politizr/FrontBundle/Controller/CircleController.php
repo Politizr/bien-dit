@@ -66,6 +66,7 @@ class CircleController extends Controller
         $this->denyAccessUnlessGranted('circle_detail', $circle);
 
         // get circle's topics
+        // @todo use service / manager to compute online topics in circle
         $topics = PCTopicQuery::create()
                     ->filterByPCircleId($circle->getId())
                     ->filterByOnline(true)

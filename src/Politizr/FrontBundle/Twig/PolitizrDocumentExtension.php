@@ -1233,7 +1233,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         } elseif ($topic) {
             $circle = $topic->getPCircle();
             $owner = $circle->getPCOwner();
-            
+
             if ($circle->getReadOnly()) {
                 // Read only circle's banner
                 $html = $env->render(
@@ -1243,6 +1243,8 @@ class PolitizrDocumentExtension extends \Twig_Extension
                     )
                 );
             } else {
+                $nbTopics = $circle->getNbTopics(true);
+                
                 // Topic banner
                 $html = $env->render(
                     'PolitizrFrontBundle:Document:_topicBannerEdit.html.twig',
@@ -1250,6 +1252,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
                         'owner' => $owner,
                         'circle' => $circle,
                         'topic' => $topic,
+                        'nbTopics' => $nbTopics,
                     )
                 );
             }

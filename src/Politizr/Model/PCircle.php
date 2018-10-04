@@ -33,4 +33,22 @@ class PCircle extends BasePCircle
         $slug = $this->cleanupSlugPart($toSlug);
         return $slug;
     }
+
+    /**
+     * Count number of topics related to this circle
+     *
+     * @param $online boolean
+     * @return int
+     */
+    public function getNbTopics($online = true)
+    {
+        $nbTopics = PCTopicQuery::create()
+            ->filterByPCircleId($this->getId())
+            ->_if($online)
+                ->filterByOnline(true)
+            ->_endif()
+            ->count();
+
+        return $nbTopics;
+    }
 }

@@ -13,27 +13,36 @@
         </div>
         {{ circle | authorizedReactionUsers() }}
     </div>
-    <div class="grpChaptersList">
-        <h1>La liste des sujets</h1>
-        <h2>sur lesquelles {{ circle.PCOwner }} souhaite connaître votre opinion</h2>
-        {% for topic in topics %}
-            <div class="grpChaptersListItem">
-                <div class="grpCharterImg">
-                    <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">
-                        <span>{{ topic.title }}</span>
-                        {% if topic.fileName %}
-                            <img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ topic.fileName) | imagine_filter('topic_list') }}" alt="{{ topic.title }}">
-                        {% else %}
-                            <img src="{{ asset('bundles/politizrfront/images/generic-grpConsult.jpg') }}">
-                        {% endif %}
-                    </a>
+
+    {% if topics | length == 1 %}
+        <div class="grpIHaveAQuestion">
+            <h2>Question, avis, remarque ou opinion...</h2>
+            <p>Engagez la discussion avec notre équipe en vous exprimant, que ce soit pour poser une question ou donner votre avis.</p>
+            {% if not circle.readOnly %}<a href="{{ path('DebateDraftNew', { topic: topics[0].uuid }) }}">Je m'exprime!</a>{% endif %}<a href="{{ path('TopicDetail', { circleSlug: circle.slug, slug: topics[0].slug }) }}" class="grpAllQuestions">Voir les questions déjà posées</a>
+        </div>
+    {% else %}
+        <div class="grpChaptersList">
+            <h1>La liste des sujets</h1>
+            <h2>sur lesquelles {{ circle.PCOwner }} souhaite connaître votre opinion</h2>
+            {% for topic in topics %}
+                <div class="grpChaptersListItem">
+                    <div class="grpCharterImg">
+                        <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">
+                            <span>{{ topic.title }}</span>
+                            {% if topic.fileName %}
+                                <img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ topic.fileName) | imagine_filter('topic_list') }}" alt="{{ topic.title }}">
+                            {% else %}
+                                <img src="{{ asset('bundles/politizrfront/images/generic-grpConsult.jpg') }}">
+                            {% endif %}
+                        </a>
+                    </div>
+                    {{ topic | topicStats }}
+                    <p>
+                        {# topic.summary | striptags | truncate(70, true) | purify #}
+                        <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}" class="grpKnowMore">En savoir plus</a>
+                    </p>
                 </div>
-                {{ topic | topicStats }}
-                <p>
-                    {# topic.summary | striptags | truncate(70, true) | purify #}
-                    <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}" class="grpKnowMore">En savoir plus</a>
-                </p>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>

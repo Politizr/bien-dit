@@ -73,7 +73,8 @@ builders:
             actions:
                 save: ~
                 list: ~
-                delete: ~
+                delete:
+                    credentials:                ROLE_SYSTEM
     show:
         params:
             title:                              "Visualisation de la page '{{ CmsContentAdmin.title }}'"

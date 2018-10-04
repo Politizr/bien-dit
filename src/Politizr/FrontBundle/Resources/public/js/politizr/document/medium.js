@@ -16,7 +16,7 @@ var descriptionEditor = new MediumEditor('.editable.description', {
         ]
     },
     placeholder: {
-        text: 'Texte de votre publication.'
+        text: 'Votre question ou opinion'
     },
     anchor: {
         placeholderText: 'Saisissez une adresse internet'

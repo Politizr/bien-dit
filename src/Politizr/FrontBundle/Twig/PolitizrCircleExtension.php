@@ -304,11 +304,14 @@ class PolitizrCircleExtension extends \Twig_Extension
         // $this->logger->info('*** topicBriefing');
         // $this->logger->info('$topic = '.print_r($topic, true));
 
+        $circle = $topic->getPCircle();
+
         // Construction du rendu du tag
         $html = $env->render(
             'PolitizrFrontBundle:Topic:_briefing.html.twig',
             array(
                 'topic' => $topic,
+                'circle' => $circle,
             )
         );
 

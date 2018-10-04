@@ -7,11 +7,13 @@ use Politizr\Constant\LabelConstants;
 use Politizr\Constant\CmsConstants;
 
 use Politizr\Model\PDocumentInterface;
+use Politizr\Model\PCircle;
 use Politizr\Model\PCTopic;
 
 use Politizr\Model\CmsContentQuery;
 use Politizr\Model\CmsCategoryQuery;
 use Politizr\Model\CmsInfoQuery;
+use Politizr\Model\PCTopicQuery;
 
 /**
  * App's navigation twig extension
@@ -32,7 +34,6 @@ class PolitizrNavigationExtension extends \Twig_Extension
     private $logger;
 
     private $withGroup;
-    private $multipleGroup;
 
     private $topMenuCms;
     private $topMenuPublications;
@@ -46,7 +47,6 @@ class PolitizrNavigationExtension extends \Twig_Extension
      * @param @politizr.tools.global
      * @param @logger
      * @param "%with_group%"
-     * @param "%multiple_group%"
      * @param "%top_menu_cms%"
      * @param "%top_menu_publications%"
      * @param "%top_menu_community%"
@@ -59,7 +59,6 @@ class PolitizrNavigationExtension extends \Twig_Extension
         $globalTools,
         $logger,
         $withGroup,
-        $multipleGroup,
         $topMenuCms,
         $topMenuPublications,
         $topMenuCommunity
@@ -76,7 +75,6 @@ class PolitizrNavigationExtension extends \Twig_Extension
         $this->logger = $logger;
         
         $this->withGroup = $withGroup;
-        $this->multipleGroup = $multipleGroup;
 
         $this->topMenuCms = $topMenuCms;
         $this->topMenuPublications = $topMenuPublications;
@@ -139,6 +137,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
 
     /**
      * Compute & display contextualized link for "je m'exprime"
+     * @todo refactoring manage circle w. 1 topic
      *
      * @param PDocumentInterface|PCTopic $subject
      * @return string
@@ -153,6 +152,16 @@ class PolitizrNavigationExtension extends \Twig_Extension
 
         if ($subject instanceof PDocumentInterface) {
             $topic = $subject->getPCTopic();
+        } elseif ($subject instanceof PCircle) {
+            $nbTopics = $subject->getNbTopics(true);
+            if ($nbTopics == 1) {
+                $topic = PCTopicQuery::create()
+                    ->filterByPCircleId($subject->getId())
+                    ->filterByOnline(true)
+                    ->findOne();    
+            } else {
+                $display = false;
+            }
         } elseif ($subject instanceof PCTopic) {
             $topic = $subject;
         } else {
@@ -165,7 +174,13 @@ class PolitizrNavigationExtension extends \Twig_Extension
                 $display = false;
             } else {
                 $url = $this->router->generate('DebateDraftNew', array('topic' => $topic->getUuid()));
-                $label = "je m'exprime sur \"".$topic->getTitle()."\"";
+
+                $nbTopics = $circle->getNbTopics(true);
+                if ($nbTopics == 1) {
+                    $label = "je m'exprime sur \"".$circle->getTitle()."\"";
+                } else {
+                    $label = "je m'exprime sur \"".$topic->getTitle()."\"";
+                }
             }
         } else {
             $url = $this->router->generate('DebateDraftNew');
@@ -263,12 +278,6 @@ class PolitizrNavigationExtension extends \Twig_Extension
             $user = null;
         }
 
-        // Gestion des groupes > uniquement si pls groupes
-        $manageGroup = false;
-        if ($this->multipleGroup) {
-            $manageGroup = true;
-        }
-
         $ownersCircles = array();
         if ($user) {
             // get user's circles by owner
@@ -290,7 +299,6 @@ class PolitizrNavigationExtension extends \Twig_Extension
             'PolitizrFrontBundle:Navigation\\Menu:_topGroupMenu.html.twig',
             array(
                 'ownersCircles' => $ownersCircles,
-                'manageGroup' => $manageGroup
             )
         );
 

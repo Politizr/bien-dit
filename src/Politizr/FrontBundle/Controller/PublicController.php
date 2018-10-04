@@ -54,7 +54,9 @@ class PublicController extends Controller
         $content = CmsContentAdminQuery::create()->findPk(CmsConstants::CMS_CONTENT_ADMIN_HOMEPAGE);
 
         // Diaporamas associés
-        $medias = StudioEchoMediaManager::getMediaList($content->getId(), 'Politizr\Model\CmsContentAdmin', 'fr', 1);
+        if ($content) {
+            $medias = StudioEchoMediaManager::getMediaList($content->getId(), 'Politizr\Model\CmsContentAdmin', 'fr', 1);
+        }
 
         return $this->render('PolitizrFrontBundle:Public:homepage.html.twig', array(
             'homepage' => true,
