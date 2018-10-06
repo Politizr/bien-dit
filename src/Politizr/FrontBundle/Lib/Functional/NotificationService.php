@@ -13,6 +13,7 @@ use Politizr\Model\PUFollowUQuery;
 use Politizr\Model\PUFollowDDQuery;
 use Politizr\Model\PUTaggedTQuery;
 use Politizr\Model\PCTopicQuery;
+use Politizr\Model\PNEmailQuery;
 
 /**
  * Functional service for notification management.
@@ -497,5 +498,19 @@ class NotificationService
         );
 
         return $debates;
+    }
+
+    /**
+     * Unsubscribe a user from all notif emails
+     *
+     * @param int $userId
+     */
+    public function unsubscribeNotifEmailByUserId($userId)
+    {
+        $pnEmails = PNEmailQuery::create()->find();
+
+        foreach ($pnEmails as $pnEmail) {
+            $this->notificationManager->deleteUserSubscribeEmail($userId, $pnEmail->getId());
+        }
     }
 }

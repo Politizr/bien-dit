@@ -38,3 +38,12 @@ InscriptionContactCheck:
     defaults: { _controller: PolitizrFrontBundle:Security:inscriptionContactCheck }
     requirements:
         _method:        POST
+
+
+################################################################################
+#               ROUTING EMAIL SECURITY
+################################################################################
+UnsubscribeNotifLink:
+    pattern:  /desinscription/notifications/{email}/{uuid}
+    defaults: { _controller: PolitizrFrontBundle:Security:unsubscribeNotifLink }
+

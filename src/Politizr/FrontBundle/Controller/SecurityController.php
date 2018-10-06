@@ -28,6 +28,9 @@ use Politizr\FrontBundle\Form\Type\LostPasswordType;
 
 use Politizr\FrontBundle\Form\Type\POrderSubscriptionType;
 
+use Politizr\Exception\InconsistentDataException;
+
+
 /**
  * Security controller
  *
@@ -296,5 +299,35 @@ class SecurityController extends Controller
         $this->get('request')->getSession()->invalidate();
             
         return $this->redirect($this->generateUrl('Homepage'));
+    }
+
+    /* ######################################################################################################## */
+    /*                                             UNSUBSCRIBE NOTIF LINK                                       */
+    /* ######################################################################################################## */
+
+    /**
+     * Désinscription des notifs email
+     *
+     * @param
+     * @param
+     */
+    public function unsubscribeNotifLinkAction(Request $request, $email, $uuid)
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** unsubscribeNotifLinkAction');
+
+        $user = PUserQuery::create()
+            ->filterByEmail($email)
+            ->filterByUuid($uuid)
+            ->findOne();
+
+        if (!$user) {
+            throw new InconsistentDataException('Current user not found.');
+        }
+
+        $this->get('politizr.functional.notification')->unsubscribeNotifEmailByUserId($user->getId());
+
+        return $this->render('PolitizrFrontBundle:Security:unsubscribeNotifLink.html.twig', array(
+        ));
     }
 }

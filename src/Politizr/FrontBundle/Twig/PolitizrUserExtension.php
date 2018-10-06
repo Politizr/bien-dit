@@ -144,6 +144,11 @@ class PolitizrUserExtension extends \Twig_Extension
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
+                'unsubscribeNotifLink',
+                array($this, 'unsubscribeNotifLink'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'followersUser',
                 array($this, 'followersUser'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
@@ -667,6 +672,23 @@ class PolitizrUserExtension extends \Twig_Extension
         }
 
         return $html;
+    }
+
+    /**
+     * Compute unsubscribe link for user
+     *
+     * @param PUser $user
+     * @return string
+     */
+    public function unsubscribeNotifLink(PUser $user)
+    {
+        $url = $this->router->generate(
+            'UnsubscribeNotifLink',
+            array('email' => $user->getEmail(), 'uuid' => $user->getUuid()),
+            true
+        );
+
+        return $url;
     }
 
     /**
