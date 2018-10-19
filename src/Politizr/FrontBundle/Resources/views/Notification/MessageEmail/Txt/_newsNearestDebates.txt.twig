@@ -1,7 +1,7 @@
 {% if debates|length > 1 %}De nouveaux sujets qui pourraient vous intéresser!{% else %}Un nouveau sujet qui pourrait vous intéresser!{% endif %}
 {% for debate in debates %}
     {% set author = debate.user %}
-    {{ debate.title }}{% if author %} par {{ author.fullName }}, {%endif %}localisé sur {{ debate | localizations(inMail=true) }}. 
+    {{ debate.title }}{% if author %} par {{ author.fullName }}{%endif %}{% if geo.active %}, localisé sur {{ debate | localizations(inMail=true) }}{% endif %}. 
     {{ url('DebateDetail', {'slug': debate.slug}) }}
 {% endfor %}
 
