@@ -141,6 +141,7 @@ class CircleService
         }
 
         $circles = PCircleQuery::create()
+                        ->distinct()
                         ->filterByOnline(true)
                         ->filterByPrivateAccess(false)
                         ->_or()
