@@ -25,8 +25,7 @@ class EmailListener
     protected $templating;
     protected $logger;
 
-    protected $contactEmail;
-    protected $supportEmail;
+    protected $senderEmail;
     protected $clientName;
 
     /**
@@ -34,24 +33,21 @@ class EmailListener
      * @param @mailer
      * @param @templating
      * @param @logger
-     * @param "%contact_email%"
-     * @param "%support_email%"
+     * @param "%sender_email%"
      * @param %client_name%
      */
     public function __construct(
         $mailer,
         $templating,
         $logger,
-        $contactEmail,
-        $supportEmail,
+        $senderEmail,
         $clientName
     ) {
         $this->mailer = $mailer;
         $this->templating = $templating;
         $this->logger = $logger;
 
-        $this->contactEmail = $contactEmail;
-        $this->supportEmail = $supportEmail;
+        $this->senderEmail = $senderEmail;
         $this->clientName = $clientName;
     }
 
@@ -112,7 +108,7 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject($subject)
-                    ->setFrom(array($this->contactEmail => sprintf('%s', $this->clientName)))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     ->setTo($order->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
@@ -187,7 +183,7 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject(sprintf('[ %s ] Modération', $this->clientName))
-                    ->setFrom(array($this->contactEmail => sprintf('%s', $this->clientName)))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     ->setTo($user->getEmail())
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
@@ -242,7 +238,7 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject('[ Politizr ] Bannissement')
-                    ->setFrom(array($this->contactEmail => sprintf('%s', $this->clientName)))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     ->setTo($user->getEmail())
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')

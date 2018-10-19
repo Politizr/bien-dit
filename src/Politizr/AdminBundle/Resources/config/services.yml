@@ -17,8 +17,7 @@ services:
             - @mailer
             - @templating
             - @logger
-            - "%contact_email%"
-            - "%support_email%"
+            - "%sender_email%"
             - "%client_name%"
         tags:
             - { name: kernel.event_listener, event: order_email }

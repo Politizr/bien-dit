@@ -1,4 +1,4 @@
-{% if app.environment == 'prod' %}
+{% if app.environment == 'prod' and facebook.pixelcode_id is not same as(false)  %}
     <!-- Facebook Pixel Code -->
     <script>
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?

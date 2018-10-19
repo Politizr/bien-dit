@@ -19,8 +19,7 @@ class EmailListener
     protected $monitoringManager;
     protected $logger;
 
-    protected $contactEmail;
-    protected $supportEmail;
+    protected $senderEmail;
     protected $clientName;
 
     /**
@@ -29,8 +28,7 @@ class EmailListener
      * @param @templating
      * @param @politizr.manager.monitoring
      * @param @logger
-     * @param %contact_email%
-     * @param %support_email%
+     * @param %sender_email%
      * @param %client_name%
      */
     public function __construct(
@@ -38,8 +36,7 @@ class EmailListener
         $templating,
         $monitoringManager,
         $logger,
-        $contactEmail,
-        $supportEmail,
+        $senderEmail,
         $clientName
     ) {
         $this->mailer = $mailer;
@@ -47,8 +44,7 @@ class EmailListener
         $this->monitoringManager = $monitoringManager;
         $this->logger = $logger;
 
-        $this->contactEmail = $contactEmail;
-        $this->supportEmail = $supportEmail;
+        $this->senderEmail = $senderEmail;
         $this->clientName = $clientName;
     }
 
@@ -80,7 +76,7 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject(sprintf('[ %s ] Réinitialisation du mot de passe', $this->clientName))
-                    ->setFrom(array($this->supportEmail => sprintf('%s', $this->clientName)))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     ->setTo($user->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
@@ -125,7 +121,7 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject(sprintf('[ %s ] Mise à jour de sécurité', $this->clientName))
-                    ->setFrom(array($this->supportEmail => sprintf('%s', $this->clientName)))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     ->setTo($user->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
@@ -178,8 +174,8 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject(sprintf('[ %s ] Monitoring', $this->clientName))
-                    ->setFrom(array($this->supportEmail => sprintf('%s', $this->clientName)))
-                    ->setTo(array($this->supportEmail => sprintf('%s', $this->clientName)))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
+                    ->setTo(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
             ;
@@ -245,7 +241,7 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject($subject)
-                    ->setFrom(array($this->supportEmail => sprintf('%s', $this->clientName)))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     ->setTo($userEmail)
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
@@ -293,8 +289,8 @@ class EmailListener
             );
 
             $message = \Swift_Message::newInstance()
-                    ->setSubject(sprintf('Bienvenue chez %s', $this->clientName))
-                    ->setFrom(array($this->supportEmail => sprintf('%s', $this->clientName)))
+                    ->setSubject(sprintf('Bienvenue sur notre site de consultation', $this->clientName))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     ->setTo($user->getEmail())
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
@@ -339,8 +335,8 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject('Trace ID Check')
-                    ->setFrom(array($this->supportEmail => sprintf('%s', $this->clientName)))
-                    ->setTo(array($this->supportEmail => sprintf('%s', $this->clientName)))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
+                    ->setTo(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
             ;
@@ -384,8 +380,8 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject('Message direct')
-                    ->setFrom(array($this->supportEmail => sprintf('%s', $this->clientName)))
-                    ->setTo(array($this->supportEmail => sprintf('%s', $this->clientName)))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
+                    ->setTo(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
             ;
@@ -428,8 +424,8 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject('Boost document')
-                    ->setFrom(array($this->supportEmail => sprintf('%s', $this->clientName)))
-                    ->setTo(array($this->supportEmail => sprintf('%s', $this->clientName)))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
+                    ->setTo(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
             ;
@@ -472,8 +468,8 @@ class EmailListener
 
             $message = \Swift_Message::newInstance()
                     ->setSubject('Support groupe')
-                    ->setFrom(array($this->supportEmail => sprintf('%s', $this->clientName)))
-                    ->setTo(array($this->supportEmail => sprintf('%s', $this->clientName)))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
+                    ->setTo(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     // ->setBcc(array('lionel@politizr.com'))
                     ->setBody($htmlBody, 'text/html', 'utf-8')
             ;

@@ -39,7 +39,7 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
     private $mailer;
     private $transport;
     private $templating;
-    private $contactEmail;
+    private $senderEmail;
     private $supportEmail;
     private $clientName;
     private $geoActive;
@@ -80,8 +80,7 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
         $this->mailer = $this->getContainer()->get('mailer');
         $this->transport = $this->getContainer()->get('swiftmailer.transport.real');
         $this->templating = $this->getContainer()->get('templating');
-        $this->contactEmail = $this->getContainer()->getParameter('contact_email');
-        $this->supportEmail = $this->getContainer()->getParameter('support_email');
+        $this->senderEmail = $this->getContainer()->getParameter('sender_email');
         $this->clientName = $this->getContainer()->getParameter('client_name');
         $this->geoActive = $this->getContainer()->getParameter('geo_active');
 
@@ -287,7 +286,7 @@ class EmailNewsNotificationsCommand extends ContainerAwareCommand
 
             $message = \Swift_Message::newInstance()
                     ->setSubject($subject)
-                    ->setFrom(array($this->contactEmail => sprintf('%s', $this->clientName)))
+                    ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     ->setTo($userEmail)
                     ->setBody($htmlBody, 'text/html', 'utf-8')
                     ->addPart($txtBody, 'text/plain', 'utf-8')
