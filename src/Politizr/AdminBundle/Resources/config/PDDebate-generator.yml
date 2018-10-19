@@ -236,6 +236,7 @@ builders:
                         mapped:                 false
                 published_at:
                     # formType:                   afe_datetime_picker
+                    formType:                   datetime
                     addFormOptions:
                         widget:                 single_text
                 want_boost:
@@ -253,9 +254,15 @@ builders:
                     addFormOptions:
                         read_only:              true
                 created_at:
+                    formType:                   datetime
                     addFormOptions:
                         widget:                 single_text
                 updated_at:
+                    formType:                   datetime
+                    addFormOptions:
+                        widget:                 single_text
+                indexed_at:
+                    formType:                   datetime
                     addFormOptions:
                         widget:                 single_text
             actions:

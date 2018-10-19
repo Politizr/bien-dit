@@ -89,9 +89,11 @@ builders:
                         disabled:               true
                         read_only:              true
                 created_at:
+                    formType:                   datetime
                     addFormOptions:
                       widget:                   single_text
                 updated_at:
+                    formType:                   datetime
                     addFormOptions:
                       widget:                   single_text
             actions:

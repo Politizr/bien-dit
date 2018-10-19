@@ -96,9 +96,11 @@ builders:
                         deleteable:             fileName
                         data_class:             Symfony\Component\HttpFoundation\File\File
                 created_at:
+                    formType:                   datetime
                     addFormOptions:
                       widget:                   single_text
                 updated_at:
+                    formType:                   datetime
                     addFormOptions:
                       widget:                   single_text
             actions:

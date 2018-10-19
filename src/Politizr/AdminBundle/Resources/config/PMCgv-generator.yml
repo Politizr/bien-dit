@@ -67,9 +67,11 @@ builders:
                     addFormOptions:
                         attr:                   { class : tinymce }
                 created_at:
+                    formType:                   datetime
                     addFormOptions:
                       widget:                   single_text
                 updated_at:
+                    formType:                   datetime
                     addFormOptions:
                       widget:                   single_text
             actions:

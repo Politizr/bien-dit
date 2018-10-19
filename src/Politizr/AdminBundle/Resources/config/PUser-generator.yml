@@ -162,6 +162,8 @@ builders:
             display:
                 "Champs principaux":            [ [ qualified ], [ gender, firstname, name ], [ email ], [ username , plainPassword ], [ roles, p_u_status_id ] ]
             fields:
+                created_at:
+                    formType:                   datetime
                 p_u_status_id:
                     dbType:                     VARCHAR
                     formType:                   hidden
@@ -290,10 +292,6 @@ builders:
                     dbType:                     VARCHAR
                     addFormOptions:
                         mapped:                 false
-                last_activity:
-                    label:                      Date de dernière activité
-                    addFormOptions:
-                        widget:                 single_text
                 support_group:
                     credentials:                ROLE_SYSTEM
                 id:
@@ -307,9 +305,20 @@ builders:
                 organization:
                     credentials:                ROLE_SYSTEM
                 created_at:
+                    formType:                   datetime
                     addFormOptions:
                         widget:                 single_text
                 updated_at:
+                    formType:                   datetime
+                    addFormOptions:
+                        widget:                 single_text
+                last_activity:
+                    formType:                   datetime
+                    label:                      Date de dernière activité
+                    addFormOptions:
+                        widget:                 single_text
+                indexed_at:
+                    formType:                   datetime
                     addFormOptions:
                         widget:                 single_text
             actions:

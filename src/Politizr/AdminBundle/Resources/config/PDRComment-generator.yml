@@ -129,6 +129,7 @@ builders:
                 description:
                     grid_class:                 "col-md-12"
                 published_at:
+                    formType:                   datetime
                     addFormOptions:
                         widget:                 single_text
                 id:
@@ -138,9 +139,11 @@ builders:
                     addFormOptions:
                         read_only:              true
                 created_at:
+                    formType:                   datetime
                     addFormOptions:
                         widget:                 single_text
                 updated_at:
+                    formType:                   datetime
                     addFormOptions:
                         widget:                 single_text
             actions:

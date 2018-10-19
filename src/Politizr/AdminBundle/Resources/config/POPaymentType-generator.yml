@@ -61,9 +61,11 @@ builders:
                     "Dates":                 [ [ online ], [ created_at, updated_at ] ]
             fields:
                 created_at:
+                    formType:                   datetime
                     addFormOptions:
                       widget:                   single_text
                 updated_at:
+                    formType:                   datetime
                     addFormOptions:
                       widget:                   single_text
             actions:
