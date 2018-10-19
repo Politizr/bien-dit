@@ -39,7 +39,6 @@ reload-bdd.sh
 /web/*_re7.php
 
 /web/uploads/
-/web/static/
 
 /web/js/
 /web/assetic/

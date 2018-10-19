@@ -50,7 +50,7 @@ parameters:
     facebook_page_id: 123
     facebook_graph_version: v2.8
     facebook_access_token: 123456789
-    facebook_pixelcode_id: 123
+    facebook_pixelcode_id: false
 
     #Twitter
     twitter_api_key: 123
@@ -83,6 +83,7 @@ parameters:
     contact_email: contact@politizr.com
     contact_phone: 123
     support_email: support@politizr.com
+    sender_email: ne-pas-repondre@domain.com
 
     client_name: Bien Dit
 

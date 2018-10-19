@@ -67,6 +67,8 @@ twig:
             phone:              %contact_phone%
         support:
             email:              %support_email%
+        sender:
+            email:              %sender_email%
         facebook:
             admin_ids:          %facebook_admin_ids%
             client_id:          %facebook_client_id%
