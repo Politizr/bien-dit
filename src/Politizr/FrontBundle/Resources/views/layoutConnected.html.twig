@@ -13,6 +13,13 @@
     <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
 {% endblock %}
 
+{% block fbScript %}
+    {{ parent() }}
+
+    {% include 'PolitizrFrontBundle:Navigation\\Social:_fbEventCompleteRegistration.html.twig' %}
+{% endblock %}
+
+
 {% block bodyClass %} class="user"{% endblock %}
 
 {% block header %}
