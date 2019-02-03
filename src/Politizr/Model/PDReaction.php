@@ -64,6 +64,16 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     }
 
     /**
+     * Return "strip_tag"ged description
+     *
+     * @return string
+     */
+    public function getStripTaggedDescription()
+    {
+        return html_entity_decode(strip_tags($this->getDescription()));
+    }
+
+    /**
      * @see PDocumentInterface::getCircle
      */
     public function getCircle()

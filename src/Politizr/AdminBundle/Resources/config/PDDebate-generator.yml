@@ -137,7 +137,7 @@ builders:
                 excel:                          ~
     excel:
         params:
-            display:                            [ title, p_user, slug, published_at ]
+            display:                            [ title, stripTaggedDescription, p_user, slug, published_at ]
             filename:                           app-subjects
             filetype: ~
             datetime_format: ~
