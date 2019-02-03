@@ -57,6 +57,7 @@ class NotificationManager
             NotificationConstants::ID_D_D_REACTION_PUBLISH,
             NotificationConstants::ID_D_D_FOLLOWED,
             NotificationConstants::ID_D_R_REACTION_PUBLISH,
+            NotificationConstants::ID_D_CIRCLE_DEBATE_PUBLISH,
             NotificationConstants::ID_D_C_NOTE_POS,
             NotificationConstants::ID_D_C_NOTE_NEG,
             NotificationConstants::ID_U_FOLLOWED,

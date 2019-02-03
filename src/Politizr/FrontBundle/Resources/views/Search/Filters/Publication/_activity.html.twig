@@ -8,11 +8,15 @@
     {#
     <input type="radio" class="activityFilter" name="activityFilter[]" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_MOST_VIEWS') }}" id="activityFilterMostViews"/>
     <label for="activityFilterMostViews"><i class="icon-check"></i>Plus vus</label>
+    #}
     <input type="radio" class="activityFilter" name="activityFilter[]" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_MOST_FOLLOWED') }}" id="activityFilterMostFollowed"/>
     <label for="activityFilterMostFollowed"><i class="icon-check"></i>Plus suivis</label>
+    {#
     <input type="radio" class="activityFilter" name="activityFilter[]" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_MOST_REACTIONS') }}" id="activityFilterMostReactions"/>
     <label for="activityFilterMostReactions"><i class="icon-check"></i>Plus de réponses</label>
+    #}
     <input type="radio" class="activityFilter" name="activityFilter[]" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_MOST_COMMENTS') }}" id="activityFilterMostComments"/>
     <label for="activityFilterMostComments"><i class="icon-check"></i>Plus de commentaires</label>
-    #}
+    <input type="radio" class="activityFilter" name="activityFilter[]" value="{{ constant('Politizr\\Constant\\ListingConstants::ORDER_BY_KEYWORD_MOST_LENGTH') }}" id="activityFilterMostLength"/>
+    <label for="activityFilterMostLength"><i class="icon-check"></i>Plus loquaces</label>
 </form>

@@ -232,6 +232,8 @@ LIMIT :offset, :limit
             $orderBy = "ORDER BY note_pos DESC, note_neg ASC";
         } elseif ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_VIEWS) {
             $orderBy = "ORDER BY nb_views DESC";
+        } elseif ($filterActivity == ListingConstants::ORDER_BY_KEYWORD_MOST_LENGTH) {
+            $orderBy = "ORDER BY CHAR_LENGTH(description) DESC";
         } else {
             throw new InconsistentDataException(sprintf('Filter activity %s is not managed', $filterActivity));
         }

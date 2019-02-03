@@ -73,6 +73,10 @@
 %}
     {% include 'PolitizrFrontBundle:Notification\\Message:_msgSTDocument.html.twig' %}
 {% elseif
+    notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_D_CIRCLE_DEBATE_PUBLISH')
+%}
+    {% include 'PolitizrFrontBundle:Notification\\Message:_msgDCircleDebatePublish.html.twig' %}
+{% elseif
     notificationId == constant('Politizr\\Constant\\NotificationConstants::ID_L_U_CITY')
 %}
     {% include 'PolitizrFrontBundle:Notification\\Message:_msgLUCity.html.twig' %}

@@ -133,6 +133,7 @@ class NotificationListener
      * Notifications associées à gérer:
      * - Un débat ou une réaction a été publié par un utilisateur suivi
      * - Un débat ou une réaction contenant une thématique suivi a été publié
+     * - Un débat a été publié dans un groupe auquel j'appartiens
      * - Un débat sur ma ville a été publié
      * - Un débat sur mon département (ou une ville du département) a été publié
      * - Un débat localisé sur ma région (ou un département de la région ou une ville de la région) a été publié
@@ -185,10 +186,41 @@ class NotificationListener
             }
         }
 
+        // get users from debate circles
+        $topic = $debate->getPCTopic();
+        if ($topic) {
+            $users = $this->circleService->getUsersInCircleByCircleId($topic->getPCircleId());
+            // remove previously notified users
+            $users = $this->filterUsersByIds($users, $usersIds);
+            foreach ($users as $user) {
+                $usersIds[] = $user->getId();
+                $pNotificationId = NotificationConstants::ID_D_CIRCLE_DEBATE_PUBLISH;
+                $puNotification = $this->insertPUNotification($user->getId(), $authorUserId, $pNotificationId, $objectName, $objectId, $topicId);
+            }
+        }
+
         // localization
         if ($this->geoActive) {
             $this->locDocNotificationsManagement($debate, $usersIds, $authorUserId, $objectName, $objectId, $topicId);
         }
+    }
+
+
+    /**
+     * Remove users ids from PropelCollection of users
+     *
+     * @param PropelCollection $users
+     * @param array $usersIds
+     * @return PropelCollection
+     */
+    private function filterUsersByIds(\PropelCollection $users, $usersIds)
+    {
+        foreach ($users as $key => $user) {
+            if (in_array($user->getId(), $usersIds)) {
+                $users->remove($key);
+            }
+        }
+        return $users;
     }
 
     /**

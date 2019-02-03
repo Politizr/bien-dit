@@ -68,6 +68,7 @@ class ListingConstants
     const ORDER_BY_KEYWORD_MOST_REACTIONS = 'mostReactions';
     const ORDER_BY_KEYWORD_MOST_COMMENTS = 'mostComments';
     const ORDER_BY_KEYWORD_MOST_VIEWS = 'mostViews';
+    const ORDER_BY_KEYWORD_MOST_LENGTH = 'mostLength';
 
     const FILTER_KEYWORD_ALL_DATE = 'allDate';
     const FILTER_KEYWORD_LAST_DAY = 'lastDay';
