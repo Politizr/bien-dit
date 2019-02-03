@@ -45,13 +45,13 @@ class PUCurrentQOType extends AbstractType
         return 'current_organization';
     }
     
-    /**
-     *
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'Politizr\Model\PUCurrentQO',
-        ));
+//     /**
+//      *
+//      */
+//     public function setDefaultOptions(OptionsResolverInterface $resolver)
+//     {
+//         $resolver->setDefaults(array(
+//             'data_class' => 'Politizr\Model\PUCurrentQO',
+//         ));
     }
 }

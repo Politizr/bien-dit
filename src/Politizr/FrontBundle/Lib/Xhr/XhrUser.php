@@ -310,11 +310,15 @@ class XhrUser
             $puCurrentQo = new PUCurrentQO();
         }
 
-        $form = $this->formFactory->create(new PUCurrentQOType(), $puCurrentQo);
+        $form = $this->formFactory->create(new PUCurrentQOType());
         $form->bind($request);
         if ($form->isValid()) {
-            $puCurrentQo = $form->getData();
+            $data = $form->getData();
+            // hack (delete + create) because of update propel bug (?) cf #846
+            $puCurrentQo->delete();
+            $puCurrentQo = new PUCurrentQO();
             $puCurrentQo->setPUserId($user->getId());
+            $puCurrentQo->setPQOrganizationId($data['PUCurrentQOPQOrganization']->getId());
             $puCurrentQo->save();
         } else {
             $errors = $this->globalTools->getAjaxFormErrors($form);
