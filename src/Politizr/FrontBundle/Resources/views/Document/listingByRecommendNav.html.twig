@@ -2,9 +2,11 @@
 {% include 'PolitizrFrontBundle:Navigation\\Xhr:_xhrLocalLoader.html.twig' %}
 <h5>Les publications les plus recommandées</h5>
 <div class="listTopNav">
-    <a href="{{ prevLink }}" action="prevNextLink" month="{{ prevNumMonth }}" year="{{ prevYear }}"><i class="icon-goleft"></i></a>
+    {#<a href="{{ prevLink }}" action="prevNextLink" month="{{ prevNumMonth }}" year="{{ prevYear }}"><i class="icon-goleft"></i></a>#}
+     <a href="{{ path('ListingByRecommendMonthYear', {'month': prevMonth, 'year': prevYear}) }}"><i class="icon-goleft"></i></a>
     <span>{{ month | capitalize }} {{ year }}</span>
     {% if nextLink %}
-        <a href="{{ nextLink }}" action="prevNextLink" month="{{ nextNumMonth }}" year="{{ nextYear }}"><i class="icon-goright"></i></a>
+        {#<a href="{{ nextLink }}" action="prevNextLink" month="{{ nextNumMonth }}" year="{{ nextYear }}"><i class="icon-goright"></i></a>#}
+        <a href="{{ path('ListingByRecommendMonthYear', {'month': nextMonth, 'year': nextYear}) }}"><i class="icon-goright"></i></a>
     {% endif %}
 </div>

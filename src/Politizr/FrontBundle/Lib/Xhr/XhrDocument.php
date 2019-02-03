@@ -1180,6 +1180,7 @@ class XhrDocument
         $search->modify('+2 month');
         $nextLink = null;
         $nextNumMonth = null;
+        $nextMonth = null;
         $nextYear = null;
         if ($search <= $now) {
             $nextNumMonth = $search->format('n');
@@ -1196,8 +1197,10 @@ class XhrDocument
                 'year' => $year,
                 'prevLink' => $prevLink,
                 'nextLink' => $nextLink,
+                'prevMonth' => $prevMonth,
                 'prevNumMonth' => $prevNumMonth,
                 'prevYear' => $prevYear,
+                'nextMonth' => $nextMonth,
                 'nextNumMonth' => $nextNumMonth,
                 'nextYear' => $nextYear,
             )
