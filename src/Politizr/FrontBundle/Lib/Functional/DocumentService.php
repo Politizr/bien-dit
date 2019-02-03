@@ -538,11 +538,17 @@ class DocumentService
             return null;
         }
 
+        $circleId = $document->getCircleId();
         $similars = PDDebateQuery::create()
             ->filterById($document->getDebateId(), \Criteria::NOT_EQUAL)
             ->usePDDTaggedTQuery()
                 ->filterByPTag($document->getTags(TagConstants::TAG_TYPE_THEME))
             ->endUse()
+            ->_if($circleId)
+                ->usePCTopicQuery()
+                    ->filterByPCircleId($circleId)
+                ->endUse()
+            ->_endif()
             ->distinct()
             ->online()
             ->limit(ListingConstants::LISTING_DEBATE_SIMILARS)
@@ -556,6 +562,11 @@ class DocumentService
                 ->usePDDTaggedTQuery()
                     ->filterByPTag($document->getTags(TagConstants::TAG_TYPE_FAMILY))
                 ->endUse()
+                ->_if($circleId)
+                    ->usePCTopicQuery()
+                        ->filterByPCircleId($circleId)
+                    ->endUse()
+                ->_endif()
                 ->distinct()
                 ->online()
                 ->limit(ListingConstants::LISTING_DEBATE_SIMILARS)
