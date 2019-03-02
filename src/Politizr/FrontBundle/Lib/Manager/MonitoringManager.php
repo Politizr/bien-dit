@@ -1,6 +1,8 @@
 <?php
 namespace Politizr\FrontBundle\Lib\Manager;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use Politizr\Model\PMAppException;
 
 /**
@@ -54,6 +56,10 @@ class MonitoringManager
      */
     public function createAppException(\Exception $exception, $userId = null)
     {
+        if ($exception instanceof NotFoundHttpException) {
+            return null;
+        }
+
         $pmAppException = new PMAppException();
 
         $pmAppException->setPUserId($userId);
