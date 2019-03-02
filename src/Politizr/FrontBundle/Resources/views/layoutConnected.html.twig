@@ -10,7 +10,7 @@
 {% block stylesheets %}
     {{ parent() }}
 
-    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css?v'~assets_version) }}">
 {% endblock %}
 
 {% block fbScript %}
@@ -62,7 +62,7 @@
 {% block javascriptFooter %}
     {{ parent() }}
 
-    <script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/instantsearch.js/2.6/instantsearch.min.js"></script>
     
     {% include 'PolitizrFrontBundle:Algolia:_hitTemplate.html.twig' %}
 
@@ -83,7 +83,7 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/localization/edit.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/searchEngine/algolia.js'
         filter='uglifyjs2' %}
-        <script src="{{ asset_url }}"></script>
+        <script src="{{ asset_url~'?v'~assets_version }}"></script>
     {% endjavascripts %}
 
     {# First connexion #}

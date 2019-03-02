@@ -22,14 +22,14 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/selection-sharer.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/selection-sharer.css?v'~assets_version) }}" />
 {% endblock %}
 
 {% block javascriptHeader %}
     {{ parent() }}
 
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.swipe.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js?v'~assets_version) }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.swipe.min.js?v'~assets_version) }}"></script>
 {% endblock %}
 
 {% block bodyClass %}
@@ -166,6 +166,6 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/user/listing.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/detailReaction.js'
         filter='uglifyjs2' %}
-        <script src="{{ asset_url }}"></script>
+        <script src="{{ asset_url~'?v'~assets_version }}"></script>
     {% endjavascripts %}
 {% endblock javascriptFooter %}

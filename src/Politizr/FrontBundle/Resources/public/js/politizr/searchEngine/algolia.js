@@ -18,15 +18,29 @@ if ($('#searchInputAlgolia').length > 0) {
         startSearch.show();
         return;
       }
+
       helper.search();
       searchResults.show();
     }
   });
 
+  // https://www.algolia.com/doc/api-reference/api-parameters/filters/?language=javascript
+  var circleUuid = $('#searchInputAlgolia').attr('circleUuid');
+  // console.log(circleUuid);
+  if (circleUuid) {
+    search.addWidget(
+      instantsearch.widgets.configure({
+        filters: 'circleUuid:' + circleUuid
+      })
+    );
+  }
+
   search.addWidget(
     instantsearch.widgets.searchBox({
       container: '#searchInputAlgolia',
       autofocus: false,
+      reset: false,
+      magnifier: false,
     })
   );
 

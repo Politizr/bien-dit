@@ -59,6 +59,7 @@ class AlgoliaInitAttributesCommand extends ContainerAwareCommand
             ),
             'attributesForFaceting' => array(
                 'typeLabel',
+                'filterOnly(circleUuid)',
             ),
             'attributesToSnippet' => array(
                 'description:50',

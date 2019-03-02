@@ -33,26 +33,26 @@
         {% endblock metatwittercards %}
 
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/pltzriconfont.css') }}">
-            <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+            <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/pltzriconfont.css?v'~assets_version) }}">
+            <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css?v{{ assets_version }}" rel="stylesheet">
         {% endblock %}
 
         {% block javascriptHeader %}
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-3.2.1.min.js') }}"></script>  
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui.autocomplete.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-ui.autocomplete.min.js?v'~assets_version) }}"></script>
 
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.waypoints.min.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/waypoints.sticky.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.waypoints.min.js?v'~assets_version) }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/waypoints.sticky.min.js?v'~assets_version) }}"></script>
 
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/restive.min.js') }}"></script>    
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/imgLiquid-min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/restive.min.js?v'~assets_version) }}"></script>    
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/imgLiquid-min.js?v'~assets_version) }}"></script>
 
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/moment.min.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/textcounter.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/moment.min.js?v'~assets_version) }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/textcounter.min.js?v'~assets_version) }}"></script>
 
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/autosize.min.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/select2.full.min.js') }}"></script>  
-            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/select2.fr.js') }}"></script>  
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/autosize.min.js?v'~assets_version) }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/select2.full.min.js?v'~assets_version) }}"></script>  
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/select2.fr.js?v'~assets_version) }}"></script>  
         {% endblock %}
 
         {% block responsiveHeader %}

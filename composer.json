@@ -64,7 +64,7 @@
         "rollerworks/password-strength-bundle": "^1.7",
         "lexik/maintenance-bundle": "^2.0",
         "eko/feedbundle": "^1.2",
-        "algolia/algoliasearch-client-php": "^1.18",
+        "algolia/algoliasearch-client-php": "^1.28",
 
         "oneup/uploader-bundle": "^1.9",
         

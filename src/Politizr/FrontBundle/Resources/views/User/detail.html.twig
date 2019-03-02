@@ -50,6 +50,6 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/user/listing.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/detailUser.js'
         filter='uglifyjs2' %}
-        <script src="{{ asset_url }}"></script>
+        <script src="{{ asset_url~'?v'~assets_version }}"></script>
     {% endjavascripts %}
 {% endblock javascriptFooter %}

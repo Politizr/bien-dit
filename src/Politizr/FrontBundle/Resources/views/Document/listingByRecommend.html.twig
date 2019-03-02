@@ -53,6 +53,6 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/listingByRecommend.js'
         filter='uglifyjs2' %}
-        <script src="{{ asset_url }}"></script>
+        <script src="{{ asset_url~'?v'~assets_version }}"></script>
     {% endjavascripts %}
 {% endblock javascriptFooter %}

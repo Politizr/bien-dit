@@ -21,8 +21,6 @@ use Politizr\Model\PLDepartmentQuery;
 use Politizr\Model\PLCityQuery;
 use Politizr\Model\PQOrganizationQuery;
 
-use AlgoliaSearch\Client as AlgoliaSearchClient;
-
 /**
  * Listing controller
  *

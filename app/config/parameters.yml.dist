@@ -115,3 +115,6 @@ parameters:
     top_menu_cms: true # true | false
     top_menu_publications: true # true | false
     top_menu_community: true # true | false
+
+    # Useful to force cache browser reload
+    assets_version: 1.0.0 

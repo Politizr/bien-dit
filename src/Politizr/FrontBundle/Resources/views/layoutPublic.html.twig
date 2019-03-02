@@ -6,13 +6,13 @@
 {% block stylesheets %}
     {{ parent() }}
 
-    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/styleUser.css?v'~assets_version) }}">
 {% endblock %}
 
 {% block javascriptHeader %}
     {{ parent() }}
 
-    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js?v{{ assets_version }}"></script>
 {% endblock %}
 
 {% block bodyClass %} class="public"{% endblock %}
@@ -63,6 +63,6 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/reputation/score.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/public/directMessage.js'
         filter='uglifyjs2' %}
-        <script src="{{ asset_url }}"></script>
+        <script src="{{ asset_url~'?v'~assets_version }}"></script>
     {% endjavascripts %}
 {% endblock javascriptFooter %}

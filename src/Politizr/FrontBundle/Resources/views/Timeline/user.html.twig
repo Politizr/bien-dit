@@ -6,8 +6,8 @@
 {% block javascriptHeader %}
     {{ parent() }}
 
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.swipe.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.min.js?v'~assets_version) }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.cycle2.swipe.min.js?v'~assets_version) }}"></script>
 {% endblock %}
 
 {% block headerMsg %}
@@ -46,6 +46,6 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/timeline.js'
         filter='uglifyjs2' %}
-        <script src="{{ asset_url }}"></script>
+        <script src="{{ asset_url~'?v'~assets_version }}"></script>
     {% endjavascripts %}
 {% endblock javascriptFooter %}

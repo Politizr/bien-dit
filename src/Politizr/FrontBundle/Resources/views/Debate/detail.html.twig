@@ -22,7 +22,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/selection-sharer.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/selection-sharer.css?v'~assets_version) }}" />
 {% endblock %}
 
 {% block bodyClass %}
@@ -150,6 +150,6 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/user/listing.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/detailDebate.js'
         filter='uglifyjs2' %}
-        <script src="{{ asset_url }}"></script>
+        <script src="{{ asset_url~'?v'~assets_version }}"></script>
     {% endjavascripts %}
 {% endblock javascriptFooter %}

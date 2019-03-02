@@ -7,8 +7,8 @@
 
 {% block javascriptHeader %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svg.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svgdom.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svg.min.js?v'~assets_version) }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery.svgdom.min.js?v'~assets_version) }}"></script>
 {% endblock %}
 
 {% set metaTitle = 'Contributions' %}
@@ -51,6 +51,6 @@
         '@PolitizrFrontBundle/Resources/public/js/politizr/document/listing.js'
         '@PolitizrFrontBundle/Resources/public/js/politizr/pages/listingBySearchPublications.js'
         filter='uglifyjs2' %}
-        <script src="{{ asset_url }}"></script>
+        <script src="{{ asset_url~'?v'~assets_version }}"></script>
     {% endjavascripts %}
 {% endblock javascriptFooter %}

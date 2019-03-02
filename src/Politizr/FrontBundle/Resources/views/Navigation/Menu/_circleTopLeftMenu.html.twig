@@ -2,3 +2,6 @@
 <div id="headerMenu">
     <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
 </div>
+<div id="searchInput">
+    <i class="icon-search"></i><input id="searchInputAlgolia" type="text" placeholder="Rechercher" circleUuid="{{ circle.uuid }}">
+</div>
