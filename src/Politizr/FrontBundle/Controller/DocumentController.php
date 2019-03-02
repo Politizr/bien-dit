@@ -195,6 +195,7 @@ class DocumentController extends Controller
 
         $queryAncestors = PDReactionQuery::create()
             ->filterByTreeLevel(0, \Criteria::NOT_EQUAL)    // Exclusion du root node
+            ->online()
             ->orderByTreeLevel('asc')
         ;
         // + exclusion parent immédiat s'il existe
@@ -206,6 +207,7 @@ class DocumentController extends Controller
 
         $querySiblings = PDReactionQuery::create()
             ->filterByTreeLevel(0, \Criteria::NOT_EQUAL)    // Exclusion du root node
+            ->online()
             ->orderByTreeLevel('asc')
         ;
         $siblings = $reaction->getSiblings(true, $querySiblings);
