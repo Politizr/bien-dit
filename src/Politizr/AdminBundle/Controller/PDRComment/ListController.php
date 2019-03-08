@@ -24,4 +24,45 @@ class ListController extends BaseListController
         }
     }
 
+
+    /**
+     * Add the filters to the query for topic
+     *
+     * @param queryFilter The queryFilter
+     * @param mixed The value
+     */
+    protected function filterPCTopic($queryFilter, $pcTopic)
+    {
+        $queryFilter->getQuery()
+            ->_if($pcTopic)
+                ->usePDReactionQuery()
+                    ->usePDDebateQuery()
+                        ->usePCTopicQuery()
+                            ->filterById($pcTopic->getId())
+                        ->endUse()
+                    ->endUse()
+                ->endUse()
+            ->_endif()
+        ;
+    }
+    /**
+     * Add the filters to the query for operation
+     *
+     * @param queryFilter The queryFilter
+     * @param mixed The value
+     */
+    protected function filterPEOPeration($queryFilter, $peOperation)
+    {
+        $queryFilter->getQuery()
+            ->_if($peOperation)
+                ->usePDReactionQuery()
+                    ->usePDDebateQuery()
+                        ->usePEOperationQuery()
+                            ->filterById($peOperation->getId())
+                        ->endUse()
+                    ->endUse()
+                ->endUse()
+            ->_endif()
+        ;
+    }
 }

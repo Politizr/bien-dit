@@ -46,6 +46,24 @@ params:
             label:          Actif
             sortable:       false
             dbType:         BOOLEAN
+        p_c_topic:
+            label:          Discussion de groupe
+            dbType:         model
+            filterType:     Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+            addFormOptions:
+                multiple:   false
+                required:   false
+                class:      Politizr\Model\PCTopic
+                query:      \Politizr\Model\PCTopicQuery::create()->orderByPCircleId()->filterByOnline(true)->orderByRank()
+        p_e_operation:
+            label:          Opération
+            dbType:         model
+            filterType:     Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
+            addFormOptions:
+                multiple:   false
+                required:   false
+                class:      Politizr\Model\PEOperation
+                query:      \Politizr\Model\PEOperationQuery::create()->orderByTitle()
     object_actions:
         delete:             ~
     batch_actions:
@@ -58,7 +76,7 @@ builders:
             sort:                               [ created_at, DESC ]
             display:                            [ description, p_user_id, p_d_debate_id, published_at, active ]
             filtersMode:                        modal
-            filters:                            [ id, uuid, p_user_id, p_d_debate_id, moderated, moderated_partial, active ]
+            filters:                            [ id, uuid, p_user_id, p_d_debate_id, p_c_topic, p_e_operation, moderated, moderated_partial, active ]
             object_actions:
                 show:                           ~
                 edit:                           ~
@@ -68,10 +86,15 @@ builders:
                 delete:                         ~
             actions:
                 new:                            ~
+                excel:                          ~
     excel:
-        params: ~
-        filename: ~
-        filetype: ~
+        params:
+            display:                            [ uuid, stripTaggedDescription, notePos, noteNeg, documentUuid, userUuid, published_at ]
+            filename:                           politizr-subjects-comments
+            filetype: ~
+            datetime_format: ~
+            fields: ~
+            export: ~
     new:
         params:
             title:                              "Création d'un commentaire"

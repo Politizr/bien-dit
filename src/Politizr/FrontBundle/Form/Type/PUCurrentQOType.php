@@ -53,5 +53,5 @@ class PUCurrentQOType extends AbstractType
 //         $resolver->setDefaults(array(
 //             'data_class' => 'Politizr\Model\PUCurrentQO',
 //         ));
-    }
+//    }
 }

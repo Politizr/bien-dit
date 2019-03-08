@@ -64,6 +64,19 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     }
 
     /**
+     * @see PDocumentInterface::getDebateId
+     */
+    public function getDebateUuid()
+    {
+        $debate = $this->getDebate();
+        if (!$debate) {
+            return null;
+        }
+        
+        return $debate->getUuid();
+    }
+
+    /**
      * Return "strip_tag"ged description
      *
      * @return string
@@ -288,6 +301,19 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     }
 
     /**
+     * @see PDocumentInterface::getTags
+     */
+    public function getStrTags($tagTypeId = null, $online = true)
+    {
+        $tags = $this->getArrayTags($tagTypeId, $online);
+        $strTags = '';
+        foreach ($tags as $tag) {
+            $strTags .= $tag . ' - ';
+        }
+        return $strTags;
+    }
+
+    /**
      * @see PDocumentInterface::isWithPrivateTag
      */
     public function isWithPrivateTag()
@@ -403,6 +429,18 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
     }
 
     /**
+     * @see getPUser
+     */
+    public function getUserUuid()
+    {
+        $user = $this->getPUser();
+        if ($user) {
+            return $user->getUuid();
+        }
+        return null;
+    }
+
+    /**
      * @see PDocumentInterface::isOwner
      */
     public function isDebateOwner($userId)
@@ -449,6 +487,23 @@ class PDReaction extends BasePDReaction implements PDocumentInterface
         }
 
         return $parentReaction;
+    }
+
+    /**
+     * Parent reaction uuid
+     *
+     * @return string
+     */
+    public function getParentReactionUuid($online = null, $published = null)
+    {
+        if ($id = $this->getParentReactionId()) {
+            $reaction = PDReactionQuery::create()->findPk($id);
+            if ($reaction) {
+                return $reaction->getUuid();
+            }
+        }
+        
+        return null;
     }
 
     /**

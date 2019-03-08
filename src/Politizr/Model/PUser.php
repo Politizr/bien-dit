@@ -1196,11 +1196,27 @@ class PUser extends BasePUser implements UserInterface
      */
     public function getDepartmentStr()
     {
-        if (!$this->getPLCity()) {
+        $department = $this->getDepartment();
+        if (!$department) {
+            return null;
+        }
+        
+        return $department->getTitle();
+    }
+
+    /**
+     * Return user's region name
+     *
+     * @return string
+     */
+    public function getRegionStr()
+    {
+        $region = $this->getRegion();
+        if (!$region) {
             return null;
         }
 
-        return $this->getPLCity()->getPLDepartment()->getTitle();
+        return $region->getTitle();
     }
 
     /**

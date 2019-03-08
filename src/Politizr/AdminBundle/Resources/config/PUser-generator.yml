@@ -150,7 +150,7 @@ builders:
                 delete:                         ~
     excel:
         params:
-            display:                            [ qualified, gender, name, first_name, cityStr, departmentStr, birthday, email, phone, email, website, twitter, facebook, reputation_score, provider, provider_id ]
+            display:                            [ uuid, qualified, gender, first_name, name, email, cityStr, departmentStr, regionStr ]
             filename:                           app-users
             filetype: ~
             datetime_format: ~
