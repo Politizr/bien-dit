@@ -1,13 +1,5 @@
 {# beta #}
 <div class="sidebarSearch">
-    {% if not app.user and geo.active %}
-        <div class="mapUnloggedText">
-            <h1>Vous devez vous<br>inscrire pour accéder<br>au filtre par zone<br>géographique</h1>
-            <a href="{{ path('Inscription') }}">Inscription</a>
-        </div>
-    {% elseif not app.user %}
-        {% include 'PolitizrFrontBundle:Navigation\\Menu:_createAccount.html.twig' %}
-    {% else %}
         {% if geo.active %}
             <div class="sidebarSearchMap">
                 <h5>Zone Géographique</h5>
@@ -28,5 +20,4 @@
         <div class="sidebarSearchFilters withLoaderInside">
             {% include 'PolitizrFrontBundle:Search\\Filters:_publicationsCategory.html.twig' %}
         </div>
-    {% endif %}
 </div>
