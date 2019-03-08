@@ -465,35 +465,41 @@ class CircleService
     }
 
     /**
-     * Get topic ids list by user id
+     * Get topic id list by user id
      *
      * @param int $userId
      * @return array
      */
-    public function getTopicIdsByUserId($userId = null)
+    public function getTopicIdsByUserId($userId)
     {
-        $query = PCTopicQuery::create()
-                ->select('Id');
+        $topicIds = PCTopicQuery::create()
+            ->select('Id')
+            ->usePCircleQuery()
+                ->usePUInPCQuery()
+                    ->filterByPUserId($userId)
+                ->endUse()
+            ->endUse()
+            ->find()
+            ->toArray();
 
-        if ($userId) {
-            $query = $query
-                ->distinct()
-                ->usePCircleQuery()
-                    ->usePUInPCQuery()
-                        ->filterByPUserId($userId)                    
-                    ->endUse()
-                    ->_or()
-                    ->filterByPrivateAccess(false)
-                ->endUse();
-        } else {
-            $query = $query
-                ->distinct()
-                ->usePCircleQuery()
-                    ->filterByPrivateAccess(false)
-                ->endUse();
-        }
+        return $topicIds;
+    }
 
-        $topicIds = $query->find()->toArray();
+    /**
+     * Get topic id list by user id
+     *
+     * @param int $userId
+     * @return array
+     */
+    public function getPublicCircleTopicIds()
+    {
+        $topicIds = PCTopicQuery::create()
+            ->select('Id')
+            ->usePCircleQuery()
+                ->filterByPublicCircle(true)
+            ->endUse()
+            ->find()
+            ->toArray();
 
         return $topicIds;
     }

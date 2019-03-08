@@ -939,6 +939,14 @@ LIMIT :offset, :limit
      */
     private function createDocumentsByRecommendRawSql($inQueryTopicIds, $filterDate = null, $month = null, $year = null)
     {
+        $subRequestCond1 = '';
+        $subRequestCond2 = '';
+        if ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_MONTH) {
+            $subRequestCond = "AND p_u_reputation.created_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()";
+        } elseif ($filterDate == ListingConstants::FILTER_KEYWORD_EXACT_MONTH) {
+            $subRequestCond = "AND p_u_reputation.created_at BETWEEN LAST_DAY(DATE_SUB('$year-$month-15', INTERVAL 1 MONTH)) AND LAST_DAY('$year-$month-15')";
+        }
+
         // Topic subrequest
         $subrequestTopic1 = "AND p_d_debate.p_c_topic_id is NULL";
         $subrequestTopic2 = "AND p_d_reaction.p_c_topic_id is NULL";
@@ -947,13 +955,7 @@ LIMIT :offset, :limit
             $subrequestTopic2 = "AND (p_d_reaction.p_c_topic_id is NULL OR p_d_reaction.p_c_topic_id IN ($inQueryTopicIds))";
         }
 
-        $subRequestCond1 = '';
-        $subRequestCond2 = '';
-        if ($filterDate == ListingConstants::FILTER_KEYWORD_LAST_MONTH) {
-            $subRequestCond = "AND p_u_reputation.created_at BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()";
-        } elseif ($filterDate == ListingConstants::FILTER_KEYWORD_EXACT_MONTH) {
-            $subRequestCond = "AND p_u_reputation.created_at BETWEEN LAST_DAY(DATE_SUB('$year-$month-15', INTERVAL 1 MONTH)) AND LAST_DAY('$year-$month-15')";
-        }
+
         // Requête SQL
         $sql = "
 ( SELECT COUNT(p_d_debate.id) as nb_note_pos, p_d_debate.id as id, p_d_debate.title as title, p_d_debate.note_pos as note_pos, p_d_debate.note_neg as note_neg, p_d_debate.published_at as published_at, 'Politizr\\\Model\\\PDDebate' as type
@@ -1183,7 +1185,6 @@ LIMIT :offset, :limit
      *
      * @see app/sql/topDocuments.sql
      *
-     * @param string $inQueryTopicIds
      * @return string
      */
     private function createTopDocumentsBestNoteRawSql($inQueryTopicIds)
@@ -1742,13 +1743,13 @@ GROUP BY p_d_debate_id
     /**
      * Top documents best notes
      *
+     * @param string $inQueryTopicIds
      * @param int $limit
      * @return PropelCollection[PDDebate|PDReaction]
      */
     public function generateTopDocumentsBestNote($inQueryTopicIds, $limit)
     {
         // $this->logger->info('*** generateTopDocumentsBestNote');
-        // $this->logger->info('$inQueryTopicIds = ' . print_r($inQueryTopicIds, true));
         // $this->logger->info('$limit = ' . print_r($limit, true));
 
         $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);

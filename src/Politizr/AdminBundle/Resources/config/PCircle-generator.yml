@@ -36,6 +36,10 @@ params:
             label:          En ligne
         private_access:
             label:          Accès privé
+        public_circle:
+            label:          Accès public
+        open_reaction:
+            label:          Réactions ouvertes
         created_at:
             label:          Création
         updated_at:
@@ -71,7 +75,8 @@ builders:
         params:
             title:                              "Création d'une consultation"
             display:
-                "Champs principaux":            [ p_c_owner, p_circle_type, title, private_access ]
+                "Champs principaux":            [ p_c_owner, p_circle_type, title ]
+                "Portée":                       [ private_access ]
             fields:
                 p_c_owner:
                     dbType:                     model
@@ -98,7 +103,7 @@ builders:
                     "Offre":                    [ p_circle_type ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "État":                     [ read_only, online ]
+                    "État":                     [ open_reaction, read_only, online ]
                     "Dates":                    [ [ created_at, updated_at ] ]
             fields:
                 block_logo_file_name:
@@ -150,8 +155,8 @@ builders:
                     "Offre":                    [ p_circle_type ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "État":                     [ read_only, online ]
-                    "Restrictions":             [ private_access ]
+                    "État":                     [ open_reaction, read_only, online ]
+                    "Restrictions":             [ public_circle, private_access ]
                     "Dates":                    [ [ created_at, updated_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]

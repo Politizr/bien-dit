@@ -27,6 +27,8 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PCircleArchiveQuery orderByReadOnly($order = Criteria::ASC) Order by the read_only column
  * @method PCircleArchiveQuery orderByPrivateAccess($order = Criteria::ASC) Order by the private_access column
+ * @method PCircleArchiveQuery orderByPublicCircle($order = Criteria::ASC) Order by the public_circle column
+ * @method PCircleArchiveQuery orderByOpenReaction($order = Criteria::ASC) Order by the open_reaction column
  * @method PCircleArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PCircleArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PCircleArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -45,6 +47,8 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchiveQuery groupByOnline() Group by the online column
  * @method PCircleArchiveQuery groupByReadOnly() Group by the read_only column
  * @method PCircleArchiveQuery groupByPrivateAccess() Group by the private_access column
+ * @method PCircleArchiveQuery groupByPublicCircle() Group by the public_circle column
+ * @method PCircleArchiveQuery groupByOpenReaction() Group by the open_reaction column
  * @method PCircleArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PCircleArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PCircleArchiveQuery groupBySlug() Group by the slug column
@@ -69,6 +73,8 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchive findOneByOnline(boolean $online) Return the first PCircleArchive filtered by the online column
  * @method PCircleArchive findOneByReadOnly(boolean $read_only) Return the first PCircleArchive filtered by the read_only column
  * @method PCircleArchive findOneByPrivateAccess(boolean $private_access) Return the first PCircleArchive filtered by the private_access column
+ * @method PCircleArchive findOneByPublicCircle(boolean $public_circle) Return the first PCircleArchive filtered by the public_circle column
+ * @method PCircleArchive findOneByOpenReaction(boolean $open_reaction) Return the first PCircleArchive filtered by the open_reaction column
  * @method PCircleArchive findOneByCreatedAt(string $created_at) Return the first PCircleArchive filtered by the created_at column
  * @method PCircleArchive findOneByUpdatedAt(string $updated_at) Return the first PCircleArchive filtered by the updated_at column
  * @method PCircleArchive findOneBySlug(string $slug) Return the first PCircleArchive filtered by the slug column
@@ -87,6 +93,8 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method array findByOnline(boolean $online) Return PCircleArchive objects filtered by the online column
  * @method array findByReadOnly(boolean $read_only) Return PCircleArchive objects filtered by the read_only column
  * @method array findByPrivateAccess(boolean $private_access) Return PCircleArchive objects filtered by the private_access column
+ * @method array findByPublicCircle(boolean $public_circle) Return PCircleArchive objects filtered by the public_circle column
+ * @method array findByOpenReaction(boolean $open_reaction) Return PCircleArchive objects filtered by the open_reaction column
  * @method array findByCreatedAt(string $created_at) Return PCircleArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PCircleArchive objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PCircleArchive objects filtered by the slug column
@@ -197,7 +205,7 @@ abstract class BasePCircleArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `private_access`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_circle_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `private_access`, `public_circle`, `open_reaction`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_circle_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -665,6 +673,60 @@ abstract class BasePCircleArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCircleArchivePeer::PRIVATE_ACCESS, $privateAccess, $comparison);
+    }
+
+    /**
+     * Filter the query on the public_circle column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPublicCircle(true); // WHERE public_circle = true
+     * $query->filterByPublicCircle('yes'); // WHERE public_circle = true
+     * </code>
+     *
+     * @param     boolean|string $publicCircle The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleArchiveQuery The current query, for fluid interface
+     */
+    public function filterByPublicCircle($publicCircle = null, $comparison = null)
+    {
+        if (is_string($publicCircle)) {
+            $publicCircle = in_array(strtolower($publicCircle), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PCircleArchivePeer::PUBLIC_CIRCLE, $publicCircle, $comparison);
+    }
+
+    /**
+     * Filter the query on the open_reaction column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByOpenReaction(true); // WHERE open_reaction = true
+     * $query->filterByOpenReaction('yes'); // WHERE open_reaction = true
+     * </code>
+     *
+     * @param     boolean|string $openReaction The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleArchiveQuery The current query, for fluid interface
+     */
+    public function filterByOpenReaction($openReaction = null, $comparison = null)
+    {
+        if (is_string($openReaction)) {
+            $openReaction = in_array(strtolower($openReaction), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PCircleArchivePeer::OPEN_REACTION, $openReaction, $comparison);
     }
 
     /**
