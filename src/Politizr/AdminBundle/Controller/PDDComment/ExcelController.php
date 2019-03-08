@@ -9,4 +9,13 @@ use Admingenerated\PolitizrAdminBundle\BasePDDCommentController\ExcelController 
  */
 class ExcelController extends BaseExcelController
 {
+    protected function getSpreadsheetFileName($fileType)
+    {
+        return $this->fixSpreadsheetExtension('app-subject-comments'.time(), $fileType);
+    }
+
+    protected function getExcelFileName($fileType)
+    {
+        return $this->fixExtension('app-subject-comments'.time(), $fileType);
+    }
 }

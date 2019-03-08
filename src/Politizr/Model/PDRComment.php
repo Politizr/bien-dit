@@ -53,6 +53,28 @@ class PDRComment extends BasePDRComment implements PDCommentInterface
     }
 
     /**
+     * @see PDComment::getPDocument
+     */
+    public function getDocumentUuid()
+    {
+        $reaction = parent::getPDReaction();
+        if ($reaction) {
+            return $reaction->getUuid();
+        }
+        return null;
+    }
+
+    /**
+     * Return "strip_tag"ged description
+     *
+     * @return string
+     */
+    public function getStripTaggedDescription()
+    {
+        return html_entity_decode(strip_tags($this->getDescription()));
+    }
+
+    /**
      * Renvoit le user associé à la réaction
      *
      * @return     PUser     Objet user
@@ -60,6 +82,18 @@ class PDRComment extends BasePDRComment implements PDCommentInterface
     public function getUser()
     {
         return parent::getPUser();
+    }
+
+    /**
+     * @see getPUser
+     */
+    public function getUserUuid()
+    {
+        $user = $this->getPUser();
+        if ($user) {
+            return $user->getUuid();
+        }
+        return null;
     }
 
     /**

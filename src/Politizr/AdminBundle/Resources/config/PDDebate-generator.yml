@@ -137,7 +137,7 @@ builders:
                 excel:                          ~
     excel:
         params:
-            display:                            [ title, stripTaggedDescription, p_user, slug, published_at ]
+            display:                            [ uuid, title, p_c_topic, p_e_operation, stripTaggedDescription, localizations, strTags, notePos, noteNeg, slug, userUuid, published_at ]
             filename:                           app-subjects
             filetype: ~
             datetime_format: ~
@@ -214,7 +214,7 @@ builders:
                         multiple:               false
                         required:               false
                         class:                  Politizr\Model\PCTopic
-                        query:                  \Politizr\Model\PCTopicQuery::create()->orderByPCircleId()->orderByRank()
+                        query:                  \Politizr\Model\PCTopicQuery::create()->orderByPCircleId()->filterByOnline(true)->orderByRank()
                 description:
                     grid_class:                 "col-md-12"
                     addFormOptions:

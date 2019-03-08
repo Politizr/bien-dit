@@ -57,6 +57,27 @@ class PDDComment extends BasePDDComment implements PDCommentInterface
     }
 
     /**
+     * @see PDComment::getPDocument
+     */
+    public function getDocumentUuid()
+    {
+        $debate = parent::getPDDebate();
+        if ($debate) {
+            return $debate->getUuid();
+        }
+        return null;
+    }
+    /**
+     * Return "strip_tag"ged description
+     *
+     * @return string
+     */
+    public function getStripTaggedDescription()
+    {
+        return html_entity_decode(strip_tags($this->getDescription()));
+    }
+
+    /**
      * Comment's user
      *
      * @return PUser
@@ -64,6 +85,18 @@ class PDDComment extends BasePDDComment implements PDCommentInterface
     public function getUser()
     {
         return parent::getPUser();
+    }
+
+    /**
+     * @see getPUser
+     */
+    public function getUserUuid()
+    {
+        $user = $this->getPUser();
+        if ($user) {
+            return $user->getUuid();
+        }
+        return null;
     }
 
     /**

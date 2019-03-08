@@ -145,7 +145,7 @@ builders:
                 excel:                          ~
     excel:
         params:
-            display:                            [ title, stripTaggedDescription, p_user, slug, published_at ]
+            display:                            [ uuid, title, p_c_topic, stripTaggedDescription, localizations, strTags, notePos, noteNeg, slug, debateUuid, parentReactionUuid, userUuid, published_at ]
             filename:                           app-reactions
             filetype: ~
             datetime_format: ~
@@ -173,7 +173,7 @@ builders:
                         multiple:               false
                         required:               false
                         class:                  Politizr\Model\PCTopic
-                        query:                  \Politizr\Model\PCTopicQuery::create()->orderByPCircleId()->orderByRank()
+                        query:                  \Politizr\Model\PCTopicQuery::create()->orderByPCircleId()->filterByOnline(true)->orderByRank()
                 p_d_debate:
                     dbType:                     model
                     formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
