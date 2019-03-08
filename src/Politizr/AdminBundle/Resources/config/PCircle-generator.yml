@@ -71,7 +71,7 @@ builders:
         params:
             title:                              "Création d'une consultation"
             display:
-                "Champs principaux":            [ p_c_owner, p_circle_type, title ]
+                "Champs principaux":            [ p_c_owner, p_circle_type, title, private_access ]
             fields:
                 p_c_owner:
                     dbType:                     model
@@ -94,11 +94,8 @@ builders:
                     "Logo":                     [ block_logo_file_name ]
                     "Texte":                    [ [ title, summary ], description ]
                 "Contexte":
-                    "Propriétaire":                   [ p_c_owner ]
+                    "Propriétaire":             [ p_c_owner ]
                     "Offre":                    [ p_circle_type ]
-                "Options":
-                    "Adresse":                  [ url ]
-                    "Restrictions":             [ private_access ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "État":                     [ read_only, online ]
@@ -151,12 +148,10 @@ builders:
                 "Contexte":
                     "Propriétaire":                   [ block_p_c_owner ]
                     "Offre":                    [ p_circle_type ]
-                "Options":
-                    "Adresse":                  [ url ]
-                    "Restrictions":             [ private_access ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "État":                     [ read_only, online ]
+                    "Restrictions":             [ private_access ]
                     "Dates":                    [ [ created_at, updated_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]
