@@ -196,8 +196,13 @@ class DocumentService
         $regionId = null;
         $countryId = null;
 
-        $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
-        $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        if ($currentUserId) {
+            $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        } else {
+            $topicIds = $this->circleService->getPublicCircleTopicIds();
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
 
         if ($geoUuid) {
             $this->localizationService->fillExtendedChildrenGeoIdsFromGeoUuid(
@@ -295,8 +300,13 @@ class DocumentService
     public function getUserPublicationsPaginatedListing($userId, $currentUserId = null, $orderBy, $tagId = null, $offset = 0, $count = ListingConstants::LISTING_CLASSIC_PAGINATION)
     {
         $inQueryTopicIds = null;
-        $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
-        $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        if ($currentUserId) {
+            $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        } else {
+            $topicIds = $this->circleService->getPublicCircleTopicIds();
+            $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
+        }
 
         $documents = $this->documentManager->generatePublicationsByUserPaginated($userId, $inQueryTopicIds, $orderBy, $tagId, $offset, $count);
 
@@ -326,9 +336,8 @@ class DocumentService
         }
 
         $inQueryTopicIds = null;
-        $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+        $topicIds = $this->circleService->getPublicCircleTopicIds();
         $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
-
         $documents = $this->documentManager->generateDocumentsByRecommendPaginated($inQueryTopicIds, $filterDate, $month, $year, $offset, $count);
 
         return $documents;
@@ -393,7 +402,7 @@ class DocumentService
     public function getTopDocumentsBestNote($currentUserId = null, $count = ListingConstants::LISTING_TOP_DOCUMENTS_LIMIT)
     {
         $inQueryTopicIds = null;
-        $topicIds = $this->circleService->getTopicIdsByUserId($currentUserId);
+        $topicIds = $this->circleService->getPublicCircleTopicIds();
         $inQueryTopicIds = $this->globalTools->getInQuery($topicIds);
 
         $documents = $this->documentManager->generateTopDocumentsBestNote($inQueryTopicIds, $count);

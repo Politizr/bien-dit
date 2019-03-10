@@ -38,6 +38,8 @@ use Politizr\Model\PUser;
  * @method PCircleQuery orderByOnline($order = Criteria::ASC) Order by the online column
  * @method PCircleQuery orderByReadOnly($order = Criteria::ASC) Order by the read_only column
  * @method PCircleQuery orderByPrivateAccess($order = Criteria::ASC) Order by the private_access column
+ * @method PCircleQuery orderByPublicCircle($order = Criteria::ASC) Order by the public_circle column
+ * @method PCircleQuery orderByOpenReaction($order = Criteria::ASC) Order by the open_reaction column
  * @method PCircleQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PCircleQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PCircleQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -55,6 +57,8 @@ use Politizr\Model\PUser;
  * @method PCircleQuery groupByOnline() Group by the online column
  * @method PCircleQuery groupByReadOnly() Group by the read_only column
  * @method PCircleQuery groupByPrivateAccess() Group by the private_access column
+ * @method PCircleQuery groupByPublicCircle() Group by the public_circle column
+ * @method PCircleQuery groupByOpenReaction() Group by the open_reaction column
  * @method PCircleQuery groupByCreatedAt() Group by the created_at column
  * @method PCircleQuery groupByUpdatedAt() Group by the updated_at column
  * @method PCircleQuery groupBySlug() Group by the slug column
@@ -102,6 +106,8 @@ use Politizr\Model\PUser;
  * @method PCircle findOneByOnline(boolean $online) Return the first PCircle filtered by the online column
  * @method PCircle findOneByReadOnly(boolean $read_only) Return the first PCircle filtered by the read_only column
  * @method PCircle findOneByPrivateAccess(boolean $private_access) Return the first PCircle filtered by the private_access column
+ * @method PCircle findOneByPublicCircle(boolean $public_circle) Return the first PCircle filtered by the public_circle column
+ * @method PCircle findOneByOpenReaction(boolean $open_reaction) Return the first PCircle filtered by the open_reaction column
  * @method PCircle findOneByCreatedAt(string $created_at) Return the first PCircle filtered by the created_at column
  * @method PCircle findOneByUpdatedAt(string $updated_at) Return the first PCircle filtered by the updated_at column
  * @method PCircle findOneBySlug(string $slug) Return the first PCircle filtered by the slug column
@@ -119,6 +125,8 @@ use Politizr\Model\PUser;
  * @method array findByOnline(boolean $online) Return PCircle objects filtered by the online column
  * @method array findByReadOnly(boolean $read_only) Return PCircle objects filtered by the read_only column
  * @method array findByPrivateAccess(boolean $private_access) Return PCircle objects filtered by the private_access column
+ * @method array findByPublicCircle(boolean $public_circle) Return PCircle objects filtered by the public_circle column
+ * @method array findByOpenReaction(boolean $open_reaction) Return PCircle objects filtered by the open_reaction column
  * @method array findByCreatedAt(string $created_at) Return PCircle objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PCircle objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PCircle objects filtered by the slug column
@@ -234,7 +242,7 @@ abstract class BasePCircleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `private_access`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_circle` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `private_access`, `public_circle`, `open_reaction`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_circle` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -706,6 +714,60 @@ abstract class BasePCircleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCirclePeer::PRIVATE_ACCESS, $privateAccess, $comparison);
+    }
+
+    /**
+     * Filter the query on the public_circle column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPublicCircle(true); // WHERE public_circle = true
+     * $query->filterByPublicCircle('yes'); // WHERE public_circle = true
+     * </code>
+     *
+     * @param     boolean|string $publicCircle The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function filterByPublicCircle($publicCircle = null, $comparison = null)
+    {
+        if (is_string($publicCircle)) {
+            $publicCircle = in_array(strtolower($publicCircle), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PCirclePeer::PUBLIC_CIRCLE, $publicCircle, $comparison);
+    }
+
+    /**
+     * Filter the query on the open_reaction column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByOpenReaction(true); // WHERE open_reaction = true
+     * $query->filterByOpenReaction('yes'); // WHERE open_reaction = true
+     * </code>
+     *
+     * @param     boolean|string $openReaction The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function filterByOpenReaction($openReaction = null, $comparison = null)
+    {
+        if (is_string($openReaction)) {
+            $openReaction = in_array(strtolower($openReaction), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PCirclePeer::OPEN_REACTION, $openReaction, $comparison);
     }
 
     /**

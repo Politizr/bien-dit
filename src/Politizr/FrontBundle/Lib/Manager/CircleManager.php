@@ -40,6 +40,55 @@ class CircleManager
     /* ######################################################################################################## */
 
     /**
+     * Update users to add role associated with circle
+     *
+     * @param PropelCollection[PUser] $users
+     * @param integer $circleId
+     */
+    public function addUsersCircleRole($users, $circleId)
+    {
+        $circleRole = 'ROLE_CIRCLE_' . $circleId;
+
+        $con = \Propel::getConnection('default');
+        $con->beginTransaction();
+        try {
+            foreach ($users as $user) {
+                if (!$user->hasRole($circleRole)) {
+                    $user->addRole($circleRole);
+                    $user->save();
+                }
+            }
+
+            $con->commit();
+        } catch (\Exception $e) {
+            $con->rollback();
+            throw new InconsistentDataException(sprintf('Rollback addUsersCircleRole user id-%s.', $user->getId()));
+        }
+    }
+
+    /**
+     * Create list of PUInPC
+     *
+     * @param PropelCollection[PUser] $users
+     * @param integer $circleId
+     */
+    public function insertUsersInCircle($users, $circleId)
+    {
+        $con = \Propel::getConnection('default');
+        $con->beginTransaction();
+        try {
+            foreach ($users as $user) {
+                $this->createUserInCircle($user->getId(), $circleId);
+            }
+
+            $con->commit();
+        } catch (\Exception $e) {
+            $con->rollback();
+            throw new InconsistentDataException(sprintf('Rollback insertUsersInCircle user id-%s.', $user->getId()));
+        }
+    }
+
+    /**
      * Create a new PUInPC
      *
      * @param integer $userId

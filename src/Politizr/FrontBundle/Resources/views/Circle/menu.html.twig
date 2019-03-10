@@ -10,6 +10,7 @@
             <div id="groupListing">
                 {% for owner in owners %}
                     <h1>{{ owner.title }}</h1>
+                    {# @todo logic error > keep only circles authorizes for current user / not all owner's circles online #}
                     {% set circles = owner.circles %}
                     {% for circle in circles %}
                         <div class="groupListingRow">

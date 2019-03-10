@@ -445,6 +445,60 @@ class CircleService
         return $ids;
     }
 
+    /**
+     * Return users authorized to join circle depending of its attributes
+     *
+     * @param PCircle $cirlce
+     * @return $users
+     */
+    public function getCircleAuthorizedUsers($circle)
+    {
+        if (!$circle) {
+            throw new InconsistentDataException('Circle null');
+        }
+
+        // Private circle > users are managed manually
+        if ($circle->getPrivateAccess()) {
+            return null;
+        }
+
+        // Public circle > all users
+        if ($circle->getPublicCircle()) {
+            $users = PUserQuery::create()->find();
+        }
+
+        // @todo geolocalized circle > users who match geo zone
+
+        return $users;
+    }
+
+    /**
+     * Insert existing users authorized to join newly created circle
+     *
+     * @param PCircle $circle
+     * @return $users
+     */
+    public function updateCircleAuthorizedUsers(PCircle $circle)
+    {
+        if (!$circle) {
+            throw new InconsistentDataException('Circle null');
+        }
+
+        // get authorized users in circle
+        $users = $this->getCircleAuthorizedUsers($circle);
+
+        // insert these users in `p_u_in_p_c` table
+        $this->circleManager->insertUsersInCircle($users, $circle->getId());
+
+        // update users roles
+        $this->circleManager->addUsersCircleRole($users, $circle->getId());
+
+        // @todo special case public circle > raw sql to manager big insert / upd in db (every users)
+        // if ($publicCircle = $circle->getPublicCircle()) {
+        // } else {            
+        // }
+    }
+
     /* ######################################################################################################## */
     /*                                              TOPIC FUNCTIONS                                             */
     /* ######################################################################################################## */
@@ -465,35 +519,41 @@ class CircleService
     }
 
     /**
-     * Get topic ids list by user id
+     * Get topic id list by user id
      *
      * @param int $userId
      * @return array
      */
-    public function getTopicIdsByUserId($userId = null)
+    public function getTopicIdsByUserId($userId)
     {
-        $query = PCTopicQuery::create()
-                ->select('Id');
+        $topicIds = PCTopicQuery::create()
+            ->select('Id')
+            ->usePCircleQuery()
+                ->usePUInPCQuery()
+                    ->filterByPUserId($userId)
+                ->endUse()
+            ->endUse()
+            ->find()
+            ->toArray();
 
-        if ($userId) {
-            $query = $query
-                ->distinct()
-                ->usePCircleQuery()
-                    ->usePUInPCQuery()
-                        ->filterByPUserId($userId)                    
-                    ->endUse()
-                    ->_or()
-                    ->filterByPrivateAccess(false)
-                ->endUse();
-        } else {
-            $query = $query
-                ->distinct()
-                ->usePCircleQuery()
-                    ->filterByPrivateAccess(false)
-                ->endUse();
-        }
+        return $topicIds;
+    }
 
-        $topicIds = $query->find()->toArray();
+    /**
+     * Get topic id list by user id
+     *
+     * @param int $userId
+     * @return array
+     */
+    public function getPublicCircleTopicIds()
+    {
+        $topicIds = PCTopicQuery::create()
+            ->select('Id')
+            ->usePCircleQuery()
+                ->filterByPublicCircle(true)
+            ->endUse()
+            ->find()
+            ->toArray();
 
         return $topicIds;
     }

@@ -132,6 +132,20 @@ abstract class BasePCircle extends BaseObject implements Persistent
     protected $private_access;
 
     /**
+     * The value for the public_circle field.
+     * Note: this column has a database default value of: true
+     * @var        boolean
+     */
+    protected $public_circle;
+
+    /**
+     * The value for the open_reaction field.
+     * Note: this column has a database default value of: false
+     * @var        boolean
+     */
+    protected $open_reaction;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -281,6 +295,8 @@ abstract class BasePCircle extends BaseObject implements Persistent
     public function applyDefaultValues()
     {
         $this->private_access = false;
+        $this->public_circle = true;
+        $this->open_reaction = false;
     }
 
     /**
@@ -423,6 +439,28 @@ abstract class BasePCircle extends BaseObject implements Persistent
     {
 
         return $this->private_access;
+    }
+
+    /**
+     * Get the [public_circle] column value.
+     *
+     * @return boolean
+     */
+    public function getPublicCircle()
+    {
+
+        return $this->public_circle;
+    }
+
+    /**
+     * Get the [open_reaction] column value.
+     *
+     * @return boolean
+     */
+    public function getOpenReaction()
+    {
+
+        return $this->open_reaction;
     }
 
     /**
@@ -815,6 +853,64 @@ abstract class BasePCircle extends BaseObject implements Persistent
     } // setPrivateAccess()
 
     /**
+     * Sets the value of the [public_circle] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function setPublicCircle($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->public_circle !== $v) {
+            $this->public_circle = $v;
+            $this->modifiedColumns[] = PCirclePeer::PUBLIC_CIRCLE;
+        }
+
+
+        return $this;
+    } // setPublicCircle()
+
+    /**
+     * Sets the value of the [open_reaction] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return PCircle The current object (for fluent API support)
+     */
+    public function setOpenReaction($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->open_reaction !== $v) {
+            $this->open_reaction = $v;
+            $this->modifiedColumns[] = PCirclePeer::OPEN_REACTION;
+        }
+
+
+        return $this;
+    } // setOpenReaction()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -916,6 +1012,14 @@ abstract class BasePCircle extends BaseObject implements Persistent
                 return false;
             }
 
+            if ($this->public_circle !== true) {
+                return false;
+            }
+
+            if ($this->open_reaction !== false) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -950,10 +1054,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
             $this->online = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
             $this->read_only = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
             $this->private_access = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
-            $this->created_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->updated_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->slug = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->sortable_rank = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->public_circle = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
+            $this->open_reaction = ($row[$startcol + 13] !== null) ? (boolean) $row[$startcol + 13] : null;
+            $this->created_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->updated_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->slug = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->sortable_rank = ($row[$startcol + 17] !== null) ? (int) $row[$startcol + 17] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -963,7 +1069,7 @@ abstract class BasePCircle extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 16; // 16 = PCirclePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 18; // 18 = PCirclePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PCircle object", $e);
@@ -1418,6 +1524,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
         if ($this->isColumnModified(PCirclePeer::PRIVATE_ACCESS)) {
             $modifiedColumns[':p' . $index++]  = '`private_access`';
         }
+        if ($this->isColumnModified(PCirclePeer::PUBLIC_CIRCLE)) {
+            $modifiedColumns[':p' . $index++]  = '`public_circle`';
+        }
+        if ($this->isColumnModified(PCirclePeer::OPEN_REACTION)) {
+            $modifiedColumns[':p' . $index++]  = '`open_reaction`';
+        }
         if ($this->isColumnModified(PCirclePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -1476,6 +1588,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
                         break;
                     case '`private_access`':
                         $stmt->bindValue($identifier, (int) $this->private_access, PDO::PARAM_INT);
+                        break;
+                    case '`public_circle`':
+                        $stmt->bindValue($identifier, (int) $this->public_circle, PDO::PARAM_INT);
+                        break;
+                    case '`open_reaction`':
+                        $stmt->bindValue($identifier, (int) $this->open_reaction, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1586,15 +1704,21 @@ abstract class BasePCircle extends BaseObject implements Persistent
                 return $this->getPrivateAccess();
                 break;
             case 12:
-                return $this->getCreatedAt();
+                return $this->getPublicCircle();
                 break;
             case 13:
-                return $this->getUpdatedAt();
+                return $this->getOpenReaction();
                 break;
             case 14:
-                return $this->getSlug();
+                return $this->getCreatedAt();
                 break;
             case 15:
+                return $this->getUpdatedAt();
+                break;
+            case 16:
+                return $this->getSlug();
+                break;
+            case 17:
                 return $this->getSortableRank();
                 break;
             default:
@@ -1638,10 +1762,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
             $keys[9] => $this->getOnline(),
             $keys[10] => $this->getReadOnly(),
             $keys[11] => $this->getPrivateAccess(),
-            $keys[12] => $this->getCreatedAt(),
-            $keys[13] => $this->getUpdatedAt(),
-            $keys[14] => $this->getSlug(),
-            $keys[15] => $this->getSortableRank(),
+            $keys[12] => $this->getPublicCircle(),
+            $keys[13] => $this->getOpenReaction(),
+            $keys[14] => $this->getCreatedAt(),
+            $keys[15] => $this->getUpdatedAt(),
+            $keys[16] => $this->getSlug(),
+            $keys[17] => $this->getSortableRank(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1738,15 +1864,21 @@ abstract class BasePCircle extends BaseObject implements Persistent
                 $this->setPrivateAccess($value);
                 break;
             case 12:
-                $this->setCreatedAt($value);
+                $this->setPublicCircle($value);
                 break;
             case 13:
-                $this->setUpdatedAt($value);
+                $this->setOpenReaction($value);
                 break;
             case 14:
-                $this->setSlug($value);
+                $this->setCreatedAt($value);
                 break;
             case 15:
+                $this->setUpdatedAt($value);
+                break;
+            case 16:
+                $this->setSlug($value);
+                break;
+            case 17:
                 $this->setSortableRank($value);
                 break;
         } // switch()
@@ -1785,10 +1917,12 @@ abstract class BasePCircle extends BaseObject implements Persistent
         if (array_key_exists($keys[9], $arr)) $this->setOnline($arr[$keys[9]]);
         if (array_key_exists($keys[10], $arr)) $this->setReadOnly($arr[$keys[10]]);
         if (array_key_exists($keys[11], $arr)) $this->setPrivateAccess($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setCreatedAt($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setUpdatedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setSlug($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setSortableRank($arr[$keys[15]]);
+        if (array_key_exists($keys[12], $arr)) $this->setPublicCircle($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setOpenReaction($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setCreatedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setUpdatedAt($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setSlug($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setSortableRank($arr[$keys[17]]);
     }
 
     /**
@@ -1812,6 +1946,8 @@ abstract class BasePCircle extends BaseObject implements Persistent
         if ($this->isColumnModified(PCirclePeer::ONLINE)) $criteria->add(PCirclePeer::ONLINE, $this->online);
         if ($this->isColumnModified(PCirclePeer::READ_ONLY)) $criteria->add(PCirclePeer::READ_ONLY, $this->read_only);
         if ($this->isColumnModified(PCirclePeer::PRIVATE_ACCESS)) $criteria->add(PCirclePeer::PRIVATE_ACCESS, $this->private_access);
+        if ($this->isColumnModified(PCirclePeer::PUBLIC_CIRCLE)) $criteria->add(PCirclePeer::PUBLIC_CIRCLE, $this->public_circle);
+        if ($this->isColumnModified(PCirclePeer::OPEN_REACTION)) $criteria->add(PCirclePeer::OPEN_REACTION, $this->open_reaction);
         if ($this->isColumnModified(PCirclePeer::CREATED_AT)) $criteria->add(PCirclePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PCirclePeer::UPDATED_AT)) $criteria->add(PCirclePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PCirclePeer::SLUG)) $criteria->add(PCirclePeer::SLUG, $this->slug);
@@ -1890,6 +2026,8 @@ abstract class BasePCircle extends BaseObject implements Persistent
         $copyObj->setOnline($this->getOnline());
         $copyObj->setReadOnly($this->getReadOnly());
         $copyObj->setPrivateAccess($this->getPrivateAccess());
+        $copyObj->setPublicCircle($this->getPublicCircle());
+        $copyObj->setOpenReaction($this->getOpenReaction());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -3446,6 +3584,8 @@ abstract class BasePCircle extends BaseObject implements Persistent
         $this->online = null;
         $this->read_only = null;
         $this->private_access = null;
+        $this->public_circle = null;
+        $this->open_reaction = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
@@ -4218,6 +4358,8 @@ abstract class BasePCircle extends BaseObject implements Persistent
         $this->setOnline($archive->getOnline());
         $this->setReadOnly($archive->getReadOnly());
         $this->setPrivateAccess($archive->getPrivateAccess());
+        $this->setPublicCircle($archive->getPublicCircle());
+        $this->setOpenReaction($archive->getOpenReaction());
         $this->setCreatedAt($archive->getCreatedAt());
         $this->setUpdatedAt($archive->getUpdatedAt());
         $this->setSlug($archive->getSlug());
