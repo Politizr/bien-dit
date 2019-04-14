@@ -22,8 +22,8 @@ class NewController extends BaseNewController
      */
     protected function preSave(Form $form, PCircle $circle)
     {
-        $isPrivate = $form['private_access'];
-        if ($isPrivate) {
+        $privateAccess = $circle->getPrivateAccess();
+        if ($privateAccess) {
             $circle->setPublicCircle(false);
         }
     }

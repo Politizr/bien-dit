@@ -463,12 +463,12 @@ class CircleService
         }
 
         // Public circle > all users
+        dump($circle->getPublicCircle());
         if ($circle->getPublicCircle()) {
             $users = PUserQuery::create()->find();
         }
 
         // @todo geolocalized circle > users who match geo zone
-
         return $users;
     }
 
