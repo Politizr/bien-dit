@@ -273,11 +273,6 @@ class PolitizrDocumentExtension extends \Twig_Extension
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
-                'newSubject',
-                array($this, 'newSubject'),
-                array('is_safe' => array('html'), 'needs_environment' => true)
-            ),
-            new \Twig_SimpleFilter(
                 'updateDocument',
                 array($this, 'updateDocument'),
                 array('is_safe' => array('html'), 'needs_environment' => true)

@@ -160,6 +160,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
                     ->filterByOnline(true)
                     ->findOne();    
             } else {
+                $topic = null;
                 $display = false;
             }
         } elseif ($subject instanceof PCTopic) {
