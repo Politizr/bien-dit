@@ -1,5 +1,5 @@
 {# beta #}
-<div class="card {% if app.user and app.user.id == document.getPUserId %}myactivity{% endif %}">
+<div class="card{% if app.user and app.user.id == document.getPUserId %} myactivity{% endif %}{% if document.type == constant('Politizr\\Constant\\ObjectTypeConstants::TYPE_REACTION') %} answer{% endif %}">
     {{ circleCardHeader(document = document) }}
     {% include 'PolitizrFrontBundle:User:_summary.html.twig' with { 'user': document.user, 'withSocialLinks': false, 'withMandates': false } only %}
     <div class="{% if mini %}miniPost{% else %}newPost{% endif %}">
