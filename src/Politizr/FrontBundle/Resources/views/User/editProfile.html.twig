@@ -68,7 +68,7 @@
                     {{ form_rest(formBio) }}
                 </form>
 
-                {% if mandate.active and user.isQualified %}
+                {% if mandate.active and user.isQualified and formMandate is not null %}
                     <div class="formBlock">
                         <div class="formBlockHeader">
                             <label>Mandats</label>

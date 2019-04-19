@@ -147,7 +147,7 @@ class UserController extends Controller
         $formOrga = null;
         $formMandate = null;
         $formMandateViews = null;
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ELECTED')) {
+        if ($user->isQualified()) {
             // Current organization
             $puCurrentQo = $user->getPUCurrentQO();
             if (!$puCurrentQo) {
