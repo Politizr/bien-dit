@@ -609,7 +609,7 @@ class PolitizrDocumentExtension extends \Twig_Extension
         } elseif (1 === $nbComments) {
             $html = '<a href="' . $url . '">1 commentaire</a>';
         } else {
-            $html = '<a href="' . $url . '">' . $nbComments . ' commentaires';
+            $html = '<a href="' . $url . '">' . $nbComments . ' commentaires</a>';
         }
 
         return $html;
