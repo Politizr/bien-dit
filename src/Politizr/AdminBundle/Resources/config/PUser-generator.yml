@@ -68,7 +68,7 @@ params:
         organization:
             label:          Compte Collectivité
         qualified:
-            label:          Qualifié
+            label:          Élu
         validated:
             label:          Validé
         nb_id_check:
