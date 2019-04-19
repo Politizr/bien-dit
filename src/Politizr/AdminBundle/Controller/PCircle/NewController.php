@@ -15,6 +15,20 @@ class NewController extends BaseNewController
 {
 
     /**
+     * Manage public / private circle
+     *
+     * @param Form $form the valid form
+     * @param PCircle $circle
+     */
+    protected function preSave(Form $form, PCircle $circle)
+    {
+        $isPrivate = $form['private_access'];
+        if ($isPrivate) {
+            $circle->setPublicCircle(false);
+        }
+    }
+
+    /**
      * Automaticaly add existing and authorized users in circle
      *
      * @param Form $form

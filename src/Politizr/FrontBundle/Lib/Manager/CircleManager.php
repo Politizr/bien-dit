@@ -5,6 +5,9 @@ use Politizr\Model\PUInPC;
 
 use Politizr\Model\PUInPCQuery;
 
+use Politizr\Exception\InconsistentDataException;
+
+
 /**
  * DB manager service for circle.
  *
@@ -47,6 +50,10 @@ class CircleManager
      */
     public function addUsersCircleRole($users, $circleId)
     {
+        if(!$users || !$circleId) {
+            return null;
+        }
+        
         $circleRole = 'ROLE_CIRCLE_' . $circleId;
 
         $con = \Propel::getConnection('default');
@@ -74,6 +81,10 @@ class CircleManager
      */
     public function insertUsersInCircle($users, $circleId)
     {
+        if(!$users || !$circleId) {
+            return null;
+        }
+
         $con = \Propel::getConnection('default');
         $con->beginTransaction();
         try {

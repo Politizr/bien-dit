@@ -39,7 +39,7 @@
 
         "knplabs/knp-menu-bundle": ">1.0,<2.2",
         "symfony2admingenerator/generator-bundle": "^2.0",
-        "symfony2admingenerator/form-bundle": "@stable",
+        "symfony2admingenerator/form-bundle": "^1.5",
         "symfony2admingenerator/form-extensions-bundle": "dev-master",
         "liuggio/excelbundle": "^2.0",
         
@@ -49,7 +49,7 @@
         "hwi/oauth-bundle": "0.4.3",
         "facebook/graph-sdk": "^5.4",
         "j7mbo/twitter-api-php": "~1.0",
-        "google/apiclient": "^2.0.0@RC",
+        "google/apiclient": "^2.0",
         
         "white-october/pagerfanta-bundle": "~1.0",
         
