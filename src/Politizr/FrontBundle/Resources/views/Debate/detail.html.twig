@@ -103,14 +103,14 @@
                         {% include 'PolitizrFrontBundle:Navigation\\Helper:_createAccountToFullRead.html.twig' with { 'document': debate } %}
                     {% endif %}
                 </div>
+                <div id="cardPostTextFooter">
+                    {{ debate | footer }}
+                </div>
 
                 {% if reactions | length > 0 %}
                     {% include 'PolitizrFrontBundle:Reaction:_listReactionsToPost.html.twig' with { 'document': debate, 'reactions': reactions } only %}
                 {% endif %}
 
-                <div id="cardPostTextFooter">
-                    {{ debate | footer }}
-                </div>
             </div>
             <div id="p-0">
                 {% include 'PolitizrFrontBundle:Comment:_global.html.twig' with { 'document': debate } only %}

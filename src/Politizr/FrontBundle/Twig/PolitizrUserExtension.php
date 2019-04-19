@@ -301,12 +301,12 @@ class PolitizrUserExtension extends \Twig_Extension
         // $this->logger->info('$user = '.print_r($user, true));
 
         if ($user->isQualified()) {
-            $html = 'Élu';
+            $html = '';
             if ($user->getGender() == 'Madame') {
                 $html .= 'e';
             }
         } else {
-            $html = 'Citoyen';
+            $html = '';
             if ($user->getGender() == 'Madame') {
                 $html .= 'ne';
             }
