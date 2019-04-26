@@ -60,6 +60,19 @@ class AdminMenu extends AdmingeneratorMenuBuilder
                 ->setExtra('icon', 'fa fa-dashboard');
         }
 
+        // Stats
+        $stats = $this->addDropdown($menu, 'Statistique');
+        $this->addLinkRoute(
+            $stats,
+            'Utilisateur',
+            'PolitizrAdminStats_PUser'
+        );
+        $this->addLinkRoute(
+            $stats,
+            'Sujet',
+            'PolitizrAdminStats_PDDebate'
+        );
+
         // Cms Management
         $cms = $this->addDropdown($menu, 'Contenu');
         $this->addLinkRoute(
@@ -83,18 +96,8 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Politizr_AdminBundle_CmsContentAdmin_list'
         );
 
-        // Order
-        $orders = $this->addDropdown($menu, 'Commande');
-        $this->addLinkRoute(
-            $orders,
-            'Opération',
-            'Politizr_AdminBundle_PEOperation_list'
-        );
-        $this->addLinkRoute(
-            $orders,
-            'Premium',
-            'Politizr_AdminBundle_POrder_list'
-        );
+        // Operations
+        $orders = $this->addLinkRoute($menu, 'Opération', 'Politizr_AdminBundle_PEOperation_list');
 
         // User
         $users = $this->addLinkRoute($menu, 'Utilisateur', 'Politizr_AdminBundle_PUser_list');
@@ -323,6 +326,19 @@ class AdminMenu extends AdmingeneratorMenuBuilder
                 ->addLinkRoute($menu, 'Accueil', $dashboardRoute)
                 ->setExtra('icon', 'fa fa-dashboard');
         }
+
+        // Stats
+        $stats = $this->addDropdown($menu, 'Statistique');
+        $this->addLinkRoute(
+            $stats,
+            'Utilisateur',
+            'PolitizrAdminStats_PUser'
+        );
+        $this->addLinkRoute(
+            $stats,
+            'Sujet',
+            'PolitizrAdminStats_PDDebate'
+        );
 
         // Cms Management
         $cms = $this->addDropdown($menu, 'Contenu');

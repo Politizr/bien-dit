@@ -1,0 +1,49 @@
+{% extends "PolitizrAdminBundle::base_admin.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Statistiques
+{% endblock title %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/politizradmin/css/Chart.min.css') }}">
+{% endblock stylesheets %}
+
+{% block page_header_content %}
+    <h1>Statistiques sur les utilisateurs</h1>
+{% endblock page_header_content %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="form-model form-model-document col-md-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li>
+                        <a data-toggle="tab" href="#" data-target=".tab-pane-model-all">
+                            Tous
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content form-model-content">
+                    <fieldset class="form-model-tab-pane tab-pane-model-all tab-pane">
+                        <canvas id="myChart" width="400" height="250"></canvas>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        keys = {{ keys|json_encode()|raw() }};
+        labels = {{ labels|json_encode()|raw() }}
+    </script>
+
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/Chart.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/pages/statsUser.js') }}"></script>
+{% endblock %}

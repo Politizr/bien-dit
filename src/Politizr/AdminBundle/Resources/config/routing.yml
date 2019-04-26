@@ -42,6 +42,16 @@ PolitizrAdminHomepage:
     pattern:  /
     defaults: { _controller: PolitizrAdminBundle:Homepage\AdminHomepage:index }
 
+# Statistiques
+PolitizrAdminStats_PUser:
+    pattern:  /Stats/user
+    defaults: { _controller: PolitizrAdminBundle:Stats\AdminStats:user }
+
+PolitizrAdminStats_PDDebate:
+    pattern:  /Stats/debate
+    defaults: { _controller: PolitizrAdminBundle:Stats\AdminStats:debate }
+
+
 # Commandes
 Politizr_AdminBundle_POrder_invoice:
     pattern:  /POrder/{pk}/invoice

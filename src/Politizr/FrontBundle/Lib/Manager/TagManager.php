@@ -116,7 +116,7 @@ ORDER BY nb_tagged_objects desc
         return $sql;
     }
 
-   /**
+    /**
      * Alphabetical tags w. at least one publication
      *
      * @see app/sql/alphabeticalTags.sql
@@ -145,6 +145,48 @@ WHERE p_tag.online=1 AND p_tag.p_t_tag_type_id=:p_t_tag_type_id2 AND p_d_reactio
 ORDER BY title ASC
     ";
 
+        return $sql;
+    }
+
+    /**
+     * Top tags by user
+     *
+     * @see app/sql/statsTags.sql
+     *
+     * @return string
+     */
+    public function createUserTopTagsStatsRawSql()
+    {
+        // Préparation requête SQL
+        $sql = "
+SELECT count(p_tag.id) as nb_users, p_tag.title as title
+FROM `p_tag`
+LEFT JOIN `p_u_tagged_t` ON (p_tag.id = p_u_tagged_t.p_tag_id)
+# WHERE p_u_tagged_t.created_at > '2019-02-01'
+GROUP BY p_tag.id
+ORDER BY nb_users DESC
+LIMIT 0, :limit
+    ";
+        return $sql;
+    }
+    /**
+     * Top tags by subjects
+     *
+     * @see app/sql/statsTags.sql
+     *
+     * @return string
+     */
+    public function createDebateTopTagsStatsRawSql()
+    {
+        // Préparation requête SQL
+        $sql = "
+SELECT count(p_tag.id) as `nb_debates`, p_tag.title as `title`
+FROM `p_tag`
+LEFT JOIN `p_d_d_tagged_t` ON (p_tag.id = p_d_d_tagged_t.p_tag_id)
+GROUP BY p_tag.id
+ORDER BY nb_debates DESC
+LIMIT 0, :limit
+    ";
         return $sql;
     }
 
@@ -221,6 +263,56 @@ ORDER BY title ASC
         }
 
         return $tags;
+    }
+
+    /**
+     * Get array of top tag's title by nb users 
+     *
+     * @param int $limit Max results returned
+     * @return array(nb users => tag label)
+     */
+    public function generateUserTopTagsStats($limit = 10)
+    {
+        // $this->logger->info('*** generateUserTopTagsStats');
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createUserTopTagsStatsRawSql($limit));
+
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        $stats = array();
+        foreach ($result as $row) {
+            $stats[] = [ 'nb_users' => $row['nb_users'], 'title' => $row['title'] ];
+        }
+
+        return $stats;
+    }
+
+    /**
+     * Get tags alphabetical listing containing at least one publication (subject or reaction)
+     *
+     * Get array of top tag's title by nb users
+     * @return array(nb debates => tag label)
+     */
+    public function generateDebateTopTagsStats($limit = 10)
+    {
+        // $this->logger->info('*** generateUserTopTagsStats');
+        $con = \Propel::getConnection('default', \Propel::CONNECTION_READ);
+        $stmt = $con->prepare($this->createDebateTopTagsStatsRawSql($limit));
+
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        $stats = array();
+        foreach ($result as $row) {
+            $stats[] = [ 'nb_debates' => $row['nb_debates'], 'title' => $row['title'] ];
+        }
+        
+        return $stats;
     }
 
     /* ######################################################################################################## */

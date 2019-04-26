@@ -207,4 +207,44 @@ class TagService
 
         return null;
     }
+
+    /* ######################################################################################################## */
+    /*                                              STATS FUNCTIONS                                             */
+    /* ######################################################################################################## */
+    
+    /**
+     * Get stats user data
+     *
+     * @param int $limit Max results returned
+     * @return array([nb users], [tag labels])
+     */
+    public function getUserTopTagsStats($limit = 10) 
+    {
+        $stats = $this->tagManager->generateUserTopTagsStats($limit);
+        $nbUsers = array();
+        $labels = array();
+        foreach ($stats as $key => $value) {
+            $nbUsers[] = $value['nb_users'];
+            $labels[] = $value['title'];
+        }
+        return [$nbUsers, $labels];
+    }
+    
+    /**
+     * Get stats debate data
+     *
+     * @param int $limit Max results returned
+     * @return array([nb users], [tag labels])
+     */
+    public function getDebateTopTagsStats($limit = 10) 
+    {
+        $stats = $this->tagManager->generateDebateTopTagsStats($limit);
+        $nbDebates = array();
+        $labels = array();
+        foreach ($stats as $key => $value) {
+            $nbDebates[] = $value['nb_debates'];
+            $labels[] = $value['title'];
+        }
+        return [$nbDebates, $labels];
+    }
 }
