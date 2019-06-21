@@ -52,6 +52,12 @@
                                     <div class="field_error">{{ form_errors(form.cgu) }}</div>
                                 {% endif %}
                             </div>
+                            <div class="control-group">
+                                {{ form_widget(form.rgpd) }}<label>J’accepte les conditions relatives à l'exploitation de mes <a href="#dataCarefull">données personnelles</a>.</label>
+                                {% if form.rgpd.vars.errors|length %}
+                                    <div class="field_error">{{ form_errors(form.rgpd) }}</div>
+                                {% endif %}
+                            </div>
                         </div>
                         {#<a href="processCreateAccount-citoyen2.php" class="submit nextStepOrange">Valider</a>#}
                         <button type="submit" class="submit nextStepOrange">Valider</button>
@@ -68,21 +74,7 @@
                     <b>Vous avez déjà un compte? <a href="{{ path('Login') }}">Connectez-vous!</a></b>
                 </div>
             </div>
-            <div class="dataCarefull">
-                <div class="dataCarefullCnil">
-                    <img src="{{ asset('bundles/politizrfront/images/label-cnil.jpg') }}">
-                    <br/>
-                    <h3>Politique de traitement des données personnelles</h3>
-                    <p>
-                    Les informations recueillies sur les formulaires d'inscription font l’objet d’un traitement informatique destiné uniquement au fonctionnement de la plateforme. Le destinataire des données personnelles est uniquement {{ client.name }}.
-                    <br/><br/>
-                    {{ client.name }} stocke le contenu que vous créez et votre activité sur la plateforme, tels que vos publications et votes, afin de pouvoir les faire apparaître pour les autres utilisateurs et favoriser l'interaction.
-                    <br/><br/>
-                    Votre email ne sera jamais partagé et vos données sont sauvegardées en toute sécurité. Vous pouvez contrôler ou supprimer vos données à tout moment depuis l'interface ou en contactant notre <a href="mailto: {{ support.email }}">support</a>.
-                    <br/><br/>
-                    Consultez nos <a action="openCgu">Conditions Générales d'Utilisation</a> pour plus d'informations.
-                </div>
-            </div>
+            {% include 'PolitizrFrontBundle:Public:_rgpd.html.twig' %}
         </center>
     </div>
 {% endblock main %}

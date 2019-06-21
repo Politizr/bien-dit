@@ -52,6 +52,16 @@
                                 </div>
                             </div>
                         {% endif %}
+                        {% if (form.rgpd is defined) %}
+                            <div class="coloredBg">
+                                <div class="control-group">
+                                    {{ form_widget(form.rgpd) }}<label>J’accepte les conditions relatives à l'exploitation de mes <a href="#dataCarefull">données personnelles</a>.</label>
+                                    {% if form.rgpd.vars.errors|length %}
+                                        <div class="field_error">{{ form_errors(form.rgpd) }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
                         <button type="submit" class="submit nextStepOrange">Valider</button>
                     {{ form_end(form) }}
                 </div>
@@ -64,6 +74,9 @@
                     Si vous le souhaitez, vous pouvez choisir d'utiliser un pseudonyme à la place de vos nom et prénom.
                 </div>
             </div>
+            {% if (form.rgpd is defined) %}
+                {% include 'PolitizrFrontBundle:Public:_rgpd.html.twig' %}
+            {% endif %}
         </center>
     </div>
 {% endblock main %}

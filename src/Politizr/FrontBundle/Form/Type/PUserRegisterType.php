@@ -90,6 +90,16 @@ class PUserRegisterType extends AbstractType
             )
         ));
 
+        $builder->add('rgpd', 'checkbox', array(
+            'required' => true,
+            'mapped' => false,
+            'constraints' => new IsTrue(
+                array(
+                    'message' => 'Vous devez accepter les conditions relatives à vos données personnelles.'
+                )
+            )
+        ));
+
         // update username same as email field
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
