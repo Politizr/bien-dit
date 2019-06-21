@@ -87,6 +87,12 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
     protected $slug;
 
     /**
+     * The value for the sortable_rank field.
+     * @var        int
+     */
+    protected $sortable_rank;
+
+    /**
      * The value for the archived_at field.
      * @var        string
      */
@@ -256,6 +262,17 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
     {
 
         return $this->slug;
+    }
+
+    /**
+     * Get the [sortable_rank] column value.
+     *
+     * @return int
+     */
+    public function getSortableRank()
+    {
+
+        return $this->sortable_rank;
     }
 
     /**
@@ -471,6 +488,27 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
     } // setSlug()
 
     /**
+     * Set the value of [sortable_rank] column.
+     *
+     * @param  int $v new value
+     * @return PCOwnerArchive The current object (for fluent API support)
+     */
+    public function setSortableRank($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->sortable_rank !== $v) {
+            $this->sortable_rank = $v;
+            $this->modifiedColumns[] = PCOwnerArchivePeer::SORTABLE_RANK;
+        }
+
+
+        return $this;
+    } // setSortableRank()
+
+    /**
      * Sets the value of [archived_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -533,7 +571,8 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
             $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->updated_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->slug = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->archived_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->sortable_rank = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->archived_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -543,7 +582,7 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 9; // 9 = PCOwnerArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = PCOwnerArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PCOwnerArchive object", $e);
@@ -775,6 +814,9 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCOwnerArchivePeer::SLUG)) {
             $modifiedColumns[':p' . $index++]  = '`slug`';
         }
+        if ($this->isColumnModified(PCOwnerArchivePeer::SORTABLE_RANK)) {
+            $modifiedColumns[':p' . $index++]  = '`sortable_rank`';
+        }
         if ($this->isColumnModified(PCOwnerArchivePeer::ARCHIVED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`archived_at`';
         }
@@ -812,6 +854,9 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
                         break;
                     case '`slug`':
                         $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
+                        break;
+                    case '`sortable_rank`':
+                        $stmt->bindValue($identifier, $this->sortable_rank, PDO::PARAM_INT);
                         break;
                     case '`archived_at`':
                         $stmt->bindValue($identifier, $this->archived_at, PDO::PARAM_STR);
@@ -894,6 +939,9 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
                 return $this->getSlug();
                 break;
             case 8:
+                return $this->getSortableRank();
+                break;
+            case 9:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -932,7 +980,8 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
             $keys[5] => $this->getCreatedAt(),
             $keys[6] => $this->getUpdatedAt(),
             $keys[7] => $this->getSlug(),
-            $keys[8] => $this->getArchivedAt(),
+            $keys[8] => $this->getSortableRank(),
+            $keys[9] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -997,6 +1046,9 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
                 $this->setSlug($value);
                 break;
             case 8:
+                $this->setSortableRank($value);
+                break;
+            case 9:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1031,7 +1083,8 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setSlug($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setArchivedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[8], $arr)) $this->setSortableRank($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setArchivedAt($arr[$keys[9]]);
     }
 
     /**
@@ -1051,6 +1104,7 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCOwnerArchivePeer::CREATED_AT)) $criteria->add(PCOwnerArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PCOwnerArchivePeer::UPDATED_AT)) $criteria->add(PCOwnerArchivePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PCOwnerArchivePeer::SLUG)) $criteria->add(PCOwnerArchivePeer::SLUG, $this->slug);
+        if ($this->isColumnModified(PCOwnerArchivePeer::SORTABLE_RANK)) $criteria->add(PCOwnerArchivePeer::SORTABLE_RANK, $this->sortable_rank);
         if ($this->isColumnModified(PCOwnerArchivePeer::ARCHIVED_AT)) $criteria->add(PCOwnerArchivePeer::ARCHIVED_AT, $this->archived_at);
 
         return $criteria;
@@ -1122,6 +1176,7 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
+        $copyObj->setSortableRank($this->getSortableRank());
         $copyObj->setArchivedAt($this->getArchivedAt());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -1182,6 +1237,7 @@ abstract class BasePCOwnerArchive extends BaseObject implements Persistent
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;
+        $this->sortable_rank = null;
         $this->archived_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

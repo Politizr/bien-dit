@@ -27,6 +27,7 @@ use Politizr\Model\PCircle;
  * @method PCOwnerQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PCOwnerQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PCOwnerQuery orderBySlug($order = Criteria::ASC) Order by the slug column
+ * @method PCOwnerQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  *
  * @method PCOwnerQuery groupById() Group by the id column
  * @method PCOwnerQuery groupByUuid() Group by the uuid column
@@ -36,6 +37,7 @@ use Politizr\Model\PCircle;
  * @method PCOwnerQuery groupByCreatedAt() Group by the created_at column
  * @method PCOwnerQuery groupByUpdatedAt() Group by the updated_at column
  * @method PCOwnerQuery groupBySlug() Group by the slug column
+ * @method PCOwnerQuery groupBySortableRank() Group by the sortable_rank column
  *
  * @method PCOwnerQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PCOwnerQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -55,6 +57,7 @@ use Politizr\Model\PCircle;
  * @method PCOwner findOneByCreatedAt(string $created_at) Return the first PCOwner filtered by the created_at column
  * @method PCOwner findOneByUpdatedAt(string $updated_at) Return the first PCOwner filtered by the updated_at column
  * @method PCOwner findOneBySlug(string $slug) Return the first PCOwner filtered by the slug column
+ * @method PCOwner findOneBySortableRank(int $sortable_rank) Return the first PCOwner filtered by the sortable_rank column
  *
  * @method array findById(int $id) Return PCOwner objects filtered by the id column
  * @method array findByUuid(string $uuid) Return PCOwner objects filtered by the uuid column
@@ -64,6 +67,7 @@ use Politizr\Model\PCircle;
  * @method array findByCreatedAt(string $created_at) Return PCOwner objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PCOwner objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PCOwner objects filtered by the slug column
+ * @method array findBySortableRank(int $sortable_rank) Return PCOwner objects filtered by the sortable_rank column
  */
 abstract class BasePCOwnerQuery extends ModelCriteria
 {
@@ -175,7 +179,7 @@ abstract class BasePCOwnerQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `title`, `summary`, `description`, `created_at`, `updated_at`, `slug` FROM `p_c_owner` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `title`, `summary`, `description`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_c_owner` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -538,6 +542,48 @@ abstract class BasePCOwnerQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the sortable_rank column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySortableRank(1234); // WHERE sortable_rank = 1234
+     * $query->filterBySortableRank(array(12, 34)); // WHERE sortable_rank IN (12, 34)
+     * $query->filterBySortableRank(array('min' => 12)); // WHERE sortable_rank >= 12
+     * $query->filterBySortableRank(array('max' => 12)); // WHERE sortable_rank <= 12
+     * </code>
+     *
+     * @param     mixed $sortableRank The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCOwnerQuery The current query, for fluid interface
+     */
+    public function filterBySortableRank($sortableRank = null, $comparison = null)
+    {
+        if (is_array($sortableRank)) {
+            $useMinMax = false;
+            if (isset($sortableRank['min'])) {
+                $this->addUsingAlias(PCOwnerPeer::SORTABLE_RANK, $sortableRank['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($sortableRank['max'])) {
+                $this->addUsingAlias(PCOwnerPeer::SORTABLE_RANK, $sortableRank['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PCOwnerPeer::SORTABLE_RANK, $sortableRank, $comparison);
+    }
+
+    /**
      * Filter the query by a related PCircle object
      *
      * @param   PCircle|PropelObjectCollection $pCircle  the related object to use as filter
@@ -831,6 +877,152 @@ abstract class BasePCOwnerQuery extends ModelCriteria
         }
 
         return $stmt;
+    }
+
+    // sortable behavior
+
+    /**
+     * Filter the query based on a rank in the list
+     *
+     * @param     integer   $rank rank
+     *
+     * @return    PCOwnerQuery The current query, for fluid interface
+     */
+    public function filterByRank($rank)
+    {
+
+
+        return $this
+            ->addUsingAlias(PCOwnerPeer::RANK_COL, $rank, Criteria::EQUAL);
+    }
+
+    /**
+     * Order the query based on the rank in the list.
+     * Using the default $order, returns the item with the lowest rank first
+     *
+     * @param     string $order either Criteria::ASC (default) or Criteria::DESC
+     *
+     * @return    PCOwnerQuery The current query, for fluid interface
+     */
+    public function orderByRank($order = Criteria::ASC)
+    {
+        $order = strtoupper($order);
+        switch ($order) {
+            case Criteria::ASC:
+                return $this->addAscendingOrderByColumn($this->getAliasedColName(PCOwnerPeer::RANK_COL));
+                break;
+            case Criteria::DESC:
+                return $this->addDescendingOrderByColumn($this->getAliasedColName(PCOwnerPeer::RANK_COL));
+                break;
+            default:
+                throw new PropelException('PCOwnerQuery::orderBy() only accepts "asc" or "desc" as argument');
+        }
+    }
+
+    /**
+     * Get an item from the list based on its rank
+     *
+     * @param     integer   $rank rank
+     * @param     PropelPDO $con optional connection
+     *
+     * @return    PCOwner
+     */
+    public function findOneByRank($rank, PropelPDO $con = null)
+    {
+
+        return $this
+            ->filterByRank($rank)
+            ->findOne($con);
+    }
+
+    /**
+     * Returns the list of objects
+     *
+     * @param      PropelPDO $con	Connection to use.
+     *
+     * @return     mixed the list of results, formatted by the current formatter
+     */
+    public function findList($con = null)
+    {
+
+
+        return $this
+            ->orderByRank()
+            ->find($con);
+    }
+
+    /**
+     * Get the highest rank
+     *
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public function getMaxRank(PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCOwnerPeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $this->addSelectColumn('MAX(' . PCOwnerPeer::RANK_COL . ')');
+        $stmt = $this->doSelect($con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Get the highest rank by a scope with a array format.
+     *
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public function getMaxRankArray(PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCOwnerPeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $this->addSelectColumn('MAX(' . PCOwnerPeer::RANK_COL . ')');
+        $stmt = $this->doSelect($con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Reorder a set of sortable objects based on a list of id/position
+     * Beware that there is no check made on the positions passed
+     * So incoherent positions will result in an incoherent list
+     *
+     * @param     array     $order id => rank pairs
+     * @param     PropelPDO $con   optional connection
+     *
+     * @return    boolean true if the reordering took place, false if a database problem prevented it
+     */
+    public function reorder(array $order, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCOwnerPeer::DATABASE_NAME);
+        }
+
+        $con->beginTransaction();
+        try {
+            $ids = array_keys($order);
+            $objects = $this->findPks($ids, $con);
+            foreach ($objects as $object) {
+                $pk = $object->getPrimaryKey();
+                if ($object->getSortableRank() != $order[$pk]) {
+                    $object->setSortableRank($order[$pk]);
+                    $object->save($con);
+                }
+            }
+            $con->commit();
+
+            return true;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
     }
 
     // archivable behavior

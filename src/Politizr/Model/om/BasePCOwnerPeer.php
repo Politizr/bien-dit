@@ -11,6 +11,7 @@ use \PropelException;
 use \PropelPDO;
 use Politizr\Model\PCOwner;
 use Politizr\Model\PCOwnerPeer;
+use Politizr\Model\PCOwnerQuery;
 use Politizr\Model\PCirclePeer;
 use Politizr\Model\map\PCOwnerTableMap;
 
@@ -30,13 +31,13 @@ abstract class BasePCOwnerPeer
     const TM_CLASS = 'Politizr\\Model\\map\\PCOwnerTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the id field */
     const ID = 'p_c_owner.id';
@@ -62,6 +63,9 @@ abstract class BasePCOwnerPeer
     /** the column name for the slug field */
     const SLUG = 'p_c_owner.slug';
 
+    /** the column name for the sortable_rank field */
+    const SORTABLE_RANK = 'p_c_owner.sortable_rank';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -74,6 +78,13 @@ abstract class BasePCOwnerPeer
     public static $instances = array();
 
 
+    // sortable behavior
+
+    /**
+     * rank column
+     */
+    const RANK_COL = 'p_c_owner.sortable_rank';
+
     /**
      * holds an array of fieldnames
      *
@@ -81,12 +92,12 @@ abstract class BasePCOwnerPeer
      * e.g. PCOwnerPeer::$fieldNames[PCOwnerPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'Title', 'Summary', 'Description', 'CreatedAt', 'UpdatedAt', 'Slug', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'title', 'summary', 'description', 'createdAt', 'updatedAt', 'slug', ),
-        BasePeer::TYPE_COLNAME => array (PCOwnerPeer::ID, PCOwnerPeer::UUID, PCOwnerPeer::TITLE, PCOwnerPeer::SUMMARY, PCOwnerPeer::DESCRIPTION, PCOwnerPeer::CREATED_AT, PCOwnerPeer::UPDATED_AT, PCOwnerPeer::SLUG, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'CREATED_AT', 'UPDATED_AT', 'SLUG', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'title', 'summary', 'description', 'created_at', 'updated_at', 'slug', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'Title', 'Summary', 'Description', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'title', 'summary', 'description', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (PCOwnerPeer::ID, PCOwnerPeer::UUID, PCOwnerPeer::TITLE, PCOwnerPeer::SUMMARY, PCOwnerPeer::DESCRIPTION, PCOwnerPeer::CREATED_AT, PCOwnerPeer::UPDATED_AT, PCOwnerPeer::SLUG, PCOwnerPeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'title', 'summary', 'description', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -96,12 +107,12 @@ abstract class BasePCOwnerPeer
      * e.g. PCOwnerPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, ),
-        BasePeer::TYPE_COLNAME => array (PCOwnerPeer::ID => 0, PCOwnerPeer::UUID => 1, PCOwnerPeer::TITLE => 2, PCOwnerPeer::SUMMARY => 3, PCOwnerPeer::DESCRIPTION => 4, PCOwnerPeer::CREATED_AT => 5, PCOwnerPeer::UPDATED_AT => 6, PCOwnerPeer::SLUG => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, 'SortableRank' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, 'sortableRank' => 8, ),
+        BasePeer::TYPE_COLNAME => array (PCOwnerPeer::ID => 0, PCOwnerPeer::UUID => 1, PCOwnerPeer::TITLE => 2, PCOwnerPeer::SUMMARY => 3, PCOwnerPeer::DESCRIPTION => 4, PCOwnerPeer::CREATED_AT => 5, PCOwnerPeer::UPDATED_AT => 6, PCOwnerPeer::SLUG => 7, PCOwnerPeer::SORTABLE_RANK => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, 'SORTABLE_RANK' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, 'sortable_rank' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -183,6 +194,7 @@ abstract class BasePCOwnerPeer
             $criteria->addSelectColumn(PCOwnerPeer::CREATED_AT);
             $criteria->addSelectColumn(PCOwnerPeer::UPDATED_AT);
             $criteria->addSelectColumn(PCOwnerPeer::SLUG);
+            $criteria->addSelectColumn(PCOwnerPeer::SORTABLE_RANK);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.uuid');
@@ -192,6 +204,7 @@ abstract class BasePCOwnerPeer
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.slug');
+            $criteria->addSelectColumn($alias . '.sortable_rank');
         }
     }
 
@@ -790,6 +803,146 @@ abstract class BasePCOwnerPeer
         }
 
         return $objs;
+    }
+
+    // sortable behavior
+
+    /**
+     * Get the highest rank
+     *
+     * @param     PropelPDO optional connection
+     *
+     * @return    integer highest position
+     */
+    public static function getMaxRank(PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCOwnerPeer::DATABASE_NAME);
+        }
+        // shift the objects with a position lower than the one of object
+        $c = new Criteria();
+        $c->addSelectColumn('MAX(' . PCOwnerPeer::RANK_COL . ')');
+        $stmt = PCOwnerPeer::doSelectStmt($c, $con);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Get an item from the list based on its rank
+     *
+     * @param     integer   $rank rank
+     * @param     PropelPDO $con optional connection
+     *
+     * @return PCOwner
+     */
+    public static function retrieveByRank($rank, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCOwnerPeer::DATABASE_NAME);
+        }
+
+        $c = new Criteria;
+        $c->add(PCOwnerPeer::RANK_COL, $rank);
+
+        return PCOwnerPeer::doSelectOne($c, $con);
+    }
+
+    /**
+     * Reorder a set of sortable objects based on a list of id/position
+     * Beware that there is no check made on the positions passed
+     * So incoherent positions will result in an incoherent list
+     *
+     * @param     array     $order id => rank pairs
+     * @param     PropelPDO $con   optional connection
+     *
+     * @return    boolean true if the reordering took place, false if a database problem prevented it
+     */
+    public static function reorder(array $order, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCOwnerPeer::DATABASE_NAME);
+        }
+
+        $con->beginTransaction();
+        try {
+            $ids = array_keys($order);
+            $objects = PCOwnerPeer::retrieveByPKs($ids);
+            foreach ($objects as $object) {
+                $pk = $object->getPrimaryKey();
+                if ($object->getSortableRank() != $order[$pk]) {
+                    $object->setSortableRank($order[$pk]);
+                    $object->save($con);
+                }
+            }
+            $con->commit();
+
+            return true;
+        } catch (Exception $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Return an array of sortable objects ordered by position
+     *
+     * @param     Criteria  $criteria  optional criteria object
+     * @param     string    $order     sorting order, to be chosen between Criteria::ASC (default) and Criteria::DESC
+     * @param     PropelPDO $con       optional connection
+     *
+     * @return    array list of sortable objects
+     */
+    public static function doSelectOrderByRank(Criteria $criteria = null, $order = Criteria::ASC, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCOwnerPeer::DATABASE_NAME);
+        }
+
+        if ($criteria === null) {
+            $criteria = new Criteria();
+        } elseif ($criteria instanceof Criteria) {
+            $criteria = clone $criteria;
+        }
+
+        $criteria->clearOrderByColumns();
+
+        if ($order == Criteria::ASC) {
+            $criteria->addAscendingOrderByColumn(PCOwnerPeer::RANK_COL);
+        } else {
+            $criteria->addDescendingOrderByColumn(PCOwnerPeer::RANK_COL);
+        }
+
+        return PCOwnerPeer::doSelect($criteria, $con);
+    }
+
+    /**
+     * Adds $delta to all Rank values that are >= $first and <= $last.
+     * '$delta' can also be negative.
+     *
+     * @param      int $delta Value to be shifted by, can be negative
+     * @param      int $first First node to be shifted
+     * @param      int $last  Last node to be shifted
+     * @param      PropelPDO $con Connection to use.
+     */
+    public static function shiftRank($delta, $first = null, $last = null, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(PCOwnerPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+        }
+
+        $whereCriteria = PCOwnerQuery::create();
+        if (null !== $first) {
+            $whereCriteria->add(PCOwnerPeer::RANK_COL, $first, Criteria::GREATER_EQUAL);
+        }
+        if (null !== $last) {
+            $whereCriteria->addAnd(PCOwnerPeer::RANK_COL, $last, Criteria::LESS_EQUAL);
+        }
+
+        $valuesCriteria = new Criteria(PCOwnerPeer::DATABASE_NAME);
+        $valuesCriteria->add(PCOwnerPeer::RANK_COL, array('raw' => PCOwnerPeer::RANK_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
+
+        BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
+        PCOwnerPeer::clearInstancePool();
     }
 
 } // BasePCOwnerPeer

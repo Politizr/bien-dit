@@ -10,8 +10,8 @@
     {% spaceless %}
         {% if not PCircle.isFirst() %}
             <a class="btn btn-default btn-xs" href="{{ path("Politizr_AdminBundle_PCircle_object", { 'pk': PCircle.Id, action: 'moveUp' }) }}" 
-                data-original-title="{% trans from "Admin" %}+Haut{% endtrans %}" rel="tooltip">
-                <i class="fa fa-fw fa-arrow-up"></i>
+                data-original-title="{% trans from "Admin" %}+Bas{% endtrans %}" rel="tooltip">
+                <i class="fa fa-fw fa-arrow-down"></i>
             </a>
         {% endif %}
     {% endspaceless %}
@@ -21,8 +21,8 @@
     {% spaceless %}
         {% if not PCircle.isLast() %}
             <a class="btn btn-default btn-xs" href="{{ path("Politizr_AdminBundle_PCircle_object", { 'pk': PCircle.Id, action: 'moveDown' }) }}" 
-                data-original-title="{% trans from "Admin" %}+Bas{% endtrans %}" rel="tooltip">
-                <i class="fa fa-fw fa-arrow-down"></i>
+                data-original-title="{% trans from "Admin" %}+Haut{% endtrans %}" rel="tooltip">
+                <i class="fa fa-fw fa-arrow-up"></i>
             </a>
         {% endif %}
     {% endspaceless %}

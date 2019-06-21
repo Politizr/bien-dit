@@ -53,7 +53,7 @@ builders:
         params:
             title:                              Liste des consultations
             max_per_page:                       50
-            sort:                               [ sortable_rank, ASC ]
+            sort:                               [ sortable_rank, DESC ]
             display:                            [ title, p_c_owner, p_circle_type, online, read_only, private_access, created_at ]
             filtersMode:                        modal
             filters:                            [ id, p_c_owner, p_circle_type, uuid, title, online, read_only, private_access ]

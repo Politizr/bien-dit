@@ -29,13 +29,13 @@ abstract class BasePCOwnerArchivePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PCOwnerArchiveTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the id field */
     const ID = 'p_c_owner_archive.id';
@@ -61,6 +61,9 @@ abstract class BasePCOwnerArchivePeer
     /** the column name for the slug field */
     const SLUG = 'p_c_owner_archive.slug';
 
+    /** the column name for the sortable_rank field */
+    const SORTABLE_RANK = 'p_c_owner_archive.sortable_rank';
+
     /** the column name for the archived_at field */
     const ARCHIVED_AT = 'p_c_owner_archive.archived_at';
 
@@ -83,12 +86,12 @@ abstract class BasePCOwnerArchivePeer
      * e.g. PCOwnerArchivePeer::$fieldNames[PCOwnerArchivePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'Title', 'Summary', 'Description', 'CreatedAt', 'UpdatedAt', 'Slug', 'ArchivedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'title', 'summary', 'description', 'createdAt', 'updatedAt', 'slug', 'archivedAt', ),
-        BasePeer::TYPE_COLNAME => array (PCOwnerArchivePeer::ID, PCOwnerArchivePeer::UUID, PCOwnerArchivePeer::TITLE, PCOwnerArchivePeer::SUMMARY, PCOwnerArchivePeer::DESCRIPTION, PCOwnerArchivePeer::CREATED_AT, PCOwnerArchivePeer::UPDATED_AT, PCOwnerArchivePeer::SLUG, PCOwnerArchivePeer::ARCHIVED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'ARCHIVED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'title', 'summary', 'description', 'created_at', 'updated_at', 'slug', 'archived_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'Title', 'Summary', 'Description', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', 'ArchivedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'title', 'summary', 'description', 'createdAt', 'updatedAt', 'slug', 'sortableRank', 'archivedAt', ),
+        BasePeer::TYPE_COLNAME => array (PCOwnerArchivePeer::ID, PCOwnerArchivePeer::UUID, PCOwnerArchivePeer::TITLE, PCOwnerArchivePeer::SUMMARY, PCOwnerArchivePeer::DESCRIPTION, PCOwnerArchivePeer::CREATED_AT, PCOwnerArchivePeer::UPDATED_AT, PCOwnerArchivePeer::SLUG, PCOwnerArchivePeer::SORTABLE_RANK, PCOwnerArchivePeer::ARCHIVED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', 'ARCHIVED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'title', 'summary', 'description', 'created_at', 'updated_at', 'slug', 'sortable_rank', 'archived_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -98,12 +101,12 @@ abstract class BasePCOwnerArchivePeer
      * e.g. PCOwnerArchivePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, 'ArchivedAt' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, 'archivedAt' => 8, ),
-        BasePeer::TYPE_COLNAME => array (PCOwnerArchivePeer::ID => 0, PCOwnerArchivePeer::UUID => 1, PCOwnerArchivePeer::TITLE => 2, PCOwnerArchivePeer::SUMMARY => 3, PCOwnerArchivePeer::DESCRIPTION => 4, PCOwnerArchivePeer::CREATED_AT => 5, PCOwnerArchivePeer::UPDATED_AT => 6, PCOwnerArchivePeer::SLUG => 7, PCOwnerArchivePeer::ARCHIVED_AT => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, 'ARCHIVED_AT' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, 'archived_at' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'Title' => 2, 'Summary' => 3, 'Description' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Slug' => 7, 'SortableRank' => 8, 'ArchivedAt' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'slug' => 7, 'sortableRank' => 8, 'archivedAt' => 9, ),
+        BasePeer::TYPE_COLNAME => array (PCOwnerArchivePeer::ID => 0, PCOwnerArchivePeer::UUID => 1, PCOwnerArchivePeer::TITLE => 2, PCOwnerArchivePeer::SUMMARY => 3, PCOwnerArchivePeer::DESCRIPTION => 4, PCOwnerArchivePeer::CREATED_AT => 5, PCOwnerArchivePeer::UPDATED_AT => 6, PCOwnerArchivePeer::SLUG => 7, PCOwnerArchivePeer::SORTABLE_RANK => 8, PCOwnerArchivePeer::ARCHIVED_AT => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'TITLE' => 2, 'SUMMARY' => 3, 'DESCRIPTION' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'SLUG' => 7, 'SORTABLE_RANK' => 8, 'ARCHIVED_AT' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'title' => 2, 'summary' => 3, 'description' => 4, 'created_at' => 5, 'updated_at' => 6, 'slug' => 7, 'sortable_rank' => 8, 'archived_at' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -185,6 +188,7 @@ abstract class BasePCOwnerArchivePeer
             $criteria->addSelectColumn(PCOwnerArchivePeer::CREATED_AT);
             $criteria->addSelectColumn(PCOwnerArchivePeer::UPDATED_AT);
             $criteria->addSelectColumn(PCOwnerArchivePeer::SLUG);
+            $criteria->addSelectColumn(PCOwnerArchivePeer::SORTABLE_RANK);
             $criteria->addSelectColumn(PCOwnerArchivePeer::ARCHIVED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
@@ -195,6 +199,7 @@ abstract class BasePCOwnerArchivePeer
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.slug');
+            $criteria->addSelectColumn($alias . '.sortable_rank');
             $criteria->addSelectColumn($alias . '.archived_at');
         }
     }

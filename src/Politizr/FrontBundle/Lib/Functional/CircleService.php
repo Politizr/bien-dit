@@ -153,7 +153,7 @@ class CircleService
                                 ->filterByPLCityId($user->getPLCityId())
                             ->endUse()
                         ->_endif()
-                        ->orderByRank()
+                        ->orderByRank('desc')
                         ->find();
 
         return $circles;
@@ -182,8 +182,8 @@ class CircleService
                     ->usePUInPCQuery()
                         ->filterByPUserId($user->getId())                    
                     ->endUse()
-                ->orderByRank()
                 ->endUse()
+                ->orderByRank('desc')
                 ;
 
             // public w. geo scope authorized
@@ -193,8 +193,8 @@ class CircleService
                     ->usePCGroupLCQuery()
                         ->filterByPLCityId($user->getPLCityId())
                     ->endUse()
-                ->orderByRank()
                 ->endUse()
+                ->orderByRank('desc')
                 ;
             }
         } else {
@@ -202,40 +202,12 @@ class CircleService
             $query = $query->usePCircleQuery()
                     ->filterByOnline(true)
                     ->filterByPrivateAccess(false)
-                ->orderByRank()
                 ->endUse()
+                ->orderByRank('desc')
                 ;
         }
 
         $owners = $query
-                    ->distinct()
-                    ->find();
-
-        return $owners;
-    }
-
-    /**
-     * Get membership circles' owners by user
-     *
-     * @param PUser $user
-     * @return PropelCollection[PCOwner]
-     */
-    public function getOwnersByUser(PUser $user = null)
-    {
-        // $this->logger->info('*** getOwnersByUser');
-        // $this->logger->info('$user = '.print_r($user, true));
-
-        if (!$user) {
-            throw new InconsistentDataException('User null');
-        }
-
-        $owners = PCOwnerQuery::create()
-                    ->usePCircleQuery()
-                        ->filterByOnline(true)
-                        ->usePUinPCQuery()
-                            ->filterByPUserId($user->getId())
-                        ->endUse()
-                    ->endUse()
                     ->distinct()
                     ->find();
 
@@ -272,7 +244,7 @@ class CircleService
         $circles = $query
                     ->filterByOnline(true)
                     ->filterByPCOwnerId($owner->getId())
-                    ->orderByRank()
+                    ->orderByRank('desc')
                     ->distinct()
                     ->find();
 

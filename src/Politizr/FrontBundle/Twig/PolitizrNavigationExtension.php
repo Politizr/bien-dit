@@ -280,20 +280,10 @@ class PolitizrNavigationExtension extends \Twig_Extension
         }
 
         $ownersCircles = array();
-        if ($user) {
-            // get user's circles by owner
-            $owners = $this->circleService->getOwnersByUser($user);
-            foreach ($owners as $owner) {
-                $circles = $this->circleService->getOwnerCirclesByUser($owner, $user);
-                $ownersCircles[] = array($owner, $circles);
-            }
-        } else {
-            // get public circles
-            $owners = $this->circleService->getAuthorizedOwnersByUser(null);
-            foreach ($owners as $owner) {
-                $circles = $this->circleService->getOwnerCirclesByUser($owner);
-                $ownersCircles[] = array($owner, $circles);
-            }
+        $owners = $this->circleService->getAuthorizedOwnersByUser(null);
+        foreach ($owners as $owner) {
+            $circles = $this->circleService->getOwnerCirclesByUser($owner);
+            $ownersCircles[] = array($owner, $circles);
         }
 
         $html = $env->render(
@@ -316,7 +306,6 @@ class PolitizrNavigationExtension extends \Twig_Extension
         // $this->logger->info('*** footerGroupMenu');
 
         $ownersCircles = array();
-        // get public circles
         $owners = $this->circleService->getAuthorizedOwnersByUser(null);
         foreach ($owners as $owner) {
             $circles = $this->circleService->getOwnerCirclesByUser($owner);

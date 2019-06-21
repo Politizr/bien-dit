@@ -50,6 +50,7 @@ class PCOwnerTableMap extends TableMap
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
+        $this->addColumn('sortable_rank', 'SortableRank', 'INTEGER', false, null, null);
         // validators
     } // initialize()
 
@@ -95,6 +96,11 @@ class PCOwnerTableMap extends TableMap
   'permanent' => 'false',
   'required' => 'true',
   'unique' => 'true',
+),
+            'sortable' =>  array (
+  'rank_column' => 'sortable_rank',
+  'use_scope' => 'false',
+  'scope_column' => '',
 ),
             'archivable' =>  array (
   'archive_table' => '',

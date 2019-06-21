@@ -31,7 +31,7 @@ builders:
         params:
             title:                              Liste des propriétaires
             max_per_page:                       50
-            sort:                               [ created_at, DESC ]
+            sort:                               [ sortable_rank, DESC ]
             display:                            [ id, title, created_at ]
             filtersMode:                        modal
             filters:                            [ id, uuid, title ]
@@ -39,6 +39,8 @@ builders:
                 show:                           ~
                 edit:                           ~
                 delete:                         ~
+                moveUp:                         ~
+                moveDown:                       ~
             actions:
                 new:                            ~
     new:
@@ -102,8 +104,8 @@ builders:
     actions:
         params:
             object_actions:
-                homepage:                       ~
-                delete: ~
+                moveUp:                         ~
+                moveDown:                       ~
+                delete:                         ~
             batch_actions:
-                homepage:                       ~
-                delete: ~
+                delete:                         ~

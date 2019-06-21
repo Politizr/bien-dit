@@ -23,6 +23,7 @@ use Politizr\Model\PCOwnerArchiveQuery;
  * @method PCOwnerArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PCOwnerArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PCOwnerArchiveQuery orderBySlug($order = Criteria::ASC) Order by the slug column
+ * @method PCOwnerArchiveQuery orderBySortableRank($order = Criteria::ASC) Order by the sortable_rank column
  * @method PCOwnerArchiveQuery orderByArchivedAt($order = Criteria::ASC) Order by the archived_at column
  *
  * @method PCOwnerArchiveQuery groupById() Group by the id column
@@ -33,6 +34,7 @@ use Politizr\Model\PCOwnerArchiveQuery;
  * @method PCOwnerArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method PCOwnerArchiveQuery groupByUpdatedAt() Group by the updated_at column
  * @method PCOwnerArchiveQuery groupBySlug() Group by the slug column
+ * @method PCOwnerArchiveQuery groupBySortableRank() Group by the sortable_rank column
  * @method PCOwnerArchiveQuery groupByArchivedAt() Group by the archived_at column
  *
  * @method PCOwnerArchiveQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -49,6 +51,7 @@ use Politizr\Model\PCOwnerArchiveQuery;
  * @method PCOwnerArchive findOneByCreatedAt(string $created_at) Return the first PCOwnerArchive filtered by the created_at column
  * @method PCOwnerArchive findOneByUpdatedAt(string $updated_at) Return the first PCOwnerArchive filtered by the updated_at column
  * @method PCOwnerArchive findOneBySlug(string $slug) Return the first PCOwnerArchive filtered by the slug column
+ * @method PCOwnerArchive findOneBySortableRank(int $sortable_rank) Return the first PCOwnerArchive filtered by the sortable_rank column
  * @method PCOwnerArchive findOneByArchivedAt(string $archived_at) Return the first PCOwnerArchive filtered by the archived_at column
  *
  * @method array findById(int $id) Return PCOwnerArchive objects filtered by the id column
@@ -59,6 +62,7 @@ use Politizr\Model\PCOwnerArchiveQuery;
  * @method array findByCreatedAt(string $created_at) Return PCOwnerArchive objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PCOwnerArchive objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PCOwnerArchive objects filtered by the slug column
+ * @method array findBySortableRank(int $sortable_rank) Return PCOwnerArchive objects filtered by the sortable_rank column
  * @method array findByArchivedAt(string $archived_at) Return PCOwnerArchive objects filtered by the archived_at column
  */
 abstract class BasePCOwnerArchiveQuery extends ModelCriteria
@@ -165,7 +169,7 @@ abstract class BasePCOwnerArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `title`, `summary`, `description`, `created_at`, `updated_at`, `slug`, `archived_at` FROM `p_c_owner_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `title`, `summary`, `description`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_c_owner_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -525,6 +529,48 @@ abstract class BasePCOwnerArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCOwnerArchivePeer::SLUG, $slug, $comparison);
+    }
+
+    /**
+     * Filter the query on the sortable_rank column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySortableRank(1234); // WHERE sortable_rank = 1234
+     * $query->filterBySortableRank(array(12, 34)); // WHERE sortable_rank IN (12, 34)
+     * $query->filterBySortableRank(array('min' => 12)); // WHERE sortable_rank >= 12
+     * $query->filterBySortableRank(array('max' => 12)); // WHERE sortable_rank <= 12
+     * </code>
+     *
+     * @param     mixed $sortableRank The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCOwnerArchiveQuery The current query, for fluid interface
+     */
+    public function filterBySortableRank($sortableRank = null, $comparison = null)
+    {
+        if (is_array($sortableRank)) {
+            $useMinMax = false;
+            if (isset($sortableRank['min'])) {
+                $this->addUsingAlias(PCOwnerArchivePeer::SORTABLE_RANK, $sortableRank['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($sortableRank['max'])) {
+                $this->addUsingAlias(PCOwnerArchivePeer::SORTABLE_RANK, $sortableRank['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PCOwnerArchivePeer::SORTABLE_RANK, $sortableRank, $comparison);
     }
 
     /**

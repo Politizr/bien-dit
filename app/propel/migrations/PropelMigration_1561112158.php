@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1552042369.
- * Generated on 2019-03-08 11:52:49 by lionel
+ * up to version 1561112158.
+ * Generated on 2019-06-21 12:15:58 by lionel
  */
-class PropelMigration_1552042369
+class PropelMigration_1561112158
 {
 
     public function preUp($manager)
@@ -42,25 +42,11 @@ class PropelMigration_1552042369
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `p_circle`
-    ADD `public_circle` TINYINT(1) DEFAULT 1 AFTER `private_access`,
-    ADD `open_reaction` TINYINT(1) DEFAULT 0 AFTER `public_circle`;
+ALTER TABLE `p_c_owner`
+    ADD `sortable_rank` INTEGER AFTER `slug`;
 
-ALTER TABLE `p_circle_archive`
-    ADD `public_circle` TINYINT(1) DEFAULT 1 AFTER `private_access`,
-    ADD `open_reaction` TINYINT(1) DEFAULT 0 AFTER `public_circle`;
-
-ALTER TABLE `p_user` CHANGE `website` `website` VARCHAR(250);
-
-ALTER TABLE `p_user` CHANGE `twitter` `twitter` VARCHAR(250);
-
-ALTER TABLE `p_user` CHANGE `facebook` `facebook` VARCHAR(250);
-
-ALTER TABLE `p_user_archive` CHANGE `website` `website` VARCHAR(250);
-
-ALTER TABLE `p_user_archive` CHANGE `twitter` `twitter` VARCHAR(250);
-
-ALTER TABLE `p_user_archive` CHANGE `facebook` `facebook` VARCHAR(250);
+ALTER TABLE `p_c_owner_archive`
+    ADD `sortable_rank` INTEGER AFTER `slug`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -84,25 +70,9 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 DROP INDEX `acl_object_identity_ancestors_I_2` ON `acl_object_identity_ancestors`;
 
-ALTER TABLE `p_circle` DROP `public_circle`;
+ALTER TABLE `p_c_owner` DROP `sortable_rank`;
 
-ALTER TABLE `p_circle` DROP `open_reaction`;
-
-ALTER TABLE `p_circle_archive` DROP `public_circle`;
-
-ALTER TABLE `p_circle_archive` DROP `open_reaction`;
-
-ALTER TABLE `p_user` CHANGE `website` `website` VARCHAR(150);
-
-ALTER TABLE `p_user` CHANGE `twitter` `twitter` VARCHAR(150);
-
-ALTER TABLE `p_user` CHANGE `facebook` `facebook` VARCHAR(150);
-
-ALTER TABLE `p_user_archive` CHANGE `website` `website` VARCHAR(150);
-
-ALTER TABLE `p_user_archive` CHANGE `twitter` `twitter` VARCHAR(150);
-
-ALTER TABLE `p_user_archive` CHANGE `facebook` `facebook` VARCHAR(150);
+ALTER TABLE `p_c_owner_archive` DROP `sortable_rank`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
