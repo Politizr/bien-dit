@@ -150,7 +150,7 @@ builders:
                 delete:                         ~
     excel:
         params:
-            display:                            [ uuid, qualified, gender, first_name, name, email, cityStr, departmentStr, regionStr ]
+            display:                            [ uuid, qualified, gender, first_name, name, email, newsletter, cityStr, departmentStr, regionStr ]
             filename:                           app-users
             filetype: ~
             datetime_format: ~
@@ -205,7 +205,7 @@ builders:
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "État":                     [ online, banned, p_u_status, abuse_level ]
                     "Type":                     [ qualified, organization, validated, nb_id_check, support_group ]
-                    "Abonnements notifications": [ p_n_emails ]
+                    "Abonnements":              [ p_n_emails, newsletter ]
                     "Dates":                    [ [ created_at, updated_at ], [ last_activity, indexed_at ] ]
             fields:
                 block_file_name:
@@ -353,6 +353,7 @@ builders:
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "État":                     [ active, p_u_status ]
                     "Type":                     [ qualified, organization, validated, nb_id_check, support_group ]
+                    "Abonnements":              [ p_n_emails, newsletter ]
                     "Dates":                    [ [ created_at, updated_at ], [ last_activity, indexed_at ] ]
                 "Front":
                     "Rendu":                    [ block_front ]

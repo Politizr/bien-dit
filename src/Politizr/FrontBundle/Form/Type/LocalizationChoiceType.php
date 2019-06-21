@@ -47,7 +47,7 @@ class LocalizationChoiceType extends AbstractType
 
         // Français hors de France
         $builder->add('out_of_france', 'checkbox', array(
-            'label' => 'Cochez cette case si vous êtes un-e français-e établi-e hors de France',
+            'label' => 'J\'habite HORS de France',
             'mapped' => false,
             'attr' => array('class' => 'out_of_france'),
             'data' => $outOfFrance,
