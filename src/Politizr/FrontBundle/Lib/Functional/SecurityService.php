@@ -166,6 +166,9 @@ class SecurityService
             $user->setLastLogin(new \DateTime());
             $user->save();
 
+            $redirectUrl = $this->router->generate('GlobalHelper');
+
+            /*
             if ($user->getQualified() && $user->getPUStatusId() == UserConstants::STATUS_ACTIVED) {
                 $redirectUrl = $this->router->generate('HomepageE');
             } elseif ($user->hasRole('ROLE_CITIZEN')) {
@@ -173,6 +176,7 @@ class SecurityService
             } else {
                 throw new InconsistentDataException('Qualified user is not activ and has no citizen role');
             }
+            */
         } elseif ($user->hasRole('ROLE_CITIZEN_INSCRIPTION')) {
             $redirectUrl = $this->router->generate('InscriptionContact');
         } else {

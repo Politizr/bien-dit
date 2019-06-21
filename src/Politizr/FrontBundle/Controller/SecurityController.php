@@ -235,7 +235,7 @@ class SecurityController extends Controller
                 return $this->redirect($refererUrl);
             }
 
-            return $this->redirect($this->generateUrl('HomepageC'));
+            return $this->redirect($this->generateUrl('GlobalHelper'));
         }
 
         return $this->render('PolitizrFrontBundle:Security:inscriptionContact.html.twig', array(
