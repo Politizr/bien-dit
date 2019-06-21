@@ -642,20 +642,23 @@
         },
         {
             "name": "doctrine/lexer",
-            "version": "v1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/lexer.git",
-                "reference": "83893c552fd2045dd78aef794c31e694c37c0b8c"
+                "reference": "1febd6c3ef84253d7c815bed85fc622ad207a9f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/lexer/zipball/83893c552fd2045dd78aef794c31e694c37c0b8c",
-                "reference": "83893c552fd2045dd78aef794c31e694c37c0b8c",
+                "url": "https://api.github.com/repos/doctrine/lexer/zipball/1febd6c3ef84253d7c815bed85fc622ad207a9f8",
+                "reference": "1febd6c3ef84253d7c815bed85fc622ad207a9f8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.5"
             },
             "type": "library",
             "extra": {
@@ -664,8 +667,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Doctrine\\Common\\Lexer\\": "lib/"
+                "psr-4": {
+                    "Doctrine\\Common\\Lexer\\": "lib/Doctrine/Common/Lexer"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -686,13 +689,16 @@
                     "email": "schmittjoh@gmail.com"
                 }
             ],
-            "description": "Base library for a lexer that can be used in Top-Down, Recursive Descent Parsers.",
-            "homepage": "http://www.doctrine-project.org",
+            "description": "PHP Doctrine Lexer parser library that can be used in Top-Down, Recursive Descent Parsers.",
+            "homepage": "https://www.doctrine-project.org/projects/lexer.html",
             "keywords": [
+                "annotations",
+                "docblock",
                 "lexer",
-                "parser"
+                "parser",
+                "php"
             ],
-            "time": "2014-09-09 13:34:57"
+            "time": "2019-06-08 11:03:04"
         },
         {
             "name": "egeloen/http-adapter",
@@ -1520,27 +1526,27 @@
         },
         {
             "name": "google/apiclient",
-            "version": "v2.2.2",
+            "version": "v2.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client.git",
-                "reference": "4e0fd83510e579043e10e565528b323b7c2b3c81"
+                "reference": "4bfd3edc21cceaf45fc216a4196e1993cf7a89eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/4e0fd83510e579043e10e565528b323b7c2b3c81",
-                "reference": "4e0fd83510e579043e10e565528b323b7c2b3c81",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/4bfd3edc21cceaf45fc216a4196e1993cf7a89eb",
+                "reference": "4bfd3edc21cceaf45fc216a4196e1993cf7a89eb",
                 "shasum": ""
             },
             "require": {
-                "firebase/php-jwt": "~2.0|~3.0|~4.0|~5.0",
+                "firebase/php-jwt": "~2.0||~3.0||~4.0||~5.0",
                 "google/apiclient-services": "~0.13",
                 "google/auth": "^1.0",
-                "guzzlehttp/guzzle": "~5.3.1|~6.0",
+                "guzzlehttp/guzzle": "~5.3.1||~6.0",
                 "guzzlehttp/psr7": "^1.2",
                 "monolog/monolog": "^1.17",
                 "php": ">=5.4",
-                "phpseclib/phpseclib": "~0.3.10|~2.0"
+                "phpseclib/phpseclib": "~0.3.10||~2.0"
             },
             "require-dev": {
                 "cache/filesystem-adapter": "^0.3.2",
@@ -1575,20 +1581,20 @@
             "keywords": [
                 "google"
             ],
-            "time": "2018-06-20 15:52:20"
+            "time": "2019-05-21 18:06:55"
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.94",
+            "version": "v0.103",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "9686fc7dfd5b92dd9ff075bdcd674cd5c15294be"
+                "reference": "01f9ada6e0f37515419cbf457144ccefee70e522"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/9686fc7dfd5b92dd9ff075bdcd674cd5c15294be",
-                "reference": "9686fc7dfd5b92dd9ff075bdcd674cd5c15294be",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/01f9ada6e0f37515419cbf457144ccefee70e522",
+                "reference": "01f9ada6e0f37515419cbf457144ccefee70e522",
                 "shasum": ""
             },
             "require": {
@@ -1612,7 +1618,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2019-04-13 00:23:08"
+            "time": "2019-06-16 00:23:11"
         },
         {
             "name": "google/auth",
@@ -4039,16 +4045,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "2.0.15",
+            "version": "2.0.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "11cf67cf78dc4acb18dc9149a57be4aee5036ce0"
+                "reference": "d2085db7b7394baa071a69c8f9159723c250f2ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/11cf67cf78dc4acb18dc9149a57be4aee5036ce0",
-                "reference": "11cf67cf78dc4acb18dc9149a57be4aee5036ce0",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/d2085db7b7394baa071a69c8f9159723c250f2ba",
+                "reference": "d2085db7b7394baa071a69c8f9159723c250f2ba",
                 "shasum": ""
             },
             "require": {
@@ -4127,7 +4133,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2019-03-10 16:53:45"
+            "time": "2019-06-20 03:34:11"
         },
         {
             "name": "propel/propel-acl-bundle",
@@ -4691,16 +4697,16 @@
         },
         {
             "name": "rollerworks/password-strength-validator",
-            "version": "v1.1.5",
+            "version": "v1.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rollerworks/PasswordStrengthValidator.git",
-                "reference": "e94ae9c089d780e08e5a5bcb14bb4bad3c58f85c"
+                "reference": "89676ebeccbfe61478d3f34523b6ec34079f3cfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/e94ae9c089d780e08e5a5bcb14bb4bad3c58f85c",
-                "reference": "e94ae9c089d780e08e5a5bcb14bb4bad3c58f85c",
+                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/89676ebeccbfe61478d3f34523b6ec34079f3cfc",
+                "reference": "89676ebeccbfe61478d3f34523b6ec34079f3cfc",
                 "shasum": ""
             },
             "require": {
@@ -4756,26 +4762,26 @@
                 "symfony",
                 "validator"
             ],
-            "time": "2019-03-04 14:52:59"
+            "time": "2019-05-24 09:37:11"
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v4.0.41",
+            "version": "v4.0.42",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "a0d13880526e85262388e66e165e4c152396ff45"
+                "reference": "71fdc7d57538f17eedf3c548c91ab214c694a9c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/a0d13880526e85262388e66e165e4c152396ff45",
-                "reference": "a0d13880526e85262388e66e165e4c152396ff45",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/71fdc7d57538f17eedf3c548c91ab214c694a9c0",
+                "reference": "71fdc7d57538f17eedf3c548c91ab214c694a9c0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.9",
-                "sensiolabs/security-checker": "~3.0|~4.0|~5.0",
+                "sensiolabs/security-checker": "~3.0|~4.0|~5.0|~6.0",
                 "symfony/class-loader": "~2.2",
                 "symfony/framework-bundle": "~2.3",
                 "symfony/process": "~2.2"
@@ -4816,7 +4822,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2018-12-04 16:12:38"
+            "time": "2019-06-18 15:41:34"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -6066,16 +6072,16 @@
         },
         {
             "name": "symfony2admingenerator/generator-bundle",
-            "version": "v2.5.1",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony2admingenerator/GeneratorBundle.git",
-                "reference": "692eb5446c0011e0664f2f7648a59fcc2fe32b6b"
+                "reference": "a09b8f99e433cb9225953ce01e8047adef1e854e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony2admingenerator/GeneratorBundle/zipball/692eb5446c0011e0664f2f7648a59fcc2fe32b6b",
-                "reference": "692eb5446c0011e0664f2f7648a59fcc2fe32b6b",
+                "url": "https://api.github.com/repos/symfony2admingenerator/GeneratorBundle/zipball/a09b8f99e433cb9225953ce01e8047adef1e854e",
+                "reference": "a09b8f99e433cb9225953ce01e8047adef1e854e",
                 "shasum": ""
             },
             "require": {
@@ -6133,7 +6139,7 @@
                 "generator",
                 "yaml"
             ],
-            "time": "2018-08-01 18:17:50"
+            "time": "2019-05-01 18:52:50"
         },
         {
             "name": "symfony2admingenerator/twig-generator",
@@ -6241,16 +6247,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.39.1",
+            "version": "v1.42.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "23e7b6f0cfa1d7ba3de69f30d8e05cf957412fec"
+                "reference": "21707d6ebd05476854805e4f91b836531941bcd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/23e7b6f0cfa1d7ba3de69f30d8e05cf957412fec",
-                "reference": "23e7b6f0cfa1d7ba3de69f30d8e05cf957412fec",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/21707d6ebd05476854805e4f91b836531941bcd4",
+                "reference": "21707d6ebd05476854805e4f91b836531941bcd4",
                 "shasum": ""
             },
             "require": {
@@ -6260,12 +6266,12 @@
             "require-dev": {
                 "psr/container": "^1.0",
                 "symfony/debug": "^2.7",
-                "symfony/phpunit-bridge": "^3.4.19|^4.1.8"
+                "symfony/phpunit-bridge": "^3.4.19|^4.1.8|^5.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.39-dev"
+                    "dev-master": "1.42-dev"
                 }
             },
             "autoload": {
@@ -6303,20 +6309,20 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-04-16 17:12:57"
+            "time": "2019-06-18 15:35:16"
         },
         {
             "name": "ua-parser/uap-php",
-            "version": "v3.8.8",
+            "version": "v3.8.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ua-parser/uap-php.git",
-                "reference": "3004c494d204c3b6d5e1e80a4ff78e4025e24e2f"
+                "reference": "76ed0383361db6cc976b094e2e57e8ea5de42e29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ua-parser/uap-php/zipball/3004c494d204c3b6d5e1e80a4ff78e4025e24e2f",
-                "reference": "3004c494d204c3b6d5e1e80a4ff78e4025e24e2f",
+                "url": "https://api.github.com/repos/ua-parser/uap-php/zipball/76ed0383361db6cc976b094e2e57e8ea5de42e29",
+                "reference": "76ed0383361db6cc976b094e2e57e8ea5de42e29",
                 "shasum": ""
             },
             "require": {
@@ -6360,7 +6366,7 @@
                 }
             ],
             "description": "A multi-language port of Browserscope's user agent parser.",
-            "time": "2019-03-19 09:54:19"
+            "time": "2019-06-21 09:28:07"
         },
         {
             "name": "white-october/pagerfanta-bundle",
