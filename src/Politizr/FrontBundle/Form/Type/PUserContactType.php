@@ -121,6 +121,7 @@ class PUserContactType extends AbstractType
             $builder->add('rgpd', 'checkbox', array(
                 'required' => true,
                 'mapped' => false,
+                'label' => 'Règlement Général sur la Protection des Données',
                 'constraints' => new IsTrue(
                     array(
                         'message' => 'Vous devez accepter les conditions relatives à vos données personnelles.'
