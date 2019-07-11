@@ -435,7 +435,6 @@ class CircleService
         }
 
         // Public circle > all users
-        dump($circle->getPublicCircle());
         if ($circle->getPublicCircle()) {
             $users = PUserQuery::create()->find();
         }
