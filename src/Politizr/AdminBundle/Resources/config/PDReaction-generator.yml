@@ -49,9 +49,9 @@ params:
         p_l_country:
             label:          Pays
         p_c_topic_id:
-            label:          Discussion
+            label:          Consultation
         p_c_topic:
-            label:          Discussion
+            label:          Consultation
         fb_ad_id:
             label:          Identifiant Facebook
         file_name:
@@ -351,7 +351,7 @@ builders:
                 block_comments:
                     label:                      "Commentaires"
                 block_p_c_topic:
-                    label:                      "Discussions"
+                    label:                      "Consultations"
                 block_tags:
                     label:                      "Tags"
                 block_moderation_alert_new:

@@ -47,7 +47,7 @@ params:
             sortable:       false
             dbType:         BOOLEAN
         p_c_topic:
-            label:          Discussion de groupe
+            label:          Consultation
             dbType:         model
             filterType:     Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
             addFormOptions:
