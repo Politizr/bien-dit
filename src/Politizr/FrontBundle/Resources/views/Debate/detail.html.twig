@@ -41,20 +41,9 @@
 {% endblock %}
 
 {% block header %}
-    {% if (isGrantedE() or isGrantedC()) %}
-        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
-            {% block topLeftMenu %}
-                {% if debate.PCTopicId %}
-                    {% set circle = debate.circle %}
-                    {% include 'PolitizrFrontBundle:Navigation\\Menu:_circleTopLeftMenu.html.twig' with { 'circle': circle } only %}
-                {% else %}
-                    {{ parent() }}
-                {% endif %}
-            {% endblock %}
-            {% block newSubject %}
-                {{ debate | newSubject }}
-            {% endblock newSubject %}
-        {% endembed %}
+    {% if debate.PCTopicId %}
+        {% set circle = debate.circle %}
+        {% include 'PolitizrFrontBundle:Navigation\\Menu:_circleTopLeftMenu.html.twig' with { 'circle': circle, 'subjectObject': debate } only %}
     {% else %}
         {{ parent() }}
     {% endif %}

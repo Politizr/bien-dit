@@ -1,14 +1,18 @@
-{# beta #}
-<div class="center">
-    <div id="headerLeft">
-        {% include 'PolitizrFrontBundle:Navigation\\Header:_logo.html.twig' %}
-        <div id="headerMenu">
-            {{ topLeftMenu() }}
+<div id="header">
+    <div class="center">
+        <div id="headerLeft">
+            {% block topLeftMenu %}
+                {% include 'PolitizrFrontBundle:Navigation\\Header:_logo.html.twig' %}
+                <div id="headerMenu">
+                    {{ topLeftMenu() }}
+                </div>
+            {% endblock topLeftMenu %}
+        </div>
+        <div id="headerRight">
+            {{ topGroupMenu() }}
+            <a class="headerCreateAccountLink" href="{{ path('Inscription') }}">INSCRIPTION</a>
+            <a class="headerLoginLink" href="{{ path('Login') }}">IDENTIFICATION</a>
         </div>
     </div>
-    <div id="headerRight">
-        {{ topGroupMenu() }}
-        <a class="headerCreateAccountLink" href="{{ path('Inscription') }}">INSCRIPTION</a>
-        <a class="headerLoginLink" href="{{ path('Login') }}">IDENTIFICATION</a>
-    </div>
 </div>
+<div id="headerTrigger"></div>

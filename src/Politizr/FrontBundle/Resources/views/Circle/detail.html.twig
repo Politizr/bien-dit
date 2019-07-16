@@ -29,18 +29,7 @@
 {% endblock bodyClass %}
 
 {% block header %}
-    {% if (isGrantedE() or isGrantedC()) %}
-        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
-            {% block topLeftMenu %}
-                {% include 'PolitizrFrontBundle:Navigation\\Menu:_circleTopLeftMenu.html.twig' with { 'circle': circle } only %}
-            {% endblock %}
-            {% block newSubject %}
-                {{ circle | newSubject }}
-            {% endblock %}
-        {% endembed %}
-    {% else %}
-        {{ parent() }}
-    {% endif %}
+    {% include 'PolitizrFrontBundle:Navigation\\Menu:_circleTopLeftMenu.html.twig' with { 'circle': circle, 'subjectObject': circle } only %}
 {% endblock %}
 
 {% block headerMsg %}

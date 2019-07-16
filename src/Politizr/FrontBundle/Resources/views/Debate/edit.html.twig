@@ -14,18 +14,12 @@
 {% endblock bodyClass %}
 
 {% block header %}
-    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
-        {% block topLeftMenu %}
-            {% if debate.PCTopicId %}
-                {% set circle = debate.circle %}
-                {% include 'PolitizrFrontBundle:Navigation\\Menu:_circleTopLeftMenu.html.twig' with { 'circle': circle } only %}
-            {% else %}
-                {{ parent() }}
-            {% endif %}
-        {% endblock %}
-        {% block newSubject %}
-        {% endblock %}
-    {% endembed %}
+    {% if debate.PCTopicId %}
+        {% set circle = debate.circle %}
+        {% include 'PolitizrFrontBundle:Navigation\\Menu:_circleTopLeftMenu.html.twig' with { 'circle': circle, 'subjectObject': null } only %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
 {% endblock %}
 
 {% block headerMsg %}
