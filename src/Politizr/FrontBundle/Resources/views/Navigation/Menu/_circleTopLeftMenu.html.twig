@@ -1,7 +1,32 @@
-{% include 'PolitizrFrontBundle:Navigation\\Header:_logo.html.twig' %}
-<div id="headerMenu">
-    <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
-</div>
-<div id="searchInput">
-    <i class="icon-search"></i><input id="searchInputAlgolia" type="text" placeholder="Rechercher" circleUuid="{{ circle.uuid }}">
-</div>
+{% if (isGrantedE() or isGrantedC()) %}
+    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
+        {% block topLeftMenu %}
+            {% include 'PolitizrFrontBundle:Navigation\\Header:_logo.html.twig' %}
+            <div id="headerMenu">
+                <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
+            </div>
+            <div id="searchInput">
+                <i class="icon-search"></i><input id="searchInputAlgolia" type="text" placeholder="Rechercher" circleUuid="{{ circle.uuid }}">
+            </div>
+        {% endblock %}
+        {% block newSubject %}
+            {% if (subjectObject is not null) %}
+                {{ subjectObject | newSubject }}
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+{% else %}
+    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerPublic.html.twig' %}
+        {% block topLeftMenu %}
+            {% include 'PolitizrFrontBundle:Navigation\\Header:_logo.html.twig' %}
+            <div id="headerMenu">
+                <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
+            </div>
+        {% endblock %}
+        {% block newSubject %}
+            {% if (subjectObject is not null) %}
+                {{ subjectObject | newSubject }}
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endif %}

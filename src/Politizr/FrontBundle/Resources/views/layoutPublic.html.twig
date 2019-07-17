@@ -18,10 +18,8 @@
 {% block bodyClass %} class="public"{% endblock %}
 
 {% block header %}
-    <div id="header">
-        {% include 'PolitizrFrontBundle:Navigation\\Header:_headerPublic.html.twig' %}
-    </div>
-    <div id="headerTrigger"></div>
+    {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerPublic.html.twig' %}
+    {% endembed %}
 {% endblock header %}
 
 {% block main %}

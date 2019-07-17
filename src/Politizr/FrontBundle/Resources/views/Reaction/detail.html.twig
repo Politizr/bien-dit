@@ -48,20 +48,9 @@
 {% endblock %}
 
 {% block header %}
-    {% if (isGrantedE() or isGrantedC()) %}
-        {% embed 'PolitizrFrontBundle:Navigation\\Header:_headerConnected.html.twig' %}
-            {% block topLeftMenu %}
-                {% if reaction.PCTopicId %}
-                    {% set circle = reaction.circle %}
-                    {% include 'PolitizrFrontBundle:Navigation\\Menu:_circleTopLeftMenu.html.twig' with { 'circle': circle } only %}
-                {% else %}
-                    {{ parent() }}
-                {% endif %}
-            {% endblock %}
-            {% block newSubject %}
-                {{ reaction | newSubject }}
-            {% endblock newSubject %}
-        {% endembed %}
+    {% if reaction.PCTopicId %}
+        {% set circle = reaction.circle %}
+        {% include 'PolitizrFrontBundle:Navigation\\Menu:_circleTopLeftMenu.html.twig' with { 'circle': circle, 'subjectObject': reaction } only %}
     {% else %}
         {{ parent() }}
     {% endif %}
