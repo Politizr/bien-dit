@@ -720,7 +720,7 @@ HAVING nb_users >= :min_nb_followers
 ORDER BY unionsorting ASC, note_pos DESC, note_neg ASC, nb_users DESC, published_at DESC
 ) unionsorting
 
-GROUP BY p_user_id, ".ObjectTypeConstants::SQL_P_D_DEBATE_COLUMNS."
+GROUP BY p_user_id, ".ObjectTypeConstants::SQL_P_D_DEBATE_COLUMNS.", nb_users, unionsorting
 ORDER BY unionsorting ASC, note_pos DESC, note_neg ASC, nb_users DESC, published_at DESC
 
 LIMIT :limit
