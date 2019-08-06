@@ -676,7 +676,8 @@ LIMIT :limit
         $sql = "
 SELECT DISTINCT
 ".ObjectTypeConstants::SQL_P_D_DEBATE_COLUMNS.",
-    nb_users
+    nb_users,
+    unionsorting
 FROM (
 ( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 1 as unionsorting
 FROM p_d_debate
@@ -719,7 +720,7 @@ HAVING nb_users >= :min_nb_followers
 ORDER BY unionsorting ASC, note_pos DESC, note_neg ASC, nb_users DESC, published_at DESC
 ) unionsorting
 
-GROUP BY p_user_id
+GROUP BY p_user_id, ".ObjectTypeConstants::SQL_P_D_DEBATE_COLUMNS.", nb_users, unionsorting
 ORDER BY unionsorting ASC, note_pos DESC, note_neg ASC, nb_users DESC, published_at DESC
 
 LIMIT :limit
