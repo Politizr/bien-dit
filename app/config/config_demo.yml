@@ -19,4 +19,4 @@ monolog:
             level: debug
 
 swiftmailer:
-    disable_delivery: true
+    delivery_address: lionel.bouzonville@gmail.com

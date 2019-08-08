@@ -160,6 +160,66 @@ class PUser extends BasePUser implements UserInterface
     }
 
     /**
+     * Overide to manage update published doc without updating slug
+     * Overwrite to fully compatible MySQL 5.7
+     * note: original "makeSlugUnique" throws Syntax error or access violation: 1055 Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column
+     *
+     * @see BasePUser::makeSlugUnique
+     */
+    protected function makeSlugUnique($slug, $separator = '-', $alreadyExists = false)
+    {
+        if (!$alreadyExists) {
+            $slug2 = $slug;
+        } else {
+            $slug2 = $slug . $separator;
+
+            $count = PUserQuery::create()
+                ->filterBySlug($this->getSlug())
+                ->filterByPrimaryKey($this->getPrimaryKey())
+            ->count();
+
+            if (1 == $count) {
+                return $this->getSlug();
+            }
+        }
+
+         $query = PUserQuery::create('q')
+        ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)->prune($this)
+        ;
+
+        if (!$alreadyExists) {
+            $count = $query->count();
+            if ($count > 0) {
+                return $this->makeSlugUnique($slug, $separator, true);
+            }
+
+            return $slug2;
+        }
+
+        // Already exists
+        // Here is the fix > withColumn
+        $object = $query
+            ->withColumn('LENGTH(slug)', 'LENGTH(slug)')
+            ->withColumn('slug', 'slug')
+            ->addDescendingOrderByColumn('LENGTH(slug)')
+            ->addDescendingOrderByColumn('slug')
+        ->findOne();
+
+        // First duplicate slug
+        if (null == $object) {
+            return $slug2 . '1';
+        }
+
+        $slugNum = substr($object->getSlug(), strlen($slug) + 1);
+        if ('0' === $slugNum[0]) {
+            $slugNum[0] = 1;
+        }
+
+        return $slug2 . ($slugNum + 1);
+    }
+
+
+    /**
      * Override to manage accented characters
      *
      * @return string

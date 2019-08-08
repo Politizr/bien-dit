@@ -70,6 +70,8 @@ twig:
             email:              %support_email%
         sender:
             email:              %sender_email%
+        openid:
+            connexion:          %openid_connexion%
         facebook:
             admin_ids:          %facebook_admin_ids%
             client_id:          %facebook_client_id%
