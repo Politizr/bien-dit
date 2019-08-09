@@ -35,6 +35,7 @@ parameters:
     cookie_name: REMEMBERME
 
     # Algolia
+    algolia_search: false
     algolia_app_id: APPID
     algolia_admin_api_key: API_KEY
     algolia_search_api_key: API_KEY

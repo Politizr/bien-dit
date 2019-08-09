@@ -88,6 +88,7 @@ twig:
             next_message:       'page suivante >'
             dots_message:       '...'
         algolia:
+            search:             %algolia_search%
             app_id:             %algolia_app_id%
             api_key:            %algolia_search_api_key%
             index_name:         %algolia_index_name%
