@@ -28,7 +28,6 @@ services:
     # CIRCLES ACCESS CONTROL
     politizr.security.access_control:
         class: Politizr\Security\Voter\CircleVoter
-        arguments: ['@security.access.decision_manager']
         public: false
         tags:
             - { name: security.voter }

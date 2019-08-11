@@ -25,14 +25,16 @@
         <center>
             <div class="column column140"></div>
             <div class="column column360">
-                <div class="openId">
-                    {% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Inscription avec Facebook'} %}
-                    {% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Inscription avec Twitter'} %}
-                    {% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Inscription avec Google'} %}
-                </div>
-                <div class="orElse">
-                    <div class="orElseLine"></div><span>ou</span><div class="orElseLine"></div>
-                </div>
+                {% if openid.connexion == true %}
+                    <div class="openId">
+                        {% include 'PolitizrFrontBundle:Security:facebookConnect.html.twig' with {'label': 'Inscription avec Facebook'} %}
+                        {% include 'PolitizrFrontBundle:Security:twitterConnect.html.twig' with {'label': 'Inscription avec Twitter'} %}
+                        {% include 'PolitizrFrontBundle:Security:googleConnect.html.twig' with {'label': 'Inscription avec Google'} %}
+                    </div>
+                    <div class="orElse">
+                        <div class="orElseLine"></div><span>ou</span><div class="orElseLine"></div>
+                    </div>
+                {% endif %}
                 <div class="card">
                     {% if form.vars.errors|length %}
                         <div class="boxError">

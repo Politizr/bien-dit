@@ -35,12 +35,15 @@ parameters:
     cookie_name: REMEMBERME
 
     # Algolia
+    algolia_search: false
     algolia_app_id: APPID
     algolia_admin_api_key: API_KEY
     algolia_search_api_key: API_KEY
     algolia_index_name: POLITIZR
 
     # OAuth parameters
+    openid_connexion: false
+    
     # Facebook
     # https://developers.facebook.com/docs/facebook-login/permissions
     facebook_admin_ids: '123'

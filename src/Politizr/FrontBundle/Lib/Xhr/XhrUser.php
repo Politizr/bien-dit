@@ -837,6 +837,7 @@ class XhrUser
             ->usePuFollowDdPUserQuery()
                 ->filterByPDDebateId($debate->getId())
             ->endUse()
+            ->withColumn('p_u_follow_d_d.created_at', 'PuFollowDdPUser.CreatedAt')
             ->orderBy('PuFollowDdPUser.CreatedAt', 'desc');
 
         $total = $query->count();
@@ -880,6 +881,7 @@ class XhrUser
             ->usePuFollowDdPUserQuery()
                 ->filterByPDDebateId($debate->getId())
             ->endUse()
+            ->withColumn('p_u_follow_d_d.created_at', 'PuFollowDdPUser.CreatedAt')
             ->orderBy('PuFollowDdPUser.CreatedAt', 'desc')
             ->limit(ListingConstants::LISTING_CLASSIC_PAGINATION)
             ->offset($offset)
@@ -934,6 +936,7 @@ class XhrUser
                 ->filterByPUserId($user->getId())
             ->endUse()
             ->setDistinct()
+            ->withColumn('p_u_follow_u.created_at', 'PuFollowU.CreatedAt')
             ->orderBy('PUFollowURelatedByPUserFollowerId.CreatedAt', 'desc');
             
         $total = count($user->getFollowers($query));
@@ -980,6 +983,7 @@ class XhrUser
             ->usePUFollowURelatedByPUserFollowerIdQuery()
                 ->filterByPUserId($user->getId())
             ->endUse()
+            ->withColumn('p_u_follow_u.created_at', 'PuFollowU.CreatedAt')
             ->orderBy('PUFollowURelatedByPUserFollowerId.CreatedAt', 'desc')
             ->limit(ListingConstants::LISTING_CLASSIC_PAGINATION)
             ->offset($offset);
@@ -1036,6 +1040,7 @@ class XhrUser
                 ->filterByPUserFollowerId($user->getId())
             ->endUse()
             ->setDistinct()
+            ->withColumn('p_u_follow_u.created_at', 'PuFollowU.CreatedAt')
             ->orderBy('PUFollowURelatedByPUserId.CreatedAt', 'desc');
             
         $total = count($user->getSubscribers($query));
@@ -1082,6 +1087,7 @@ class XhrUser
                 ->filterByPUserFollowerId($user->getId())
             ->endUse()
             ->setDistinct()
+            ->withColumn('p_u_follow_u.created_at', 'PuFollowU.CreatedAt')
             ->orderBy('PUFollowURelatedByPUserId.CreatedAt', 'desc')
             ->limit(ListingConstants::LISTING_CLASSIC_PAGINATION)
             ->offset($offset);

@@ -70,6 +70,8 @@ twig:
             email:              %support_email%
         sender:
             email:              %sender_email%
+        openid:
+            connexion:          %openid_connexion%
         facebook:
             admin_ids:          %facebook_admin_ids%
             client_id:          %facebook_client_id%
@@ -86,6 +88,7 @@ twig:
             next_message:       'page suivante >'
             dots_message:       '...'
         algolia:
+            search:             %algolia_search%
             app_id:             %algolia_app_id%
             api_key:            %algolia_search_api_key%
             index_name:         %algolia_index_name%
