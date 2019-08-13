@@ -21,9 +21,9 @@ params:
         p_user:
             label:          Créé par
         p_owner_id:
-            label:          ID propriétaire
+            label:          ID organisation
         p_owner:
-            label:          Propriétaire
+            label:          Organisation
         title:
             label:          Titre
         moderated:
@@ -112,7 +112,7 @@ builders:
                     "Texte":                    [ [ title ] ]
                 "Contexte":
                     "Auteur":                   [ p_user ]
-                    "Propriétaire":             [ p_owner ]
+                    "Organisation":             [ p_owner ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ p_t_tag_type ]
@@ -163,7 +163,7 @@ builders:
                     "Texte":                    [ [ title ] ]
                 "Contexte":
                     "Auteur":                   [ block_p_user ]
-                    "Propriétaire":             [ block_p_owner ]
+                    "Organisation":             [ block_p_owner ]
                     "Sujets":                   [ block_debates ]
                     "Réponses":                 [ block_reactions ]
                     "Profils":                  [ block_users ]
@@ -179,7 +179,7 @@ builders:
                 block_p_user:
                     label:                      "Auteur"
                 block_p_owner:
-                    label:                      "Propriétaire"
+                    label:                      "Organisation"
                 block_debates:
                     label:                      "Taggés"
                 block_reactions:

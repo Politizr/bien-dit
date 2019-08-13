@@ -137,7 +137,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $circle = $this->addDropdown($menu, 'Consultation');
         $this->addLinkRoute(
             $circle,
-            'Propriétaire',
+            'Organisation',
             'Politizr_AdminBundle_PCOwner_list'
         );
         $this->addLinkRoute(
@@ -374,11 +374,6 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Réponse',
             'Politizr_AdminBundle_PDReaction_list'
         );
-        $this->addLinkRoute(
-            $document,
-            'Média',
-            'Politizr_AdminBundle_PDMedia_list'
-        );
 
         // Commentaires
         $comment = $this->addDropdown($menu, 'Commentaire');
@@ -397,7 +392,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $circle = $this->addDropdown($menu, 'Consultation');
         $this->addLinkRoute(
             $circle,
-            'Propriétaire',
+            'Organisation',
             'Politizr_AdminBundle_PCOwner_list'
         );
         $this->addLinkRoute(
@@ -416,11 +411,6 @@ class AdminMenu extends AdmingeneratorMenuBuilder
 
         // Monitoring
         $monitoring = $this->addDropdown($menu, 'Suivi');
-        $this->addLinkRoute(
-            $monitoring,
-            'Message direct',
-            'Politizr_AdminBundle_PDDirect_list'
-        );
         $this->addLinkRoute(
             $monitoring,
             'Demande de modification',
