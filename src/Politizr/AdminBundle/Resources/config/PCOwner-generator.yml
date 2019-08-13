@@ -29,7 +29,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des propriétaires
+            title:                              Liste des organisations
             max_per_page:                       50
             sort:                               [ sortable_rank, DESC ]
             display:                            [ id, title, created_at ]
@@ -45,7 +45,7 @@ builders:
                 new:                            ~
     new:
         params:
-            title:                              "Création d'un propriétaire"
+            title:                              "Création d'un organisation"
             display:
                 "Champs principaux":            [ title ]
             actions:
@@ -53,7 +53,7 @@ builders:
               list:                             ~
     edit:
         params:
-            title:                              "Edition du propriétaire '{{ PCOwner.title }}'"
+            title:                              "Edition du organisation '{{ PCOwner.title }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ title, summary, description ]
@@ -90,7 +90,7 @@ builders:
                 delete:                         ~
     show:
         params:
-            title:                              "Visualisation du propriétaire '{{ PCOwner.getTitle }}'"
+            title:                              "Visualisation du organisation '{{ PCOwner.getTitle }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ title, summary, description ]
