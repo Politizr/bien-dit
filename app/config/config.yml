@@ -932,13 +932,13 @@ studio_echo_media:
             type:               image
             extension_list:     [ jpg, jpeg, png ]
             max_files:          10
-            max_size:           10
+            max_size:           5
             category_id:        1
         cms_content_documents:
             type:               document
             extension_list:     [ doc, docx, odt, pdf ]
             max_files:          10
-            max_size:           10
+            max_size:           5
             culture:            fr
             category_id:        2
             keep_file_name:     true
@@ -946,13 +946,13 @@ studio_echo_media:
             type:               image
             extension_list:     [ jpg, jpeg, png ]
             max_files:          10
-            max_size:           10
+            max_size:           5
             category_id:        1
         cms_content_admin_documents:
             type:               document
             extension_list:     [ doc, docx, odt, pdf ]
             max_files:          10
-            max_size:           10
+            max_size:           5
             culture:            fr
             category_id:        2
             keep_file_name:     true
