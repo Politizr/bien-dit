@@ -60,19 +60,6 @@ class AdminMenu extends AdmingeneratorMenuBuilder
                 ->setExtra('icon', 'fa fa-dashboard');
         }
 
-        // Stats
-        $stats = $this->addDropdown($menu, 'Statistique');
-        $this->addLinkRoute(
-            $stats,
-            'Utilisateur',
-            'PolitizrAdminStats_PUser'
-        );
-        $this->addLinkRoute(
-            $stats,
-            'Sujet',
-            'PolitizrAdminStats_PDDebate'
-        );
-
         // Cms Management
         $cms = $this->addDropdown($menu, 'Contenu');
         $this->addLinkRoute(
@@ -147,8 +134,21 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $circle,
-            'Thématique',
+            'Discussion',
             'Politizr_AdminBundle_PCTopic_list'
+        );
+
+        // Stats
+        $stats = $this->addDropdown($menu, 'Statistique');
+        $this->addLinkRoute(
+            $stats,
+            'Utilisateur',
+            'PolitizrAdminStats_PUser'
+        );
+        $this->addLinkRoute(
+            $stats,
+            'Sujet',
+            'PolitizrAdminStats_PDDebate'
         );
 
         // Tags
@@ -327,19 +327,6 @@ class AdminMenu extends AdmingeneratorMenuBuilder
                 ->setExtra('icon', 'fa fa-dashboard');
         }
 
-        // Stats
-        $stats = $this->addDropdown($menu, 'Statistique');
-        $this->addLinkRoute(
-            $stats,
-            'Utilisateur',
-            'PolitizrAdminStats_PUser'
-        );
-        $this->addLinkRoute(
-            $stats,
-            'Sujet',
-            'PolitizrAdminStats_PDDebate'
-        );
-
         // Cms Management
         $cms = $this->addDropdown($menu, 'Contenu');
         $this->addLinkRoute(
@@ -402,8 +389,21 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $circle,
-            'Thématique',
+            'Discussion',
             'Politizr_AdminBundle_PCTopic_list'
+        );
+
+        // Stats
+        $stats = $this->addDropdown($menu, 'Statistique');
+        $this->addLinkRoute(
+            $stats,
+            'Utilisateur',
+            'PolitizrAdminStats_PUser'
+        );
+        $this->addLinkRoute(
+            $stats,
+            'Sujet',
+            'PolitizrAdminStats_PDDebate'
         );
 
         // Tags

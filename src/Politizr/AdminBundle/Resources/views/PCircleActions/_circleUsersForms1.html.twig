@@ -1,35 +1,38 @@
-<div class="row">
-    <div class="form-model col-md-12">
-        <label>
-            <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;Vous pouvez préciser des valeurs pour filtrer des utilisateurs</li>
-        </label>
-        <form id="formAttr1" name="formAttr1">
-            <input type="hidden" id="no" name="no" value="1">
-            <input type="hidden" id="circleId" name="circleId" value="{{ circle.id }}">
-        </form>
-    </div>
-</div>
-
-{{ form_start(formFilter1, {'attr': {'id': 'filterUsers1', 'name': 'filterUsers1', 'novalidate': 'novalidate' }}) }}
-    <div class="row">
-        {{ form_errors(formFilter1) }}
-        <div class="form-model col-md-4">
-            {{ form_row(formFilter1.city_insee_code) }}
-        </div>
-        <div class="form-model col-md-4">
-            {{ form_row(formFilter1.department_code) }}
-        </div>
-        <div class="form-model col-md-4">
-            {{ form_row(formFilter1.only_elected) }}
-        </div>
-    </div>
+{% if is_granted('ROLE_SYSTEM') %}
     <div class="row">
         <div class="form-model col-md-12">
-            <br/>
-            <a class="generic-action btn btn-default" action="filterForm1">Filtrer</a>
+            <label>
+                <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;Vous pouvez préciser des valeurs pour filtrer des utilisateurs</li>
+            </label>
+            <form id="formAttr1" name="formAttr1">
+                <input type="hidden" id="no" name="no" value="1">
+                <input type="hidden" id="circleId" name="circleId" value="{{ circle.id }}">
+            </form>
         </div>
     </div>
-{{ form_end(formFilter1) }}
+
+
+    {{ form_start(formFilter1, {'attr': {'id': 'filterUsers1', 'name': 'filterUsers1', 'novalidate': 'novalidate' }}) }}
+        <div class="row">
+            {{ form_errors(formFilter1) }}
+            <div class="form-model col-md-4">
+                {{ form_row(formFilter1.city_insee_code) }}
+            </div>
+            <div class="form-model col-md-4">
+                {{ form_row(formFilter1.department_code) }}
+            </div>
+            <div class="form-model col-md-4">
+                {{ form_row(formFilter1.only_elected) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-model col-md-12">
+                <br/>
+                <a class="generic-action btn btn-default" action="filterForm1">Filtrer</a>
+            </div>
+        </div>
+    {{ form_end(formFilter1) }}
+{% endif %}
 
 <div class="row">
     <div class="form-model col-md-12">

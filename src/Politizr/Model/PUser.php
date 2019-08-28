@@ -168,54 +168,12 @@ class PUser extends BasePUser implements UserInterface
      */
     protected function makeSlugUnique($slug, $separator = '-', $alreadyExists = false)
     {
-        if (!$alreadyExists) {
-            $slug2 = $slug;
-        } else {
-            $slug2 = $slug . $separator;
-
-            $count = PUserQuery::create()
-                ->filterBySlug($this->getSlug())
-                ->filterByPrimaryKey($this->getPrimaryKey())
-            ->count();
-
-            if (1 == $count) {
-                return $this->getSlug();
-            }
+        $nb = PUserQuery::create()->filterBySlug($slug)->count();
+        if ($nb > 0) {
+            $slug = $slug . $separator . uniqid();
         }
 
-         $query = PUserQuery::create('q')
-        ->where('q.Slug ' . ($alreadyExists ? 'REGEXP' : '=') . ' ?', $alreadyExists ? '^' . $slug2 . '[0-9]+$' : $slug2)->prune($this)
-        ;
-
-        if (!$alreadyExists) {
-            $count = $query->count();
-            if ($count > 0) {
-                return $this->makeSlugUnique($slug, $separator, true);
-            }
-
-            return $slug2;
-        }
-
-        // Already exists
-        // Here is the fix > withColumn
-        $object = $query
-            ->withColumn('LENGTH(slug)', 'LENGTH(slug)')
-            ->withColumn('slug', 'slug')
-            ->addDescendingOrderByColumn('LENGTH(slug)')
-            ->addDescendingOrderByColumn('slug')
-        ->findOne();
-
-        // First duplicate slug
-        if (null == $object) {
-            return $slug2 . '1';
-        }
-
-        $slugNum = substr($object->getSlug(), strlen($slug) + 1);
-        if ('0' === $slugNum[0]) {
-            $slugNum[0] = 1;
-        }
-
-        return $slug2 . ($slugNum + 1);
+        return $slug;
     }
 
 

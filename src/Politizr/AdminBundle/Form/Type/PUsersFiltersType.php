@@ -33,7 +33,7 @@ class PUsersFiltersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('only_elected', CheckboxType::class, array(
-            'label'    => 'Utilisateurs qualifiés uniquement',
+            'label'    => 'Utilisateurs élus uniquement',
             'required' => false,
         ));
 

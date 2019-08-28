@@ -21,9 +21,9 @@ params:
         p_user:
             label:          Créé par
         p_owner_id:
-            label:          ID organisation
+            label:          ID Utilisateur lié
         p_owner:
-            label:          Organisation
+            label:          Utilisateur lié
         title:
             label:          Titre
         moderated:
@@ -43,7 +43,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des thématiques
+            title:                              Liste des tags
             max_per_page:                       50
             sort:                               [ created_at, DESC ]
             scopes:
@@ -86,7 +86,7 @@ builders:
         filetype: ~
     new:
         params:
-            title:                              "Création d'une thématique"
+            title:                              "Création d'un tag"
             display:
                 "Champs principaux":            [ p_t_tag_type, p_owner, title ]
             fields:
@@ -94,6 +94,7 @@ builders:
                     addFormOptions:
                         query:                  \Politizr\Model\PTTagTypeQuery::create()->orderByTitle() 
                 p_owner:
+                    credentials:                ROLE_SYSTEM
                     dbType:                     model
                     formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
@@ -106,13 +107,13 @@ builders:
               list:                             ~
     edit:
         params:
-            title:                              "Edition de la thématique '{{ PTag.title }}'"
+            title:                              "Edition du tag '{{ PTag.title }}'"
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ] ]
                 "Contexte":
                     "Auteur":                   [ p_user ]
-                    "Organisation":             [ p_owner ]
+                    "Utilisateur lié":          [ p_owner ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Type":                     [ p_t_tag_type ]
@@ -120,6 +121,7 @@ builders:
                     "Dates":                    [ [ created_at, updated_at ] ]
             fields:
                 p_user:
+                    credentials:                ROLE_SYSTEM
                     formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
                         multiple:               false
@@ -127,6 +129,7 @@ builders:
                         class:                  Politizr\Model\PUser
                         query:                  \Politizr\Model\PUserQuery::create()->orderByName()
                 p_owner:
+                    credentials:                ROLE_SYSTEM
                     formType:                   Admingenerator\FormExtensionsBundle\Form\Type\Select2ModelType
                     addFormOptions:
                         multiple:               false
@@ -157,13 +160,13 @@ builders:
                 delete:                         ~
     show:
         params:
-            title:                              "Visualisation de la thématique {{ PTag.title }}"
+            title:                              "Visualisation du tag {{ PTag.title }}"
             tabs:
                 "Contenu":
                     "Texte":                    [ [ title ] ]
                 "Contexte":
                     "Auteur":                   [ block_p_user ]
-                    "Organisation":             [ block_p_owner ]
+                    "Utilisateur lié":          [ block_p_owner ]
                     "Sujets":                   [ block_debates ]
                     "Réponses":                 [ block_reactions ]
                     "Profils":                  [ block_users ]

@@ -62,10 +62,12 @@ builders:
                     "Dates":                 [ [ created_at, updated_at ] ]
             fields:
                 summary:
+                    credentials:                ROLE_SYSTEM
                     grid_class:                 "col-md-12"
                     addFormOptions:
                         attr:                   { class : tinymce }
                 description:
+                    credentials:                ROLE_SYSTEM
                     grid_class:                 "col-md-12"
                     addFormOptions:
                         attr:                   { class : tinymce }
@@ -97,6 +99,11 @@ builders:
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
                     "Dates":                 [ [ created_at, updated_at ] ]
+            fields:
+                summary:
+                    credentials:                ROLE_SYSTEM
+                description:
+                    credentials:                ROLE_SYSTEM
             actions:
                 list:                           ~
                 edit:                           ~
