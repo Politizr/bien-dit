@@ -14,10 +14,17 @@
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li>
-                        <a data-toggle="tab" href="#" data-target=".tab-pane-model-analytics">
-                            Analytics
+                        <a data-toggle="tab" href="#" data-target=".tab-pane-model-dashboard">
+                            Accueil
                         </a>
                     </li>
+                    {% if is_granted('ROLE_SYSTEM') %}
+                        <li>
+                            <a data-toggle="tab" href="#" data-target=".tab-pane-model-analytics">
+                                Analytics
+                            </a>
+                        </li>
+                    {% endif %}
                     <li>
                         <a data-toggle="tab" href="#" data-target=".tab-pane-model-notifs">
                             Notifications
@@ -26,43 +33,80 @@
                 </ul>
 
                 <div class="tab-content form-model-content">
-                    <fieldset class="form-model-tab-pane tab-pane-model-analytics tab-pane">
-                        <div id="gaZone" clientId="{{ google.client_id }}" viewId="{{ google.ga_view_id }}">
-                            <legend><span>Compte</span></legend>
-                            <div class="row">
-                                <div class="form-model col-md-12">
-                                    <section id="auth-button"></section>
+                    <fieldset class="form-model-tab-pane tab-pane-model-dashboard tab-pane">
+                        <legend><span>Bienvenue !</span></legend>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2>Préparez vos consultations</h2>
+                                <ul>
+                                    <li>Consultez la <a href="{{ path('Politizr_AdminBundle_PCOwner_list') }}">liste des organisations</a> enregistrées.</li>
+                                    <li>Consultez la <a href="{{ path('Politizr_AdminBundle_PCircle_list') }}">liste des consultations</a> et la <a href="{{ path('Politizr_AdminBundle_PCTopic_list') }}">liste des thématiques</a> associées aux consultations.</li>
+                                    <li>Créez <a href="{{ path('Politizr_AdminBundle_PCircle_new') }}">une nouvelle consultation.</a></li>
+                                </ul>
+                                <h2>Administrez votre communauté</h2>
+                                <ul>
+                                    <li>Liste des <a href="{{ path('Politizr_AdminBundle_PUser_list') }}">utilisateurs</a>.</li>
+                                    <li>Liste des <a href="{{ path('Politizr_AdminBundle_PDDebate_list') }}">sujets</a> publiés.</li>
+                                    <li>Liste des <a href="{{ path('Politizr_AdminBundle_PDReaction_list') }}">réponses</a> publiées.</li>
+                                    <li>Liste des <a href="{{ path('Politizr_AdminBundle_PDDComment_list') }}">commentaires associés aux sujets</a>.</li>
+                                    <li>Liste des <a href="{{ path('Politizr_AdminBundle_PDRComment_list') }}">commentaires associés aux réponses</a>.</li>
+                                </ul>
+                                <h2>Gérez vos pages de contenu</h2>
+                                <ul>
+                                    <li>Gérez la <a href="{{ path('Politizr_AdminBundle_CmsContentAdmin_edit', { 'pk': 1 }) }}">page d'accueil</a>.</li>
+                                    <li>Gérez les <a href="{{ path('Politizr_AdminBundle_CmsContent_list') }}">pages de présentation</a>.</li>
+                                    <li>Gérez les <a href="{{ path('Politizr_AdminBundle_CmsInfo_list') }}">actualités</a>.</li>
+                                </ul>
+                                <h2>Effectuez des réglages complémentaires</h2>
+                                <ul>
+                                    <li>Liste des <a href="{{ path('Politizr_AdminBundle_PTag_list') }}">thématiques</a> (tags).</li>
+                                    <li>Demande de <a href="{{ path('Politizr_AdminBundle_PMAskForUpdate_list') }}">modification</a>.</li>
+                                    <li>Signalement d'<a href="{{ path('Politizr_AdminBundle_PMAbuseReporting_list') }}">abus</a>.</li>
+                                    <li><a href="{{ path('Politizr_AdminBundle_PMCgu_list') }}">Conditions Générales d'Utilisation</a></li>
+                                    <li><a href="{{ path('Politizr_AdminBundle_PMCharte_list') }}">Charte</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </fieldset>
+                    {% if is_granted('ROLE_SYSTEM') %}
+                        <fieldset class="form-model-tab-pane tab-pane-model-analytics tab-pane">
+                            <div id="gaZone" clientId="{{ google.client_id }}" viewId="{{ google.ga_view_id }}">
+                                <legend><span>Compte</span></legend>
+                                <div class="row">
+                                    <div class="form-model col-md-12">
+                                        <section id="auth-button"></section>
 
-                                    <div style="display:none" id="gaLogout">
-                                        <div class="gapi-analytics-auth-styles-signinbutton gapi-analytics-auth-styles-signinbutton:hover" title="Access Google Analytics">
-                                            <span class="gapi-analytics-auth-styles-signinbutton-image"></span>
-                                            <span class="gapi-analytics-auth-styles-signinbutton-buttonText" action="gaLogout">Déconnexion</span>
+                                        <div style="display:none" id="gaLogout">
+                                            <div class="gapi-analytics-auth-styles-signinbutton gapi-analytics-auth-styles-signinbutton:hover" title="Access Google Analytics">
+                                                <span class="gapi-analytics-auth-styles-signinbutton-image"></span>
+                                                <span class="gapi-analytics-auth-styles-signinbutton-buttonText" action="gaLogout">Déconnexion</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <legend><span>Sessions</span></legend>
-                            <div class="row">
-                                <div class="form-model col-md-12">
-                                    <section id="timeline" class="gaContainer"></section>
+                                <legend><span>Sessions</span></legend>
+                                <div class="row">
+                                    <div class="form-model col-md-12">
+                                        <section id="timeline" class="gaContainer"></section>
+                                    </div>
                                 </div>
-                            </div>
-                            {#
-                            <legend><span>Taux de rebond</span></legend>
-                            <div class="row">
-                                <div class="form-model col-md-12">
-                                    <section id="bouncerate" class="gaContainer"></section>
+                                {#
+                                <legend><span>Taux de rebond</span></legend>
+                                <div class="row">
+                                    <div class="form-model col-md-12">
+                                        <section id="bouncerate" class="gaContainer"></section>
+                                    </div>
                                 </div>
-                            </div>
-                            <legend><span>Sources</span></legend>
-                            <div class="row">
-                                <div class="form-model col-md-12">
-                                    <section id="trafficsource" class="gaContainer"></section>
+                                <legend><span>Sources</span></legend>
+                                <div class="row">
+                                    <div class="form-model col-md-12">
+                                        <section id="trafficsource" class="gaContainer"></section>
+                                    </div>
                                 </div>
+                                #}
                             </div>
-                            #}
-                        </div>
-                    </fieldset>
+                        </fieldset>
+                    {% endif %}
                     <fieldset class="form-model-tab-pane tab-pane-model-notifs tab-pane">
                         <legend><span>Envoi d'une notification "administrateur"</span></legend>
                         <div id="notificationBox">
@@ -74,7 +118,6 @@
                         <div class="form-model col-md-12" id="notificationsAdminHistory">
                             {% include 'PolitizrAdminBundle:Dashboard:_notifLast.html.twig' %}
                         </div>
-                        </div>
                     </fieldset>
                 </div>
             </div>
@@ -85,7 +128,9 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/dashboard/ga.js') }}"></script>
+    {% if is_granted('ROLE_SYSTEM') %}
+        <script type="text/javascript" src="{{ asset('bundles/politizradmin/js/politizr/dashboard/ga.js') }}"></script>
+    {% endif %}
 
     {# TinyMCE #}
     {% include "PolitizrAdminBundle::tinymce-notif.html.twig" with { 'nbCharMax': 250 } %}

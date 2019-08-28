@@ -209,7 +209,9 @@ class SecurityController extends Controller
             $oAuth = true;
         }
 
-        $form = $this->createForm(new PUserContactType($withEmail, $oAuth), $user);
+        // check if geo is active
+        $geoActive = $this->getParameter('geo_active');
+        $form = $this->createForm(new PUserContactType($withEmail, $oAuth, $geoActive), $user);
         
         $form->bind($request);
         if ($form->isValid()) {
@@ -217,7 +219,6 @@ class SecurityController extends Controller
             $user->save();
 
             // upd localization infos
-            $geoActive = $this->getParameter('geo_active');
             if ($geoActive) {
                 $this->get('politizr.functional.localization')->updateUserGeoloc($user, $form);
             }

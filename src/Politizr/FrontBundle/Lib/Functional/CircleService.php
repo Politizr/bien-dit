@@ -136,7 +136,7 @@ class CircleService
         // $this->logger->info('$user = '.print_r($user, true));
         // $this->logger->info('$user->getPLCityId = '.print_r($user->getPLCityId(), true));
 
-        if (!$user || ($this->geoActive && !$user->getPLCityId())) {
+        if (!$user /*|| ($this->geoActive && !$user->getPLCityId())*/) {
             return null;
         }
 
@@ -148,11 +148,11 @@ class CircleService
                         ->usePUInPCQuery()
                             ->filterByPUserId($user->getId())                    
                         ->endUse()
-                        ->_if($this->geoActive)
-                            ->usePCGroupLCQuery()
-                                ->filterByPLCityId($user->getPLCityId())
-                            ->endUse()
-                        ->_endif()
+                        // ->_if($this->geoActive)
+                        //     ->usePCGroupLCQuery()
+                        //         ->filterByPLCityId($user->getPLCityId())
+                        //     ->endUse()
+                        // ->_endif()
                         ->orderByRank('desc')
                         ->find();
 
