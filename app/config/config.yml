@@ -70,6 +70,8 @@ twig:
             email:              %support_email%
         sender:
             email:              %sender_email%
+        openid:
+            connexion:          %openid_connexion%
         facebook:
             admin_ids:          %facebook_admin_ids%
             client_id:          %facebook_client_id%
@@ -86,6 +88,7 @@ twig:
             next_message:       'page suivante >'
             dots_message:       '...'
         algolia:
+            search:             %algolia_search%
             app_id:             %algolia_app_id%
             api_key:            %algolia_search_api_key%
             index_name:         %algolia_index_name%
@@ -929,13 +932,13 @@ studio_echo_media:
             type:               image
             extension_list:     [ jpg, jpeg, png ]
             max_files:          10
-            max_size:           10
+            max_size:           5
             category_id:        1
         cms_content_documents:
             type:               document
             extension_list:     [ doc, docx, odt, pdf ]
             max_files:          10
-            max_size:           10
+            max_size:           5
             culture:            fr
             category_id:        2
             keep_file_name:     true
@@ -943,13 +946,13 @@ studio_echo_media:
             type:               image
             extension_list:     [ jpg, jpeg, png ]
             max_files:          10
-            max_size:           10
+            max_size:           5
             category_id:        1
         cms_content_admin_documents:
             type:               document
             extension_list:     [ doc, docx, odt, pdf ]
             max_files:          10
-            max_size:           10
+            max_size:           5
             culture:            fr
             category_id:        2
             keep_file_name:     true

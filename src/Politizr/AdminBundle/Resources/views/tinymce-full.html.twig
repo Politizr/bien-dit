@@ -21,7 +21,8 @@
             branding: false,
             image_caption: true,
             images_upload_url: $('#tinmce-options').attr('image-upload-path'),
-            images_upload_credentials: true
+            images_upload_credentials: true,
+            forced_root_block: false
       };
     } else {
       var tinyMceAttr = {
@@ -38,7 +39,8 @@
             convert_urls: false,
             relatives_urls: false,
             extended_valid_elements: 'span,img[src|height|width|alt|uuid]',
-            branding: false
+            branding: false,
+            forced_root_block: false
       }; 
     }
     $().ready(function() {

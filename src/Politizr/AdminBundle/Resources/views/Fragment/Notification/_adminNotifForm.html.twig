@@ -1,31 +1,33 @@
-<div class="row">
-    <div class="form-model col-md-12">
-        <label>
-            <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;Vous pouvez préciser des valeurs pour filtrer des utilisateurs</li>
-        </label>
-    </div>
-</div>
-
-{{ form_start(formFilter, {'attr': {'id': 'filterUsers', 'name': 'filterUsers', 'novalidate': 'novalidate' }}) }}
-    <div class="row">
-        {{ form_errors(formFilter) }}
-        <div class="form-model col-md-4">
-            {{ form_row(formFilter.city_insee_code) }}
-        </div>
-        <div class="form-model col-md-4">
-            {{ form_row(formFilter.department_code) }}
-        </div>
-        <div class="form-model col-md-4">
-            {{ form_row(formFilter.only_elected) }}
-        </div>
-    </div>
+{% if is_granted('ROLE_SYSTEM') %}
     <div class="row">
         <div class="form-model col-md-12">
-            <br/>
-            <a class="generic-action btn btn-default" action="filterForm">Filtrer</a>
+            <label>
+                <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;Vous pouvez préciser des valeurs pour filtrer des utilisateurs</li>
+            </label>
         </div>
     </div>
-{{ form_end(formFilter) }}
+
+    {{ form_start(formFilter, {'attr': {'id': 'filterUsers', 'name': 'filterUsers', 'novalidate': 'novalidate' }}) }}
+        <div class="row">
+            {{ form_errors(formFilter) }}
+            <div class="form-model col-md-4">
+                {{ form_row(formFilter.city_insee_code) }}
+            </div>
+            <div class="form-model col-md-4">
+                {{ form_row(formFilter.department_code) }}
+            </div>
+            <div class="form-model col-md-4">
+                {{ form_row(formFilter.only_elected) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-model col-md-12">
+                <br/>
+                <a class="generic-action btn btn-default" action="filterForm">Filtrer</a>
+            </div>
+        </div>
+    {{ form_end(formFilter) }}
+{% endif %}
 
 <div class="row">
     <div class="form-model col-md-12">

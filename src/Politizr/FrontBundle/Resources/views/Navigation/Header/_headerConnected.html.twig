@@ -7,9 +7,11 @@
                 <div id="headerMenu">
                     {{ topLeftMenu() }}
                 </div>
-                <div id="searchInput">
-                    <i class="icon-search"></i><input id="searchInputAlgolia" type="text" placeholder="Rechercher">
-                </div>
+                {% if algolia.search == true %}                
+                    <div id="searchInput">
+                        <i class="icon-search"></i><input id="searchInputAlgolia" type="text" placeholder="Rechercher">
+                    </div>
+                {% endif %}
             {% endblock topLeftMenu %}
         </div>
         <div id="headerRight">

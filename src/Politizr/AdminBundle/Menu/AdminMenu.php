@@ -60,19 +60,6 @@ class AdminMenu extends AdmingeneratorMenuBuilder
                 ->setExtra('icon', 'fa fa-dashboard');
         }
 
-        // Stats
-        $stats = $this->addDropdown($menu, 'Statistique');
-        $this->addLinkRoute(
-            $stats,
-            'Utilisateur',
-            'PolitizrAdminStats_PUser'
-        );
-        $this->addLinkRoute(
-            $stats,
-            'Sujet',
-            'PolitizrAdminStats_PDDebate'
-        );
-
         // Cms Management
         $cms = $this->addDropdown($menu, 'Contenu');
         $this->addLinkRoute(
@@ -137,7 +124,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $circle = $this->addDropdown($menu, 'Consultation');
         $this->addLinkRoute(
             $circle,
-            'Propriétaire',
+            'Organisation',
             'Politizr_AdminBundle_PCOwner_list'
         );
         $this->addLinkRoute(
@@ -147,8 +134,21 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $circle,
-            'Thématique',
+            'Discussion',
             'Politizr_AdminBundle_PCTopic_list'
+        );
+
+        // Stats
+        $stats = $this->addDropdown($menu, 'Statistique');
+        $this->addLinkRoute(
+            $stats,
+            'Utilisateur',
+            'PolitizrAdminStats_PUser'
+        );
+        $this->addLinkRoute(
+            $stats,
+            'Sujet',
+            'PolitizrAdminStats_PDDebate'
         );
 
         // Tags
@@ -327,19 +327,6 @@ class AdminMenu extends AdmingeneratorMenuBuilder
                 ->setExtra('icon', 'fa fa-dashboard');
         }
 
-        // Stats
-        $stats = $this->addDropdown($menu, 'Statistique');
-        $this->addLinkRoute(
-            $stats,
-            'Utilisateur',
-            'PolitizrAdminStats_PUser'
-        );
-        $this->addLinkRoute(
-            $stats,
-            'Sujet',
-            'PolitizrAdminStats_PDDebate'
-        );
-
         // Cms Management
         $cms = $this->addDropdown($menu, 'Contenu');
         $this->addLinkRoute(
@@ -374,11 +361,6 @@ class AdminMenu extends AdmingeneratorMenuBuilder
             'Réponse',
             'Politizr_AdminBundle_PDReaction_list'
         );
-        $this->addLinkRoute(
-            $document,
-            'Média',
-            'Politizr_AdminBundle_PDMedia_list'
-        );
 
         // Commentaires
         $comment = $this->addDropdown($menu, 'Commentaire');
@@ -397,7 +379,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         $circle = $this->addDropdown($menu, 'Consultation');
         $this->addLinkRoute(
             $circle,
-            'Propriétaire',
+            'Organisation',
             'Politizr_AdminBundle_PCOwner_list'
         );
         $this->addLinkRoute(
@@ -407,8 +389,21 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $circle,
-            'Thématique',
+            'Discussion',
             'Politizr_AdminBundle_PCTopic_list'
+        );
+
+        // Stats
+        $stats = $this->addDropdown($menu, 'Statistique');
+        $this->addLinkRoute(
+            $stats,
+            'Utilisateur',
+            'PolitizrAdminStats_PUser'
+        );
+        $this->addLinkRoute(
+            $stats,
+            'Sujet',
+            'PolitizrAdminStats_PDDebate'
         );
 
         // Tags
@@ -416,11 +411,6 @@ class AdminMenu extends AdmingeneratorMenuBuilder
 
         // Monitoring
         $monitoring = $this->addDropdown($menu, 'Suivi');
-        $this->addLinkRoute(
-            $monitoring,
-            'Message direct',
-            'Politizr_AdminBundle_PDDirect_list'
-        );
         $this->addLinkRoute(
             $monitoring,
             'Demande de modification',

@@ -9,9 +9,9 @@ params:
         id:
             label:          ID
         p_c_owner_id:
-            label:          ID Propriétaire
+            label:          ID Organisation
         p_c_owner:
-            label:          Propriétaire
+            label:          Organisation
         p_circle_type_id:
             label:          ID Type
         p_circle_type:
@@ -99,7 +99,7 @@ builders:
                     "Logo":                     [ block_logo_file_name ]
                     "Texte":                    [ [ title, summary ], description ]
                 "Contexte":
-                    "Propriétaire":             [ p_c_owner ]
+                    "Organisation":             [ p_c_owner ]
                     "Offre":                    [ p_circle_type ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
@@ -151,7 +151,7 @@ builders:
                     "Logo":                     [ block_logo_file_name ]
                     "Texte":                    [ title, summary, description ]
                 "Contexte":
-                    "Propriétaire":                   [ block_p_c_owner ]
+                    "Organisation":                   [ block_p_c_owner ]
                     "Offre":                    [ p_circle_type ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
@@ -165,7 +165,7 @@ builders:
                     credentials:                ROLE_SYSTEM
                     label:                      "Image"
                 block_p_c_owner:
-                    label:                      "Propriétaire"
+                    label:                      "Organisation"
                 p_circle_type:
                     credentials:                ROLE_SYSTEM
                 url:

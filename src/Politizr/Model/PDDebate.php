@@ -173,6 +173,8 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
 
     /**
      * Overide to manage update published doc without updating slug
+     * Overwrite to fully compatible MySQL 5.7
+     * note: original "makeSlugUnique" throws Syntax error or access violation: 1055 Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column
      *
      * @see BasePDDebate::createSlug
      */
@@ -182,7 +184,11 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
             return $this->getSlug();
         }
 
-        return parent::createSlug();
+        $slug = $this->createRawSlug();
+        $slug = $this->limitSlugSize($slug);
+        $slug = $slug . '-' . uniqid();
+
+        return $slug;
     }
 
     /**
