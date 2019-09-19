@@ -35,7 +35,7 @@
             image_dimensions: false,
             images_upload_url: $('#tinmce-options').attr('image-upload-path'),
             images_upload_credentials: true,
-            forced_root_block: true
+            forced_root_block: 'p'
       };
     } else {
       var tinyMceAttr = {
@@ -65,7 +65,7 @@
             convert_urls: false,
             relatives_urls: false,
             branding: false,
-            forced_root_block: true
+            forced_root_block: 'p'
       };
     }
     $().ready(function() {
