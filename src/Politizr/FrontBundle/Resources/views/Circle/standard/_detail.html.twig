@@ -2,17 +2,18 @@
     <div class="grpGlobalIntro">
         {{ circle.description | raw }}
     </div>
-    <div class="grpAnswersBy">
-        <div class="grpAnswersByTitle">
-            <h1>Les animateurs en charge de ces sujets</h1>
-            <div class="grpAnswersByTitleNotice">
-                <i class="icon-info"></i>
-                <p>Tous les membres ci-contre peuvent répondre à vos questions.</p>
+    {% if circle | nbAuthorizedReactionUsers() > 0 %}
+        <div class="grpAnswersBy">
+            <div class="grpAnswersByTitle">
+                <h1>Les animateurs en charge de ces sujets</h1>
+                <div class="grpAnswersByTitleNotice">
+                    <i class="icon-info"></i>
+                    <p>Tous les membres ci-contre peuvent répondre à vos questions.</p>
+                </div>
             </div>
-            
+            {{ circle | authorizedReactionUsers() }}
         </div>
-        {{ circle | authorizedReactionUsers() }}
-    </div>
+    {% endif %}
 
     {% if topics | length == 1 %}
         <div class="grpIHaveAQuestion">
