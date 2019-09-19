@@ -168,7 +168,7 @@ class PUser extends BasePUser implements UserInterface
      */
     protected function makeSlugUnique($slug, $separator = '-', $alreadyExists = false)
     {
-        $nb = PUserQuery::create()->filterBySlug($slug)->count();
+        $nb = PUserQuery::create()->filterById($this->getId(), '<>')->filterBySlug($slug)->count();
         if ($nb > 0) {
             $slug = $slug . $separator . uniqid();
         }
