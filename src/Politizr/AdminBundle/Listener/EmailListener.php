@@ -237,7 +237,7 @@ class EmailListener
             );
 
             $message = \Swift_Message::newInstance()
-                    ->setSubject('[ Politizr ] Bannissement')
+                    ->setSubject(sprintf('[ %s ] Modération', $this->clientName))
                     ->setFrom(array($this->senderEmail => sprintf('%s', $this->clientName)))
                     ->setTo($user->getEmail())
                     ->setBody($htmlBody, 'text/html', 'utf-8')

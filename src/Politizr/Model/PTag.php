@@ -38,7 +38,7 @@ class PTag extends BasePTag implements Tag
         $slug = $this->createRawSlug();
         $slug = $this->limitSlugSize($slug);
 
-        $nb = PTagQuery::create()->filterBySlug($slug)->count();
+        $nb = PTagQuery::create()->filterById($this->getId(), '<>')->filterBySlug($slug)->count();
         if ($nb > 0) {
             $slug = $slug . '-' . uniqid();
         }
