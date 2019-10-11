@@ -189,7 +189,7 @@ propel:
                     ATTR_EMULATE_PREPARES: true
                 settings:
                     charset:        { value: "%database_charset%" }
-                    queries:        { query: 'set names utf8' }
+                    # queries:        { query: 'set names utf8' }
 
 # FOSUser Configuration
 fos_user:
