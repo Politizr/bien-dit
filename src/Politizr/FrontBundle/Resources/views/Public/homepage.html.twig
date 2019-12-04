@@ -45,13 +45,3 @@
 {% block postMain %}
     {% include 'PolitizrFrontBundle:Navigation\\Footer:_publicFooter.html.twig' %}
 {% endblock postMain %}
-
-{% block javascriptFooter %}
-    {{ parent() }}
-
-    {% javascripts
-        '@PolitizrFrontBundle/Resources/public/js/politizr/pages/home.js'
-        filter='uglifyjs2' %}
-        <script src="{{ asset_url~'?v'~assets_version }}"></script>
-    {% endjavascripts %}
-{% endblock javascriptFooter %}
