@@ -1431,13 +1431,13 @@ GROUP BY child.p_d_debate_id, child.id
     public function createNbUserDebateFirstReaction()
     {
         $sql = "
-SELECT id
+SELECT id, p_d_debate_id
 FROM p_d_reaction 
 WHERE 
     p_user_id = :p_user_id
     AND tree_level = 1
     AND tree_left = 2
-GROUP BY p_d_debate_id
+GROUP BY p_d_debate_id, id
 ";
 
         return $sql;
