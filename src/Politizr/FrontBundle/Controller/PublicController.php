@@ -16,6 +16,8 @@ use Politizr\Constant\CmsConstants;
 use Politizr\Model\PDDirect;
 
 use Politizr\Model\CmsContentQuery;
+use Politizr\Model\PCircleQuery;
+use Politizr\Model\PCTopicQuery;
 use Politizr\Model\PDDebateQuery;
 use Politizr\Model\PDReactionQuery;
 use Politizr\Model\PUserQuery;
@@ -184,9 +186,43 @@ class PublicController extends Controller
             $url = $this->generateUrl('CmsContent', array(
                 'slug' => $content->getSlug(),
                 ));
-            $urls[] = $this->generateUrlItem($url, 'weekly', '0.4');
+            $urls[] = $this->generateUrlItem($url, 'weekly', '0.3');
         }
 
+        // pages circles
+        $circles = PCircleQuery::create()
+            ->filterByOnline(true)
+            ->filterByPublicCircle(true)
+            ->orderByRank()
+            ->find();
+
+        foreach ($circles as $circle) {
+            $url = $this->generateUrl('CircleDetail', array(
+                'slug' => $circle->getSlug(),
+                ));
+            $urls[] = $this->generateUrlItem($url, 'weekly', '0.6');
+        }
+
+        $topics = PCTopicQuery::create()
+            ->usePCircleQuery()
+                ->filterByOnline(true)
+                ->filterByPublicCircle(true)
+            ->endUse()
+            ->filterByOnline(true)
+            ->orderByPCircleId()
+            ->orderByRank()
+            ->find();
+
+        foreach ($topics as $topic) {
+            $circle = $topic->getPCircle();
+            if ($circle) {
+                $url = $this->generateUrl('TopicDetail', array(
+                    'circleSlug' => $circle->getSlug(),
+                    'slug' => $topic->getSlug(),
+                    ));
+                $urls[] = $this->generateUrlItem($url, 'daily', '0.6');
+            }
+        }
 
         // pages debats
         $contents = PDDebateQuery::create()
@@ -217,6 +253,8 @@ class PublicController extends Controller
         }
 
         // pages users
+        // /!\ Users not indexed
+        /**
         $contents = PUserQuery::create()
             ->filterByOnline(true)
             ->orderByCreatedAt('desc')
@@ -228,6 +266,7 @@ class PublicController extends Controller
                 ));
             $urls[] = $this->generateUrlItem($url, 'weekly', '0.3');
         }
+        */
 
         // Render XML Sitemap
         $response = new Response();
