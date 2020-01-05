@@ -680,7 +680,7 @@ class XhrAdmin
             $newMandate = $form->getData();
             $newMandate->save();
         } else {
-            $errors = StaticTools::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -734,7 +734,7 @@ class XhrAdmin
             $mandate = $form->getData();
             $mandate->save();
         } else {
-            $errors = StaticTools::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -874,7 +874,7 @@ class XhrAdmin
             // mail user
             $this->eventDispatcher->dispatch('moderation_notification', new GenericEvent($userModerated));
         } else {
-            $errors = StaticTools::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -1046,7 +1046,7 @@ class XhrAdmin
             // $this->localizationManager->updateUserCity($user, $form->get('localization')->getData()['city']);
             $this->localizationService->updateUserGeoloc($user, $form);
         } else {
-            $errors = StaticTools::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
