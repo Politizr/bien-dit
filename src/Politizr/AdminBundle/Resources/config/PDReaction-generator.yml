@@ -130,6 +130,9 @@ builders:
             display:                            [ title, p_user_id, p_d_debate_id, parent_reaction_id, p_c_topic, active, published_at, created_at ]
             filtersMode:                        modal
             filters:                            [ id, uuid, p_user_id, p_d_debate_id, parent_reaction_id, p_c_topic, p_l_department, p_l_region, title, active ]
+            fields:
+                p_c_topic:
+                    sortable:                   false
             object_actions:
                 show:                           ~
                 edit:                           ~

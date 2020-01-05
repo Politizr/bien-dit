@@ -9,6 +9,7 @@
     </div>
     <div id="globalComments" style="display: none;">
         <h5>Commentaires</h5>
+        <h6>Vous pouvez aussi faire vos commentaires sur un paragraphe précis en cliquant sur <i class="icon-comment-full"></i> à droite du paragraphe à commenter.</h6>
         <div id="addNewGlobalComments">
             {% if app.user %}
                 {{ app.user | isAuthorizedToPublishComment(document, 0, true) }}

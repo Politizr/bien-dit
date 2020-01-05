@@ -29,9 +29,9 @@ class PDocumentTagTypeType extends AbstractType
             'query' => PTagQuery::create()
                 ->filterByPTTagTypeId(TagConstants::TAG_TYPE_TYPE)
                 ->filterByOnline(true)
-                ->_if(!$options['elected_mode'])
-                    ->filterById(TagConstants::TAG_TYPE_ACTION_CONCRETE_ID, \Criteria::NOT_EQUAL)
-                ->_endif()
+                // ->_if(!$options['elected_mode'])
+                //     ->filterById(TagConstants::TAG_TYPE_ACTION_CONCRETE_ID, \Criteria::NOT_EQUAL)
+                // ->_endif()
                 ->orderByTitle(),
             'property' => 'title',
             'index_property' => 'uuid',

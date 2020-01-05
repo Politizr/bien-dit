@@ -316,6 +316,10 @@ class DocumentController extends Controller
 
         $debate = PDDebateQuery::create()->filterByUuid($uuid)->findOne();
 
+        if (!$debate) {
+            throw new InconsistentDataException('Document not found.');
+        }
+
         if (!$this->get('politizr.functional.document')->isDocumentEditable($debate)) {
             throw new InconsistentDataException('Document can\'t be updated anymore.');
         }
