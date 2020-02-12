@@ -93,6 +93,7 @@ builders:
                     addFormOptions:
                         mapped:                 false
                 summary:
+                    credentials:                ROLE_SYSTEM
                     addFormOptions:
                         attr:                   { class : tinymce }
                 description:
