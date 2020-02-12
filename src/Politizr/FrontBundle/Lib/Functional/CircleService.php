@@ -374,6 +374,31 @@ class CircleService
     }
 
     /**
+     * Get nb authorized reaction users by circle
+     *
+     * @param PUser $user
+     * @return int
+     */
+    public function getNbAuthorizedReactionUsersByCircle(PCircle $circle)
+    {
+        // $this->logger->info('*** getAuthorizedReactionUsersByCircle');
+        // $this->logger->info('$circle = '.print_r($circle, true));
+
+        if (!$circle) {
+            return null;
+        }
+
+        $nbUsers = PUserQuery::create()
+            ->usePUInPCQuery()
+                ->filterByPCircleId($circle->getId())
+                ->filterByIsAuthorizedReaction(true)
+            ->endUse()
+            ->count();
+
+        return $nbUsers;
+    }
+
+    /**
      * Get authorized reaction users by circle
      *
      * @param PUser $user
@@ -397,7 +422,6 @@ class CircleService
 
         return $users;
     }
-
 
     /**
      * Get authorized reaction users ids by circle

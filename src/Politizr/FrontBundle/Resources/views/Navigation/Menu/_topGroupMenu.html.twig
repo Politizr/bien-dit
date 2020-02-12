@@ -5,7 +5,7 @@
         <div class="innerMenu">
             <div class="primaryMenu">
                 {% for ownerCircles in ownersCircles %}
-                    <span>{{ ownerCircles[0].title }}</span>
+                    <span>{{ ownerCircles[0].title }}</span><br/>
                     {% for circle in ownerCircles[1] %}
                         <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
                     {% endfor %}

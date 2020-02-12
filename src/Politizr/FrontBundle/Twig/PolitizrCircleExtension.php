@@ -109,6 +109,11 @@ class PolitizrCircleExtension extends \Twig_Extension
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new \Twig_SimpleFilter(
+                'nbAuthorizedReactionUsers',
+                array($this, 'nbAuthorizedReactionUsers'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFilter(
                 'authorizedReactionUsers',
                 array($this, 'authorizedReactionUsers'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
@@ -342,6 +347,21 @@ class PolitizrCircleExtension extends \Twig_Extension
     }
 
     /**
+     * Test nb of users authorized to react in this circle
+     *
+     * @param PCTopic $topic
+     * @return int
+     */
+    public function nbAuthorizedReactionUsers(PCircle $circle)
+    {
+        // $this->logger->info('*** nbAuthorizedReactionUsers');
+
+        $nbUsers = $this->circleService->getNbAuthorizedReactionUsersByCircle($circle);
+
+        return $nbUsers;
+    }
+
+    /**
      * Display listing of users authorized to react in this circle
      *
      * @param PCTopic $topic
@@ -350,7 +370,6 @@ class PolitizrCircleExtension extends \Twig_Extension
     public function authorizedReactionUsers(\Twig_Environment $env, PCircle $circle)
     {
         // $this->logger->info('*** authorizedReactionUsers');
-        // $this->logger->info('$topic = '.print_r($topic, true));
 
         $users = $this->circleService->getAuthorizedReactionUsersByCircle($circle);
 

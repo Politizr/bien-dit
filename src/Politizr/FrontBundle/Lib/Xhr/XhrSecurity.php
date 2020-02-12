@@ -138,7 +138,7 @@ class XhrSecurity
             // Event
             $dispatcher = $this->eventDispatcher->dispatch('lost_password_email', new GenericEvent($user));
         } else {
-            $errors = StaticTools::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
 
@@ -272,7 +272,7 @@ class XhrSecurity
                 return false;
             }
         } else {
-            $errors = StaticTools::getAjaxFormErrors($form);
+            $errors = $this->globalTools->getAjaxFormErrors($form);
             throw new BoxErrorException($errors);
         }
     }

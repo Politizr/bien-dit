@@ -120,8 +120,11 @@ builders:
             filtersMode:                        modal
             filters:                            [ id, uuid, p_user_id, p_c_topic, p_e_operation, p_l_department, p_l_region, title, active ]
             fields:
+                p_c_topic:
+                    sortable:                   false
                 p_e_operation:
                     credentials:                ROLE_SYSTEM
+                    sortable:                   false
             object_actions:
                 show:                           ~
                 edit:                           ~
