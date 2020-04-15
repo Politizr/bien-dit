@@ -19,7 +19,7 @@
         <div class="grpIHaveAQuestion">
             <h2>Question, avis, remarque ou opinion...</h2>
             <p>Engagez la discussion avec notre équipe en vous exprimant, que ce soit pour poser une question ou donner votre avis.</p>
-            {% if not circle.readOnly %}<a href="{{ path('DebateDraftNew', { topic: topics[0].uuid }) }}">Je m'exprime!</a>{% endif %}<a href="{{ path('TopicDetail', { circleSlug: circle.slug, slug: topics[0].slug }) }}" class="grpAllQuestions">Voir les questions déjà posées</a>
+            {% if not circle.readOnly %}<a href="{{ path('DebateDraftNew', { topic: topics[0].uuid }) }}">Je m'exprime!</a>{% endif %}<a href="{{ path('TopicDetail', { circleSlug: circle.slug, slug: topics[0].slug }) }}" class="grpAllQuestions">Voir les contributions déjà posées</a>
         </div>
     {% else %}
         <div class="grpChaptersList">
