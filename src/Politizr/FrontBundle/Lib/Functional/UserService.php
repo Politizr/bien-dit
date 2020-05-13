@@ -329,21 +329,21 @@ class UserService
             $topic = $document->getPCTopic();
             $circle = $topic->getPCircle();
 
-            // circle with open reactions (all users)
-            if ($circle->getOpenReaction()) {
-                if ($reason) {
-                    return DocumentConstants::REASON_AUTHORIZED_CIRCLE_USER;
-                } else {
-                    return true;
-                }
-            }
-
             // topic is in a circle which is "read only"
             if ($circle->getReadOnly()) {
                 if ($reason) {
                     return DocumentConstants::REASON_CIRCLE_READ_ONLY;
                 } else {
                     return false;
+                }
+            }
+
+            // circle with open reactions (all users)
+            if ($circle->getOpenReaction()) {
+                if ($reason) {
+                    return DocumentConstants::REASON_AUTHORIZED_CIRCLE_USER;
+                } else {
+                    return true;
                 }
             }
 
