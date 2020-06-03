@@ -6,9 +6,11 @@
             <div class="footerColumn">
                 <div class="footerColumnTitle">Pour nous contacter</div>
                 <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
-                <div id="publicPolitizrPhone">
-                    <img src="{{ asset('bundles/politizrfront/images/f-phone.svg') }}">{{ contact.phone }}
-                </div>
+                {% if contact.phone is not same as(null)  %}
+                    <div id="publicPolitizrPhone">
+                        <img src="{{ asset('bundles/politizrfront/images/f-phone.svg') }}">{{ contact.phone }}
+                    </div>
+                {% endif %}
             </div>
         </div>
         
