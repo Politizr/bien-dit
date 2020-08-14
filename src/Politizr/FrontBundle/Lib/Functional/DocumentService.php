@@ -549,9 +549,11 @@ class DocumentService
 
         $circleId = $document->getCircleId();
         $similars = PDDebateQuery::create()
+            ->withColumn('p_d_d_tagged_t.p_tag_id', 'p_d_d_tagged_t.p_tag_id')
             ->filterById($document->getDebateId(), \Criteria::NOT_EQUAL)
             ->usePDDTaggedTQuery()
                 ->filterByPTag($document->getTags(TagConstants::TAG_TYPE_THEME))
+                ->orderByPTagId('desc')
             ->endUse()
             ->_if($circleId)
                 ->usePCTopicQuery()
