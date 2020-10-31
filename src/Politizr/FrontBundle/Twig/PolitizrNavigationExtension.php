@@ -220,19 +220,23 @@ class PolitizrNavigationExtension extends \Twig_Extension
 
         // CMS
         if ($this->topMenuCms) {
-            $cmsCategory = CmsCategoryQuery::create()->filterByOnline(true)->findPk(CmsConstants::CMS_CONTENT_CATEGORY_MENU);
-            $cmsContents = CmsContentQuery::create()
-                                ->filterByOnline(true)
-                                ->filterByCmsCategoryId(CmsConstants::CMS_CONTENT_CATEGORY_MENU)
-                                ->find();
+            $cmsCategories = CmsCategoryQuery::create()->filterByOnline(true)->find();
 
-            foreach ($cmsContents as $cmsContent) {
-                $url = $this->router->generate('CmsContent', array('slug' => $cmsContent->getSlug()));
-                $label = $cmsContent->getTitle();
+            foreach ($cmsCategories as $cmsCategory) {
+                $cmsContents = CmsContentQuery::create()
+                                    ->filterByOnline(true)
+                                    ->filterByCmsCategoryId($cmsCategory->getId())
+                                    ->find();
 
-                $cmsRoutes[] = ['url' => $url, 'label' => $label];
+                foreach ($cmsContents as $cmsContent) {
+                    $url = $this->router->generate('CmsContent', array('slug' => $cmsContent->getSlug()));
+                    $label = $cmsContent->getTitle();
+
+                    $cmsRoutes[$cmsCategory->getTitle()][] = ['url' => $url, 'label' => $label];
+                }
             }
         }
+        // dump($cmsRoutes);
 
         // Contributions
         if ($this->topMenuPublications) {
