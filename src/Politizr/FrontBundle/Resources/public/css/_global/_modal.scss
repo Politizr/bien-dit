@@ -1,0 +1,378 @@
+@import "../_global/colors";
+
+body.noScroll { overflow: hidden;}
+
+#modal {
+	position: fixed;
+	z-index: 28000;
+	width: 100%;
+	height: 100%;
+	top:0;
+	right: 0;
+	left: 0;
+	bottom: 0;	
+}
+
+#modalBg {
+	position: fixed;
+	background-color: rgba(#000, .8);
+	left: 0;
+	top:0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
+
+#modalContent {
+	position: absolute;
+	z-index: 1;
+	background-color: #fff;
+	width: 620px;
+	margin-left: -310px;
+	left: 50%;
+	height: 350px;
+	margin-top: -175px;
+	top: 50%;	
+}
+
+.modalClose {
+	float: right;
+	margin: 20px 20px 0 0;
+	font-size: 12px;
+	cursor: pointer;
+}
+.modalClose:hover {color: $orange;}
+.modalCitizen .modalClose:hover {color: $blue;}
+
+#modalContent b {
+	font-weight: normal;
+	font-family: 'nerisblack';
+}
+
+.modalText {
+	clear: both;
+	float: right;
+	margin-right: 40px;
+	width: 290px;
+	font-size: 14px;
+	line-height: 150%;
+}
+.modalText b { font-size: 16px; }
+.modalCitizen .modalText {padding-top: 15px;}
+.modalRepresentatives .modalText {padding-top: 10px;}
+
+.modalText span { 
+	font-family: 'nerisblack'; 
+	width: 100%;
+	float: left;
+}
+.modalCitizen .modalText span {color: $blue;}
+.modalRepresentatives .modalText span {color: $orange;}
+
+.modalText a.newSubject {
+	float: left;
+	margin: 20px 0 5px 0;
+   	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	padding:8px 20px 0 40px;
+	height:40px;
+	font-size: 14px;
+	color: #fff;
+	border: none;
+	width: auto;
+}
+.modalText a.newSubject i {
+	top:6px;
+	left: 10px;
+}
+.modalCitizen .modalText a.newSubject {background-color: $blue; }
+.modalRepresentatives .modalText a.newSubject {background-color: $orange; }
+
+.modalCitizen .modalText a:hover, .modalRepresentatives .modalText a:hover { background-color: $darkGrey; }
+
+.modalText a.newSubject span {
+	color: #fff;
+	font-family: 'nerissemibold';
+}
+
+.modalText span.modalCancel {
+    font-family: 'nerislight';
+    font-size: 10px;
+    text-transform: capitalize;
+    float: left;
+    clear: both;
+    color: $darkGrey;
+    cursor: pointer;
+	width: auto;
+}
+.modalCitizen .modalText span.modalCancel:hover {color: $alert;}
+.modalRepresentatives .modalText span.modalCancel:hover {color: $orange;}
+
+.modalCitizen { background-image: url(../images/modal-local.jpg); }
+.modalRepresentatives { background-image: url(../images/modal-local.jpg); }
+
+// modal "créez un compte"
+
+.modalCreateAccount { background-image: url(../images/modal-getAccount.jpg); }
+
+.modalCreateAccount .modalText { margin-top: 70px;}
+
+.modalCreateAccount .modalInstruction {
+	float: left;
+	width: 100%;
+	font-family: 'nerisblack';
+	font-size: 16px;
+	color: $darkGreen;
+	line-height: 140%;
+}
+
+.modalCreateAccount a.modalLinkCreateAccount {
+	font-family: 'nerisblack';
+	font-size: 16px;
+	float: left;
+	clear: both;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	padding:7px 16px 0 16px;
+	height:40px;
+	background-color: $darkGreen;
+	color: #fff;
+	margin: 20px 0 0 0;
+}
+.modalCreateAccount a.modalLinkCreateAccount:hover {
+	background-color: $orange;
+}
+
+.modalCreateAccount .modalText span {
+	font-family: 'nerislight';
+	font-size: 12px;
+	color: $darkGreen;
+	line-height: 120%;
+	float: left;
+	width: auto;
+	margin: 25px 0 0 10px;
+}
+
+.modalCreateAccount .modalText span.modalGoToLogin { 
+	color: $grey; 
+	margin: 80px 0 0 0;
+	float: left;
+	clear: both;
+}
+.modalCreateAccount .modalText span.modalGoToLogin a {font-family: 'nerisblack';}
+.modalCreateAccount .modalText span.modalGoToLogin a:hover {color: $darkGrey;}
+
+// modal search
+
+#searchModal {
+	position: fixed;
+	top:60px;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	z-index: 23000;
+	width: 100%;
+	height: calc(100% - 60px);
+}
+body.css700 #searchModal {
+	top: 50px;
+	height: calc(100% - 50px);
+}
+
+#searchModalResults {
+	float: left;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: $grey10;
+	position: relative;
+}
+
+#searchModalResults #algoliaResults {
+	padding-bottom: 40px;
+	float: left;
+	width: 100%;
+}
+#searchModalBg {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	top:0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+}
+
+#searchModalHeader {
+	float: left;
+	width: 100%;
+	padding: 10px 0;
+	background-color: rgba($grey, 0.2);
+	margin-bottom: 40px;
+}
+body.css700 #searchModalHeader { margin-bottom: 10px; }
+
+#startSearch {
+	float: left;
+	font-size: 12px;
+	color: $orange;
+	padding-top: 2px;
+	width: calc(100% - 70px);
+}
+#startSearch i {font-size: 15px; float: left; margin-right: 3px; margin-top: -2px;}
+#closeModal {
+	float: right;
+	font-size: 12px;
+	cursor: pointer;
+}
+#closeModal i {
+	float: right;
+	margin-left: 5px;
+}
+#closeModal:hover {
+	color: $orange;
+}
+
+#searchModalResults #hits {
+	float: left;
+	width: 650px;
+}
+body.css1060 #searchModalResults #hits {
+	width: 60%;
+}
+body.css700 #searchModalResults #hits {
+	width: 100%;
+}
+
+#searchModalResults .hit {
+	float: left;
+	width: 100%;
+	-moz-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	-webkit-box-shadow: 0px 0px 4px rgba($grey, .7);
+	-o-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=4);
+	margin-bottom: 20px; 
+	background-color: #fff;
+}
+
+#searchModalResults .hit.hitPublication .hitImage {
+	width: 150px;
+	height: 100px;
+	overflow: hidden;
+	margin: 20px 0 0 20px;
+	float: left;
+}
+body.css700 #searchModalResults .hit.hitPublication .hitImage { display: none;}
+#searchModalResults .hit.hitPublication .hitContent {
+	float: right;
+	width: calc(100% - 170px);
+	padding: 20px;
+}
+body.css700 #searchModalResults .hit.hitPublication .hitContent {
+	width: 100%;
+}
+
+#searchModalResults .hit.hitUser .hitImage {
+	width: 60px;
+	height: 60px;
+	overflow: hidden;
+	float: left;
+	margin: 20px 0 20px 20px;
+}
+#searchModalResults .hit.hitUser .hitContent {
+	float: right;
+	width: calc(100% - 80px);
+	padding: 20px;
+}
+
+#searchModalResults .hitContent h2 {
+	font-weight: normal;
+	margin: -5px 0 10px 0;
+	font-size: 24px;
+	color: $orange;
+}
+#searchModalResults .hitContent h2 a {color: $orange !important;}
+#searchModalResults .hitContent h2 a:hover {color: $darkGrey !important;}
+#searchModalResults .hit.hitUser .hitContent h2 {
+	font-size: 18px;
+}
+#searchModalResults .hitContent p {
+	font-size: 13px;
+	font-family: 'Merriweather';
+	line-height: 200%;
+}
+#searchModalResults .hitContent em {
+	background-color: rgba($gold, 0.5);
+	font-style: normal;
+} 
+
+.ais-infinite-hits--showmore button {
+	margin: 20px 0 0 0;
+	padding: 0 20px;
+	min-height: 40px;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	color: #fff;
+	background-color: rgba($grey, .6);
+	font-size: 14px;
+	cursor: pointer;
+	border: none;
+    font-family: 'nerislight';
+    line-height: 100%;
+}
+.ais-infinite-hits--showmore button:hover { background-color: $grey; }
+.ais-infinite-hits--showmore button:disabled {display: none;}
+
+#searchModalResults #categories {
+	float: right;
+	width: 330px;
+	font-size: 12px;
+}
+body.css1060 #searchModalResults #categories {
+	width: calc(40% - 40px);
+	margin-left: 40px;
+}
+body.css700 #searchModalResults #categories {
+	display: none;
+}
+.ais-menu {
+	float: left;
+	width: 100%;
+}
+.ais-menu--header {	
+	font-size: 12px;
+	font-style: italic;
+	font-family: 'Merriweather Italic';
+	margin-bottom: 20px;
+	border-top: solid 1px $grey;
+	padding-top: 20px;
+}
+
+.ais-menu--item {
+	float: left;
+	clear: both;
+	cursor: pointer;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	padding: 6px 15px 0 15px;
+	height: 30px;
+	margin-bottom: 10px;
+	background-color: rgba($grey, 0.6);
+}
+.ais-menu--item a {color: #fff;}
+.ais-menu--count {
+	font-family: 'nerisblack';
+	margin-left: 3px;
+}
+.ais-menu--item.ais-menu--item__active, .ais-menu--item:hover {background-color: $orange;}
+
+.searchBy {
+	float: left;
+	width: 100%;
+	line-height: 100%;
+	margin-top: 20px;
+}
+.searchBy img {
+	display: inline-block;
+	vertical-align: middle;
+}
