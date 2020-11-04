@@ -79,8 +79,10 @@
             </div>
             <div class="column column140">
                 <div class="columnSidebar processGrey">
-                    <b>Pas encore inscrit-e?<br/><a href="{{ path('Inscription') }}">Inscrivez-vous</a></b>
-                    <br/><br/>
+                    {% if group_visibility == 'public' %}
+                        <b>Pas encore inscrit-e?<br/><a href="{{ path('Inscription') }}">Inscrivez-vous</a></b>
+                        <br/><br/>
+                    {% endif %}
                     <i class="icon-info"></i><b>Un problème?</b><br/><a href="mailto: {{ support.email }}">Contactez-nous!</a>
                 </div>
             </div>
