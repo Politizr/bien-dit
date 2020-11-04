@@ -1,0 +1,368 @@
+@import "../_global/colors";
+
+.myfeed, #listContent {
+	float: left;
+	width: 100%;
+	clear: both;
+	min-height: 100px;
+}
+.myfeed h4:first-of-type {margin-bottom: 0;}
+.myfeed #listContent h4:first-child {margin-bottom: 20px;}
+
+.card {
+	background-color: #fff;
+	-moz-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	-webkit-box-shadow: 0px 0px 4px rgba($grey, .7);
+	-o-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=4);
+	margin-bottom: 40px;
+	position: relative;
+	line-height: 100%;
+	float: left;
+	clear: both;
+	width: 100%;
+}
+
+.card.answer {
+	background-color: rgba($lightOrange, 0.1);
+}
+
+.card .actionAnswer .actionText { display: block; }
+.card .actionAnswer a:hover {background-color: darken( $orange, 10% );}
+
+
+// generic
+.coloredBg {
+	padding: 20px;
+	background-color: rgba($grey, .1);
+	float: left;
+	width: 100%;
+}
+.myactivity .coloredBg { background-color: rgba($orange, .1);}
+.coloredBg .miniProfile {  margin: 20px 0 0 0;  padding-bottom: 0; }
+
+.actionsBox {
+	float: left;
+	width: 100%;
+	height: 60px;
+	position: relative;
+	border-bottom: solid 30px rgba($grey, .1);
+}
+.myactivity .actionsBox { border-color: rgba($orange, .1); }
+
+.coloredBg .postBreadcrumb { margin-bottom: 30px; line-height: 180%;}
+.coloredBg .postBreadcrumb:last-of-type {
+	margin-bottom: 0;  
+	margin-top: 3px;
+	color: $grey;
+}
+.coloredBg .postBreadcrumb a {color: $orange;}
+.coloredBg .postBreadcrumb a:hover {color: $darkGrey;}
+.coloredBg .grpBreadcrumbs {
+	margin: 5px 0 0 0;
+	color: $grey;
+	font-size: 12px;
+}
+.coloredBg .grpBreadcrumbs a, .coloredBg .grpBreadcrumbs span {
+	font-style: italic;
+	font-family: 'Merriweather Italic';	
+}
+.coloredBg .grpBreadcrumbs i {
+	font-size: 5px;
+	margin: -4px 5px 0 5px;
+}
+.coloredBg .postStats { float: left; margin-bottom: 10px; }
+.coloredBg .answerCounter {
+	float: right;
+	margin-top: -7px;
+	margin-bottom: 10px;
+}
+
+.coloredBg .postTags h5 {padding-bottom: 15px;}
+.coloredBg .postTags {
+	//border-top: solid 1px rgba($grey, .5);
+	width: 100%;
+	float: left;
+	clear: both;
+	margin-bottom: 0;
+	//padding-top: 20px; margin-top: 20px;
+}
+
+.activity {
+	font-size: 14px;
+    font-family: 'nerisblack';	
+	margin-bottom: 5px;
+	color: $orange;
+	line-height: 140%;
+}
+.activity.cardFollowing {color: $purple;}
+
+.activity.cardBadge {color: $green;}
+.activity.cardBadge:before {
+	font-family: 'pltzriconfont';
+	font-style: normal;
+	margin-right: 5px;
+	content: "\e811";	
+}
+
+.cardInfo {
+	margin-top: 20px;
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	line-height: 180%;
+}
+.cardInfo a { color: $orange; font-family: 'Merriweather Heavy Italic'; }
+.cardInfo a:hover { color: $darkGrey; }
+
+.activity.cardLike, .activity.cardDislike {color: $blue;}
+.activity.cardLike:before, .activity.cardDislike:before {
+	font-family: 'pltzriconfont';
+	font-style: normal;
+	margin-right: 5px;	
+}
+.activity.cardLike:before {content: "\e81f";}
+.activity.cardDislike:before {content: "\e81e"; vertical-align: text-bottom;}
+
+// grp header in my feed
+.grpMyFeedHeaderCard {
+	padding: 10px 20px;
+	background-color: $darkGrey;
+	font-size: 12px;
+	color: #fff;
+	float: left;
+	width: 100%;
+}
+body.grp .grpMyFeedHeaderCard { display: none; }
+
+.grpMyFeedHeaderCard i {
+	font-size: 15px;
+	margin-right: 4px;
+	float: left;
+	vertical-align: middle;
+}
+.grpMyFeedHeaderCard span {
+	float: right;
+}
+.grpMyFeedHeaderCard span a { color: $orange; }
+.grpMyFeedHeaderCard span a:hover { color: #fff; }
+
+// mini profile in cards
+.card .miniProfile .profileName {line-height: 130%;}
+.card .miniProfile .bubblesProfile .profileName {line-height: 160%;}
+
+.card .miniProfile {
+	margin-bottom: 0;
+	border-bottom: none;
+}
+
+// new post
+.newPost .postImg {
+	width: 100%;
+	height: 310px;
+	float: left;
+	overflow: hidden;
+}
+.newPost .postImg a {
+	margin: 0;
+	max-height: none;
+}
+
+.postImg.noImg {
+	width: calc(100% - 40px);
+	margin: 0 20px;
+	height: 1px;
+	background-color: rgba($grey, .5);
+}
+
+.newPost a {
+	display: inline-block;
+	margin: 20px;
+	font-size: 12px;
+	font-family: 'Merriweather';
+	line-height: 180%;
+	max-height: 240px;
+	overflow: hidden;
+}
+.newPost a:hover .postTitle, .newPost a:hover .postTitle.subject::before {color: $darkGrey;}
+
+// new post with a followed tag
+.withFollowedTag { color: $purple; }
+.withFollowedTag .tagList { width: auto;}
+.withFollowedTag .tag { margin-top: 0; }
+.withFollowedTag .tagList a {
+	color: $purple;
+	border-color: rgba($purple, .3);
+}
+
+.withFollowedTagText {
+    font-family: 'nerisblack';
+    font-size: 14px;
+    line-height: 140%;
+// 	enable for text under tag
+	// clear: both;
+    // margin-top: 10px;
+    //display: inline-block;
+}
+
+.withFollowedTagText .org a, .withFollowedTagText .noOrg {background-color: $purple;}
+.withFollowedTagText .org a:hover, .withFollowedTagText .noOrg:hover {background-color: $orange;}
+.withFollowedTagText a:hover {color: $orange; }
+
+// mini post
+.coloredBg .miniPost { margin-top: 30px;}
+.coloredBg .miniPost .miniProfile {
+	margin: 0 0 20px 0px;
+	padding-bottom: 20px;
+	border-bottom: solid 1px rgba($grey, .5);
+	width: 100%;
+}
+
+.miniPostImg {
+	float: left;
+	width: 160px;
+	height: 90px;
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+
+.miniPost a span.postTitle {
+	float: right;
+	width: calc(100% - 175px);
+	margin-top: -6px;
+}
+
+.miniPost a .postTitle { font-size: 25px; line-height: 125%; color: $orange; }
+.miniPost a:hover .postTitle, .miniPost a:hover .postTitle.subject:before { color: $darkGrey; }
+
+.miniPost a .postTitle.subject:before {
+	font-size: 16px;
+	margin-right: 6px;
+	color: $orange;
+	content: "\e824";
+}
+
+// minipost without image
+.miniPostImg.noImg {display: none;}
+.miniPost a.fullWidth span.postTitle {width: 100%;}
+
+
+// comments in cards
+.commentInCard {
+	display: inline-block;
+	margin: 0 20px;
+	width: calc(100% - 40px);
+	padding: 18px 0;
+	border-top: solid 1px rgba($grey, .5);
+	font-family: 'Merriweather';
+	font-size: 14px;
+	line-height: 180%;
+}
+
+.commentInCard a { display: inline-block; }
+.commentInCard a:hover { color: $orange; }
+.commentInCard a:before {content: '“';}
+.commentInCard a:after {content: '”';}
+
+.coloredBg .commentInCard {
+	width: 100%;
+	margin: 20px 0 0 0;
+	padding-bottom: 10px;
+}
+
+// profile list cards
+
+.cardProfile .profileLinks {display: none;}
+.cardProfile .avatar40 {
+	width: 60px;
+	height: 60px;
+	-webkit-border-radius:30px; -moz-border-radius: 30px; border-radius: 30px;
+}
+
+.cardProfile .profilenInfo {
+	width: calc(100% - 80px);
+	margin-bottom: 20px;
+}
+.cardProfile .bubblesProfile .profilenInfo {
+	margin-bottom: 0;
+}
+
+.cardProfile .profileMandats {
+	clear: none;
+	float: right;
+	width: calc(100% - 80px);
+	padding: 20px 0 0 0;
+	margin: 0;
+	border-bottom: none;
+	border-left: none;
+	border-right: none;
+	font-family: 'nerissemibold';
+	font-size: 12px;
+}
+
+.cardProfile .profileMandats .profileMandatsItem:after { display: none; }
+.cardProfile .profileMandats .profileMandatsItem { margin: 5px 0; }
+.cardProfile .profileMandats .profileMandatsItem:first-child {margin-top: 0;}
+.cardProfile .profileMandats .profileMandatsItem:last-child {margin-bottom: 0;}
+
+.cardProfile .profileMandats .profileMandatsItem span { text-transform: capitalize; }
+
+.cardProfile .coloredBg {
+	position: relative;
+	min-height: 30px;
+}
+
+.cardProfile .profileStats {
+	width: 60%;
+	font-size: 12px;
+	color: $grey;
+}
+
+.cardProfile .badgesCounter {
+	width: 60%;
+	top:0;
+	left: -5px;
+} 
+
+.cardProfile .actionFollow {
+	position: absolute;
+	top:23px;
+	right: 20px;
+}
+.cardProfile .bubblesProfile .actionFollow {
+	position: static;
+	top:auto;
+	right: auto;
+}
+
+.cardProfile .startFollowing, .cardProfile .stopFollowing {
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	padding: 6px 15px 0 15px;
+	height: 30px
+}
+.cardProfile .bubblesProfile .miniActions .startFollowing, .cardProfile .bubblesProfile .miniActions .stopFollowing {
+	height: 40px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	padding: 0;
+}
+
+.cardProfile .startFollowing i, .cardProfile .stopFollowing i {
+	font-size: 12px;
+	left: 10px;
+	top: 7px;
+}
+.cardProfile .bubblesProfile .miniActions .startFollowing i, .cardProfile .bubblesProfile .miniActions .stopFollowing i {
+	font-size: 14px;
+	right: 10px;
+	top: 11px;
+}
+
+.cardProfile .actionText {
+	padding: 0 0 0 15px;
+	font-size: 12px;
+}
