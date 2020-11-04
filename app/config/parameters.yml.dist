@@ -108,6 +108,9 @@ parameters:
     # Utilisateurs
     mandate_active: false
 
+    # Mode standard ou "consultation unique"  standard | oneshot
+    global_mode: standard
+
     # Niveau d'expression
     expression_from_scratch: false # true | false
     
@@ -118,6 +121,9 @@ parameters:
     top_menu_cms: true # true | false
     top_menu_publications: true # true | false
     top_menu_community: true # true | false
+
+    # Visibilité des groupes : inscription public ou connexion uniquement public | private
+    group_visibility: public
 
     # Useful to force cache browser reload
     assets_version: 1.0.0 
