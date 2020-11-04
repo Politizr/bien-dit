@@ -236,7 +236,6 @@ class PolitizrNavigationExtension extends \Twig_Extension
                 }
             }
         }
-        // dump($cmsRoutes);
 
         // Contributions
         if ($this->topMenuPublications) {
