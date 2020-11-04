@@ -25,7 +25,7 @@ require_once __DIR__.'/../app/AppCache.php';
 
 use Symfony\Component\HttpKernel\HttpCache\Store;
 
-$kernel = new AppKernel('dev', true);
+$kernel = new AppKernel('dev', false);
 $kernel->loadClassCache();
 
 // $store = new Store(__DIR__.'/../app/cache');
