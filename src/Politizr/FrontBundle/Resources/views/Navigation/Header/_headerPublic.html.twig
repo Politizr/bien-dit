@@ -10,7 +10,9 @@
         </div>
         <div id="headerRight">
             {{ topGroupMenu() }}
-            <a class="headerCreateAccountLink" href="{{ path('Inscription') }}">INSCRIPTION</a>
+            {% if group_visibility == 'public' %}
+                <a class="headerCreateAccountLink" href="{{ path('Inscription') }}">INSCRIPTION</a>
+            {% endif %}
             <a class="headerLoginLink" href="{{ path('Login') }}">IDENTIFICATION</a>
         </div>
     </div>
