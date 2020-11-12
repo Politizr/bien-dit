@@ -10,6 +10,8 @@
 /bin/
 /composer.phar
 
+/src/Politizr/FrontBundle/Resources/public/css/styleUser.css
+
 /web/app.php
 /web/uploads/
 /web/assetic/js/compiled
