@@ -104,7 +104,7 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** inscriptionAction');
 
-        $groupVisibility = $this->getParameter('group_visibility');
+        $groupVisibility = $this->getParameter('group.visibility');
         if ($groupVisibility != 'public') {
             return $this->redirect($this->generateUrl('Login'));
         }

@@ -114,16 +114,19 @@ parameters:
     # Niveau d'expression
     expression_from_scratch: false # true | false
     
-    # Groupes
-    with_group: true
-
     # Menu
     top_menu_cms: true # true | false
     top_menu_publications: true # true | false
     top_menu_community: true # true | false
 
+    # Groupes
+    with_group: true
+
     # Visibilité des groupes : inscription public ou connexion uniquement public | private
     group_visibility: public
+
+    # Libellé du menu "Nos consultations"
+    group_label: "Nos consultations"
 
     # Useful to force cache browser reload
     assets_version: 1.0.0 

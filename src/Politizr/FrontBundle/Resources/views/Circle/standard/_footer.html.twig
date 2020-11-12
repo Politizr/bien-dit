@@ -4,7 +4,7 @@
         <div class="grpFooterCol">
             <img src="{{ asset('bundles/politizrfront/images/grp_footerAccount.png') }}">
             <h2>
-                {% if group_visibility == 'public' %}
+                {% if group.visibility == 'public' %}
                     <b>Inscrivez-vous</b>
                     Gratuitement et en quelques clics.
                 {% else %}
@@ -37,7 +37,7 @@
     </div>
     {% if not app.user %}
         <div class="grpFooterMentions">
-            {% if group_visibility == 'public' %}
+            {% if group.visibility == 'public' %}
                 La participation à ce groupe est réservée aux utilisateurs inscrits.<br>
                 <a href="{{ path('Inscription') }}">inscrivez-vous</a> pour rejoindre les discussions!
             {% else %}
