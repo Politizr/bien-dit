@@ -1,6 +1,6 @@
 {% if ownersCircles | length > 0 %}
     <div class="footerColumn">
-        <div class="footerColumnTitle">Nos consultations</div>
+        <div class="footerColumnTitle">{{ group.label }}</div>
         {% for ownerCircles in ownersCircles %}
             {% for circle in ownerCircles[1] %}
                 <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a>

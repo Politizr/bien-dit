@@ -105,7 +105,9 @@ twig:
             tw_title:           %meta_tw_title%
             tw_description:     %meta_tw_description%
         global_mode:            %global_mode%
-        group_visibility:       %group_visibility%
+        group:
+            visibility:         %group_visibility%
+            label:              %group_label%
         geo:
             active:             %geo_active%
         mandate:

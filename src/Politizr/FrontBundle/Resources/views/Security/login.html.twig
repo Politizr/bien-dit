@@ -79,7 +79,7 @@
             </div>
             <div class="column column140">
                 <div class="columnSidebar processGrey">
-                    {% if group_visibility == 'public' %}
+                    {% if group.visibility == 'public' %}
                         <b>Pas encore inscrit-e?<br/><a href="{{ path('Inscription') }}">Inscrivez-vous</a></b>
                         <br/><br/>
                     {% endif %}
