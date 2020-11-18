@@ -108,8 +108,11 @@ parameters:
     # Utilisateurs
     mandate_active: false
 
-    # Mode standard ou "consultation unique"  standard | oneshot
-    global_mode: standard
+    # Mode standard ou "consultation unique"
+    global_mode: standard # standard | oneshot
+
+    # Inscription public ou connexion uniquement
+    global_access : public # public | private
 
     # Niveau d'expression
     expression_from_scratch: false # true | false
@@ -121,9 +124,6 @@ parameters:
 
     # Groupes
     with_group: true
-
-    # Visibilité des groupes : inscription public ou connexion uniquement public | private
-    group_visibility: public
 
     # Libellé du menu "Nos consultations"
     group_label: "Nos consultations"

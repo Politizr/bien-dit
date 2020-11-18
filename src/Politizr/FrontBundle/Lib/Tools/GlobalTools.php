@@ -858,8 +858,8 @@ class GlobalTools
         if ($visitor) {
             // user is connected
             return false;
-        } elseif(!$circle->getPrivateAccess() && !$this->geoActive) {
-            // document is in a public circle and geo active is not activated
+        } elseif(!$circle->getPrivateAccess() && !$this->geoActive && $mode == 'public') {
+            // document is in a public circle and geo active is not activated and mode is public
             return false;
         } elseif ($author && in_array($author->getId(), $userIds) && $topic == null) {
             // author in list of public users
@@ -889,7 +889,7 @@ class GlobalTools
             if ($diff->days > $mode) {
                 return false;
             }
-        } elseif ($topic && $publicCircle) {
+        } elseif ($topic && $publicCircle && $mode == 'public') {
             return false;
         }
 
