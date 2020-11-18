@@ -104,7 +104,7 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** inscriptionAction');
 
-        $globalAccess = $this->getParameter('global.access');
+        $globalAccess = $this->getParameter('global_access');
         if ($globalAccess != 'public') {
             return $this->redirect($this->generateUrl('Login'));
         }
