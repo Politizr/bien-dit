@@ -3,9 +3,14 @@
     <div id="modalContent" class="modalCreateAccount" style="display: block;">
         <div class="modalClose" action="closeModal"><i class="icon-cross"></i></div>
         <div class="modalText">
-            <div class="modalInstruction">Vous devez vous inscrire<br>
-            pour accéder aux commentaires.</div>
-            <a href="{{ path('Inscription') }}" class="modalLinkCreateAccount">Inscription</a>
+            {% if global.access == 'public' %}
+                <div class="modalInstruction">Vous devez vous inscrire<br>
+                pour accéder aux commentaires.</div>
+                <a href="{{ path('Inscription') }}" class="modalLinkCreateAccount">Inscription</a>
+            {% else %}
+                <div class="modalInstruction">Vous devez être inscrit<br>
+                pour accéder aux commentaires.</div>
+            {% endif %}
             <span class="modalGoToLogin">Vous disposez déjà d’un compte ?<br><a href="{{ path('Login') }}">Identifiez-vous</a></span>
         </div>
     </div>
