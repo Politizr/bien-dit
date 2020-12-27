@@ -952,7 +952,7 @@ LIMIT :limit
      */
     public function generateNearestDebates($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds, $inQueryTopicIds, $userId, $cityId, $departmentId, $regionId, $beginAt, $endAt, $limit)
     {
-        $this->logger->info('*** generateNearestQualifiedUsers');
+        $this->logger->info('*** generateNearestDebates');
         $this->logger->info('$inQueryDebateIds = ' . print_r($inQueryDebateIds, true));
         $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
         $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
@@ -1021,7 +1021,7 @@ LIMIT :limit
      */
     public function generateMostInterestingDebates($inQueryDebateIds, $inQueryUserIds, $inQueryTagIds, $inQueryTopicIds, $userId, $beginAt, $endAt, $limit)
     {
-        $this->logger->info('*** generateNearestQualifiedUsers');
+        $this->logger->info('*** generateMostInterestingDebates');
         $this->logger->info('$inQueryDebateIds = ' . print_r($inQueryDebateIds, true));
         $this->logger->info('$inQueryUserIds = ' . print_r($inQueryUserIds, true));
         $this->logger->info('$inQueryTagIds = ' . print_r($inQueryTagIds, true));
@@ -1055,7 +1055,6 @@ LIMIT :limit
 
             $debates->append($debate);
         }
-
 
         return $debates;
     }
