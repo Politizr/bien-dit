@@ -28,7 +28,7 @@ class EmailConstants
     const NB_MAX_INTERACTED_PUBLICATIONS = 5;
     const NB_MAX_NEW_ELECTED_USERS = 5;
     const NB_MAX_NEW_PUBLICATIONS = 5;
-    const NB_MIN_FOLLOWERS = 1; // used in NotificationManager::createNearestDebatesRawSql
+    const NB_MIN_FOLLOWERS = 0; // used in NotificationManager::createNearestDebatesRawSql
 
 
     /**
