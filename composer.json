@@ -38,9 +38,9 @@
         "friendsofsymfony/user-bundle": "^1.3",
 
         "knplabs/knp-menu-bundle": ">1.0,<2.2",
-        "symfony2admingenerator/generator-bundle": "^2.0",
-        "symfony2admingenerator/form-bundle": "^1.5",
-        "symfony2admingenerator/form-extensions-bundle": "^2.0",
+        "symfony2admingenerator/generator-bundle": "2.5.4",
+        "symfony2admingenerator/form-bundle": "1.7",
+        "symfony2admingenerator/form-extensions-bundle": "2.5",
         "liuggio/excelbundle": "^2.0",
         
         "fzaninotto/faker": "1.5.*",
