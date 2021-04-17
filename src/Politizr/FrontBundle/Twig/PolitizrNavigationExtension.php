@@ -33,7 +33,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
 
     private $logger;
 
-    private $withGroup;
+    private $globalMode;
 
     private $topMenuCms;
     private $topMenuPublications;
@@ -46,7 +46,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
      * @param @politizr.functional.circle
      * @param @politizr.tools.global
      * @param @logger
-     * @param "%with_group%"
+     * @param "%global_mode%"
      * @param "%top_menu_cms%"
      * @param "%top_menu_publications%"
      * @param "%top_menu_community%"
@@ -58,7 +58,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
         $circleService,
         $globalTools,
         $logger,
-        $withGroup,
+        $globalMode,
         $topMenuCms,
         $topMenuPublications,
         $topMenuCommunity
@@ -74,7 +74,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
         
         $this->logger = $logger;
         
-        $this->withGroup = $withGroup;
+        $this->globalMode = $globalMode;
 
         $this->topMenuCms = $topMenuCms;
         $this->topMenuPublications = $topMenuPublications;
@@ -282,6 +282,11 @@ class PolitizrNavigationExtension extends \Twig_Extension
             $user = null;
         }
 
+        // Test global mode
+        if ($this->globalMode == 'oneshot') {
+            return null;
+        }
+
         $ownersCircles = array();
         $owners = $this->circleService->getAuthorizedOwnersByUser(null);
         foreach ($owners as $owner) {
@@ -312,6 +317,11 @@ class PolitizrNavigationExtension extends \Twig_Extension
         $user = $this->securityTokenStorage->getToken()->getUser();
         if (is_string($user)) {
             $user = null;
+        }
+
+        // Test global mode
+        if ($this->globalMode == 'oneshot') {
+            return null;
         }
 
         $ownersCircles = array();

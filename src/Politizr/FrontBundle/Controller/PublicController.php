@@ -53,6 +53,18 @@ class PublicController extends Controller
         //     return $this->redirect($this->generateUrl(sprintf('Homepage%s', $profileSuffix)));
         // }
 
+        // Test global mode
+        $globalMode = $this->getParameter('global_mode');
+        if ($globalMode == 'oneshot') {
+            $circle = $this->get('politizr.functional.circle')->getOneCircle();
+            if (!$circle) {
+                throw new NotFoundHttpException('No circle has been found');
+            }
+            return $this->redirect($this->generateUrl('CircleDetail', array(
+                'slug' => $circle->getSlug(),
+            )));
+        }
+
         $content = CmsContentAdminQuery::create()->findPk(CmsConstants::CMS_CONTENT_ADMIN_HOMEPAGE);
 
         // Diaporamas associés
