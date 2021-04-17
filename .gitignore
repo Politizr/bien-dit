@@ -10,7 +10,7 @@
 /bin/
 /composer.phar
 
-/src/Politizr/FrontBundle/Resources/public/css/styleUser.css
+# /src/Politizr/FrontBundle/Resources/public/css/styleUser.css
 
 /web/app.php
 /web/uploads/
