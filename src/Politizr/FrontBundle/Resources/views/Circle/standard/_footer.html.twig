@@ -46,6 +46,6 @@
         </div>
     {% endif %}
     <div class="grpFooterLinks">
-        <a action="openCgu">Mentions légales</a> • <a action="openCharte" uuid="{{ circle.uuid }}">Charte d’utilisation</a> • <a href="mailto: {{ contact.email }}">Contact</a>
+        <a action="openCgu">Mentions légales</a> • <a action="openCharte" uuid="{{ circle.uuid }}">Charte d’utilisation</a> • <a href="mailto: {{ contact.email }}">Contact</a>{% if global.mode == "oneshot" %} • Propulsé par <a href="https://bien-dit.com" target="_blank">BIEN DIT</a>{% endif %}
     </div>
 </div>
