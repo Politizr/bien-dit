@@ -17,8 +17,8 @@ body.grp #headerLeft {width: 350px;}
 body.grp #headerRight {width: 650px;}
 */
 body.grp #headerLeft #logo a {margin-right: 15px;}
-body.grp #headerLeft {width: 430px; overflow: hidden; height: 60px;}
-body.grp #headerRight {width: 580px;}
+body.grp #headerLeft {width: 40%; overflow: hidden; height: 60px;}
+body.grp #headerRight {width: 60%;}
 body.grp.public #headerLeft {width: 400px;}
 body.grp.public #headerRight {width: 620px;}
 
@@ -667,6 +667,19 @@ body.css700 .grpFooterLinks { padding-bottom: 0; }
 	line-height: 160%;
 	margin-top: 60px;
 }
+
+grpJeMexprime a {
+	margin-top: 10px;
+	font-size: 18px;
+	color: #fff;
+	background-color: $orange;
+	padding: 10px 30px;
+	border-radius: 30px;	
+}
+.grpJeMexprime a:hover {
+	background-color: $darkGrey;
+}
+
 #grpBriefHeaderImg {
 	width: 100%;
 	height: 340px;
