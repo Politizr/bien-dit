@@ -9446,7 +9446,7 @@ a.editMandateDeleteItem:hover {
 
 #publicFooterLeft {
   float: left;
-  width: 600px;
+  width: 70%;
   position: relative;
   margin-bottom: 100px;
   font-size: 14px;
@@ -9461,6 +9461,10 @@ a.editMandateDeleteItem:hover {
 
 #publicFooterLeft a:hover {
   color: #D25039;
+}
+
+#publicFooterLeft .footerColumn {
+  width: calc(50% - 20px);
 }
 
 #publicFooterLeft a.publicFooterHelpLink {
@@ -9483,9 +9487,7 @@ a.editMandateDeleteItem:hover {
   background-repeat: no-repeat;
   background-position: left bottom;
   height: 270px;
-  position: absolute;
-  z-index: 1;
-  bottom: 0;
+  margin-top: 40px;
   left: -10px;
 }
 
@@ -12493,13 +12495,13 @@ body.grp #headerLeft #logo a {
 }
 
 body.grp #headerLeft {
-  width: 430px;
+  width: 40%;
   overflow: hidden;
   height: 60px;
 }
 
 body.grp #headerRight {
-  width: 580px;
+  width: 60%;
 }
 
 body.grp.public #headerLeft {
@@ -13432,6 +13434,19 @@ body.css700 .grpFooterLinks {
   margin-right: auto;
   line-height: 160%;
   margin-top: 60px;
+}
+
+grpJeMexprime a {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #fff;
+  background-color: #D25039;
+  padding: 10px 30px;
+  border-radius: 30px;
+}
+
+.grpJeMexprime a:hover {
+  background-color: #2D2D2D;
 }
 
 #grpBriefHeaderImg {
