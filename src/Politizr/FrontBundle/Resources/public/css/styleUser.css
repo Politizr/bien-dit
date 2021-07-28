@@ -286,7 +286,7 @@ body.css700 .modalRGPD, body.css1060 .modalRGPD {
 }
 
 .center {
-  width: 1020px;
+  width: 1320px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -318,7 +318,7 @@ body.css700 .modalRGPD, body.css1060 .modalRGPD {
 
 #content {
   float: left;
-  width: 650px;
+  width: 950px;
   margin: 50px 0 0 0;
   -webkit-touch-callout: text;
   /* iOS Safari */
@@ -5390,7 +5390,7 @@ body.grp .grpMyFeedHeaderCard {
 .paragraph {
   padding: 0 70px 25px 30px;
   float: left;
-  width: 690px;
+  width: 990px;
   position: relative;
   font-size: 15px;
   font-family: "Merriweather";
@@ -5977,7 +5977,7 @@ body.css700 #cardPost .postAnswersList .coloredBg {
 
 .paragraphCommentsHolder {
   position: absolute;
-  left: 640px;
+  left: 940px;
   line-height: 100%;
 }
 
@@ -12578,10 +12578,10 @@ body.grp .headerGrp .headerGrpMenu {
   float: left;
   left: 50%;
   position: relative;
-  margin-left: -515px;
+  margin-left: -660px;
   border-left: solid 5px #DEDEDE;
   border-right: solid 5px #DEDEDE;
-  width: 1030px;
+  width: 1320px;
   padding-bottom: 20px;
 }
 
@@ -12719,7 +12719,7 @@ body.css700 .grpCard p img {
 
 .grpGlobalIntroBigArticle {
   float: left;
-  width: 415px;
+  width: 715px;
   margin-right: 20px;
 }
 
@@ -13191,7 +13191,7 @@ body.css700 .grpChaptersList {
 
 .grpChaptersListItem {
   float: left;
-  width: 230px;
+  width: 305px;
   margin: 20px 20px 0 0;
   background-color: rgba(210, 80, 57, 0.2);
   font-size: 12px;
@@ -13436,7 +13436,7 @@ body.css700 .grpFooterLinks {
   margin-top: 60px;
 }
 
-grpJeMexprime a {
+.grpJeMexprime a {
   margin-top: 10px;
   font-size: 18px;
   color: #fff;
