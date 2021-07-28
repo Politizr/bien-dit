@@ -200,28 +200,33 @@ class SecurityService
         // $this->logger->info(print_r($oAuthFileUrl, true));
         // $this->logger->info(print_r($provider, true));
 
-        if ($oAuthFileUrl) {
-            $lastDotPos = strrpos($oAuthFileUrl, '.');
+        try {
+            if ($oAuthFileUrl) {
+                $lastDotPos = strrpos($oAuthFileUrl, '.');
 
-            // twitter hack cf #https://github.com/hwi/HWIOAuthBundle/issues/1019
-            if ($provider == 'twitter') {
-                $oAuthFileUrl = str_replace('_normal', '', $oAuthFileUrl);
-                // $this->logger->info(print_r($oAuthFileUrl, true));
-            }
+                // twitter hack cf #https://github.com/hwi/HWIOAuthBundle/issues/1019
+                if ($provider == 'twitter') {
+                    $oAuthFileUrl = str_replace('_normal', '', $oAuthFileUrl);
+                    // $this->logger->info(print_r($oAuthFileUrl, true));
+                }
 
-            if ($lastDotPos) {
-                $extension = substr($oAuthFileUrl, ($lastDotPos + 1));
-                $fileName = $this->globalTools->downloadFileFromUrl(
-                    $oAuthFileUrl,
-                    $this->kernel->getRootDir() . PathConstants::KERNEL_PATH_TO_WEB . PathConstants::USER_UPLOAD_WEB_PATH,
-                    $user->computeFileName()
-                );
-                if ($fileName) {
-                    $user->setFileName($fileName);
+                if ($lastDotPos) {
+                    $extension = substr($oAuthFileUrl, ($lastDotPos + 1));
+                    $fileName = $this->globalTools->downloadFileFromUrl(
+                        $oAuthFileUrl,
+                        $this->kernel->getRootDir() . PathConstants::KERNEL_PATH_TO_WEB . PathConstants::USER_UPLOAD_WEB_PATH,
+                        $user->computeFileName()
+                    );
+                    if ($fileName) {
+                        $user->setFileName($fileName);
 
-                    return true;
+                        return true;
+                    }
                 }
             }
+        } catch (\Exception $e) {
+            $this->logger->error(sprintf('Exception - msg = %s', $e->getMessage()));
+            return false;
         }
 
         return false;
