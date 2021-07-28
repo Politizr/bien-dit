@@ -108,16 +108,22 @@ parameters:
     # Utilisateurs
     mandate_active: false
 
+    # Mode standard ou "consultation unique"
+    global_mode: standard # standard | oneshot
+
+    # Inscription public ou connexion uniquement
+    global_access : public # public | private
+
     # Niveau d'expression
     expression_from_scratch: false # true | false
     
-    # Groupes
-    with_group: true
-
     # Menu
     top_menu_cms: true # true | false
     top_menu_publications: true # true | false
     top_menu_community: true # true | false
+
+    # Libellé du menu "Nos consultations"
+    group_label: "Nos consultations"
 
     # Useful to force cache browser reload
     assets_version: 1.0.0 

@@ -1,0 +1,1175 @@
+@import "../_global/colors";
+
+///// GLOBAL /////
+
+// action in sidebars
+
+.sidebarAction {
+	float: left;
+	width: 100%;
+	background-color: #fff;
+	-moz-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	-webkit-box-shadow: 0px 0px 4px rgba($grey, .7);
+	-o-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=4);
+	margin-bottom: 40px;
+}
+
+.sidebarAction .actionsBox {
+	border:none;
+	height: auto;
+	float: left;
+	width: calc(100% - 20px);
+	margin: 10px 10px 0 10px;
+	padding-bottom: 10px;
+}
+
+.sidebarAction .miniActions { 
+	position: relative;
+	float: right;
+	top: 0;
+	right: 0;
+}
+
+.sidebarFollow {
+	float: left;
+	width: 100%;
+	padding: 14px 10px;
+	background-color: rgba($purple, .3);
+}
+.sidebarFollow .startFollowing, .sidebarFollow .stopFollowing {
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	padding:6px 15px 0 15px;
+	height:30px;
+}
+.sidebarFollow .actionText {
+	padding: 0 0 0 15px;
+	font-size: 12px;
+}
+.sidebarFollow .startFollowing i, .sidebarFollow .stopFollowing i {
+	position: absolute;
+	font-size: 12px;
+	left: 10px;
+	top: 7px;
+}
+
+.sidebarAction .notation { 
+	position: relative;
+	float: left;
+	left: 0;
+	top: 5px;
+}
+
+.sidebarEditProfile {
+	float: left;
+	width: 100%;
+	padding: 18px 10px;
+	background-color: rgba($orange, .3);
+	line-height: 100%;
+}
+
+.sidebarEditProfile a {
+	float: left;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	padding:11px 20px 0 18px;
+	height:40px;
+	background-color: $orange;
+	color: #fff;
+	font-size: 14px;
+	cursor: pointer;
+}
+.sidebarEditProfile a:hover {background-color: $purple;}
+
+.sidebarEditProfile a i {
+	font-size: 15px;
+	margin-right: 4px;
+	vertical-align: middle;
+}
+
+.share {
+	float: left;
+	width: calc(100% - 20px);
+	margin: 0 10px;
+	padding: 10px 0;
+	line-height: 100%;
+	border-top: solid 1px rgba($grey, .5);
+	color: $grey;
+}
+.share span {
+	float: left;
+	font-size: 12px;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.share a {
+	float: left;
+	margin-right: 5px;
+	vertical-align: middle;
+	font-family: 'nerissemibold';
+	font-size: 11px;
+	padding: 5px 6px 5px 5px;
+	-webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;
+	background-color: rgba($grey, 0.2);
+	cursor: pointer;
+}
+.share a:last-of-type {margin-right: 0;}
+.share a i {
+	float: left; 
+	margin-right: 5px; 
+	padding-right: 4px;
+	border-right: solid 1px rgba($grey, 0.5);
+}
+
+.share a.shareFB {color: $fbColor;}
+.share a.shareFB i {font-size: 14px;}
+.share a.shareFB:hover {background-color: $fbColor;}
+
+.share a.shareTW {color: $twColor;}
+.share a.shareTW i {font-size: 14px;}
+.share a.shareTW:hover {background-color: $twColor;}
+
+.share a.shareGG  { color: $ggColor;}
+.share a.shareGG i {font-size: 16px; padding-right: 2px;}
+.share a.shareGG:hover {background-color: $ggColor;}
+
+.share a.shareWA  { color: $waColor;}
+.share a.shareWA i {font-size: 16px; padding-right: 2px;}
+.share a.shareWA:hover {background-color: $waColor;}
+
+.share a:hover {color: #fff;}
+.share a:hover i {border-color: rgba(#fff, 0.5);}
+
+// bookmark
+
+.bookmarkBox {
+	float: left;
+	width: 100%;
+	clear: both;
+}
+.bookmarkBox a {
+	font-size: 12px;
+	color: $purple;
+	cursor: pointer;
+	padding-left: 4px;
+}
+.bookmarkBox a:hover {color: $darkGrey;}
+.bookmarkBox a:before {
+	font-family: 'pltzriconfont';
+	content: "\e809";
+	margin-right: 6px;
+	font-size: 14px;	
+}
+
+.bookmarkBox .ajaxLoaderBg { background-color: transparent;}
+
+
+// Edit publication
+.linkEditPublication {
+	float: left;
+	width: 100%;
+	clear: both;
+	margin-top: 10px;
+}
+.linkEditPublication a {
+	font-size: 12px;
+	color: $grey;
+	cursor: pointer;
+	margin-left: 5px;
+}
+.linkEditPublication a:hover {color: $darkGrey;}
+.linkEditPublication a:before {
+	font-family: 'pltzriconfont';
+	content: "\e81a";
+	margin-right: 7px;
+	font-size: 12px;	
+}
+
+.linkEditPublication .ajaxLoaderBg { background-color: transparent;}
+
+///// sidebar PROFILES /////
+
+.sidebarProfile .sidebarFollowedTags {margin-bottom: 0;}
+
+.sidebarTabs {
+	float: left;
+	width: 100%;
+}
+
+.sidebarProfile .share {border: none;}
+
+.sidebarProfile .profileCard {width: 100%; }
+.sidebarProfile .profileCard .actionFollow {display: none;}
+.sidebarProfile .profileCard .badgesCounter {display: none;}
+.sidebarProfile .profileCard .profileActions {margin-bottom: 0; padding: 10px;}
+
+// profile links
+.profileLinks {
+	float: left;
+	width: 100%;
+	clear: both;
+	margin-top: 5px;
+}
+
+.profileLinks a {
+	display: inline-block;
+	color: $grey;
+	display: inline-block;
+	vertical-align: middle;
+}
+.profileLinks a.linkGG {font-size: 18px; margin: -1px -4px 0 10px; }
+.profileLinks a.linkFB {font-size: 15px; margin: 0 0 0 10px;}
+.profileLinks a.linkTW {font-size: 16px; margin: 0 -2px 0 10px;}
+.profileLinks a.linkWeb {font-size: 13px; margin: 0 0 0 10px;}
+.profileLinks a:first-of-type {margin-left: 0;}
+.profileLinks a:last-child {margin-right: 0;}
+.profileLinks a:hover {color: $darkGrey;}
+
+// badges
+.sidebarBadges {
+	float: left;
+	width: 100%;
+	clear: both;
+	margin-bottom: 30px;
+}
+.badgesList {float: left; width: 100%;}
+.badgesList img {float: left;}
+.badgeHolder {
+	float: left;
+	width: 40px;
+	height: 45px;
+	position: relative;
+	margin-bottom: 10px;
+	margin-right: 8px;
+}
+.badgesList .badgeHolder:nth-child(7n) { margin-right: 0;}
+
+.goldBadge .bubblesBadge .bubbTop { background-color: $gold; }
+.silverBadge .bubblesBadge .bubbTop { background-color: $silver; }
+.bronzeBadge .bubblesBadge .bubbTop { background-color: $bronze; }
+
+// tabs followers
+.sidebarTabsFollowers {
+	float: left;
+	width: 100%;
+	margin-bottom: 40px;
+}
+
+.sidebarTabsHeader {
+	float: left;
+	width: 100%;
+	border-top: solid 1px rgba($grey, .5);
+	font-size: 12px;
+	font-style: italic;
+	font-family: 'Merriweather Italic';	
+	color: $grey;
+}
+
+.sidebarTabsHeader span {
+	float: left;
+	margin-right: 40px;
+	padding-top: 21px;
+	margin-top: -1px;
+}
+.sidebarTabsHeader span:last-child {margin-right: 0;}
+.sidebarTabsHeader span.activeTabHeader, .sidebarTabsHeader span:hover {
+	color: $darkGrey;
+	border-top: solid 2px $darkGrey;
+	padding-top: 19px;
+	cursor: pointer;
+}
+.sidebarTabsHeader span:hover.activeTabHeader { cursor: default;}
+
+
+///// sidebar POSTS /////
+
+// subject followers
+
+.sidebarSubjectFollowers {
+	float: left;
+	width: 100%;
+	margin-top: 40px;
+}
+#sidebar .sidebarSubjectFollowers h5 { padding: 20px 0 0 0;}
+
+// followers list
+
+.sidebarUserFollowers, .sidebarUserSubscribers {
+	float: left;
+	width: 100%;
+	margin-bottom: 40px;
+	clear: both;
+	min-height: 100px;
+}
+#sidebar .sidebarUserFollowers h5, #sidebar .sidebarUserSubscribers h5 { padding: 20px 0 0 0;}
+#sidebar #userFollowers h5, #sidebar #userSubscribers h5 {
+	display: inline-block;
+	padding: 11px 20px;
+	height: 40px;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	color: #fff;
+	background-color: rgba($grey, .6);
+	font-size: 12px;
+	margin: 20px 0;
+	width: auto;
+	border: none;
+    font-family: 'nerislight';
+    font-style: normal;
+}
+
+.sidebarUserFollowers .ajaxLoaderBg, .sidebarUserSubscribers .ajaxLoaderBg, .sidebarBadges .ajaxLoaderBg { background-color: transparent;}
+
+.followersList, .subscribersList {
+	float: left;
+	width: 100%;
+	margin-top: 40px;
+}
+
+.followersListItem, .subscribersListItem {
+	float: left;
+	width: 40px;
+	height: 40px;
+	position: relative;
+	margin-right: 8px;
+	margin-bottom: 10px;
+}
+.followersListItem:nth-child(7n), .subscribersListItem:nth-child(7n) {margin-right: 0;}
+.followersListItem .bubblesProfile, .subscribersListItem .bubblesProfile {bottom: 50px; }
+
+.linkListFollowers, .linkListSubscribers {
+	float: left;
+	width: 100%;
+	text-align: center;
+	font-size: 10px;
+	font-weight: 100%;
+	margin-top: 10px;
+}
+.linkListFollowers a, .linkListSubscribers a { color: $grey; }
+.linkListFollowers a:hover, .linkListSubscribers a:hover { color: $orange; }
+
+// answers in sidebar
+
+/*
+.sidebarAnswersList {
+	float: left;
+	width: 100%;
+	clear: both;
+	margin-top: 40px;
+	padding-top: 40px;
+	border-top: solid 1px rgba($orange, .5);
+	line-height: 100%;
+}
+
+.sidebarAnswersList .sidebarNoAnswer .actionsBox {
+	height: auto;
+	position: relative;
+	border-bottom: none;
+	margin: 20px 0 0 0;
+}
+.sidebarAnswersList .sidebarNoAnswer .miniActions {	
+	position: relative;
+	right: auto;
+	left: 0;
+	bottom: auto;
+	height: auto;
+	text-align: left;
+	line-height: 100%;
+}
+.sidebarAnswersList .sidebarNoAnswer .miniActions .actionAnswer { width: auto; }
+.sidebarAnswersList .sidebarNoAnswer .miniActions .actionAnswer a { float: left; position: relative; }
+.sidebarAnswersList .sidebarNoAnswer .miniActions .actionAnswer a:hover {background-color: $darkGrey;}
+.sidebarAnswersList .sidebarNoAnswer .miniActions .actionAnswer a i { left: 9px;}
+.sidebarAnswersList .sidebarNoAnswer .miniActions .actionText {
+	display: block;
+	padding: 10px 17px 0 35px;
+}
+
+.sidebarAnswersList .card:last-of-type { margin-bottom: 0;}
+.sidebarAnswersList .miniProfile {
+	margin: 10px;
+	padding-bottom: 10px;
+}
+
+.sidebarAnswersList .newPost .postImg {
+	height: 145px;	
+}
+.sidebarAnswersList .newPost .postImg a {margin: 0;}
+.sidebarAnswersList .newPost .postImg.noImg {
+	height: 1px;
+	width: calc(100% - 20px);
+	margin: 0 10px;
+}
+
+.sidebarAnswersList .newPost a {
+	margin: 15px 10px 10px 10px;
+	max-height: auto;
+}
+.sidebarAnswersList .newPost a .postTitle:hover {color: $darkGrey;}
+
+.sidebarAnswersList .postTitle {
+	font-size: 20px;
+	line-height: 120%;
+	margin-bottom: 0;
+}
+
+.sidebarAnswersList .actionsBox {
+	height: auto;
+	position: relative;
+	border-bottom: none;
+	margin: 20px 0 0 0;
+}
+.sidebarAnswersList .notation { left: 10px; }
+.sidebarAnswersList .coloredBg {padding: 20px 10px 15px 10px;}
+
+#sidebar .sidebarAnswersList h5 {
+	border-top: none;
+	padding: 10px 0 0 0;
+	color: $grey;
+}
+*/
+
+
+//form report + ask for modif in sidebar 
+
+.sidebarReport, .sidebarAskForModification {
+	float: left;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.sidebarReport .reportButton { 
+	color: $grey; 
+	float: left;
+	line-height: 100%;
+	cursor: pointer;
+}
+.sidebarReport .reportButton:hover {  color: $darkGrey; }
+.sidebarReport .reportButton span {
+	font-size: 12px;
+	margin: 3px 0 0 2px;
+	display: inline-block;
+	vertical-align: text-top;
+}
+
+.sidebarAskForModificationForm {
+	float: left;
+	clear: both;
+	width: 100%;
+	margin-bottom: 40px;
+}
+
+.sidebarAskForModification .askForModificationButton { 
+	color: $orange; 
+	float: left;
+	line-height: 100%;
+	cursor: pointer;
+}
+.sidebarAskForModification .askForModificationButton:hover {  color: $darkGrey; }
+.sidebarAskForModification .askForModificationButton span {
+	font-size: 12px;
+	margin: 3px 0 0 2px;
+	display: inline-block;
+	vertical-align: text-top;
+}
+
+.sidebarNote {
+	font-size: 10px;
+	margin-top: 5px;
+	margin-bottom: 20px;
+	line-height: 140%;
+	color: $grey;
+	float: left;
+	width: 100%;
+	clear: both;
+}
+.sidebarAskForModification .sidebarNote {color: $orange;}
+
+.sidebarReportForm {
+	float: left;
+	clear: both;
+	width: 100%;
+	margin-bottom: 40px;
+	font-size: 14px;
+}
+
+.sidebarReportForm .ajaxLoaderBg {
+	background-color: transparent;
+	background-image: url(../images/bgPaper.jpg);
+}
+
+form.formReport, form.formAskForModification {
+	float: left;
+	width: 100%;
+	font-size: 14px;
+	line-height: 100%;
+	color: $darkGrey;
+}
+
+.sidebarReportForm form.formReport .formBg {
+	//padding: 10px 10px 15px 10px;
+	margin-bottom: 20px;
+	background-color: rgba($darkGrey, .1);	
+	float: left;
+	width: 100%;
+}
+
+form.formReport textarea {
+	float: left;
+	margin: 0;
+	padding: 10px;
+	width: 100%;
+	background: transparent;
+	border: none;
+	font-size: 12px;
+	min-height: 100px;
+    font-family: 'nerislight';
+}
+
+/*
+form.formReport input[type="radio"] {
+	float: left;
+	clear: both;
+	margin: 10px 5px 0 0;
+	font-size: 11px;
+}
+form.formReport input:last-of-type[type="radio"] {margin-bottom: 0;}
+form.formReport input[type="radio"]:checked+label{ color: $darkGrey; }
+
+form.formReport label {
+	float: left;
+	margin-top: 8px;
+	color: $grey;
+	cursor: pointer;
+}
+form.formReport label:hover {color: $darkGrey;}
+*/
+
+form.formAskForModification textarea {
+	width: 100%;
+	margin: 0 0 20px 0;
+	padding: 10px 10px 0 10px;
+	border: none;
+	background-color: rgba($orange, .1);
+	font-size: 13px;
+	font-family: 'Merriweather';
+	height: auto;
+	min-height: 60px;
+	line-height: 160%;
+}
+form.formAskForModification textarea::-webkit-input-placeholder { color:$grey; font-style: italic;}
+form.formAskForModification textarea::-moz-placeholder { color:$grey; font-style: italic;} /* firefox 19+ */
+form.formAskForModification textarea:-ms-input-placeholder { color:$grey; font-style: italic;} /* ie */
+form.formAskForModification textarea input:-moz-placeholder { color:$grey; font-style: italic;} 
+
+.sidebarReportForm form.formReport .actionsBox, .sidebarAskForModification form.formAskForModification .actionsBox {
+	float: left;
+	width: 100%;
+	border: none;
+	height: auto;
+	padding: 0 10px;
+}
+
+form.formReport input[type="button"], form.formAskForModification input[type="button"] {
+	font-family: 'nerislight';
+   	font-size: 12px;
+	line-height: 100%;
+	color: #fff;
+	background-color: $orange;
+	float: right;
+	height: 30px;
+	padding: 0 12px;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	border: none;
+	cursor: pointer;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+form.formReport input[type="button"]:hover {background-color: $darkGrey;}
+span.formCancel { 
+	width: auto; 
+	display: inline-block;
+	margin: 0;
+	font-size: 12px;
+	color: $orange;
+	cursor: pointer;
+}
+span.formCancel:hover {color: $darkGrey;}
+
+///// sidebarTopPosts /////
+.sidebarTopPosts h5 a {
+	position: absolute;
+	right: 0;
+	color: grey;
+	font-style: normal;
+    font-family: 'nerislight';
+}
+.sidebarTopPosts h5 a:hover {color: $orange;}
+
+.sidebarTopPostsItem {
+	position: relative;
+	float: right;
+	width: calc(100% - 20px);
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+	border-bottom: solid 1px rgba($grey, .3);
+}
+.sidebarTopPosts .sidebarTopPostsItem:first-of-type {padding-top: 10px;}
+.sidebarTopPosts .sidebarTopPostsItem:last-of-type {border-bottom: none; padding-bottom: 0; margin-bottom: 0;}
+
+.sidebarTopPostsItem .sidebarTopPostsCounter {
+	position: absolute;
+	left: -20px;
+	font-size: 12px;
+	font-style: italic;
+	font-family: 'Merriweather Italic';
+}
+
+.sidebarTopPostsItem a .postTitle {
+	font-size: 18px;
+    //font-family: 'nerissemibold';
+    color: $darkGrey;
+    margin-bottom: 5px;
+}
+.sidebarTopPostsItem a:hover .postTitle  {color: $orange;}
+
+// add plane to subjects
+.sidebarTopPostsItem a .subject:before {
+	font-family: 'pltzriconfont';
+	//font-style: normal;
+	content: "\e824";
+	margin-right: 6px;
+	font-size: 14px;
+	vertical-align: text-bottom;
+	color: $darkGrey;
+}
+.sidebarTopPostsItem a:hover .subject:before {color: $orange;}
+
+.sidebarTopPostsItem .profileName a {
+	font-size: 14px;
+    font-family: 'nerissemibold';
+    color: $grey;
+}
+.sidebarTopPostsItem .profileName a:hover {color: $darkGrey;}
+.sidebarTopPostsItem .bubblesProfile .profileName a {color: #fff;}
+.sidebarTopPostsItem .bubblesProfile .profileName a:hover {color: $orange;}
+
+.sidebarTopPostsItem .profileName .org a {
+	background-color: $grey;
+	margin-top: 4px;
+	color: #fff;
+}
+.sidebarTopPostsItem .profileName .org a:hover { background-color: $darkGrey;	 }
+
+// sidebarFollowedTags + sidebarTopTags + sidebarFamilyTags
+.sidebarFollowedTags, .sidebarTopTags, .sidebarTypeTags, .sidebarFamilyTags {
+	display: inline-block;
+	width: 100%;
+	margin-bottom: 40px;
+}
+.sidebarFollowedTags .tagList, .sidebarTopTags .tagList { min-height: 100px;} // for loader
+
+.sidebarTopTags h5 a {
+	position: absolute;
+	right: 0;
+	color: grey;
+	font-style: normal;
+	font-family: 'nerislight';
+}
+.sidebarTopTags h5 a:hover {color: $orange;}
+
+.sidebarFollowedTags a.linkListTags {
+	float: left;
+	clear: both;
+	font-size: 12px;
+	margin: 20px 0;
+	color: $grey;
+}
+.sidebarFollowedTags a.linkListTags:hover { color: $darkGrey; }
+
+// sidebarListOrg
+
+.sidebarListOrg {
+	font-size: 12px;
+	width: 100%;
+	display: inline-block;
+}
+
+ul.orgList {
+	list-style: none;
+	margin: 0; padding: 0;
+}
+ul.orgList li:last-child {margin-bottom: 0;}
+
+ul.orgList li {
+	float: left;
+	clear: both;
+	margin-bottom: 10px;
+}
+
+ul.orgList li a {
+	color: $grey;
+	background-color: #fff;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	height: 30px;
+	display: inline-block;
+	padding: 7px 14px 0 14px;
+    font-family: 'nerissemibold';
+}
+ul.orgList li a:hover, ul.orgList li.current a {
+	background-color: $orange;
+	color: #fff;
+}
+ul.orgList li a:hover .org, ul.orgList li.current a .org  {
+	background-color: #fff;
+	color: $orange;	
+}
+
+ul.orgList li a .org {
+	background-color: $grey;
+	color: #fff;
+	font-size: 9px;
+	vertical-align: middle;
+	font-family: 'nerisblack';
+	text-transform: uppercase;
+	display: inline-block;
+	margin: 1px 0 2px 3px;
+	padding: 2px 3px;
+	-webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;
+	line-height: 100%;
+	font-style: normal;
+}
+
+// sidebar EDITION
+
+.sidebarPostAction, .sidebarPreviewAction, .sidebarProfileAction {
+	float: left;
+	width: 100%;
+	background-color: #fff;
+	-moz-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	-webkit-box-shadow: 0px 0px 4px rgba($grey, .7);
+	-o-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=4);
+	margin-bottom: 40px;
+	font-size: 12px;
+}
+
+.actionPublish {
+	background-color: rgba($orange, 0.3);
+	padding: 14px 10px;
+	float: left;
+	width: 100%;
+}
+.actionPublish a {
+	width: 94px;
+	float: left;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	padding:11px 0 0 12px;
+	height:40px;
+	background-color: $orange;
+	color: #fff;
+	font-size: 13px;
+	cursor: pointer;
+}
+.actionPublish a i {margin-right: 4px;}
+.actionPublish a:hover {background-color: $darkGrey;}
+
+.actionPublish .notice {
+	float: left;
+	padding-left: 10px;
+	font-size: 10px;
+	color: $orange;
+	width: calc(100% - 100px);
+	line-height: 130%;
+}
+
+.cannotPublishReaction {
+	margin: 10px 10px 0 10px;
+	padding: 10px 10px 10px 34px;
+	background-color: $orange;
+	color: #fff;
+	font-family: 'nerissemibold';
+	position: relative;
+}
+.cannotPublishReaction a { text-decoration: underline; }
+.cannotPublishReaction:before {
+	font-family: 'pltzriconfont';
+	content: "\e801";
+	font-size: 16px;
+	position: absolute;
+	left: 10px;
+} 
+
+.actionSave {
+	float: left;
+	width: 100%;
+	clear: both;
+	padding: 14px 10px;
+}
+.sidebarProfileAction .actionSave {background-color: rgba($lightBlue, 0.3); }
+
+.actionSave a {
+	float: left;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	padding:11px 16px 0 16px;
+	height:40px;
+	background-color: $blue;
+	color: #fff;
+	font-size: 13px;
+	cursor: pointer;
+}
+.actionSave a i {margin-right: 4px; font-size: 12px;}
+.actionSave a:hover {background-color: $darkGrey;}
+
+.actionSave.saved i {display: none;}
+.actionSave.saved a {
+	cursor: default;
+	background-color: rgba($blue, 0.5);
+}
+.actionSave.saved a:before {
+	font-family: 'pltzriconfont';
+	content: "\e80a";
+	padding-right: 7px;
+}
+
+a.preview, a.mydrafts {
+	color: $blue;
+}
+.secondaryActions {
+	width: calc(100% - 20px);
+	margin: 0 10px;
+	padding: 5px 0;
+	float: left;
+	border-top: solid 1px rgba($blue, 0.5);
+}
+.sidebarProfileAction .secondaryActions {border: none;}
+.secondaryActions a {
+	float: left;
+	clear: both;
+	margin: 5px 0;
+	color: $blue;
+	cursor: pointer;
+}
+.secondaryActions a:hover { color: $darkGrey;}
+
+.sidebarPreviewAction .secondaryActions { border: none; }
+.sidebarPreviewAction .secondaryActions a { color: $darkGrey; }
+.sidebarPreviewAction .secondaryActions a:hover { color: $orange; }
+
+.sidebarComparedMode .sidebarTabsHeader .activeTabHeader { color: $orange; border-color: $orange;}
+
+.sidebarComparedMode .sidebarTabsHeader {
+	margin-bottom: 40px;
+}
+
+.parentPost { 
+	float: left;
+	width: 100%;
+	margin: 0 0 40px 0;
+	// enable text selection
+	-webkit-touch-callout:  text; /* iOS Safari */
+	-webkit-user-select: text;   /* Chrome/Safari/Opera */
+	-moz-user-select: text;      /* Firefox */
+	-ms-user-select: text;       /* IE/Edge */
+	user-select:  text;
+}
+.parentPost .postTitle {font-size: 22px; margin: 0;}
+.parentPost .paragraph {
+	padding: 15px 0 0 0;
+	width: 100%;
+	font-size: 12px;
+}
+.parentPost .paragraph h1 {font-size: 17px; }
+.parentPost .paragraph h2 {
+	font-size: 12px; 
+	padding: 0 0 0 10px;
+	border-left-width: 3px;
+}
+.parentPost .paragraph blockquote {font-size: 12px;}
+.parentPost .paragraph blockquote::before { font-size: 16px;}
+
+.parentPost .medium-insert-images {display: none;}
+#sidebar .medium-insert-embeds {display: none;}
+
+#sidebar .sidebarEditTag h5 {
+	padding-bottom: 20px;
+	color: $orange;
+	border-color: rgba($orange, 0.5);
+}
+
+.sidebarEditTag .notice {
+	font-size: 11px;
+	color: $grey;
+	line-height: 160%;
+}
+.sidebarEditTag .notice i {margin-right: 2px;}
+.sidebarEditTag .notice b {font-weight: normal; font-family: 'nerissemibold';}
+
+.sidebarEditTag .helper {float: left; margin: 5px 0 0 0;}
+
+.sidebarEditTag .formAddTag {
+	margin-top: 10px;
+	z-index: 1;
+}
+
+// type de post
+.sidebarPostType {
+	margin-bottom: 40px;
+	float: left;
+	width: 100%;
+}
+#sidebar .sidebarPostType h5 {
+	padding-bottom: 20px;
+	color: $orange;
+	border-color: rgba($orange, 0.5);
+}
+
+.sidebarPostType .notice {
+	font-size: 11px;
+	color: $grey;
+	line-height: 160%;
+	margin-bottom: 30px;
+}
+.sidebarPostType .notice i {margin-right: 2px;}
+.sidebarPostType .notice b {font-weight: normal; font-family: 'nerissemibold';}
+
+.sidebarPostType input { display: none;}
+.sidebarPostType label {
+	float: left;
+	clear: both;
+	cursor: pointer;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	padding:7px 14px 0 10px;
+	height:30px;
+	background-color: #fff;
+	color: $grey;
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+.sidebarPostType label i { font-size: 10px; margin-right: 3px;}
+.sidebarPostType input:checked+label, .sidebarPostType label:hover {
+	background-color: $orange;
+	color: #fff;
+}
+
+
+///// SIDEBAR SEARCH /////
+
+// sidebar map
+.sidebarSearchMap {
+	float: left;
+	width: 100%;
+	margin-bottom: 10px;
+}
+#sidebar .sidebarSearchMap h5 {padding-bottom: 20px;}
+
+.sidebarSearchMap {
+	font-size: 12px;
+	color: $grey;
+}
+
+.sidebarSearchMap span {
+	float: left;
+	margin-bottom: 10px;
+	margin-right: 14px;
+	padding: 8px 0 0 0;
+	line-height: 100%;
+	cursor: pointer;
+}
+.sidebarSearchMap .mapMenu span:last-of-type {margin-right: 0;}
+.sidebarSearchMap span:hover {color: $orange;}
+
+.sidebarSearchMap span.active {
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	padding: 7px 14px 0 12px;
+	height:30px;
+	border: solid 1px rgba($orange, 0.5);
+	color: $orange;
+}
+.sidebarSearchMap span.active.current, .sidebarSearchMap span.active:hover {
+	background-color: $orange;
+	color: #fff;
+	border-color: $orange;
+}
+.sidebarSearchMap span.active.current {cursor: default;}
+
+.mapBreadcrumbs {
+	float: left;
+	width: 100%;
+}
+.mapBreadcrumbs span { clear: both;}
+
+#mapHolder {
+	float: left;
+	min-height: 60px;
+	width: 100%;
+	margin-top: 20px;
+	background-image:  url(../images/mapShadow.png);
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	padding-bottom: 50px;
+	text-align: center;
+}
+#mapHolder .ajaxLoaderBg, .mapBreadcrumbs .ajaxLoaderBg {
+	background-color: transparent;
+	background-image: url(../images/bgPaper.jpg);
+}
+
+// map generic
+#mapHolder svg path {opacity: 0.5;}
+#mapHolder svg #base_dept path:hover { display: none;}
+#mapHolder svg { padding-bottom: 20px; }
+#mapHolder svg path:hover, #mapHolder svg a:hover path { fill: $orange; cursor: pointer; opacity: 1;}
+#mapHolder svg path.selected { fill: $orange; opacity: 1;}
+#mapHolder svg path.selected:hover { cursor: default;}
+
+// map unlogged 
+.mapUnlogged svg {opacity: 0.5;}
+.mapUnloggedText {
+	position: absolute;
+	width: 280px;
+	height: 300px;
+	z-index: 1;
+}
+.mapUnloggedText h1 {
+	text-align: center;
+	font-size: 22px;
+	line-height: 120%;
+	font-weight: normal;
+    font-family: 'nerisblack';
+    color: $darkGreen;
+    margin-top: 80px;
+    float: left;
+    width: 100%;
+}
+.mapUnloggedText a {
+	float: left;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	padding: 7px 16px 0 16px;
+	height: 40px;
+	background-color: #fff;
+	color: $darkGreen;
+	font-family: 'nerisblack';
+	font-size: 16px;
+	margin-left: 40px;
+}
+.mapUnloggedText a:hover {background-color: $darkGreen; color: #fff;}
+
+.mapUnloggedText span, .mapUnloggedText span:hover {
+	float: right;
+	margin-right: 40px;
+	color: $darkGreen;
+	cursor: default;
+	line-height: 120%;
+	padding-top: 6px;
+	font-size: 12px;
+}
+
+// map outremer
+
+#mapHolder.outreMer {
+	background-image: none; 
+	padding-bottom: 0; 
+	margin-top: 10px;
+}
+.outreMerGroup {
+	float: left;
+	width: 100%;
+	margin-bottom: 30px;
+}
+
+.outreMerItem {
+	float: left;
+	margin: 10px 5px;
+	width: calc(33.3%  - 10px);
+	text-align: center;
+}
+.outreMerItem:nth-child(4n) {clear: both;}
+.outreMerItem span {
+	float: left;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	cursor: default;
+}
+.outreMerItem span:hover {color: $grey;}
+
+#mapHolder.outreMer .outreMerItem:hover svg path { fill: $orange; cursor: default; opacity: 1;}
+#mapHolder.outreMer .outreMerItem.selected svg path { fill: $orange; cursor: default; opacity: 1;}
+
+
+// map français de l'étranger
+#mapHolder.francaisdeletranger {
+	background-image: none;
+	padding-bottom: 0;
+	margin-top: 10px;
+}
+
+.worldItemRow {
+	width: 100%;
+	float: left;
+	margin-bottom: 60px;
+}
+.worldItemRow:last-of-type {margin-bottom: 0; }
+.worldItem {
+	width: 50%;
+	float: left;
+	text-align: center;
+	padding: 0 10px;
+}
+.worldItem img { float: none; }
+.worldItem span {
+	width: 100%;
+	text-align: center;
+
+}
+.sidebarSearchMap .worldItem span:hover {
+	cursor: default;
+	color: inherit;	
+}
+.worldItem a {cursor: pointer;}
+
+
+// sidebar filters
+#sidebar .sidebarSearchFilters, #sidebar .sidebarSearchCategory {
+	float: left;
+	width: 100%;
+	clear: both;
+}
+
+.sidebarSearchFilters .ajaxLoaderBg {
+	background-color: transparent;
+	background-image: url(../images/bgPaper.jpg);
+}
+
+#sidebar .sidebarSearchFilters h5, #sidebar .sidebarSearchCategory h5 {
+	border-top: none;
+	padding: 30px 0 20px 0;
+}
+.sidebarSearchFilters input, .sidebarSearchCategory input { display: none;}
+.sidebarSearchFilters label, .sidebarSearchCategory label {
+	float: left;
+	clear: both;
+	cursor: pointer;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	padding:7px 14px 0 10px;
+	height:30px;
+	background-color: #fff;
+	color: $grey;
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+.sidebarSearchFilters label i { font-size: 10px; margin-right: 3px;}
+.sidebarSearchFilters input:checked+label, .sidebarSearchFilters label:hover, .sidebarSearchCategory input:checked+label, .sidebarSearchCategory label:hover {
+	background-color: $orange;
+	color: #fff;
+}
+
+// sidebar edit account
+.sidebarAccountEdition {
+	font-size: 14px;
+	line-height: 140%;
+	color: $orange;
+}
+.sidebarAccountEdition a:hover {color: $orange;}

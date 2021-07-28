@@ -104,6 +104,11 @@ twig:
             tw_site:            %meta_tw_site%
             tw_title:           %meta_tw_title%
             tw_description:     %meta_tw_description%
+        global:
+            mode:               %global_mode%
+            access:             %global_access%
+        group:
+            label:              %group_label%
         geo:
             active:             %geo_active%
         mandate:

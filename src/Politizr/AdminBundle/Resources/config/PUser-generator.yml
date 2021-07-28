@@ -216,7 +216,7 @@ builders:
                     addFormOptions:
                         mapped:                 false
                 followers:
-                    credentials:                ROLE_SYSTEM
+                    # credentials:                ROLE_SYSTEM
                     label:                      Abonnés
                     dbType:                     model
                     addFormOptions:
@@ -225,7 +225,7 @@ builders:
                         class:                  Politizr\Model\PUser
                 #         query:                  \Politizr\Model\PUserQuery::create()->orderByName() 
                 subscribers:
-                    credentials:                ROLE_SYSTEM
+                    # credentials:                ROLE_SYSTEM
                     label:                      Abonnements
                     dbType:                     model
                     addFormOptions:

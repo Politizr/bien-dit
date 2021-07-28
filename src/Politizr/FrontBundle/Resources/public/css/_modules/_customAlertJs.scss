@@ -1,0 +1,72 @@
+@import "../_global/colors";
+
+.smoke {
+	font-family: 'nerissemibold';
+	text-align: center;
+	font-size: 14px;
+	line-height: 130%;
+    background-color: rgba(255,255,255,0.95);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff,endColorstr=#ffffff);
+	box-shadow: 0 2px 8px #666;
+}
+
+.smoke-base {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	visibility: hidden;
+	opacity: 0;
+}
+
+.smoke-base.smoke-visible {
+	opacity: 1;
+	visibility: visible;
+	z-index: 32000;
+}
+
+.smokebg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: $darkGrey;
+ 	-moz-opacity: 0.80;
+	opacity: 0.80;
+	-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
+	filter:alpha(opacity=80);
+}
+
+.smoke-base .dialog {
+	position: absolute;
+	top: 25%;
+	width: 40%;
+	left: 50%;
+	margin-left: -20%;
+}
+.smoke-base .dialog-inner {	padding: 20px;}
+
+.dialog-buttons { margin: 10px 0 5px 0; }
+.dialog-buttons button {
+	font-family: 'nerisblack';
+	display: inline-block;
+	vertical-align: baseline;
+	cursor: pointer;
+	font-style: normal;
+	text-decoration: none;
+	text-transform: uppercase;
+	border: 0;
+	outline: 0;
+	margin: 10px 5px;
+	-webkit-background-clip: padding-box;
+	font-size: 11px;
+	font-weight: normal;
+	padding: 9px 12px;
+	background-color: $darkGrey;
+	color: #fff;
+}
+.dialog-buttons button:hover {background-color: $orange;}
+.dialog-buttons button.cancel { background-color: $semiGrey;}

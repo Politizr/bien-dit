@@ -1,0 +1,693 @@
+@import "../_global/colors";
+
+.profileCard {
+	display: inline-block;
+	float: left;
+	width: 280px;
+	background-color: #fff;
+	text-align: center;
+	margin: 30px 0 40px 0;
+	-moz-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	-webkit-box-shadow: 0px 0px 4px rgba($grey, .7);
+	-o-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=4);
+}
+
+.profileCard .miniProfile {
+	margin: 40px 20px 20px 20px;
+	padding-bottom: 0;
+	border: none;
+	position: relative;
+	float: left;
+}
+
+.profileCard .miniProfile .avatar40 {
+	width: 60px;
+	height: 60px;
+	overflow: hidden;
+	-webkit-border-radius: 30px; -moz-border-radius: 30px; border-radius: 30px;
+	position: absolute;
+	top:-70px;
+	left: 50%;
+	margin-left: -30px;
+}
+.bubblesProfile .miniProfile .avatar40 {
+	position:  static;
+	margin-left: 0;
+	width: 40px;
+	height: 40px;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;	
+}
+
+.profileCard .miniProfile .profilenInfo {width: 100%;}
+.bubblesProfile .miniProfile .profilenInfo { width: calc(100% - 50px);}
+
+.profileMandats {
+	border: solid 1px rgba($grey, .5);
+	padding: 20px;
+	float: left;
+	clear: both;
+	margin: 0 20px 20px 20px;
+	width: calc(100% - 40px);
+}
+//.profileMandats:empty {display: none;}
+.profileMandats a { 
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	color: $orange;
+}
+.profileMandats a:hover {color: $darkGrey; }
+
+.profileMandatsItem {
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	line-height: 140%;
+	position: relative;
+	margin: 10px 0 10px 0;
+	float: left;
+	width: 100%;
+}
+.profileMandatsItem:after {
+	content: "\2014";
+	position: absolute;
+	top:-15px;
+	left: 0;
+	width: 100%;
+	text-align: center;
+}
+.profileMandatsItem:first-child:after { display: none;}
+.profileMandatsItem:first-child {margin-top: 0;}
+.profileMandatsItem:last-child {margin-bottom: 0;}
+
+.profileMandatsItem span {
+	text-transform: uppercase;
+	font-size: 11px;
+	width: 100%;
+	float: left;
+    font-family: 'nerissemibold';
+    font-style: normal;
+}
+.profileStats {
+	line-height: 150%;
+}
+
+.profileActions {
+	float: left;
+	width: 100%;
+	background-color: rgba($grey, .2);
+	position: relative;
+	text-align: left;
+	font-size: 12px;
+	color: $grey;
+	margin: 0 0 20px 0;
+	padding: 10px 20px;
+}
+
+.profileCard .badgesCounter {
+	float: left;
+	width: 100%;
+	text-align: left;
+	padding-left: 20px;
+	left: -5px;
+	top: -12px;
+	min-height: 20px;
+}
+
+///// EDITION MY PROFILE /////
+
+.editionProfileCard {
+	float: left;
+	width: 100%;
+	background-color: #fff;
+	-moz-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	-webkit-box-shadow: 0px 0px 4px rgba($grey, .7);
+	-o-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=4);
+	margin-bottom: 50px;
+}
+.editionProfileCard input::-webkit-input-placeholder { color:$grey; font-style: italic;font-family: 'Merriweather Italic'; font-size: 12px; }
+.editionProfileCard input::-moz-placeholder { color:$grey; font-style: italic;font-family: 'Merriweather Italic'; font-size: 12px; } /* firefox 19+ */
+.editionProfileCard input:-ms-input-placeholder { color:$grey; font-style: italic;font-family: 'Merriweather Italic'; font-size: 12px; } /* ie */
+.editionProfileCard input:-moz-placeholder { color:$grey; font-style: italic;font-family: 'Merriweather Italic'; font-size: 12px; }
+
+.editionProfileCard .avatar40 {
+	width: 60px;
+	height: 60px;
+	overflow: hidden;
+	-webkit-border-radius: 30px; -moz-border-radius: 30px; border-radius: 30px;
+	float: left;
+	margin-left: 30px;
+}
+
+.uploadAvatar {
+	float: left;
+	padding: 5px 0 0 20px;
+	font-size: 12px;
+}
+.uploadAvatar input {display: none;}
+.uploadAvatar label {
+	background-color: $darkGrey;
+	color: #fff;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	padding:6px 14px;
+	margin-right: 20px;
+	float: left;	
+	cursor: pointer;
+}
+.uploadAvatar label:hover {background-color: $orange;}
+.uploadAvatar a.photoDelete {
+	float: left;
+	clear: both;
+	margin-top: 10px;
+}
+
+.formBlock.FirstNameBlock {
+	width: 50%;
+	float: left;
+	padding: 30px 10px 30px 30px;
+}
+.formBlock.NameBlock  {
+	width: 50%;
+	float: left;
+	padding: 30px 30px 30px 10px;
+}
+.formBlock.halfBlock .formBlockHeader {padding-left: 0;}
+.formBlock.halfBlock input {
+	width: 100%;
+	padding: 10px;
+	height: 40px;
+	font-size: 14px;
+    font-family: 'nerisblack';	
+    border: solid 1px rgba($grey, 0.3);
+}
+.editionProfileCard .formBlock.halfBlock input::-webkit-input-placeholder { padding-top: 2px;}
+.editionProfileCard .formBlock.halfBlock input::-moz-placeholder { padding-top: 2px;} /* firefox 19+ */
+.editionProfileCard .formBlock.halfBlock input:-ms-input-placeholder { padding-top: 2px;} /* ie */
+.editionProfileCard .formBlock.halfBlock input:-moz-placeholder { padding-top: 2px;}
+
+.editionProfileCard select {
+	margin: 0 30px;
+	width: calc(100% - 60px);
+	appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    border-color: rgba($grey, 0.3);
+   	-webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0;
+   	height: 40px;
+   	padding: 0 10px;
+    font-family: 'nerissemibold';
+    font-size: 11px;
+    text-transform: uppercase;
+    position: relative;
+    background-color: transparent;
+}
+
+.styledSelect {
+	position: relative;
+	float: left;
+	width: 100%;
+}
+
+.editionProfileCard .styledSelect:after {
+	font-family: 'pltzriconfont';
+	content: "\e803";
+	font-size: 9px;
+	color: $grey;
+	position: absolute;
+	right: 44px;
+	top: 15px;
+}
+
+.editionProfileCard textarea {
+	font-size: 12px;
+    border: solid 1px rgba($grey, 0.3);
+    height: 120px;
+    color: $darkGrey;
+    font-style: italic; 
+    font-family: 'Merriweather Italic';
+    
+}
+.editionProfileCard textarea::-webkit-input-placeholder { color:$grey; }
+.editionProfileCard textarea::-moz-placeholder { color:$grey; } /* firefox 19+ */
+.editionProfileCard textarea:-ms-input-placeholder { color:$grey; } /* ie */
+.editionProfileCard textarea:-moz-placeholder { color:$grey; }
+
+.editionProfileCard .bioCountWrapper {
+	float: left;
+	clear: both;
+	padding: 10px 0 0 30px;
+	font-size: 10px;
+    font-family: 'nerislight';
+    color: $grey;
+}
+
+
+.editionProfileCard .mandateItem label:first-of-type {
+	display: block;
+	color: $grey;
+	font-style: italic;
+	font-family: 'Merriweather Italic';
+	font-size: 12px;
+	margin-bottom: 5px;	
+}
+.editionProfileCard .mandateItem label {display: none;}
+
+.mandateItem {
+	float: left;
+	width: calc(100% - 60px);
+	margin: 0 30px;
+}
+
+.mandateItem .styledSelect {margin-bottom: 20px;}
+.editionProfileCard .mandateItem .styledSelect:after {right:14px}
+.mandateItem select {margin:0; width: 100%;}
+
+.mandateItem input {
+	padding: 10px;
+	height: 40px;
+    border: solid 1px rgba($grey, 0.3);
+    font-style: italic; 
+    font-family: 'Merriweather Italic';
+    font-size: 12px;
+}
+
+input#mandate_localization {
+	width: 370px;
+}
+
+.mandatePeriod {float: right;}
+
+.mandateItem span.dea {
+	font-style: italic; 
+    font-family: 'Merriweather Italic';
+    font-size: 12px;
+    margin: 0 10px;
+}
+
+input#mandate_begin_at, input#mandate_end_at {
+	text-align: center;
+	width: 64px;
+}
+
+.mandateActions {
+	margin-top: 20px;
+	float: left;
+	width: 100%;
+}
+.mandateActions span {
+	font-size: 10px;
+    font-family: 'nerislight';
+    color: $grey;	
+}
+
+.mandateActions a.editMandateCreate {
+	float: right;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	padding:6px 14px 0 14px;
+	height:30px;
+	background-color: $orange;
+	font-size: 12px;
+	color: #fff;
+	cursor: pointer;
+}
+.mandateActions a.editMandateCreate:hover {background-color: $darkGrey;}
+
+.myMandate {
+	margin-top: 30px;
+	padding-top: 30px;
+	border-top: solid 1px rgba($grey, 0.5);
+}
+
+.myMandate .styledSelect select, .myMandate input {background-color: rgba($grey, 0.2); }
+a.editMandateDeleteItem {
+	color: $orange;
+	font-size: 12px;
+	cursor: pointer;
+}
+a.editMandateDeleteItem:hover {color: $darkGrey;}
+
+.profileSocialLink {
+	float: left;
+	width: 100%;
+	padding: 0 30px;
+	margin-bottom: 20px;
+}
+.profileSocialLink:last-of-type {margin-bottom: 0;}
+.profileSocialLink i {
+	float: left;
+	margin-top: 11px;
+	font-size: 14px;
+}
+.profileSocialLink i.icon-social-gg {
+	font-size: 17px;
+	margin-top: 9px;
+}
+
+.profileSocialLink input {
+	padding: 10px;
+	height: 40px;
+    border: solid 1px rgba($grey, 0.3);
+    font-style: italic; 
+    font-family: 'Merriweather Italic';
+    font-size: 12px;
+    float: right;	
+    width: calc(100% - 35px);
+}
+
+///// EDITION ACCOUNT /////
+
+.formInfo {
+	font-size: 12px;
+	color: $grey;
+	//margin-top: 10px;
+}
+
+#boxPerso1, #boxPerso2, #boxPerso3, #boxPerso4 {
+	float: left;
+	width: 100%;
+	padding: 0 30px;
+	margin: 20px 0;
+	background-color: #fff;
+	-moz-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	-webkit-box-shadow: 0px 0px 4px rgba($grey, .7);
+	-o-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=4);
+}
+#boxPerso3 {margin-bottom: 50px;}
+
+#boxPerso1 .formBlockHeader, #boxPerso2 .formBlockHeader, #boxPerso3 .formBlockHeader, #boxPerso4 .formBlockHeader {
+	padding: 0;
+}
+
+#boxPerso1 input, #boxPerso2 input, #boxPerso3 input {
+	font-family: 'nerislight';
+	padding: 10px;
+	height: 40px;
+	font-size: 14px;
+	margin-bottom: 30px;
+	width: 100%;
+}
+#boxPerso1 input:disabled { color: rgba($darkGrey, 0.6);}
+#boxPerso1 select {
+	margin: 0 0 30px 0;
+	width:100%;
+	appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    border-color: rgba($grey, 0.3);
+   	-webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0;
+   	height: 40px;
+   	padding: 0 10px;
+    font-family: 'nerislight';
+    font-size: 14px;
+    position: relative;
+}
+#boxPerso1 .styledSelect:after {
+	font-family: 'pltzriconfont';
+	content: "\e803";
+	font-size: 9px;
+	color: #80808C;
+	position: absolute;
+	right: 14px;
+	top: 15px;
+}
+
+#boxPerso1 #msgIdCheck {
+	float: left;
+	margin-top: 40px;
+	width: calc(100% + 60px);
+	margin-left: -30px;
+	background-color: rgba($alert, 0.2);
+	padding: 30px;
+	margin-bottom: -30px;
+}
+#boxPerso1 #msgIdCheck a {text-decoration: underline;}
+
+#boxPerso1 #msgIdCheck h5 {
+	padding: 20px 30px;
+	background-color: $alert;
+	color: #fff;
+	font-family: 'nerislight';
+	font-style: normal;
+	line-height: 160%;
+}
+#boxPerso1 #msgIdCheck h5 b {
+	font-weight: normal;
+	font-family: 'nerissemibold';
+}
+
+#boxPerso1 #idCheck {
+	float: left;
+	width: calc(100% + 60px);
+	margin-left: -30px;
+	background-color: rgba($alert, 0.2);	
+	padding: 0 30px 30px 30px;
+}
+
+#boxPerso1 #idCheck .card {
+	background-color: transparent;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+	filter:none;
+	background-color: #fff;
+	padding: 30px;
+	margin-bottom: 0;
+}
+
+#boxPerso1 #idCheck label {
+	float: left;
+	width: 100%;
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	font-size: 12px;
+	color: $grey;
+	margin: 0 0 5px 0;
+}
+
+#boxPerso1 #idCheck .uploadCNI label {
+	font-family: 'nerislight';
+	font-style: normal;
+	color: #fff;
+	width: auto;
+}
+
+#boxPerso1 #idCheck .zlaBox label { margin-bottom: 20px; }
+#boxPerso1 #idCheck .zlaBox .control-group-zla1 input {margin-bottom: 10px;}
+#boxPerso1 #idCheck .zlaBox input {
+	font-size: 12px;
+	padding-left: 25px;
+}
+#boxPerso1 #idCheck .zlaNumber1 {top:12px;}
+#boxPerso1 #idCheck .zlaNumber2 {top: 61px;}
+
+#boxPerso1 #idCheck button {
+	width: auto;
+	margin: 30px 0 0 0;
+}
+
+#boxPerso1 .control-group label, #boxPerso2 .control-group label, #boxPerso3 .control-group label {
+	float: left;
+	width: 100%;
+	color: $grey;
+	margin-bottom: 20px;
+    font-family: 'Merriweather Italic';
+    font-style: italic;
+    font-size: 12px;
+    line-height: 100%;
+}
+#boxPerso2 .form-group {
+	margin-top: -5px;
+	margin-bottom: 30px;
+}
+#boxPerso2 input[type="checkbox"] {
+	width: auto;
+	height: auto;
+	float: left;
+	margin: 5px 5px 0 0;
+	padding: 0;
+}
+#boxPerso2 .form-group label {
+    font-family: 'Merriweather Italic';
+    font-style: italic;
+    font-size: 12px;
+}
+
+#boxPerso1 button, #boxPerso2 button, #boxPerso3 button, #boxPerso4 button {
+	float: left;
+	clear: both;
+    font-family: 'nerislight';
+   	font-size: 12px;
+	line-height: 100%;
+	color: #fff;
+	background-color: $orange;
+	height: 30px;
+	padding:0 12px;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	border: none;
+	cursor: pointer;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+#boxPerso1 button:hover, #boxPerso2 button:hover, #boxPerso3 button:hover, #boxPerso4 button:hover {background-color: $darkGrey;}
+
+#boxPerso4 #user_localization label {
+	float: left;
+	width: 100%;
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	font-size: 12px;
+	color: $grey;
+	margin: 0 0 20px 0;
+}
+
+///// EDITION NOTIFICATION /////
+
+.notificationsPrefs {
+	margin-top: -10px;
+	padding: 0 30px 30px 30px;
+}
+
+.notificationsPrefs h5 {
+	margin-bottom: 10px;
+}
+
+.notificationsPrefsItem {
+	margin-bottom: 5px;
+	font-size: 14px;
+}
+
+.notificationsPrefs:last-of-type {padding-bottom: 0;}
+
+///// DELETE ACCOUNT /////
+
+#boxDeleteAccount {
+	float: left;
+	clear: both;
+	padding-bottom: 50px;
+	font-size: 12px;
+	color: $grey;
+	margin-top: -30px;
+	
+}
+#boxDeleteAccount i {
+	margin-right: 3px;
+}
+
+#boxDeleteAccount a {
+	cursor: pointer;
+	color: $grey;
+	text-decoration: underline;
+}
+
+#boxDeleteAccount a:hover {
+	color: $orange;
+}
+
+///// MANAGE GROUP /////
+
+#groupListing {
+	float: left;
+	width: 100%;
+	padding: 0 30px 10px 30px;
+	margin: 20px 0;
+	background-color: #fff;
+	-moz-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	-webkit-box-shadow: 0px 0px 4px rgba($grey, .7);
+	-o-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=4);
+}
+
+#groupListing h1 {
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	font-weight: normal;
+	margin: 0;
+	padding: 40px 0 20px 0;
+	color: $orange;
+	float: left;
+	width: 100%;
+	clear: both;
+}
+#groupListing h1:first-of-type {
+	padding-top: 30px;
+}
+
+.groupListingRow {
+	clear: both;
+	float: left;
+	color: #2D2D2D;
+	margin-bottom: 20px;
+	background-color: rgba(128, 128, 140, 0.2);
+	padding: 10px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	width: 100%;
+}
+.groupListingRow h2 {
+	margin: 0;
+	font-weight: normal;
+	font-size: 14px;
+	float: left;
+	width: 60%;
+    font-family: 'nerisblack';
+}
+
+.circleActions {
+	float: right;
+	width: 35%;
+	text-align: right;
+	line-height: 100%;
+}
+.circleActions a {
+	font-size: 12px;
+	margin-left: 30px;
+	cursor: pointer;
+	color: $grey;
+}
+.circleActions a:first-of-type {margin-left: 0;}
+.circleActions a:hover, .circleActions a.groupListingConsult:hover {color: $darkGrey;}
+.circleActions a i {margin-right: 2px;}
+.circleActions a.groupListingConsult { color: $orange; }
+
+.noResults {
+	padding: 30px 0 20px 0;
+	font-size: 13px;
+	line-height: 160%;
+	color: $orange;
+	float: left;
+	width: 100%;
+}
+
+.contactMyCity {
+	margin-top: 30px;
+	background-color: rgba($orange, 0.5);
+	padding: 30px;
+	color: $darkGrey;
+	float: left;
+	width: 100%;
+	text-align: center;
+}
+.contactMyCity a {
+	cursor: pointer;
+	display: inline-block;
+	clear: both;
+	margin-top: 20px;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	padding:10px 14px;
+	height:40px;
+	background-color: $orange;
+	color: #fff;
+}
+.contactMyCity a:hover {
+	background-color: $darkGrey;
+}

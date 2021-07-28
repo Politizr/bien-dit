@@ -1,0 +1,290 @@
+@import "../_global/colors";
+
+///// for tag + profile + report bubbles /////
+.bubbleContent {
+	background: #fff;
+	float: left;
+	width: 100%;
+	min-height: 60px;
+}
+
+.bubbArrow {
+	position: absolute;
+	width: 100%;
+	bottom: -10px;
+	left: 0;
+	text-align: center;
+	z-index: -1;
+}
+
+.bubbArrow i {
+	font-size: 16px;
+	color: #fff;
+	text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+.bubbTop {
+	background-color: $darkGrey;
+	color: #fff;
+	padding: 10px;
+	position: relative;
+}
+.bubbTop .miniActions {right: 10px;}
+
+.bubbBottom {
+	background-color: #fff;
+	color: $grey;
+	padding: 10px;
+	width: 100%;
+	//float: left;
+}
+
+///// badges bubbles /////
+
+.bubblesBadge {
+	min-height: 60px;
+	bottom: 56px;
+	left: 50%;
+	margin-left: -135px;
+	width: 270px;
+	position: absolute;
+	background-color: #fff;
+	z-index: 15000;
+	-moz-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	-webkit-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	-o-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
+	font-size: 12px;
+    font-family: 'nerislight';
+    text-align: left;
+    font-style: normal;
+}
+
+.bubblesBadge .bubbTop { font-family: 'nerisblack';}
+
+///// tag bubbles /////
+
+.bubblesTag {
+	min-height: 60px;
+	bottom: 50px;
+	left: 50%;
+	margin-left: -135px;
+	width: 270px;
+	position: absolute;
+	background-color: #fff;
+	z-index: 15000;
+	-moz-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	-webkit-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	-o-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
+	font-size: 12px;
+    font-family: 'nerislight';
+    text-align: left;
+    font-style: normal;
+}
+
+.bubblesTag .bubbBottom { width: calc(100% - 60px);}
+
+.tagList .bubblesTag a {
+	padding: 0;
+	min-height: intrinsic;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	border: none;
+}
+
+.tagList .bubblesTag a:hover {
+	background-color: transparent;
+}
+
+
+///// profiles bubbles /////
+
+.bubblesProfile {
+	min-height: 60px;
+	bottom: 28px;
+	left: 50%;
+	margin-left: -145px;
+	width: 290px;
+	position: absolute;
+	background-color: #fff;
+	z-index: 15000;
+	-moz-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	-webkit-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	-o-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
+	font-size: 12px;
+    font-family: 'nerislight';
+    text-align: left;
+    font-style: normal;
+}
+
+.bubblesProfile .miniProfile {
+	margin: 0 !important;
+	padding-bottom: 10px !important;
+	width: 100%;
+	border-bottom: solid 1px rgba($grey, .5) !important;
+}
+
+.bubblesProfile .profileName a { color: #fff;}
+.bubblesProfile .profileName a:hover {
+	color: $orange !important;
+}
+
+.bubblesProfile .miniProfile .profileName .org a, .bubblesProfile .miniProfile .profileName .noOrg {
+	background-color: #fff;
+	color: $darkGrey !important; 
+	font-size: 9px !important; 
+	line-height: 100% !important;
+}
+.bubblesProfile .miniProfile .profileName .org a:hover { background-color: $orange !important;}
+
+
+.bubblesProfile .miniProfile .profileBio a {
+	font-family: 'Merriweather Heavy Italic' !important;
+	color: $orange;
+	font-size: 12px;
+}
+.bubblesProfile .miniProfile .profileBio a:hover { color: #fff;}
+
+.suggItemLeft .bubblesProfile .miniProfile .profileBio  {
+	height: auto;
+	overflow: visible;
+}
+.bubblesProfile .profileStats {
+	display: inline-block;
+	margin-top: 2px;
+	width: 210px;
+	line-height: 150%;
+}
+.bubblesProfile span.badgesCounter {
+	top: 0;
+	left: -5px;
+}
+.badgesCounter span { padding-right: 2px; }
+
+// reverse bubble
+.bubblesProfile.reverseBubblesProfile { 
+	top: 26px;
+	bottom: auto;
+}
+.bubblesProfile.reverseBubblesProfile .bubbArrow {
+	top:-10px;
+	bottom: auto;
+}
+.bubblesProfile.reverseBubblesProfile .bubbArrow i.icon-arrow-down:before { content: '\e806'; color: $darkGrey;}
+
+///// report bubbles /////
+
+.report {
+	float: right;
+	position: relative;
+	width: 22px;
+	font-size: 16px;
+	display: inline-block;
+	vertical-align: text-top;
+}
+.report i.icon-alert { margin-top: -2px; cursor: pointer;}
+.report i.icon-alert:hover {color: $darkGrey;}
+
+.bubblesReport {
+	bottom: 28px;
+	left: 50%;
+	margin-left: -250px;
+	width: 290px;
+	position: absolute;
+	background-color: #fff;
+	z-index: 15000;
+	-moz-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	-webkit-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	-o-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
+	font-size: 12px;
+    font-family: 'nerislight';
+    text-align: left;
+    font-style: normal;
+}
+.bubblesReport .bubbArrow {text-align: right; }
+.bubblesReport .bubbArrow i { margin-right: 28px;}
+
+.bubblesReport form.formReport {
+	padding: 10px 10px 0 10px;
+	float: left;
+	width: 100%;
+	font-size: 14px;
+	line-height: 100%;
+	color: $darkGrey;
+}
+
+.bubblesReport form.formReport textarea {
+	background-color: rgba($grey, .1);
+	margin-bottom: 10px;	
+}
+
+.bubblesReport form.formReport .actionsBox {
+	text-align: center;
+	float: left;
+	width: 100%;
+	padding: 0 10px;
+	height: 35px;
+	border: none;
+}
+.bubblesComments .comment .coloredBg h5 span.formCancel {
+	float: left;
+	width: auto;
+}
+
+
+.bubblesReport .bubbBottom {
+	float: left;
+	background-color: #fff;
+	color: $grey;
+	padding: 20px;
+	width: 100%;
+	text-align: center;
+}
+
+///// helper bubbles /////
+
+.helper {
+	float: right;
+    font-family: 'nerislight';
+    font-style: normal;
+}
+.helperHolder { position: relative; }
+
+.helperTitle {
+	color: $blue;
+	font-size: 11px;
+	cursor: pointer;
+}
+.helperTitle i {font-size: 13px;}
+.helperTitle:hover {
+	color: $darkGrey;
+}
+.helperTitle.activeHelper {color: $darkGrey;}
+
+.bubblesHelper {
+	min-height: 60px;
+	bottom: 28px;
+	left: 50%;
+	margin-left: -145px;
+	width: 290px;
+	position: absolute;
+	background-color: #fff;
+	z-index: 15000;
+	-moz-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	-webkit-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	-o-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	box-shadow: 0px 0px 16px 0px rgba($grey, .8);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
+	font-size: 12px;
+    font-family: 'nerislight';
+    text-align: left;
+    font-style: normal;
+}

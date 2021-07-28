@@ -1,0 +1,238 @@
+@import "../_global/colors";
+
+.list, #documentListing {
+	float: left;
+	width: 100%;
+	clear: both;
+	min-height: 100px;
+}
+#documentListing .ajaxLoaderBg {background-color: transparent;}
+
+// followers list
+
+.listFollowers, .listSubscribers {
+	float: left;
+	width: 100%;
+	clear: both;
+}
+.listFollowers .profileCard, .listSubscribers .profileCard { margin-right: 40px; clear: both;}
+.listFollowers .profileCard:nth-child(2n), .listSubscribers .profileCard:nth-child(2n) { margin-right: 0; clear: none;}
+
+//header Followers + Subscribers
+
+.headerFollowers, .headerSubscribers {
+	float: left;
+	width: 100%;
+	margin-bottom: 40px;
+}
+
+.headerFollowers a.goBack, .headerSubscribers a.goBack {
+	float: left;
+	font-size: 11px;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	padding: 10px 14px 0 10px;
+	height:30px;
+	background-color: $orange;
+	line-height: 100%;
+	color: #fff;
+}
+.headerFollowers a.goBack i, .headerSubscribers a.goBack i {font-size: 9px; margin-right: 2px;}
+.headerFollowers a.goBack:hover, .headerSubscribers a.goBack:hover { background-color: $darkGrey;}
+
+.headerFollowers span, .headerSubscribers span {
+	float: right;
+	width: calc(100% - 80px);
+	line-height: 120%;
+	color: $orange;
+	font-size: 14px;
+	margin-top: 0;
+}
+
+.headerFollowers span a, .headerSubscribers span a {
+	color: $orange;
+    font-family: 'nerisblack';
+}
+.headerFollowers span a:hover, .headerSubscribers span a:hover {color: $darkGrey;}
+
+.listHeader {float: left; width: 100%; clear: both;}
+
+.listHeader h5 {margin-bottom: 3px; line-height: 160%;}
+.listHeader h5 .org { 
+	background-color: $grey; 
+	vertical-align: middle;
+	font-family: 'nerisblack';
+	font-size: 9px !important;
+	color: #fff;
+	text-transform: uppercase;
+	display: inline-block;
+	margin: 0 0 2px 3px;
+	padding: 2px 3px;
+	-webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;
+	line-height: 100%;
+	font-style: normal;
+}
+
+.listHeader h1 {
+	//text-transform: lowercase;
+	font-weight: normal;
+	font-family: 'nerisblack';
+	font-size: 30px;
+	margin: 0 0 30px 0;
+	float: left;
+}
+.listHeaderByOrg .listHeader h1 {color: $orange;}
+.listHeaderByTag .listHeader h1 {color: $purple;}
+//.listHeader h1:first-letter { text-transform: uppercase; }
+
+.listHeaderByTag h1 {
+	width: calc(100% - 225px);
+	line-height: 120%;
+}
+
+#organizationTypeChoiceBox.pseudoTabs { border-top-color: rgba($orange, 0.5); }
+#organizationTypeChoiceBox.pseudoTabs a { color: rgba($orange, 0.5); }
+#organizationTypeChoiceBox.pseudoTabs a.currentPage, #organizationTypeChoiceBox.pseudoTabs a:hover {
+	border-color: $orange;
+	color: $orange;
+}
+
+// follow tag in listing
+.listHeaderByTag .actionFollow {
+	margin-top: 4px;
+	float: right;
+}
+
+.listHeader .startFollowing, .listHeader .stopFollowing {
+	float: right;
+	height: 30px;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;	
+}
+.listHeader .startFollowing .actionText, .listHeader .stopFollowing .actionText {
+	padding: 7px 15px 0 28px;
+	font-size: 11px;
+}
+.listHeader .startFollowing i, .listHeader .stopFollowing i {
+	position: absolute;
+	font-size: 14px;
+	left: 10px;
+	top:9px;
+	font-size: 9px;
+}
+
+.pseudoTabs {
+	display: inline-block;
+	width: 100%;
+	border-top: solid 1px rgba($grey, .5);
+	font-size: 14px;
+	line-height: 100%;
+	margin-bottom: 40px;
+}
+
+.pseudoTabs a {
+	color: $grey;
+	padding-top: 20px;
+	display: inline-block;
+	margin-right: 40px;
+	margin-top: -1px;
+	cursor: pointer;
+}
+.pseudoTabs a.currentPage, .pseudoTabs a:hover {
+	color: $darkGrey;
+	border-top: solid 2px $darkGrey;
+}
+.pseudoTabs a.currentPage {cursor: default;}
+
+// filterByTags
+.filterByTags {
+	margin-bottom: 40px;
+	margin-top: -30px;
+	float: left;
+	width: 100%;
+	clear: both;
+}
+
+// classement
+.listTop {
+	float: left;
+	width: 100%;
+	clear: both;
+	margin-bottom: 10px;
+}
+
+.listTop .listTopHeader h5 {
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.listTopNav {
+	width: 100%;
+	position: relative;
+	border-top: solid 1px rgba($grey, .5);
+	margin-bottom: 40px;
+	text-align: center;
+}
+
+.listTopNav span {
+	display: inline-block;
+	margin-top: -1px;
+	padding-top: 20px;
+	font-size: 14px;
+	border-top: solid 2px $grey;
+}
+.listTopNav i {
+	font-size: 10px;
+	color: $grey;
+	position: absolute;
+	cursor: pointer;
+	margin-top: 24px;
+}
+.listTopNav i:hover { color: $darkGrey; }
+.listTopNav i.icon-goleft { left: -3px; }
+.listTopNav i.icon-goright { right: -3px; }
+
+.listTopCounter {
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 10px;
+}
+.listTopCounter span {
+	background-color: $orange;
+	display: inline-block;
+	line-height: 100%;
+	color: #fff;
+	height: 20px;
+	min-width: 20px;
+	-webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px;
+	font-size: 12px;
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	padding-top: 3px;
+}
+
+
+#localizationChoiceBox {
+	display: inline-block;
+	width: 100%;
+	border-top: solid 1px rgba($grey, .5);
+	font-size: 14px;
+	line-height: 100%;
+	margin-bottom: 40px;
+}
+
+#localizationChoiceBox a {
+	color: $grey;
+	padding-top: 20px;
+	display: inline-block;
+	margin-right: 40px;
+	margin-top: -1px;
+	border-top: solid 2px transparent;
+	cursor: pointer;
+}
+#localizationChoiceBox a.currentPage, #localizationChoiceBox a:hover {
+	color: $darkGrey;
+	border-top: solid 2px $darkGrey;
+}
+#localizationChoiceBox a.currentPage {cursor: default;}

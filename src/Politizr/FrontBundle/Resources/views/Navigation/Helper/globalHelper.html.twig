@@ -28,12 +28,16 @@
                 <h1>Commentez les publications</h1>
                 Une phrase vous choque ou vous avez une remarque à faire sur une publication? Rédigez un commentaire général ou sur un paragraphe en particulier!
             </div>
-            <div class="demoSeparator demoLeftLine"></div>
-            <div class="demoItem demoFeed">
-                <h1>Un fil d'actualité sur-mesure</h1>
-                Depuis le logo en haut à gauche, retrouvez un fil construit à partir de votre activité sur la plateforme: n'hésitez pas à publier, commenter, noter et suivre des profils pour l'enrichir!
-            </div>
-            <div class="demoSeparator demoRightLine"></div>
+            {% if global.mode != "oneshot" %}
+                <div class="demoSeparator demoLeftLine"></div>
+                <div class="demoItem demoFeed">
+                    <h1>Un fil d'actualité sur-mesure</h1>
+                    Depuis le logo en haut à gauche, retrouvez un fil construit à partir de votre activité sur la plateforme: n'hésitez pas à publier, commenter, noter et suivre des profils pour l'enrichir!
+                </div>
+                <div class="demoSeparator demoRightLine"></div>
+            {% else %}
+                <div class="demoSeparator demoLeftLine"></div>
+            {% endif %}
             <div class="demoItem demoStats">
                 <h1>Réputation & Badges</h1>
                 Vos actions et celles des autres membres de la communauté font évoluer votre réputation et vous permettent de gagner des badges: soyez constructif, curieux et positif!

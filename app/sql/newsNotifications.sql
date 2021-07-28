@@ -274,7 +274,8 @@ SELECT DISTINCT
     created_at,
     updated_at,
     slug,
-    nb_users
+    nb_users,
+    unionsorting
 FROM (
 ( SELECT DISTINCT p_d_debate.*, COUNT(p_u_follow_d_d.p_d_debate_id) as nb_users, 1 as unionsorting
 FROM p_d_debate
@@ -317,5 +318,39 @@ HAVING nb_users >= 5
 ORDER BY unionsorting ASC, note_pos DESC, note_neg ASC, nb_users DESC, published_at DESC
 ) unionsorting
 
-GROUP BY p_user_id
+GROUP BY
+    p_user_id,
+    id,
+    uuid,
+    p_user_id,
+    p_e_operation_id,
+    p_l_city_id,
+    p_l_department_id,
+    p_l_region_id,
+    p_l_country_id,
+    p_c_topic_id,
+    fb_ad_id,
+    title,
+    file_name,
+    copyright,
+    description,
+    note_pos,
+    note_neg,
+    nb_views,
+    want_boost,
+    published,
+    published_at,
+    published_by,
+    favorite,
+    online,
+    homepage,
+    moderated,
+    moderated_partial,
+    moderated_at,
+    created_at,
+    updated_at,
+    indexed_at,
+    slug,
+    nb_users,
+    unionsorting
 ORDER BY unionsorting ASC, note_pos DESC, note_neg ASC, nb_users DESC, published_at DESC

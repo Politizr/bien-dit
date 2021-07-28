@@ -1,0 +1,609 @@
+@import "../_global/colors";
+// Axelle Lemaire
+//#op.miniHeader.op-61cbc416-55e9-4e15-86ff-c9b1e78f9691 .txtOp, #op.miniHeader.op-61cbc416-55e9-4e15-86ff-c9b1e78f9691 .txtOp a { color: #fff; }
+#op.miniHeader.op-61cbc416-55e9-4e15-86ff-c9b1e78f9691 .bgLeftOp {background-color: #cdd5d7;}
+#op.miniHeader.op-61cbc416-55e9-4e15-86ff-c9b1e78f9691 .bgRightOp { 	background-color: #cdd5d7;}
+
+// Isabelle Hardy
+#op.miniHeader.op-91fd0efd-504b-4152-8703-d1bac67e779a .txtOp, #op.miniHeader.op-91fd0efd-504b-4152-8703-d1bac67e779a .txtOp a { color: #fff; }
+#op.miniHeader.op-91fd0efd-504b-4152-8703-d1bac67e779a .bgLeftOp {background-color: #b3a99b}
+#op.miniHeader.op-91fd0efd-504b-4152-8703-d1bac67e779a .bgRightOp  { background-color: #b3a99b}
+
+// Bertrand Pancher
+#op.miniHeader.op-uuidPancher .bgLeftOp {background-color: #211c1b}
+#op.miniHeader.op-uuidPancher .bgRightOp  { background-color: #d5ced8}
+
+// Vincent Poizat
+#op.miniHeader.op-0cb997ae-74a8-406d-a38e-21241589a58c .bgLeftOp {background-color: #fafafa; border-bottom: solid 10px #ffd900;}
+#op.miniHeader.op-0cb997ae-74a8-406d-a38e-21241589a58c .bgRightOp  { background-color: #fafafa; border-bottom: solid 10px #ffd900;}
+#op.miniHeader.op-0cb997ae-74a8-406d-a38e-21241589a58c .txtOp a.ctaOp { background-color: #7ab41d; color: #fafafa;}
+
+// La depeche
+#op.miniHeader.op-1fa947ad-da97-4796-b03f-2a306caa7f82 .bgLeftOp {background-color: #eb0023;}
+#op.miniHeader.op-1fa947ad-da97-4796-b03f-2a306caa7f82 .bgRightOp  { background-color: #e7dcec;}
+#op.miniHeader.op-1fa947ad-da97-4796-b03f-2a306caa7f82 .txtOp {margin-top: 15px;}
+#op.miniHeader.op-1fa947ad-da97-4796-b03f-2a306caa7f82 .txtOp a.ctaOp { background-color: #eb0023;}
+
+// AMRF
+#op.miniHeader.op-cbaab824-86b0-48e3-85ed-7dd17cc8365c .bgLeftOp {background-color: #466a34;}
+#op.miniHeader.op-cbaab824-86b0-48e3-85ed-7dd17cc8365c .bgRightOp  { background-color: #e7dcec;}
+#op.miniHeader.op-cbaab824-86b0-48e3-85ed-7dd17cc8365c .txtOp a.ctaOp { background-color: #466a34;}
+
+// Les petits dej des solutions
+#op.miniHeader.op-7080aa67-67d5-47ac-b55f-b73c0cc9eb76 .bgLeftOp {background-color: #ffc600;}
+#op.miniHeader.op-7080aa67-67d5-47ac-b55f-b73c0cc9eb76 .bgRightOp  { background-color: #ffc600;}
+#op.miniHeader.op-7080aa67-67d5-47ac-b55f-b73c0cc9eb76 .txtOp {margin-top: 15px; }
+#op.miniHeader.op-7080aa67-67d5-47ac-b55f-b73c0cc9eb76 .txtOp a {color: $darkGrey !important;}
+//#op.miniHeader.op-7080aa67-67d5-47ac-b55f-b73c0cc9eb76 .txtOp a.ctaOp { background-color: $darkGrey; color: #ffc600 !important;}
+//#op.miniHeader.op-7080aa67-67d5-47ac-b55f-b73c0cc9eb76 .txtOp a.ctaOp:hover { background-color: #fff; color: $darkGrey;}
+#op.miniHeader.op-7080aa67-67d5-47ac-b55f-b73c0cc9eb76 .ctaOp {display: none;}
+
+// Elisabeth Toutut
+#op.miniHeader.op-f9c64b89-2f02-4e19-9392-61a588a2bba0 .txtOp, #op.miniHeader.op-f9c64b89-2f02-4e19-9392-61a588a2bba0 .txtOp a { color: #fff; }
+#op.miniHeader.op-f9c64b89-2f02-4e19-9392-61a588a2bba0 .bgLeftOp {background-color: #dfdad6}
+#op.miniHeader.op-f9c64b89-2f02-4e19-9392-61a588a2bba0 .bgRightOp  { background-color: #367cc5}
+
+// La 09 TV
+#op.miniHeader.op-b5e676ea-b87a-4470-acb2-3df0679a32c1 .bgLeftOp {background-color: #00b1ea;}
+#op.miniHeader.op-b5e676ea-b87a-4470-acb2-3df0679a32c1 .bgRightOp  { background-color: #064b6b;}
+#op.miniHeader.op-7080aa67-67d5-47ac-b55f-b73c0cc9eb76 .txtOp a { color: #fff; cursor: pointer;}
+#op.miniHeader.op-b5e676ea-b87a-4470-acb2-3df0679a32c1 .txtOp {margin-top: 20px; color: #fff;}
+
+// Jérôme Azéma
+#op.miniHeader.op-c131b207-05a2-41e7-b9d6-a86efd8bfbe3 .bgLeftOp {background-color: #e1cec7;}
+#op.miniHeader.op-c131b207-05a2-41e7-b9d6-a86efd8bfbe3 .bgRightOp  { background-color: #c0aea3;}
+
+// Serge Nicolo
+#op.miniHeader.op-da9d8c1a-5941-4129-9ca7-e7b1cd874a41 .bgLeftOp {background-color: #d8b395;}
+#op.miniHeader.op-da9d8c1a-5941-4129-9ca7-e7b1cd874a41 .bgRightOp  { background-color: #fbf4dc;}
+
+// Danielle Floutier
+#op.miniHeader.op-b65af84-da30-4604-8c88-600889ce11fd .bgLeftOp {background-color: #d8c1ad;}
+#op.miniHeader.op-b65af84-da30-4604-8c88-600889ce11fd .bgRightOp  { background-color: #fefdf9;}
+
+// Tarsicius Chiso
+#op.miniHeader.op-adf4791c-d646-43f2-a7c1-e9543e361dce .bgLeftOp {background-color: #a7a6ab;}
+#op.miniHeader.op-adf4791c-d646-43f2-a7c1-e9543e361dce .bgRightOp  { background-color: #a2a0a3;}
+
+// Michel Larive
+#op.miniHeader.op-dc25a5ac-6868-4ddf-8c8e-d0e2948c9f89 .bgLeftOp {background-color: #e5f4f7; border-bottom: solid 10px #0498b5;}
+#op.miniHeader.op-dc25a5ac-6868-4ddf-8c8e-d0e2948c9f89 .bgRightOp  { background-color: #e5f4f7; border-bottom: solid 10px #0498b5;}
+
+// Plaisance-du-Touch
+#op.miniHeader.op-e181f8a0-26e4-4682-8355-bb5d7596c838 .bgLeftOp {background-color: #fff;}
+#op.miniHeader.op-e181f8a0-26e4-4682-8355-bb5d7596c838 .bgRightOp  { background-color: #fff;}
+#op.miniHeader.op-e181f8a0-26e4-4682-8355-bb5d7596c838 .txtOp a.ctaOp { background-color: #af0060;}
+
+// Toulouse Métropole sans voiture
+#op.miniHeader.op-38a9d05b-015e-460b-a81e-033eeaa0a2b7 .bgLeftOp {background-color: #605d70;}
+#op.miniHeader.op-38a9d05b-015e-460b-a81e-033eeaa0a2b7 .bgRightOp  { background-color: #fff;}
+#op.miniHeader.op-38a9d05b-015e-460b-a81e-033eeaa0a2b7 .txtOp a.ctaOp { background-color: #605d70;}
+
+// Groupe CD 09
+#op.miniHeader.op-1b793f81-52e2-4fa1-a6aa-4f2028348161 .bgLeftOp {background-color: $greenCD09;}
+#op.miniHeader.op-1b793f81-52e2-4fa1-a6aa-4f2028348161 .bgRightOp  { background-color: #fff;}
+#op.miniHeader.op-dae860aa-869d-474f-a424-f87afff45aa7 .bgLeftOp {background-color: $greenCD09;}
+#op.miniHeader.op-dae860aa-869d-474f-a424-f87afff45aa7 .bgRightOp  { background-color: #fff;}
+#op.miniHeader.op-66ccd919-7cef-481f-8e7b-75a585875b52 .bgLeftOp {background-color: $greenCD09;}
+#op.miniHeader.op-66ccd919-7cef-481f-8e7b-75a585875b52 .bgRightOp  { background-color: #fff;}
+#op.miniHeader.op-b8c5c987-23e5-4a78-8004-38fce594d877 .bgLeftOp {background-color: $greenCD09;}
+#op.miniHeader.op-b8c5c987-23e5-4a78-8004-38fce594d877 .bgRightOp  { background-color: #fff;}
+#op.miniHeader.op-2267d64a-e9df-4059-a530-b1b7bad51d33 .bgLeftOp {background-color: $greenCD09;}
+#op.miniHeader.op-2267d64a-e9df-4059-a530-b1b7bad51d33 .bgRightOp  { background-color: #fff;}
+#op.miniHeader.op-2248b4de-ce4c-4469-89ca-3873cd513a2b .bgLeftOp {background-color: $greenCD09;}
+#op.miniHeader.op-2248b4de-ce4c-4469-89ca-3873cd513a2b .bgRightOp  { background-color: #fff;}
+#op.miniHeader.op-fb5d1a49-9b5f-4c19-b933-b34cd2c49b8c .bgLeftOp {background-color: $greenCD09;}
+#op.miniHeader.op-fb5d1a49-9b5f-4c19-b933-b34cd2c49b8c .bgRightOp  { background-color: #fff;}
+#op.miniHeader.op-6119a198-6ab0-4042-a2eb-1081718800b8 .bgLeftOp {background-color: $greenCD09;}
+#op.miniHeader.op-6119a198-6ab0-4042-a2eb-1081718800b8 .bgRightOp  { background-color: #fff;}
+
+
+// bandeau sur profil
+#opBanners {
+	float: left;
+	width: 100%;
+	height: 230px;
+	overflow: hidden;
+}
+#opBanners.cycle-slideshow {overflow: visible !important; }
+
+body.css700 #opBanners {
+	float: left;
+	height: auto;
+	overflow: visible;
+	margin-bottom: 40px;
+}
+body.css700 #opBanners .center { width: calc(100% - 80px); }
+body.css700 #bannerPrev, body.css700 #bannerNext {
+	width: auto;
+	-webkit-border-radius: 0; -moz-border-radius:0; border-radius: 0;
+	background-color: transparent;
+	color: $darkGrey;
+}
+body.css700 #bannerPrev i, body.css700 #bannerNext i { margin: 0;}
+body.css700 #bannerPrev { left: 10px; }
+body.css700 #bannerNext { right: 10px; }
+
+body.css1060 #opBanners {
+	float: left;
+	height: auto;
+	overflow: visible;
+	padding-bottom: 20px;
+}
+body.css1060 #opBanners .center { width: calc(100% - 140px); }
+
+#bannerPrev, #bannerNext {
+	position: absolute;
+	z-index: 1001;
+	top: calc(50% - 15px);
+	background-color: $darkGrey;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	height: 30px;
+	width: 30px;
+	color: #fff;
+	cursor: pointer;
+}
+#bannerPrev:hover, #bannerNext:hover {background-color: $orange;}
+
+#bannerPrev { left: 20px; }
+#bannerPrev i {
+	float: left;
+	margin: 4px 0 0 3px;
+}
+
+#bannerNext { right: 20px; }
+#bannerNext i {
+	float: left;
+	margin: 4px 0 0 5px;	
+}
+
+#op.miniHeader {
+	width: 100%;
+	position: relative;
+	margin-bottom: 20px;
+}
+body.css700 #op.miniHeader, body.css1060 #op.miniHeader {
+	height: auto;
+	float: left;
+	//background: $orange;
+	padding-bottom: 20px;
+	overflow: visible;
+	position: static;
+}
+
+#op.miniHeader .bgLeftOp, #op.miniHeader .bgRightOp {
+	height: 230px;
+	background-size: contain;
+	position: absolute;
+	top:0;
+	width: 50%;
+	z-index: -1;
+}
+#op.miniHeader .bgLeftOp {left: 0;}
+#op.miniHeader .bgRightOp {right: 0;}
+body.css700 #op.miniHeader .bgLeftOp, body.css700 #op.miniHeader .bgRightOp, body.css1060 #op.miniHeader .bgLeftOp, body.css1060 #op.miniHeader .bgRightOp { display: none; }
+
+#op.miniHeader .txtOp {	
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: calc(50% + 420px);
+	width: 560px;
+	margin-left: -500px;
+}
+body.css1060 #op.miniHeader .center, body.css700 #op.miniHeader .center {position: relative;}
+body.css1060 #op.miniHeader .txtOp, body.css700 #op.miniHeader .txtOp {
+	width: 100%;
+	margin-left: 0;
+	left: 0;
+}
+body.css700 #op.miniHeader .txtOp, body.css1060 #op.miniHeader .txtOp { position: static; /* color: #fff; */	 }
+// body.css700 #op.miniHeader .txtOp a, body.css1060 #op.miniHeader .txtOp a {color: #fff;}
+
+#op.miniHeader .txtOp h1 {
+	font-weight: normal;
+	margin: 15px 0 10px 0;
+	font-size: 22px;
+	font-family: 'nerissemibold';
+}
+#op.miniHeader .txtOp p b, #op.miniHeader .txtOp p strong {
+	font-weight: normal;
+	font-family: 'nerissemibold';
+}
+#op.miniHeader .txtOp a {
+	text-decoration: underline;
+}
+#op.miniHeader .txtOp a.ctaOp {
+	text-decoration: none;
+	margin-top: 15px;
+	color: #fff;
+	float: left;
+	clear: both;
+	background-color: $orange;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	padding: 8px 24px;
+	height:40px;
+}
+#op.miniHeader .txtOp a.ctaOp:hover { background-color: $darkGrey;}
+body.css700 #op.miniHeader .txtOp a.ctaOp, body.css1060 #op.miniHeader .txtOp a.ctaOp { color: #fff; background-color: $darkGrey; }
+body.css700 #op.miniHeader .txtOp a.ctaOp:hover, body.css1060 #op.miniHeader .txtOp a.ctaOp:hover { color: $darkGrey; background-color: #fff;  }
+
+p.noteOp {
+	font-size: 14px;
+	float: left;
+	margin-top: 5px;
+}
+p.noteOp i {font-size: 12px; }
+
+body.css700 .imgOp, body.css1060 .imgOp {display: none;}
+
+// banner = news
+#opBanners.bannerNews { 
+	background-color: rgba(#FFF, 0.6);
+	float: left;
+	width: 100%;
+}
+
+#opBanners.bannerNews .miniHeader .txtOp {
+	position: static;
+	margin-left: 0;
+	width: 100%;
+	float: left;
+	padding: 20px 0 40px 0;
+}
+
+// banner générique thématique
+.bannerItem .bgLeftOp, .bannerItem .bgRightOp { background-color: #fff; }
+
+// banner promo Sénatoriales
+#bannerPromo.bannerPromoSenatoriales { 
+	background-image: url(../images/f-bannerSenatoriales.jpg);
+	background-size: cover;
+	background-position: center center;
+	height: auto;
+	padding: 40px;
+}
+
+.bannerPromoSenatoriales .txtBannerPromo {
+	text-align: center;
+	width: 80%;
+	float: left;
+	padding: 40px;
+	margin: 40px 10%;
+	border: solid 1px #fff;
+}
+body.css1060 #bannerPromo.bannerPromoSenatoriales .txtBannerPromo, body.css700 #bannerPromo.bannerPromoSenatoriales .txtBannerPromo {
+	width: 100%;
+	padding: 40px;
+	margin: 0;
+}
+.bannerPromoSenatoriales .txtBannerPromo h1 {
+	font-size: 36px; 
+	line-height: 120%;
+}
+.bannerPromoSenatoriales .txtBannerPromo span {
+	color: #fff;
+	font-size: 16px;
+}
+.bannerPromoSenatoriales .txtBannerPromo a.ctaBannerPromo { 
+	background-color: $orange;
+	color: #fff;
+	margin: 30px 0 0 0;
+}
+
+// banner Promo
+#bannerPromo {
+	float: left;
+	width: 100%;
+	height: 430px;
+	position: relative;
+}
+#bannerPromo .center { position: relative; }
+
+.imgBannerPromo {
+	position: absolute;
+	top: 0;
+	width: 920px;
+	height: 430px;
+	z-index: 1;
+	background-repeat: no-repeat;
+}
+
+.txtBannerPromo {
+	position: relative;
+	z-index: 2;
+	padding: 60px 0 0 0;
+	float: right;
+	width: 510px;
+	font-size: 16px;
+	line-height: 140%;
+	color: #fff;
+}
+.txtBannerPromo a {
+	color: #fff;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.txtBannerPromo a:hover {color: $orange;}
+.txtBannerPromo h1 {
+	font-size: 24px;
+	font-family: 'nerisblack';
+	margin: 0 0 10px 0;
+}
+.txtBannerPromo b {
+	font-weight: normal;
+	font-family: 'nerisblack';
+}
+.txtBannerPromo span {
+	font-size: 14px;
+	color: $blue;
+	margin: 0;
+	padding: 0;
+}
+.txtBannerPromo a.ctaBannerPromo {
+	font-size: 14px;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	padding:8px 20px;
+	display: inline-block;
+	height:40px;
+	color: $darkGrey;
+	background-color: $blue;
+	text-decoration: none;
+	margin-top: 40px;
+	margin-right: 20px;
+	cursor: pointer;
+}
+.txtBannerPromo a.ctaBannerPromo:hover {
+	color: #fff;
+	background-color: $orange;
+	cursor: pointer;
+}
+
+.bgLeftBannerPromo, .bgRightBannerPromo {
+	position: absolute;
+	height: 430px;
+	width: 50%;
+	top:0;
+}
+.bgLeftBannerPromo { left: 0; }
+.bgRightBannerPromo { right: 0;}
+
+body.css1060 #bannerPromo {
+	height: auto;
+	overflow: hidden;
+}
+body.css1060 .imgBannerPromo { left: -160px; }
+body.css1060 .txtBannerPromo {
+	width: 70%;
+	float: right;
+	padding: 60px 0;
+	text-align: center;
+}
+body.css1060 .bgLeftBannerPromo {display: none;}
+body.css1060 .bgRightBannerPromo {width: 100%;}
+
+body.css700 #bannerPromo {
+	height: auto;
+	overflow: hidden;
+}
+
+body.css700 #bannerPromo .center {width: 100%;}
+body.css700 .imgBannerPromo { 
+	width: 100%;
+	left: 0;
+	height: 300px;
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	background-size: cover;
+	float: left;
+	position: relative;
+}
+body.css700 .txtBannerPromo {
+	float: left;
+	clear: both;
+	width: 80%;
+	margin: 0 10%;
+	padding: 40px 0 60px 0;
+	text-align: center;
+}
+body.css700 .bgLeftBannerPromo {display: none;}
+body.css700 .bgRightBannerPromo {width: 100%; background-image: none; background-color: #223671; height: 100%; }
+
+
+//form OP
+form#formDirectMessage {
+	width: 90%;
+	margin-left: 5%;
+}
+
+form#formDirectMessage label {
+	float: left;
+	width: 15%;
+	clear: both;
+	padding: 0;
+	text-align: right;
+	font-size: 14px;
+}
+
+form#formDirectMessage input, form#formDirectMessage textarea {
+	float: right;
+	width: calc(85% - 20px);
+	margin: 0;
+	font-size: 14px;
+	padding: 10px;
+	margin-bottom: 20px;
+	font-family: 'nerislight';
+}
+
+.buttonDirectMessage {
+	float: left;
+	width: 100%;
+	margin-top: 20px;
+	text-align: center;
+}
+
+form#formDirectMessage button {
+	border:none;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	height:40px;
+	font-size: 14px;
+	width: 120px;
+	font-family: 'nerislight';
+	color: #fff;
+	background-color: $orange;
+}
+
+#profileSelection.askQuestion {
+	float: left;
+	width: 100%;
+	padding: 40px 0;
+	background-color: #fff;
+}
+
+.morePosts {
+	width: 100%;
+	float: left;
+	text-align: center;
+	cursor: pointer;
+}
+.morePosts a { color: $orange; }
+.morePosts a:hover { color: $darkGrey; }
+
+#profileSelection.askQuestion .formBlock { padding-bottom: 20px; }
+
+
+// banner promo Axelle
+/*
+.bannerPromoAxelle .imgBannerPromo { background-image: url(../images/f-bannerPromoAxelle.jpg);}
+.bannerPromoAxelle .bgLeftBannerPromo { background-image: url(../images/f-bannerPromoAxelle-bgLeft.jpg);}
+.bannerPromoAxelle .bgRightBannerPromo { background-image: url(../images/f-bannerPromoAxelle-bgRight.jpg);}
+*/
+
+// banner promo Charlotte
+/*
+#opCharlotte {
+	float: left;
+	width: 100%;
+	height: 430px;
+	position: relative;
+}
+#opCharlotte .center {
+	position: relative;
+}
+
+.imgCharlotte {
+	position: absolute;
+	top: 0;
+	left: -60px;
+	width: 600px;
+	height: 430px;
+	background-image: url(../images/f-charlotte.jpg);
+	z-index: 1;
+}
+
+.txtCharlotte {
+	position: relative;
+	z-index: 2;
+	padding: 60px 0 0 0;
+	float: right;
+	width: 510px;
+	font-size: 16px;
+	line-height: 140%;
+	color: #fff;
+}
+.txtCharlotte a {
+	color: #fff;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.txtCharlotte a:hover {color: $orange;}
+.txtCharlotte h1 {
+	font-size: 24px;
+	font-family: 'nerisblack';
+	margin: 0 0 10px 0;
+}
+.txtCharlotte b {
+	font-weight: normal;
+	font-family: 'nerisblack';
+}
+.txtCharlotte span {
+	font-size: 14px;
+	color: #7c86b0;
+	margin: 0;
+	padding: 0;
+}
+.txtCharlotte a.ctaCharlotte {
+	font-size: 14px;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	padding:8px 20px;
+	display: inline-block;
+	height:40px;
+	color: #223671;
+	background-color: #fff;
+	text-decoration: none;
+	margin-top: 40px;
+	margin-right: 20px;
+	cursor: pointer;
+}
+.txtCharlotte a.ctaCharlotte:hover {
+	color: #fff;
+	background-color: $orange;
+	cursor: pointer;
+}
+
+.bgLeftCharlotte, .bgRightCharlotte {
+	position: absolute;
+	height: 430px;
+	width: 50%;
+	top:0;
+}
+.bgLeftCharlotte {
+	left: 0;
+	background-image: url(../images/f-charlotte-bgLeft.jpg);
+}
+.bgRightCharlotte {
+	right: 0;
+	background-image: url(../images/f-charlotte-bgRight.jpg);
+}
+
+body.css1060 #opCharlotte {
+	height: auto;
+	overflow: hidden;
+}
+body.css1060 .imgCharlotte { left: -160px; }
+body.css1060 .txtCharlotte {
+	width: 70%;
+	float: right;
+	padding: 60px 0;
+	text-align: center;
+}
+body.css1060 .bgLeftCharlotte {display: none;}
+body.css1060 .bgRightCharlotte {width: 100%;}
+
+body.css700 #opCharlotte {
+	height: auto;
+	overflow: hidden;
+}
+
+body.css700 #opCharlotte .center {width: 100%;}
+body.css700 .imgCharlotte { 
+	width: 100%;
+	left: 0;
+	height: 300px;
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	background-size: cover;
+	float: left;
+	position: relative;
+}
+body.css700 .txtCharlotte {
+	float: left;
+	clear: both;
+	width: 80%;
+	margin: 0 10%;
+	padding: 40px 0 60px 0;
+	text-align: center;
+}
+body.css700 .bgLeftCharlotte {display: none;}
+body.css700 .bgRightCharlotte {width: 100%; background-image: none; background-color: #223671; height: 100%; }
+*/

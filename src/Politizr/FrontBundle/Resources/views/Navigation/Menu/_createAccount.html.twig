@@ -1,5 +1,6 @@
-{# beta #}
-<div class="publicSidebarCreateAccount">
-    <h1>Vous aussi<br>participez aux<br> débats !</h1>
-    <a href="{{ path('Inscription') }}">Créez un compte</a>
-</div>
+{% if global.access == 'public' %}
+    <div class="publicSidebarCreateAccount">
+        <h1>Vous aussi<br>participez aux<br> débats !</h1>
+        <a href="{{ path('Inscription') }}">Créez un compte</a>
+    </div>
+{% endif %}

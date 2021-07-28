@@ -6,14 +6,18 @@
             <div class="footerColumn">
                 <div class="footerColumnTitle">Pour nous contacter</div>
                 <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
-                <div id="publicPolitizrPhone">
-                    <img src="{{ asset('bundles/politizrfront/images/f-phone.svg') }}">{{ contact.phone }}
-                </div>
+                {% if contact.phone is not same as(null)  %}
+                    <div id="publicPolitizrPhone">
+                        <img src="{{ asset('bundles/politizrfront/images/f-phone.svg') }}">{{ contact.phone }}
+                    </div>
+                {% endif %}
             </div>
         </div>
         
         <div class="footerColumn">
-            <div id="socialLinks">Propulsé par <a href="https://bien-dit.com" target="_blank">BIEN DIT</a></div>
+            <div id="socialLinks">
+                Propulsé par <a href="https://bien-dit.com" target="_blank">BIEN DIT</a><br/>
+            </div>
         </div>
     </div>
 </div>

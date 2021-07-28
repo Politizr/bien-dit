@@ -1,0 +1,1306 @@
+@import "colors";
+body.grp {
+	background-color: $bgcolor;
+	background-image: none;
+}
+body.grp.css700 #main {
+	padding-bottom: 80px;
+}
+
+// grp header 
+body.grp #logo span { display: none; }
+body.grp #header { background: $darkGrey; }
+body.grp #headerTrigger { height: 200px;}
+
+/*
+body.grp #headerLeft {width: 350px;}
+body.grp #headerRight {width: 650px;}
+*/
+body.grp #headerLeft #logo a {margin-right: 15px;}
+body.grp #headerLeft {width: 40%; overflow: hidden; height: 60px;}
+body.grp #headerRight {width: 60%;}
+body.grp.public #headerLeft {width: 400px;}
+body.grp.public #headerRight {width: 620px;}
+
+
+body.grp #headerLeft a {border-color: $darkGrey; color: #fff;}
+body.grp #headerLeft .headerGrp a {color: $darkGrey;}
+body.grp #headerLeft a:hover {border-color: #fff;}
+body.grp #searchInput input {color: #fff;}
+
+body.grp i.icon-notif {color: #fff;}
+body.grp i.icon-notif:hover {color: $orange;}
+
+body.grp #headerLeft #logo a:hover i {color: #fff;}
+body.grp #menuButton i {color: #fff;}
+body.grp #menuButton i:hover {color: $orange;}
+
+body.grp .headerGrp { color: #fff; }
+body.grp .headerGrp .headerGrpMenu { color: $darkGrey; }
+
+#grpMenu {
+	float: left;
+	width: 100%;
+	padding: 20px 0;
+	position: fixed;
+	top:60px;
+	background-color: $bgcolor;
+	z-index: 21999;
+	left: 0;
+}
+#grpMenu img { float: left; margin-top: 10px;}
+#grpMenu .center {
+	border-bottom: solid 1px rgba($grey, 0.5);	
+	float: left;
+	left: 50%;
+	position: relative;
+	margin-left: -515px;
+	border-left: solid 5px $bgcolor;
+	border-right: solid 5px $bgcolor;
+	width: 1030px;
+	padding-bottom: 20px;
+}
+
+#grpMenu.smallGrpMenu {
+	-moz-box-shadow: 0px 0px 4px 0px rgba(45, 45, 45, 0.7);
+	-webkit-box-shadow: 0px 0px 4px rgba(45, 45, 45, 0.7);
+	-o-box-shadow: 0px 0px 4px 0px rgba(45, 45, 45, 0.7);
+	box-shadow: 0px 0px 4px 0px rgba(45, 45, 45, 0.7);
+	background-color: #fff !important;
+}
+#grpMenu.smallGrpMenu .center { border-color: #fff !important;}
+
+#grpMenuPseudoTabs {
+	float: right;
+	font-size: 12px;
+	color: rgba($grey, 0.7);
+	margin-top: 20px;
+}
+#grpMenuPseudoTabs span {
+	font-family: 'nerisblack';
+	margin-left: 20px;
+}
+#grpMenuPseudoTabs a {
+	color: inherit;
+	margin-left: 20px;
+}
+#grpMenuPseudoTabs a:hover {color: $grey;}
+
+#grpMenuLinks {
+	float: right;
+	width: calc(100% - 100px);
+	font-size: 13px;
+	text-transform: uppercase;
+	color: $orange;
+	margin-top: 21px;
+	clear: right;
+}
+body.css700 #grpMenuLinks {width: 100%;}
+#grpMenuLinks a, #grpMenuLinks span { 
+	text-transform: none;
+	background-color: $orange;
+	color: #fff !important;
+	font-size: 12px;
+	margin-bottom: 10px;
+	display: inline-block;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	padding:7px 10px;
+	height:30px;
+	margin-left: 10px;
+}
+#grpMenuLinks a:hover, #grpMenuLinks span {
+	background-color: $darkGrey;;	
+}
+#grpMenu.smallGrpMenu #grpMenuLinks a:hover { padding-bottom: 6px;}
+#grpMenuLinksMobile {display: none;}
+
+.grpBreadcrumbs {
+	float: left;
+	width: 100%;
+	clear: both;
+	font-size: 12px;
+	color: rgba($grey, 0.7);
+	margin-bottom: 25px;
+	line-height: 160%;
+	margin-top: 20px;
+}
+.grpBreadcrumbs i {
+	font-size: 6px;
+	margin: -4px 10px 0 10px;
+	vertical-align: middle;
+	display: inline-block;
+}
+.grpBreadcrumbs a, .grpBreadcrumbs span {color: inherit;}
+.grpBreadcrumbs a:hover {color: $darkGrey;}
+
+.grpCard {
+	float: left;
+	width: 100%;
+	-moz-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	-webkit-box-shadow: 0px 0px 4px rgba($grey, .7);
+	-o-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=4);
+	background-color: #fff;
+	padding: 20px;
+	margin: 0;
+} 
+body.css700 .grpCard {padding: 10px;}
+body.css700 .grpCard p img {width: 100%; height: auto;}
+
+.grpGlobalIntro, .grpGlobalIntro h1 {
+	float: left;
+	width: 100%;
+}
+.grpGlobalIntro h1 {
+	float: left;
+	width: 100%;
+}
+.grpGlobalIntroBigArticle {
+	float: left;
+	width: 415px;
+	margin-right: 20px;
+}
+body.css1060 .grpGlobalIntroBigArticle { width: calc(60% - 10px); }
+body.css700 .grpGlobalIntroBigArticle { width: 100%; }
+.grpGlobalIntroBigArticle img {
+	margin-left: -16px;
+	margin-top: -9px;
+	margin-bottom: 20px;
+}
+body.css1060 .grpGlobalIntroBigArticle img { width: calc(100% + 20px); }
+body.css700 .grpGlobalIntroBigArticle img {
+	width: calc(100% + 20px);
+	margin: -10px 0 10px -10px;
+	padding: 5px 10px 10px 3px;
+	background-color: rgba($orange, 0.2);
+}
+.grpGlobalIntroBigArticle .grpGlobalIntroOneCol {
+	float: left;
+	width: 265px;
+}
+.grpGlobalIntroBigArticle h1 {
+	margin: 0 0 10px 0;
+	font-weight: normal;
+	font-size: 30px;
+	color: $orange;
+	line-height: 120%;
+}
+.grpGlobalIntroOneCol p {
+	font-size: 12px;
+	font-family: 'Merriweather';
+	line-height: 180%;
+}
+a.grpKnowMore {
+	font-family: 'nerislight';
+    font-style: normal;
+    float: left;
+    clear: both;
+    color: $orange;
+    border: solid 1px $orange;
+    -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	padding:2px 14px;
+	height:30px;
+	margin-top: 10px;
+}
+.grpChaptersListItem a.grpKnowMore {margin-top: 0;}
+a.grpKnowMore:hover {
+	background-color: $orange;
+	border-color: $orange;
+	color: #fff;
+}
+.grpGlobalIntroBigArticleSidebar {
+	float: right;
+	width: 120px;
+	border-top: solid 1px rgba($grey, 0.5);
+	padding-top: 10px;
+}
+body.css1060 .grpGlobalIntroBigArticleSidebar, body.css700 .grpGlobalIntroBigArticleSidebar {
+	width: 100%;
+	clear: both;
+	margin-top: 20px;
+}
+.grpGlobalIntroBigArticleSidebar p {
+	color: $grey;
+	font-size: 10px;
+	line-height: 140%;
+	padding-bottom: 10px;
+}
+.grpGlobalIntroBigArticleSidebar a, .grpGlobalIntroBigArticleSidebar span {
+	float: left;
+	clear: both;
+	background-color: $orange;
+	color: #fff;
+	font-size: 11px;
+	-webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px;
+	padding:3px 10px;
+	height:21px;
+	margin-bottom: 8px;	
+}
+.grpGlobalIntroBigArticleSidebar a:hover { background-color: $darkGrey; }
+body.css1060 .grpGlobalIntroBigArticleSidebar a, body.css700 .grpGlobalIntroBigArticleSidebar a, body.css1060 .grpGlobalIntroBigArticleSidebar span, body.css700 .grpGlobalIntroBigArticleSidebar span {
+	clear: none;
+	margin-right: 5px;
+}
+
+.grpGlobalIntroSmallArticles {
+	float: left;
+	width: 365px;
+}
+body.css1060 .grpGlobalIntroSmallArticles {
+	width: calc(40% - 20px);
+	float: right;
+}
+body.css700 .grpGlobalIntroSmallArticles {
+	width: 100%;
+	padding : 20px 0;
+	margin-top: 10px;
+	border-top: solid 1px rgba($grey, 0.5);
+}
+.grpGlobalIntroSmallArticles h1 {
+	margin: -5px 0 8px 0;
+	font-weight: normal;
+	font-size: 16px;
+	color: $orange;
+	width: 100%;
+	float: left;
+	clear: both;
+}
+.grpGlobalIntroSmallArticles p {
+	font-size: 10px;
+	font-family: 'Merriweather';
+	line-height: 180%;
+	width: 100%;
+	float: left;
+}
+.grpGlobalIntroSmallArticles img {width: 100%; height: auto;}
+body.css700 .grpGlobalIntroSmallArticles p, body.css1060 .grpGlobalIntroSmallArticles p {
+	font-size: 12px;
+}
+.grpGlobalIntroOneCol {
+	float: left;
+	width: 175px;
+}
+body.css700 .grpGlobalIntroOneCol, body.css1060 .grpGlobalIntroOneCol {
+	width: 100%;
+}
+.grpGlobalIntroSmallArticles .grpGlobalIntroOneCol:first-of-type { margin-right: 13px; }
+.grpGlobalIntroSmallArticles .grpGlobalIntroOneCol img {
+	float: left;
+	margin-bottom: 15px;
+}
+body.css700 .grpGlobalIntroSmallArticles .grpGlobalIntroOneCol img {display: none;}
+.grpGlobalIntroTwoCol {
+	border-top: solid 1px rgba($grey, 0.5);
+	padding-top: 24px;
+	margin-top: 20px;
+	float: left;
+	clear: both;
+	width: 100%;
+}
+.grpGlobalIntroTwoCol img {
+	float: left;
+	margin-bottom: 20px;
+}
+body.css1060 .grpGlobalIntroTwoCol img, body.css1060 .grpGlobalIntroSmallArticles .grpGlobalIntroOneCol img { width: 40%; margin: 0 20px 5px 0;}
+body.css700 .grpGlobalIntroTwoCol img {width: 40%; margin: 0 10px 5px 0;}
+
+.grpTwitterFeed {
+	float: right; 
+	width: 160px;
+	border-left: solid 1px rgba($grey, 0.5);
+	height: 770px;
+}
+body.css1060 .grpTwitterFeed, body.css700 .grpTwitterFeed { display: none; }
+
+.grpTwitterLogo {
+	float: left;
+	width: calc(100% + 20px);
+	text-align: center;
+	font-size: 11px;
+	color: $twColor;
+	padding-bottom: 10px;
+}
+.grpTwitterLogo i {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	background-color: $twColor;
+	color: #fff;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	padding:10px 0 0 0;
+	font-size: 15px;
+	margin-bottom: 3px;
+}
+.grpTwitterLogo span {
+	font-family: 'nerisblack';
+	font-size: 14px;
+}
+
+// INTRO
+.grpIntro {
+	background-color: $orange;
+	float: left;
+	width: 100%;
+	position: relative;
+	height: 430px;
+	color: #fff;
+} 
+
+.grpIntroText {
+	position: relative;
+	z-index: 1;
+	width: 45%;
+	padding: 50px 0 0 40px;
+}
+
+.grpIntroText h1 {
+	font-size: 28px;
+	line-height: 100%;
+	font-weight: normal;
+	font-family: 'nerisblack';
+	margin: 0 0 20px 0;
+}
+
+.grpIntroIllust {
+	width: 100%;
+	height: 430px;
+	position: absolute;
+	right: 0;
+	top:0;
+	z-index: 0;
+	background-image: url(../images/grp-Hospi/grp-HospiIllust.png);
+	background-repeat: no-repeat;
+	background-position: right bottom;
+}
+
+// ANSWERS BY ...
+.grpAnswersBy {
+	float: left;
+	width: 100%;
+	clear: both;
+	background-color: rgba($orange, 0.2);
+	padding: 30px;
+	margin-top: 40px;
+}
+body.css1060 .grpAnswersBy {padding: 20px;}
+body.css700 .grpAnswersBy {padding: 20px; margin-top: 10px;}
+.grpAnswersByTitle {
+	float: left;
+	width: 235px;
+	color: $orange;
+	margin-right: 30px;
+}
+body.css1060 .grpAnswersByTitle {width: 100%; margin-bottom: 30px; }
+body.css700 .grpAnswersByTitle {width: 100%; margin-bottom: 20px; }
+.grpAnswersByTitle h1 {
+	font-weight: 100;
+	margin: 0;
+	font-size: 32px;	
+}
+body.css700 .grpAnswersByTitle h1 {
+	margin-top: -5px;
+	font-size: 28px;
+}
+.grpAnswersByTitleNotice {
+	float: left;
+	font-size: 12px;
+	width: 125px;
+	border-top: solid 1px rgba($orange, 0.5);
+	margin-top: 20px;
+	padding-top: 10px;
+}
+body.css1060 .grpAnswersByTitleNotice, body.css700 .grpAnswersByTitleNotice { width: 100%; }
+body.css700 .grpAnswersByTitleNotice { margin-bottom: 10px;}
+body.css1060 .grpAnswersByTitleNotice p, body.css700 .grpAnswersByTitleNotice p {
+	width: calc(100% - 24px);
+	float: right;
+}
+body.css1060 .grpAnswersByTitleNotice p {margin-top: 3px;}
+body.css1060 .grpAnswersByTitleNotice i, body.css700 .grpAnswersByTitleNotice i { float: left; }
+
+.grpAnswersByTitleNotice i {
+	font-size: 16px;
+	margin-bottom: 5px;
+	display: inline-block;
+}
+.grpAnswersByLeader {
+	float: left;
+	width: calc(100% - 265px);
+}
+body.css1060 .grpAnswersByLeader {width: 100%;}
+body.css700 .grpAnswersByLeader {width: 100%;}
+.grpAnswersByColumn {
+	float: left;
+	width: 320px;
+}
+body.css1060 .grpAnswersByColumn {width: calc(50% - 8px);}
+body.css700 .grpAnswersByColumn {width: 100%;}
+.grpAnswersBy .grpAnswersByColumn:last-of-type { margin-left: 15px; }
+body.css700 .grpAnswersBy .grpAnswersByColumn:last-of-type { margin-left: 0; }
+.grpAnswersBy .miniProfile {
+	margin: 0 0 30px 0; 
+	padding: 0;
+	border: none;
+	width: 100%;
+}
+body.css700 .grpAnswersBy .miniProfile {
+	margin: 0 0 0 0;	
+	padding-bottom: 20px;
+}
+.grpAnswersByColumn .miniProfile:last-of-type {margin-bottom: 0; }
+body.css700 .grpAnswersByColumn .miniProfile:last-of-type {margin-bottom: 0; padding-bottom: 0; }
+.grpAnswersBy .miniProfile .avatar40 {
+	width: 60px;
+	height: 60px;
+	-webkit-border-radius: 30px; -moz-border-radius: 30px; border-radius: 30px;
+}
+body.css700 .grpAnswersBy .miniProfile .avatar40 {
+	width: 40px;
+	height: 40px;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;	
+}
+.grpAnswersBy .miniProfile .profilenInfo {
+	width: calc(100% - 70px);
+}
+body.css700 .grpAnswersBy .miniProfile .profilenInfo {
+	width: calc(100% - 50px);
+}
+
+.grpChaptersList {
+	width: 100%;
+	float: left;
+	clear: both;
+	margin-top: 40px;
+}
+body.css700 .grpChaptersList {
+	margin-top: 30px;
+}
+.grpChaptersList h1, .grpChaptersList h2 {
+	color: $orange;	
+	font-weight: normal;
+	width: 100%;
+	text-align: center;
+}
+.grpChaptersList h1 {
+	margin: 0 0 3px 0;
+	font-size: 28px;
+}
+.grpChaptersList h2 {
+	margin: 0 0 10px 0;
+	font-size: 18px;
+}
+.grpChaptersListItem {
+	float: left;
+	width: 230px;
+	margin: 20px 20px 0 0;
+	background-color: rgba($orange, 0.2);
+	font-size: 12px;
+}
+.grpChaptersListItem:nth-of-type(4n) {margin-right: 0;}
+body.css1060 .grpChaptersListItem { width: calc(25% - 15px); }
+body.css700 .grpChaptersListItem {width: 100%; margin-top: 10px;}
+.grpCharterImg {
+	float: left;
+	width: 100%;
+	height: 150px;
+	position: relative;
+	overflow: hidden;
+}
+.grpCharterImg img {width: 100%;}
+
+.grpCharterImg a span  {
+	max-width: 80%;
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+	text-transform: uppercase;
+	color: #fff;
+	background-color: $orange;
+	padding: 2px 4px;
+    font-family: 'nerissemibold';
+}
+.grpCharterImg a:hover span { background-color: $darkGrey !important; }
+body.css1060 .grpCharterImg a span, body.css700 .grpCharterImg a span {
+	bottom: 10px; 
+	left: 10px;
+}
+
+.grpChapterStat {
+	width: 100%;
+	float: left;
+	padding: 20px;
+}
+body.css1060 .grpChapterStat, body.css700 .grpChapterStat {padding: 10px;}
+.grpChapterStat a {
+	float: left;
+	clear: both;
+	margin-bottom: 8px;
+}
+.grpChapterStat a:hover {color: $orange;}
+.grpChapterStat a i {
+	font-size: 15px;
+	width: 22px;
+	float: left;
+	vertical-align: baseline;
+}
+.grpChapterStat a:last-of-type {margin-bottom: 0;}
+.grpChapterStat a:last-of-type i {font-size: 14px;}
+.grpChapterStat a:first-of-type i {margin-left: -2px; width: 24px;}
+.grpChaptersListItem p {
+	width: calc(100% - 40px);
+	float: left;
+	padding: 15px 0 20px 0;
+	margin-left: 20px;
+	border-top: solid 1px rgba($grey, 0.5);
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	line-height: 180%;
+}
+body.css1060 .grpChaptersListItem p, body.css700 .grpChaptersListItem p {
+	padding: 10px 0;
+	width: calc(100% - 20px);
+	margin-left: 10px;
+}
+
+#grpFooter {
+	float: left;
+	width: 100%;
+	clear: both;	
+	font-size: 14px;
+	margin-top: 60px;
+}
+body.css700 #grpFooter {margin-top: 30px;}
+#grpFooter h1 {
+	margin: 0 0 30px 0;
+	font-weight: normal;
+	font-size: 18px;
+	width: 100%;
+	text-align: center;
+}
+.grpFooterCol {
+	float: left;
+	width: 25%;
+	padding: 0 20px;
+	text-align: center;
+}
+#grpFooter.grpFooterLogged .grpFooterCol { width: 33.3%; }
+body.css700 .grpFooterCol, body.css700 #grpFooter.grpFooterLogged .grpFooterCol { width: 100%; }
+
+.grpFooterCol h2 {
+	margin: 0;
+	font-weight: normal;	
+    width: 100%;
+    color: $grey;
+    font-size: 14px;
+    line-height: 140%;
+    margin-top: 15px;
+}
+body.css700 .grpFooterCol h2 {
+	margin: 5px 0 30px 0;
+}
+.grpFooterCol h2 b {
+	font-family: 'nerissemibold';
+	font-weight: normal;
+	color: $darkGrey;
+	font-size: 18px;
+	width: 100%;
+	display: inline-block;
+	margin: 0 0 5px 0;
+}
+.grpFooterMentions {
+	float: left;
+	width: 100%;
+	text-align: center;
+	margin-top: 60px;
+	line-height: 160%;
+}
+body.css700 .grpFooterMentions {
+	border-top: solid 1px rgba($darkGrey, 0.5);
+	padding-top: 30px;
+	margin-top: 20px;
+	font-size: 12px;
+}
+.grpFooterMentions a {text-decoration: underline;}
+.grpFooterMentions a:hover {color: $orange;}
+.grpFooterLinks {
+	float: left;
+	width: 100%;
+	clear: both;
+	border-top: solid 1px rgba($grey, 0.5);
+	padding: 20px 0 60px 0;
+	margin-top: 30px;
+	text-align: center;
+	color: $grey;
+	font-size: 12px;
+}
+body.css700 .grpFooterLinks { padding-bottom: 0; }
+.grpFooterLinks a {cursor: pointer; color: $grey;}
+.grpFooterLinks a:hover {color: $darkGrey;}
+
+///// LIST /////
+#grpBrief {
+	float: left;
+	width: 100%;
+	clear: both;
+	//height: 260px;
+	overflow: hidden;
+}
+
+#grpBriefHeader {
+	float: left;
+	width: 100%;
+	clear: both;
+	height: 300px;
+	text-align: center;
+	position: relative;
+}
+#grpBriefHeader h1 {
+	font-size: 18px;
+	font-style: italic;
+	font-family: 'Merriweather';
+	font-weight: 100;
+	color: #fff;
+	width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+	line-height: 160%;
+	margin-top: 60px;
+}
+
+grpJeMexprime a {
+	margin-top: 10px;
+	font-size: 18px;
+	color: #fff;
+	background-color: $orange;
+	padding: 10px 30px;
+	border-radius: 30px;	
+}
+.grpJeMexprime a:hover {
+	background-color: $darkGrey;
+}
+
+#grpBriefHeaderImg {
+	width: 100%;
+	height: 340px;
+	position: absolute;
+	z-index: -2;
+	top:0;
+}
+#grpBriefHeaderImgShadow {
+	width: 100%;
+	height: 340px;
+	position: absolute;
+	z-index: -1;
+	top:0;
+	background-color: rgba(#000, 0.6);
+}
+
+.showBriefLink, .hideBriefLink {
+	float: left;
+	font-size: 12px;
+	background-color: #fff;
+	color: $grey;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	padding:7px 16px;
+	height:30px;
+	display: inline-block;
+	cursor: pointer;
+	width: 216px;
+}
+.showBriefLink:hover, .hideBriefLink:hover {
+	background-color: $darkGrey;
+	color: #fff;
+}
+#grpBriefHeader .showBriefLink, #grpBriefHeader .hideBriefLink {
+	position: absolute;
+	bottom: 80px;
+	left: 50%;
+	margin-left: -108px;
+	margin-bottom: 0;
+}
+#grpBriefHeader .showBriefLink {
+	display: none;	
+}
+.hideBriefLink { 
+	margin-bottom: 20px;
+}
+#grpBriefFooter {
+	float: left;
+	width: 100%;
+	text-align: center;
+}
+#grpBriefFooter .hideBriefLink { float: none; }
+
+#grpBriefCard {
+	float: left;
+	width: 100%;
+	background-color: #fff;
+	margin-top: -30px;
+	-moz-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	-webkit-box-shadow: 0px 0px 4px rgba($grey, .7);
+	-o-box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	box-shadow: 0px 0px 4px 0px rgba($grey, .7);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=4);
+	margin-bottom: 30px;
+	padding-bottom: 10px;
+}
+
+#grpBriefCardTitle {
+	font-style: italic;
+	font-family: 'Merriweather';
+	font-size: 34px;
+	font-weight: 100;
+	padding: 40px 30px 30px 30px;
+	text-align: center;
+	line-height: 140%;
+}
+
+.grpBriefCenter, #grpBriefCard ul {
+	width: 480px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	
+}
+body.css700 #grpBriefCard ul { float:left; clear:both; width: 100%; }
+
+#grpBriefCardInfos {
+	float: left;
+	width: 100%;
+	text-align: center;
+	font-family: 'Merriweather';
+	font-style: italic;
+	font-size: 10px;
+	color: $grey;
+	line-height: 180%;
+	border-bottom: solid 1px rgba($grey, 0.5);
+	margin-bottom: 20px;
+}
+#grpBriefCardInfos span {
+	display: inline-block;
+	font-style: normal;
+	font-family: 'nerissemibold';
+	text-transform: uppercase;
+	color: #fff;
+	background-color: $orange;
+	font-size: 12px;
+	padding: 2px 4px;
+	margin: 20px 0 35px 0;
+}
+
+.grpBriefParagraph {
+	width: 100%;	
+	margin: 15px 0;
+	float: left;
+	font-family: 'Merriweather';
+	font-size: 12px;
+	line-height: 190%;
+	position: relative;
+}
+.grpBriefParagraph h2, #grpBriefCard h1 {
+	margin: -5px 0 25px 0;
+	font-family: 'nerissemibold';
+	font-weight: normal;
+	font-size: 20px;
+	line-height: 140%;
+}
+.grpBriefParagraph h3, #grpBriefCard h3 {
+    font-family: 'nerislight';
+    margin: 0;
+    font-weight: normal;
+    font-size: 20px;
+    color: $orange;
+    text-transform: uppercase;
+    line-height: 140%;
+}
+.grpBriefParagraph h4, #grpBriefCard h4 {
+	font-weight: normal;
+	font-family: 'Merriweather';
+	text-align: left;
+	font-size: 12px;
+	font-style: italic;
+	border-left: solid 1px $orange;
+	padding-left: 10px;
+	margin: 0;
+	color: $orange;
+}
+.grpBriefParagraph a, #grpBriefCard a {
+	text-decoration: underline;
+}
+.grpBriefParagraph a:hover, #grpBriefCard a:hover {color:$orange;}
+.grpBriefParagraph b, #grpBriefCard b {
+	font-weight: normal;
+	font-family: 'Merriweather Bold';
+}
+#grpBriefCard h1 {
+	font-style: italic;
+	font-family: 'Merriweather';
+	font-size: 34px;
+	font-weight: 100;
+	padding: 40px 30px 20px 30px;
+	text-align: center;
+	line-height: 140%; 
+	margin: 0;
+}
+body.css700 #grpBriefCard h1 {
+	padding: 20px 10px 10px 10px;
+	font-size: 24px;
+	float: left;
+}
+#grpBriefCard p {
+	width: 480px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	padding: 10px 20px;
+}
+body.css700 #grpBriefCard p {
+	width: 100%;
+	padding: 10px;
+	float: left
+}
+#grpBriefCard p:last-of-type {padding-bottom: 40px;}
+
+
+.grpBriefParagraph ul {
+	float: left;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style-position: inside;
+}
+.grpBriefParagraph ul li {
+	float: left;
+	width: 100%;
+}
+.grpBriefParagraph ul li:last-of-type {margin-bottom: 0;}
+
+.grpBriefImgLeft {
+	float: left;
+	margin: 20px 0 20px -250px;
+	position: relative;	
+}
+
+.grpBriefImgLeft .grpImg {
+	width: 730px;
+	height: 250px;
+}
+.grpBriefSidebarLeft .grpImg, .grpBriefSidebarRight .grpImg  {
+	width: 220px;
+	height: 150px;
+}
+
+.grpBriefImgLegend {
+	font-size: 10px;
+	color: $grey;
+	font-family: 'Merriweather';
+	width: 220px;
+	line-height: 200%;
+	margin-top: 35px;
+	float: left;
+}
+.grpBriefImgLeft .grpBriefImgLegend {
+	position: absolute;
+	left: 0;
+}
+.grpBriefSidebarRight .grpBriefImgLegend {
+	color: $darkGrey;
+}
+.grpBriefSidebarLeft .grpBriefImgLegend {
+	margin-top: 20px;
+}
+.grpBriefSidebarLeft {
+	position: absolute;
+	bottom: 0;
+}
+
+.grpBriefImgLeft .grpIHaveAQuestion {
+	position: absolute;
+	width: 220px;
+	top: 0;
+	right: -250px;
+	margin: 0;
+	font-size: 13px;
+	padding: 10px;
+	height: 250px;
+	overflow: hidden;
+}
+.grpBriefImgLeft .grpIHaveAQuestion h2, .grpBriefSidebarLeft .grpIHaveAQuestion h2 {
+	margin: 0 0 10px 0;
+	font-size: 24px;
+}
+.grpBriefImgLeft .grpIHaveAQuestion a, .grpBriefSidebarLeft .grpIHaveAQuestion a { margin-top: 10px; }
+
+.grpBriefSidebarLeft .grpIHaveAQuestion {
+	width: 220px;
+	margin: 0;
+	font-size: 13px;
+	padding: 10px;	
+}
+
+.grpBriefSidebarRight {
+	top: 0;
+	position: absolute;
+	width: 220px;
+	right: -250px;
+}
+.grpBriefSidebarLeft {
+	position: absolute;
+	width: 220px;
+	left: -250px;	
+}
+
+.grpBriefBigNumber h1 {
+	color: $orange;
+	font-size: 80px;
+    font-family: 'nerisblack';
+    font-weight: normal;
+    margin: -20px 0 20px 0;
+    padding: 0 0 10px 0;
+    width: 100%;
+    float: left;
+    text-align: center;
+    line-height: normal;
+    border-bottom: solid 1px rgba($grey, 0.5);
+}
+.grpBriefBigNumber h1 span { font-size: 48px; }
+.grpBriefBigNumber {
+	font-size: 10px;
+	color: $grey;
+	line-height: 200%;
+}
+
+.grpBriefImgH1 {
+	float: left;
+	clear: both;
+	width: 100%;
+	height: 380px;
+	position: relative;
+	margin: 20px 0;
+}
+
+.grpBriefImgH1 h1 {
+	position: absolute;
+	z-index: 1;
+	color: #fff;
+	font-size: 34px;
+    font-family: 'nerisblack';
+    font-weight: normal;
+    margin: 0;
+    width: 480px;
+    bottom: 35px;
+    left: 50%;
+    margin-left: -240px;
+    line-height: 120%;
+}
+.grpBriefImgH1Shadow {
+	width: 100%;
+	height: 380px;
+	position: absolute;
+	top:0;
+	background-color: rgba(#000, 0.6);
+}
+.grpBriefImgH1 .grpImg {
+	float: left;
+	width: 100%;
+	height: 380px;
+}
+.grpBriefImgH1 .grpBriefImgLegend { margin-left: 30px;}
+
+.grpBriefGraph {
+	font-size: 10px;
+	color: $grey;
+	line-height: 200%;
+}
+.grpBriefGraph img {
+	float: left;
+	clear: both;
+	min-width: 190px;
+	height: auto;
+	margin: 20px 0;
+}
+
+body.grp .listHeader {
+	border-bottom: solid 1px rgba($grey, 0.5);
+	margin-bottom: 20px;
+	padding-top: 40px;
+}
+body.grp #content, body.grp #sidebar { padding-top: 0; margin-top: 0; }
+body.grp #sidebar .sidebarSearchFilters h5 {padding-top: 0;}
+
+.grpIHaveAQuestion {
+	float: left;
+	width: 100%;
+	clear: both;
+	padding: 20px;
+	background-color: $orange;
+	color: #fff;
+	margin-top: 30px;
+	font-size: 14px;
+	line-height: 160%;
+    font-family: 'nerislight';
+}
+.grpIHaveAQuestion h2 {
+	margin: 0 0 20px 0;
+	font-family: 'nerislight';
+	font-weight: normal;
+	font-size: 34px;
+	line-height: 100%;
+}
+.grpIHaveAQuestion a {
+	float: left;
+	margin-top: 20px;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	padding:4px 16px;
+	height:30px;
+	background-color: $darkGrey;
+	font-size: 12px;
+	text-decoration: none;
+	color: #fff;
+}
+.grpCard .grpIHaveAQuestion a { margin: 20px 20px 0 0; }
+.grpIHaveAQuestion a:hover {
+	background-color: #fff;
+	color: $darkGrey;
+}
+
+#miniHowItWork { 
+	float: left;
+	width: 100%;
+	margin-top: 40px;
+}
+#miniHowItWork h1 {
+	font-size: 14px;
+	margin: 0 0 30px 0;
+	font-weight: normal;
+}
+.miniHIWitem {
+	float: left;
+	width: 100%;
+	clear: both;
+}
+
+#miniHowItWork img { float: left;}
+#miniHowItWork h2 {
+	float: right;
+	width: calc(100% - 40px);
+	margin: -4px 0 30px 0;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 140%;
+}
+#miniHowItWork h2 b {
+	float: left;
+	width: 100%;
+	font-weight: normal;
+    font-family: 'nerissemibold';
+}
+
+// post
+body.grp #content, body.grp #sidebar { margin-top: 20px; }
+
+// grp closed 
+#grpClosed {
+	background-color: $orange;
+	color: #fff;
+	padding: 20px;
+	font-size: 14px;
+	margin-bottom: 20px;
+}
+#grpClosed i {margin-right: 4px;}
+body.css700 #grpClosed {margin-top: 20px; margin-bottom: 5px;}
+
+// grp CMS
+.grpCMS #cardPost {
+	padding: 30px;
+	margin-bottom: 50px;
+}
+
+.grpCMS p, .grpCMS ul {
+	font-family: Merriweather;
+	font-size: 15px;
+	line-height: 30px;
+	margin-bottom: 20px;
+	display: inline-block;
+	width: 100%;
+}
+.grpCMS p:last-of-type {margin: 0;}
+
+.grpCMStitre {
+	font-weight: normal;
+	margin: 0 0 30px 0;
+	font-size: 36px;
+	font-family: 'nerissemibold';
+	color: $orange;	
+}
+.grpCMS h1 {
+	font-weight: normal;
+	margin: 40px 0 20px 0;
+	font-size: 24px;
+	font-family: 'nerissemibold';
+	color: $orange;
+}
+.grpCMS h1:first-of-type {margin-top: 0;}
+.grpCMS h2 { font-size: 20px; }
+.grpCMS h3 { font-size: 16px; }
+
+.grpCMS p a {color: $orange;}
+.grpCMS p a:hover {color: inherit;}
+.grpCMS p b, .grpCMS p strong {font-weight: normal; font-family: 'Merriweather Bold';}
+
+.grpCMS img {
+	max-width: 100%;
+	height: auto;
+}
+.grpCMS figure {
+	margin: 10px 0 30px 0;
+}
+.grpCMS figcaption {
+	margin: 0;
+	padding: 10px 0;
+	text-align: center;
+	font-size: 12px;
+	border-bottom: solid 1px rgba($grey, 0.5);
+}
+
+.grpCMS .videoEmbed {
+	float: left;
+	width: 100%;
+	margin: 30px 0;
+}
+.grpCMS iframe {
+	float: left;
+	width: 100%;
+	border: none;
+}
+
+body.css700 .grpCMS #cardPost { padding: 15px; }
+body.css700 .grpCMS p {
+	font-size: 13px;
+	line-height: 26px;
+	display: inline-block;
+}
+
+#contentSlide {
+	float: left;
+	width: 100%;
+	margin: 20px 0 40px 0;
+}
+
+#contentSlide .slideImg {
+	float: left;
+	width: 100%;
+	height: 400px;
+	position: relative;
+}
+body.css700 .slideImg { height: 300px; }
+
+.slideCaption {
+	position: absolute;
+	bottom: -32px;
+	width: calc(100% - 50px);
+	left: 25px;
+}
+.slideCaption h2 {
+	margin: 0;
+	text-align: center;
+	height: 18px;
+	overflow: hidden;
+	font-size: 14px;
+	font-weight: normal;
+}
+
+.slideNav {
+	float: left;
+	width: 100%;
+	clear: both;
+	border-bottom: solid 1px rgba($grey, 0.5);
+}
+.slideNav i {
+	font-size: 10px;
+}
+.slidePrev, .slideNext {
+	float: left;
+	text-align: left;
+	cursor: pointer;
+	padding: 10px;
+}
+.slidePrev {padding-left: 0;}
+.slideNext {
+	float: right;
+	padding-right: 0;
+}
+.slidePrev:hover i, .slideNext:hover i {color: $orange; }
+
+.docList a {
+	font-size: 13px;
+	display: inline-block;
+	margin-bottom: 5px;
+}
+.docList a:hover {color: $orange;}
+.docList a i {
+	font-size: 12px;
+	margin-right: 5px;
+}
+
+.docZoom {
+	margin-bottom: 30px;
+}
+.docZoom p {
+	display: inline-block;
+	margin-bottom: 10px;
+	font-size: 14px;
+	line-height: 160%;
+}
+.docZoom p:last-of-type {margin-bottom: 0;}
+.docZoom .grpCMS p a {color: $orange;}
+.docZoom .grpCMS p a:hover {color: inherit;}
+.docZoom p b, .docZoom p strong {font-weight: normal; font-family: 'nerisblack';}
+
+
+// CMS HOME GE
+#homePresentation {
+	float: left;
+	clear: both;
+	width: 100%;
+}
+
+#homePresentation .center {
+	background: #fff;
+	margin: 40px auto;
+	padding: 40px;
+}
+body.css700 #homePresentation .center {
+	padding: 10px;
+	margin: 20px auto;
+}
+#homePresentation p {
+	font-family: Merriweather;
+	font-size: 15px;
+	line-height: 30px;
+	margin-bottom: 20px;
+}
+#homePresentation p:last-of-type {margin-bottom: 0;}
+#homePresentation p img {
+	margin: 20px 20px 20px 0;
+	height: auto;
+}
+
+#homePresentation #contentSlide {
+	margin: 40px 0;
+	text-align: center;
+}
+body.css700 #homePresentation #contentSlide {margin: 20px 0;}
+#homePresentation .cycle-slideshow {
+	margin: 0 auto;
+	max-width: 80%;
+}
+#homePresentation .slideNav {
+	max-width: 80%;
+	float: none;
+	display: inline-block;
+}
+body.css700  #homePresentation .cycle-slideshow, body.css700 #homePresentation .slideNav {
+	max-width: 100%;
+}
