@@ -1,8 +1,13 @@
 <div class="postGetAccount">
-    {% if private %}<h1><i class="icon-info"></i>Vous devez vous inscrire pour lire la suite</h1>{% endif %}
-    <p>Ne manquer aucune publication {% if document.PUserId %}de <b>{{ document.user }}</b>{% endif %} en vous inscrivant.</p>
+    {% if global.access == 'public' %}
+        {% if private %}<h1><i class="icon-info"></i>Vous devez vous inscrire pour lire la suite</h1>{% endif %}
+        <p>Ne manquez aucune publication {% if document.PUserId %}de <b>{{ document.user }}</b>{% endif %} en vous inscrivant.</p>
+    {% else %}
+        <h1><i class="icon-info"></i>Vous devez être inscrit pour lire la suite</h1>
+        <p>Contactez {{ client.name }} pour connaître les modalités de participation.</p>
+    {% endif %}
     <div class="getAccountActions">
-        <a class="linkPostGetAccount" href="{{ path('Inscription') }}">Inscription</a>
-        <span>Déjà inscrit-e? <a href="{{ path('Login') }}">Identifiez-vous</a></span>
+        {% if global.access == 'public' %}<a class="linkPostGetAccount" href="{{ path('Inscription') }}">Inscription</a>{% endif %}
+        <span>Déjà inscrit.e ? <a href="{{ path('Login') }}">Identifiez-vous</a></span>
     </div>
 </div>

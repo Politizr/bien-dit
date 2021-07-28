@@ -367,6 +367,12 @@ $('body').on("click", "[action='openCgu']", function(e){
     return modalCgu();
 });
 
+$('body').on("click", "[action='openPolicies']", function(e){
+    // console.log('*** click openPolicies');
+
+    return modalPolicies();
+});
+
 $('body').on("click", "[action='openCgv']", function(e){
     // console.log('*** click openCgv');
 
@@ -399,6 +405,33 @@ function modalCgu() {
         ROUTE_MODAL_CGU,
         'modal',
         'cgu',
+        RETURN_HTML
+    );
+
+    return xhrCall(
+        document,
+        null,
+        xhrPath
+    ).done(function(data) {
+        if (data['error']) {
+            $('#infoBoxHolder .boxError .notifBoxText').html(data['error']);
+            $('#infoBoxHolder .boxError').show();
+        } else {
+            $('#modalContainer').html(data['html']);
+        }
+    });
+};
+
+/**
+ * Modal Policies
+ */
+function modalPolicies() {
+    // console.log('*** modalPolicies');
+
+    var xhrPath = getXhrPath(
+        ROUTE_MODAL_POLICIES,
+        'modal',
+        'policies',
         RETURN_HTML
     );
 

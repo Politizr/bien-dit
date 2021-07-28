@@ -106,6 +106,18 @@ class UserController extends Controller
             return $this->redirect($refererUrl);
         }
 
+        // Test global mode
+        $globalMode = $this->getParameter('global_mode');
+        if ($globalMode == 'oneshot') {
+            $circle = $this->get('politizr.functional.circle')->getOneCircle();
+            if (!$circle) {
+                throw new NotFoundHttpException('No circle has been found');
+            }
+            return $this->redirect($this->generateUrl('CircleDetail', array(
+                'slug' => $circle->getSlug(),
+            )));
+        }
+
         // get actives ops for current user
         $user = $this->getUser();
         $operations = PEOperationQuery::create()

@@ -33,7 +33,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
 
     private $logger;
 
-    private $withGroup;
+    private $globalMode;
 
     private $topMenuCms;
     private $topMenuPublications;
@@ -46,7 +46,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
      * @param @politizr.functional.circle
      * @param @politizr.tools.global
      * @param @logger
-     * @param "%with_group%"
+     * @param "%global_mode%"
      * @param "%top_menu_cms%"
      * @param "%top_menu_publications%"
      * @param "%top_menu_community%"
@@ -58,7 +58,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
         $circleService,
         $globalTools,
         $logger,
-        $withGroup,
+        $globalMode,
         $topMenuCms,
         $topMenuPublications,
         $topMenuCommunity
@@ -74,7 +74,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
         
         $this->logger = $logger;
         
-        $this->withGroup = $withGroup;
+        $this->globalMode = $globalMode;
 
         $this->topMenuCms = $topMenuCms;
         $this->topMenuPublications = $topMenuPublications;
@@ -220,17 +220,20 @@ class PolitizrNavigationExtension extends \Twig_Extension
 
         // CMS
         if ($this->topMenuCms) {
-            $cmsCategory = CmsCategoryQuery::create()->filterByOnline(true)->findPk(CmsConstants::CMS_CONTENT_CATEGORY_MENU);
-            $cmsContents = CmsContentQuery::create()
-                                ->filterByOnline(true)
-                                ->filterByCmsCategoryId(CmsConstants::CMS_CONTENT_CATEGORY_MENU)
-                                ->find();
+            $cmsCategories = CmsCategoryQuery::create()->filterByOnline(true)->find();
 
-            foreach ($cmsContents as $cmsContent) {
-                $url = $this->router->generate('CmsContent', array('slug' => $cmsContent->getSlug()));
-                $label = $cmsContent->getTitle();
+            foreach ($cmsCategories as $cmsCategory) {
+                $cmsContents = CmsContentQuery::create()
+                                    ->filterByOnline(true)
+                                    ->filterByCmsCategoryId($cmsCategory->getId())
+                                    ->find();
 
-                $cmsRoutes[] = ['url' => $url, 'label' => $label];
+                foreach ($cmsContents as $cmsContent) {
+                    $url = $this->router->generate('CmsContent', array('slug' => $cmsContent->getSlug()));
+                    $label = $cmsContent->getTitle();
+
+                    $cmsRoutes[$cmsCategory->getTitle()][] = ['url' => $url, 'label' => $label];
+                }
             }
         }
 
@@ -279,10 +282,15 @@ class PolitizrNavigationExtension extends \Twig_Extension
             $user = null;
         }
 
+        // Test global mode
+        if ($this->globalMode == 'oneshot') {
+            return null;
+        }
+
         $ownersCircles = array();
         $owners = $this->circleService->getAuthorizedOwnersByUser(null);
         foreach ($owners as $owner) {
-            $circles = $this->circleService->getOwnerCirclesByUser($owner);
+            $circles = $this->circleService->getOwnerCirclesByUser($owner, $user);
             $ownersCircles[] = array($owner, $circles);
         }
 
@@ -305,10 +313,21 @@ class PolitizrNavigationExtension extends \Twig_Extension
     {
         // $this->logger->info('*** footerGroupMenu');
 
+        // get current user
+        $user = $this->securityTokenStorage->getToken()->getUser();
+        if (is_string($user)) {
+            $user = null;
+        }
+
+        // Test global mode
+        if ($this->globalMode == 'oneshot') {
+            return null;
+        }
+
         $ownersCircles = array();
         $owners = $this->circleService->getAuthorizedOwnersByUser(null);
         foreach ($owners as $owner) {
-            $circles = $this->circleService->getOwnerCirclesByUser($owner);
+            $circles = $this->circleService->getOwnerCirclesByUser($owner, $user);
             $ownersCircles[] = array($owner, $circles);
         }
 

@@ -1,0 +1,819 @@
+@import "colors";
+html { height: 100%; }
+body {
+	background-image: url(../images/bgPaper.jpg);
+	margin: 0;
+	padding: 0;
+	font-family: 'nerislight';
+	color: $darkGrey;
+	overflow-x: hidden;
+	font-size: 16px;
+	height: 100%;
+}
+body.edition, body.edition.grp {background-image: url(../images/bgWood.jpg); }
+body {
+	// disable text selection
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none;   /* Chrome/Safari/Opera */
+	-moz-user-select: none;      /* Firefox */
+	-ms-user-select: none;       /* IE/Edge */
+	user-select: none; 
+}
+body.public {
+	// enable text selection
+	-webkit-touch-callout:  text; /* iOS Safari */
+	-webkit-user-select: text;   /* Chrome/Safari/Opera */
+	-moz-user-select: text;      /* Firefox */
+	-ms-user-select: text;       /* IE/Edge */
+	user-select:  text;
+}
+body.css700 #tawkchat-container html {
+	visibility: hidden; /* hide tawkto widget sur mobile */
+}
+*, *:before, *:after { box-sizing: border-box; }
+a {text-decoration: none; color: $darkGrey;}
+a:visited {color: inherit;}
+p, form {padding: 0; margin: 0;}
+b {
+	//font-weight: normal; 
+	//font-family: 'nerissemibold'
+}
+textarea {resize: none;}
+textarea:focus, input:focus, button:focus { outline: 0;}
+img {border:none;}
+.withLoaderInside {position: relative;}
+
+.orange, .darkGrey:hover  {color: $orange !important;}
+.darkGrey, .orange:hover {color: $darkGrey !important;}
+
+.noResult {
+	display: inline-block;
+	padding: 11px 20px;
+	height: 40px;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	color: #fff;
+	background-color: rgba($grey, .6);
+	font-size: 14px;
+	margin-bottom: 20px;
+}
+
+.modalRGPD {
+	position: fixed;
+	float: left;
+	width: 100%;
+	padding: 20px;
+	background-color: #fff;
+	z-index: 2000;
+	bottom: 0;
+	color: $darkGrey;
+	font-size: 12px;
+	text-align: center;
+}
+body.css700 .modalRGPD, body.css1060 .modalRGPD { text-align: left; }
+
+.modalRGPD span {
+	padding: 10px 15px;
+	margin: 0 20px;
+	background-color: $darkGrey;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block;
+}
+.modalRGPD a {text-decoration: underline;}
+
+///// structure /////
+.center {
+	width: 1020px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#header {
+	position: fixed;
+	z-index: 22000;
+	width: 100%; 
+	top:0;
+	height: 60px;
+	background-color: #fff;
+	-moz-box-shadow: 0px 0px 4px 0px rgba($darkGrey, .7);
+	-webkit-box-shadow: 0px 0px 4px rgba($darkGrey, .7);
+	-o-box-shadow: 0px 0px 4px 0px rgba($darkGrey, .7);
+	box-shadow: 0px 0px 4px 0px rgba($darkGrey, .7);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$darkGrey, Direction=NaN, Strength=4);
+}
+
+#headerTrigger, body.edition.grp #headerTrigger {
+	float: left;
+	width: 100%;
+	height: 60px;
+}
+
+
+#main, .mainClass {
+	float: left;
+	width: 100%;
+}
+
+#content {
+	float: left;
+	width: 650px;
+	margin: 50px 0 0 0;
+
+	// enable text selection
+	-webkit-touch-callout:  text; /* iOS Safari */
+	-webkit-user-select: text;   /* Chrome/Safari/Opera */
+	-moz-user-select: text;      /* Firefox */
+	-ms-user-select: text;       /* IE/Edge */
+	user-select:  text;
+}
+
+#sidebar {
+	float: right;
+	width: 330px;
+	padding: 50px 0 0 0;
+	z-index: 50;
+	min-height: calc(100vh - 60px);
+}
+.sticky-wrapper { position: static; width: 330px; display: block; vertical-align: baseline; float: right; }
+.stuck {position: fixed; bottom: 0;}
+
+#footer {
+	display: inline-block;
+	width: 100%;
+	border-top: solid 1px rgba($grey, .5);
+	margin-top: 40px;
+	padding: 25px 0 50px 0;
+	font-size: 10px;
+	line-height: 100%;
+}
+#footer a { display: inline-block; color: $grey; margin-right: 15px; cursor: pointer;}
+#footer a:hover {color: $darkGrey;}
+
+#footer #goUp {
+	display: inline-block;
+	font-size: 12px;
+	border: solid 1px rgba($grey, .5);
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	height: 30px;
+	padding: 9px 14px 0 26px;
+	margin-bottom: 20px;
+	position: relative;
+	cursor: pointer;
+	color: $grey;
+    font-family: 'nerissemibold';
+}
+#footer #goUp i {
+	position: absolute;
+	font-size: 8px;
+	left: 10px;
+}
+#footer #goUp:hover {color: $darkGrey; border-color: $darkGrey;}
+
+///// titles /////
+
+h4 {
+	display: inline-block;
+	width: 100%;
+	font-weight: normal;
+	padding: 0;
+	margin: 10px 0 20px 0;
+	font-size: 14px;
+	font-family: 'nerisblack';
+	color: $darkGrey;
+	text-align: center;
+}
+#content h4 {color: $orange;}
+h4:first-child {margin-top: 0;}
+h4 span { font-family: 'nerislight';}
+
+h5 {
+	display: inline-block;
+	width: 100%;
+	font-weight: normal;
+	padding: 0;
+	margin: 0;
+	font-size: 12px;
+	font-style: italic;
+	font-family: 'Merriweather Italic';
+	color: $grey;
+}
+#sidebar h5 {
+	border-top: solid 1px rgba($grey, .5);
+	padding: 20px 0 30px 0;
+	color: $darkGrey;
+	position: relative;
+}
+
+.postTitle {
+	font-size: 36px;
+    font-family: 'nerislight';
+	display: inline-block;
+	width: 100%;
+	line-height: 120%;
+	margin-bottom: 10px;
+	color: $orange;	
+}
+
+.pageTitle {
+	float: left;
+	width: 100%;
+	margin: 0 0 20px 0;
+	font-size: 14px;
+	font-family: 'nerisblack';
+	color: $orange;
+	text-align: center;
+}
+
+// status
+.status { float: left; }
+.citizenIdChecked, .representativeIdChecked, .representativeIdInProgress {
+	float: left;
+	color: #fff;
+	font-size: 10px;
+	font-family: 'nerislight';
+	font-style: normal;
+	-webkit-border-radius: 9px; -moz-border-radius: 9px; border-radius: 9px;
+	height: 17px;
+	line-height: 100%;
+	padding: 3px 9px 0 22px;
+	margin: 1px 5px 0 0;
+	position: relative;
+	cursor: default;	
+}
+.citizenIdChecked i, .representativeIdChecked i , .representativeIdInProgress i {
+	position: absolute;
+	left: -1px;
+	top:2px;
+	font-size: 15px;
+}
+
+.citizenIdChecked { background-color: darken( $gold, 5% );}
+.representativeIdChecked {background-color:lighten( $darkGreen, 5% );}
+.representativeIdInProgress {background-color: $silver;}
+
+.sidebarProfile .profileBio {
+	padding-bottom: 26px;
+	position: relative;
+}
+
+.sidebarProfile .status {
+	width: 100%;
+	position: absolute;
+	bottom: 3px;
+	text-align: center;
+}
+.sidebarProfile .bubblesProfile .status { text-align: left; }
+
+.sidebarProfile .profileBio .citizenIdChecked, .sidebarProfile .profileBio .representativeIdChecked, .sidebarProfile .profileBio .representativeIdInProgress {
+	display: inline-block;
+	float: none;
+}
+
+// add plane to subjects
+.postTitle.subject:before {
+	font-family: 'pltzriconfont';
+	font-style: normal;
+	content: "\e82e";
+	margin-right: 10px;
+	vertical-align: text-bottom;
+	color: $orange;
+	font-size: 27px;
+}
+
+///// tag list /////
+
+.tagList {	
+	font-family: 'nerissemibold'; 
+	float: left;
+	width: 100%;
+	clear: both;
+}
+.tagList .ajaxLoaderBg {background-color: transparent;}
+
+.tagList .tag {
+	position: relative;
+	float: left;
+	margin: 10px 10px 0 0;
+	font-size: 12px;
+}
+.tagList a {
+	float: left;
+	padding: 11px 14px;
+	min-height: 40px;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	color: rgba($grey, .8);
+	border: solid 1px rgba($grey, .3);
+	//text-transform: lowercase;
+	cursor: pointer;
+	//text-transform: capitalize; css can't do lowercase + capitalize at the same time...
+}
+.tagList a:hover {background-color: #fff;}
+
+// family
+.tagList .tag.family a {
+	border: solid 1px rgba($purple, .3);
+	color: rgba($purple, .6);
+}
+
+// type
+.tagList .tag.type a {
+	border: solid 1px rgba($bronze, .3);
+	color: rgba($bronze, .9);
+}
+
+///// post breadcrumb /////
+.postBreadcrumb {
+	display: inline-block;
+	font-size: 12px;
+	font-style: italic;
+	font-family: 'Merriweather Italic';
+	line-height: 160%;
+	color: $orange;
+}
+.coloredBg .postBreadcrumb {
+	width: 100%;
+}
+
+.postBreadcrumb a { font-family: 'Merriweather Heavy Italic'; color: $orange; }
+.postBreadcrumb a:hover {color: $darkGrey;}
+
+.postBreadcrumb span {
+	display: inline-block;
+	width: 100%;
+	clear: both;
+}
+.postBreadcrumb span a:before {
+	font-family: 'pltzriconfont';
+	font-style: normal;
+	content: "\e82e";
+	margin-right: 4px;
+}
+
+///// post stats /////
+.postStats {
+	float: left;
+	color: $grey;
+    font-family: 'nerissemibold';
+    font-size: 12px;
+}
+//.postStats :last-child { margin-right: 0;}
+.statTime, .statViews, .statComments {
+	float: left;
+	margin: 0  20px 6px 0;
+	position: relative;
+	padding-left: 18px;
+}
+.statComments a {color: $grey;}
+.statComments a:hover {color: $darkGrey;}
+.statViews {display: none;}
+.statTime i, .statViews i {position: absolute; left: -2px; top:-2px; font-size: 13px;}
+.statComments i {position: absolute; left: -2px; top:-1px; font-size: 13px;}
+.statTime i {font-size: 15px; left: -4px; top:-4px;}
+
+.statLoc {
+	float: left;
+	clear: both;
+	margin: 2px 0 6px 0;
+	position: relative;
+	padding-left: 14px;
+	color: $darkGrey;
+}
+.statLoc i {position: absolute; font-size: 14px; left: -4px; top:-3px;}
+.statLoc a { color: inherit;}
+.statLoc a:hover {color: $darkGrey;}
+
+.statFB {
+	float: left;
+	clear: both;
+	margin: 2px 0 6px 0;
+	position: relative;
+	padding-left: 20px;
+	font-family: 'nerislight';
+}
+.statFB b {font-family: 'nerissemibold'; font-weight: normal;}
+.statFB i {position: absolute; font-size: 14px; left: -2px; top:-3px;}
+
+///// reaction counter /////
+a.answerCounter { float: left;}
+a.answerCounter span {
+	color: $orange;
+	float: left;
+	border: solid 1px $orange;
+	font-family: 'nerislight';
+	height: 30px;
+	padding:6px 10px 0 30px;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	position: relative;
+	font-size: 12px;
+	margin-right: 8px;
+}
+a.answerCounter:hover, a.answerCounter:hover span {color: darken( $orange, 10% ); border-color: darken( $orange, 10% );}
+a.answerCounter span:last-of-type {margin-right: 0; padding-left: 34px;}
+a.answerCounter i {
+	position: absolute;
+	font-size: 19px;
+	left: 2px;
+	top: 5px;
+}
+//a.answerCounter span:last-of-type i {left: 9px;}
+
+/*
+.answerCounter {
+	display: inline-block;
+	color: $orange;
+	border: solid 1px $orange;
+	font-family: 'nerissemibold';
+	height: 30px;
+	padding:6px 14px 0 30px;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	position: relative;
+	font-size: 12px;
+}
+a.answerCounter {color: $orange;}
+a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
+.answerCounter i {
+	position: absolute;
+	font-size: 14px;
+	left: 9px;
+	top: 5px;
+}
+*/
+
+///// organization /////
+
+.org {
+	display: inline-block;
+}
+
+.org a, .noOrg {
+	font-family: 'nerisblack';
+	font-size: 9px !important;
+	background-color: $darkGrey;
+	color: #fff !important;
+	text-transform: uppercase;
+	display: inline-block;
+	margin: 0 0 2px 0;
+	padding: 2px 3px;
+	-webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;
+	line-height: 100%;
+	vertical-align:  text-bottom;
+	font-style: normal;
+}
+
+.org a:hover { 
+	background-color: $orange;
+	color: #fff !important;
+}
+
+///// avatar /////
+
+.avatar30 {
+	width: 30px;
+	height: 30px;
+	overflow: hidden;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+}
+
+.avatar40 {
+	width: 40px;
+	height: 40px;
+	overflow: hidden;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+}
+
+///// mini profile /////
+
+.miniProfile {
+	margin: 20px;
+	padding-bottom: 20px;
+	display: inline-block;
+	width: calc(100% - 40px);
+	border-bottom: solid 1px rgba($grey, .5);
+}
+.miniProfile .avatar40 { float: left; }
+
+.miniProfile .profilenInfo {
+	float: right; 
+	width: calc(100% - 50px);
+	margin-top: -3px;
+}
+
+.profileNameHolder {
+	display: inline-block;
+	position: relative;
+}
+
+.miniProfile .profileName a {
+    font-family: 'nerisblack' !important;
+    font-size: 14px;
+}
+.miniProfile .profileName a:hover {color: $orange;}
+.miniProfile .profileName .org {margin-top: -1px;}
+
+.miniProfile .profileBio {
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	display: inline-block;
+	width: 100%;
+	line-height: 160%; 
+	font-size: 12px;
+	margin-top: 2px;
+}
+
+.miniProfile .profileBio .profileBioGeo, .miniProfile .profileBio .profileBioGeo a, .bubblesProfile .miniProfile .profileBio .profileBioGeo a { color: $grey; }
+.miniProfile .profileBio .profileBioGeo i {margin-left: -3px;}
+.bubblesProfile .miniProfile .profileBio .profileBioGeo, .bubblesProfile .miniProfile .profileBio .profileBioGeo a {
+	font-family: 'Merriweather Italic' !important;
+}
+
+.miniProfile .profileBio a {
+	//font-family: 'Merriweather Italic';
+	color: $orange;
+	font-size: 12px;
+}
+.miniProfile .profileBio a:hover { color: $darkGrey;}
+.miniProfile .defaultBio {
+	color: $grey !important;
+}
+
+///// full screen loader /////
+#ajaxGlobalLoader {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background-color: transparent;
+	z-index: 30000;
+}
+
+/*
+#ajaxGlobalLoader .ajaxLoader i {
+	position: fixed;
+	top: calc(50% - 20px);
+	left: calc(50% - 21px);
+	z-index: 2;
+	color: $orange;
+	font-size: 30px;
+}
+
+#ajaxGlobalLoader .iconLoaderBg {
+	position: absolute;
+	z-index: 1;
+	background-color: #fff;
+	top: calc(50% - 11px);
+	left: calc(50% - 11px);
+	width: 22px;
+	height: 22px;
+}
+
+#ajaxGlobalLoader .ajaxLoader svg {
+	position: absolute;
+	left: 0; right: 0; top: 0; bottom: 0;
+	margin: auto;
+	z-index: 1;
+}
+ 
+#ajaxGlobalLoader .ajaxLoader .pltzrLoaderStrokes {
+	fill: none;
+	stroke-width: 5px;
+	stroke: $orange;
+	stroke-dasharray: 40;
+	stroke-dashoffset: 50%;
+	-webkit-animation: movedash 0.7s forwards 0s infinite;
+	animation: movedash 0.7s forwards 0s infinite;
+}
+
+@-webkit-keyframes movedash {
+	to {
+		stroke-dashoffset: 250%;
+	}
+}
+@keyframes movedash {
+	to {
+		stroke-dashoffset: 250%;
+	}
+}
+*/
+
+#ajaxGlobalLoader .ajaxLoaderSpinner { background-size: 40px;}
+ 
+// loader //
+.ajaxLoader {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	z-index: 21000;
+}
+
+.ajaxLoaderSpinner {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	z-index: 1;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 24px;
+}
+
+.ajaxLoaderBg, .myfeed #listContent .ajaxLoaderBg, .list .ajaxLoaderBg  {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;	
+	background-color: rgba(#fff, 0.8);
+	background-image: none;
+}
+.myfeed .ajaxLoaderBg, .list .ajaxLoaderBg {
+	background-color: transparent;
+	background-image: url(../images/bgPaper.jpg);
+	left: -5px;
+	width: calc(100% + 10px)
+}
+
+.ajaxLoaderBlockClick {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background-color: transparent;
+	z-index: 21000;
+}
+
+// spinner color : highlight
+.ajaxLoaderSpinner { background-image: url(../images/spinnerHighlight.svg);}
+
+
+// load more
+.scrollNav {
+	margin: 0 0 50px 0;
+	text-align: center;
+	display: inline-block;
+	width: 100%;
+	float: left;
+}
+
+.scrollNav a {
+	display: inline-block;
+	padding: 11px 30px;
+	min-height: 40px;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	color: #fff;
+	background-color: rgba($grey, .6);
+	font-size: 14px;
+	cursor: pointer;
+	text-transform: capitalize;
+}
+.scrollNav a:hover {
+	background-color: $grey;
+}
+
+.scrollNav .ajaxLoaderBg {background-color: transparent;}
+
+
+// box info
+#infoBoxHolder {
+	position: fixed; 
+	top: 60px; 
+	left: 0;
+	z-index: 31000;
+}
+
+.boxSuccess, .boxError, .boxAlert {
+	top: 20px;
+	left: 20px;
+	padding: 10px;
+	margin-bottom: 20px;
+	width: 240px;
+	color: #fff;
+	font-size: 12px;
+	font-family: 'nerissemibold';
+	line-height: 140%;
+	position: relative;
+	-moz-box-shadow: 0px 0px 10px 0px rgba($darkGrey, .8);
+	-webkit-box-shadow: 0px 0px 10px 0px rgba($darkGrey, .8);
+	-o-box-shadow: 0px 0px 10px 0px rgba($darkGrey, .8);
+	box-shadow: 0px 0px 10px 0px rgba($darkGrey, .8);
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=$darkGrey, Direction=NaN, Strength=10);
+}
+
+.boxSuccess a, .boxError a, .boxAlert a { text-decoration: underline; color: inherit;}
+
+.boxSuccess {background-color: $success;}
+.boxError {background-color: $error;}
+.boxAlert {background-color: $alert;}
+
+.notifBoxText {	width: 200px;}
+
+.boxSuccess i, .boxError i, .boxAlert i {
+	position: absolute;
+	right: 10px;
+	top: 7px;
+	font-size: 8px;
+	color: rgba(#fff, .6);
+	cursor: pointer;
+}
+.boxSuccess i:hover, .boxError i:hover, .boxAlert i:hover { color: #fff; }
+
+///// search /////
+.searchForm {
+	float: left;
+	width: 100%;
+	background: rgba($grey, 0.2);
+	padding: 40px 0;
+}
+
+.searchForm .center {
+	width: 400px;
+	position: relative;
+}
+
+.searchForm form {
+	float: left;
+	width: 100%;
+}
+
+.searchForm input {
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	padding:0 70px 0 20px;
+	height:40px;
+	width: 100%;
+	border: none;
+	background-color: #fff;
+	font-size: 16px;
+	font-family: 'nerislight';
+}
+.searchForm input::-webkit-input-placeholder { color: rgba($grey, 0.5);}
+.searchForm input::-moz-placeholder { color: rgba($grey, 0.5);} /* firefox 19+ */
+.searchForm input:-ms-input-placeholder { color: rgba($grey, 0.5);} /* ie */
+.searchForm input:-moz-placeholder { color: rgba($grey, 0.5);} 
+
+.searchForm input[type=submit] {
+	font-family: 'pltzriconfont';
+	cursor: pointer;
+	-webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0;
+	width: auto;
+	padding: 0 20px;
+	position: absolute;
+	right: -5px;
+	background-color: transparent;
+	color: $grey;
+}
+.searchForm input[type=submit]:hover {color: $darkGrey;}
+
+///// unplugged page /////
+
+#unplugged {
+	padding: 80px 0;
+	color: $blue;
+	font-family: 'Merriweather Italic';
+	font-style: italic;
+	font-size: 12px;
+	position: relative;
+	left: 50%;
+	width: 410px;
+	margin-left: -205px;
+}
+
+.unplugText {
+	position: relative;
+	width: 410px;
+	padding: 40px 40px 40px 200px;
+	background-color: rgba($blue, .1);
+}
+
+.unplugText img {
+	position: absolute;
+	left: 40px;
+	top: -25px;
+}
+
+a.history {
+	float: left;
+	margin: 20px 0 0 200px;
+	color: #fff;
+	background-color: $orange;
+	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
+	padding:9px 14px 0 10px;
+	height:30px;
+    font-family: 'nerislight';
+	font-style: normal;
+    font-size: 11px;
+    line-height: 100%;
+    cursor: pointer;
+}
+a.history i { font-size: 10px; margin-right: 4px;}
+a.history:hover { background-color: $darkGrey; }
+
+// deleted account
+
+.deletedAccount {
+	font-size: 14px;
+	color: $grey;
+}

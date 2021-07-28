@@ -53,6 +53,18 @@ class PublicController extends Controller
         //     return $this->redirect($this->generateUrl(sprintf('Homepage%s', $profileSuffix)));
         // }
 
+        // Test global mode
+        $globalMode = $this->getParameter('global_mode');
+        if ($globalMode == 'oneshot') {
+            $circle = $this->get('politizr.functional.circle')->getOneCircle();
+            if (!$circle) {
+                throw new NotFoundHttpException('No circle has been found');
+            }
+            return $this->redirect($this->generateUrl('CircleDetail', array(
+                'slug' => $circle->getSlug(),
+            )));
+        }
+
         $content = CmsContentAdminQuery::create()->findPk(CmsConstants::CMS_CONTENT_ADMIN_HOMEPAGE);
 
         // Diaporamas associés
@@ -101,7 +113,22 @@ class PublicController extends Controller
         $logger = $this->get('logger');
         $logger->info('*** cguAction');
 
-        $legal = PMCguQuery::create()->filterByOnline(true)->orderByCreatedAt('desc')->findOne();
+        $legal = PMCguQuery::create()->findPk(GlobalConstants::GLOBAL_CGU_ID);
+
+        return $this->render('PolitizrFrontBundle:Public:cgu.html.twig', array(
+            'legal' => $legal,
+        ));
+    }
+
+    /**
+     * Policies
+     */
+    public function policiesAction()
+    {
+        $logger = $this->get('logger');
+        $logger->info('*** policiesAction');
+
+        $legal = PMCguQuery::create()->findPk(GlobalConstants::GLOBAL_POLICIES_ID);
 
         return $this->render('PolitizrFrontBundle:Public:cgu.html.twig', array(
             'legal' => $legal,

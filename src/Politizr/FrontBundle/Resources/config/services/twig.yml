@@ -89,7 +89,7 @@ services:
             - @politizr.functional.circle
             - @politizr.tools.global
             - @logger
-            - "%with_group%"
+            - "%global_mode%"
             - "%top_menu_cms%"
             - "%top_menu_publications%"
             - "%top_menu_community%"
