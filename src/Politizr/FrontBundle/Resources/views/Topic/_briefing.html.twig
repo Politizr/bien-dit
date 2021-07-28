@@ -2,6 +2,7 @@
     <div id="grpBriefHeader">
         <div class="center">
             <h1>{{ topic.summary | raw }}</h1>
+            <div class="grpJeMexprime"><a href="{{ path('DebateDraftNew', { topic: topic.uuid }) }}">Je m'exprime!</a></div>
             {% if topic.description is not empty %}
                 <div class="showBriefLink" action="showBrief">Afficher</div>
                 <div class="hideBriefLink" action="hideBrief">Masquer</div>
