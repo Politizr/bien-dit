@@ -5,17 +5,13 @@ Homepage:
     pattern:  /
     defaults: { _controller: PolitizrFrontBundle:Public:homepage }
 
-# WhoWeAre:
-#     pattern:  /qui-sommes-nous
-#     defaults: { _controller: PolitizrFrontBundle:Public:whoWeAre }
-
-# Concept:
-#     pattern:  /concept
-#     defaults: { _controller: PolitizrFrontBundle:Public:concept }
-
 Cgu:
     pattern:  /conditions-generales-d-utilisation
     defaults: { _controller: PolitizrFrontBundle:Public:cgu }
+
+Policies:
+    pattern:  /policies-politizr
+    defaults: { _controller: PolitizrFrontBundle:Public:policies }
 
 Charte:
     pattern:  /notre-charte

@@ -1,6 +1,9 @@
 {% if app.environment == 'prod' and facebook.pixelcode_id is not same as(null)  %}
     <!-- Facebook Pixel Code -->
-    <script>
+    <script
+        type="opt-in"
+        data-type="application/javascript"
+        data-name="facebook-pixel">
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};

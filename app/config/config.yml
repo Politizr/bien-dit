@@ -63,6 +63,7 @@ twig:
     # App variables
     globals:
         assets_version:         %assets_version%
+        session_name :          %session_name%
         contact:
             email:              %contact_email%
             phone:              %contact_phone%

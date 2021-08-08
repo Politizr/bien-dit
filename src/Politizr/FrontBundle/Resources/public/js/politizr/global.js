@@ -1,5 +1,7 @@
 // beta
 
+var OrejimeInstance = Orejime.init(orejimeConfig);
+
 // on document ready
 $(function() {
     // console.log('*** global document ready');
@@ -70,6 +72,11 @@ $("body").on("click", "[action='toggleHelper']", function() {
 $("body").on("click", "[action='hideHelper']", function() {
     $('.helperSlider').hide();
     $('.helperMark').css("color", "#b8b9bc");i
+});
+
+// Ouverture modal Cookie Orejime
+$('body').on("click", "[action='openCookies']", function(){
+    OrejimeInstance.show();
 });
 
 // ******************************************************************* //

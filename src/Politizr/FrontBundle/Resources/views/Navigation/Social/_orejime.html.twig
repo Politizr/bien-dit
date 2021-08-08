@@ -1,0 +1,54 @@
+<script>
+var orejimeConfig = {
+    elementID: "orejime",
+    cookieName: "orejime",
+    cookieExpiresAfterDays: 180,
+    privacyPolicy: "{{ path('Policies') }}",
+    default: false,
+    mustConsent: true,
+    mustNotice: true,
+    lang: "fr",
+    translations: {
+        fr: {
+            consentModal: {
+                title: "Configuration des cookies",
+                description: "Vous pouvez configurer ici les cookies utilisés par notre site.",
+            },
+            purposes: {
+                googletagmanager : "Suivi statistique Google Analytics.",
+                facebookpixel : "Suivi statistique Facebook.",
+                biendit : "Fonctionnement de l'application."
+            }
+        },
+    },
+    apps: [
+        {
+            name: "google-tag-manager",
+            title: "Google Tag Manager",
+            purposes: ["googletagmanager"],
+            cookies: [
+                "_ga",
+                "_gid",
+                "/_gat_*/gm"
+            ],
+        },
+        {
+            name: "facebook-pixel",
+            title: "Facebook Pixel",
+            purposes: ["facebookpixel"],
+            cookies: [
+                "_fbp"
+            ],
+        },
+        {
+            name: "biendit",
+            title: "Cookies nécessaires",
+            purposes: ["biendit"],
+            cookies: [
+                "{{ session_name }}"
+            ],
+            required: true
+        }
+    ]
+}
+</script>
