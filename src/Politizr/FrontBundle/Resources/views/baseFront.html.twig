@@ -35,7 +35,11 @@
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/pltzriconfont.css?v'~assets_version) }}">
             <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css?v{{ assets_version }}" rel="stylesheet">
+            <link rel="stylesheet" href="{{ asset('bundles/politizrfront/css/orejime.1.2.4.css?v'~assets_version) }}">
         {% endblock %}
+
+        <!-- Orejime init script -->
+        {% include 'PolitizrFrontBundle:Navigation\\Social:_orejime.html.twig' %}
 
         {% block javascriptHeader %}
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/jquery-3.2.1.min.js') }}"></script>  
@@ -53,6 +57,7 @@
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/autosize.min.js?v'~assets_version) }}"></script>
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/select2.full.min.js?v'~assets_version) }}"></script>  
             <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/select2.fr.js?v'~assets_version) }}"></script>  
+            <script type="text/javascript" src="{{ asset('bundles/politizrfront/js/orejime.1.2.4.js') }}"></script>  
         {% endblock %}
 
         {% block responsiveHeader %}
@@ -125,14 +130,6 @@
             {% endblock %}
 
             {% block main %}
-            {% endblock %}
-
-            {% block rgpd %}
-                {#
-                <div class="modalRGPD" style="display: block">
-                    Ce site utilise uniquement des cookies nécessaires au bon fonctionnement du site.<span action="closeBox">J'accepte</span><a action="openPolicies">En savoir plus</a>
-                </div>
-                #}
             {% endblock %}
 
             {% block postMain %}
