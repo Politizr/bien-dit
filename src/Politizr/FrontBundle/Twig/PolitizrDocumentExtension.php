@@ -1229,28 +1229,18 @@ class PolitizrDocumentExtension extends \Twig_Extension
             $circle = $topic->getPCircle();
             $owner = $circle->getPCOwner();
 
-            if ($circle->getReadOnly()) {
-                // Read only circle's banner
-                $html = $env->render(
-                    'PolitizrFrontBundle:Circle:_readOnlyBanner.html.twig',
-                    array(
-                        'circle' => $circle,
-                    )
-                );
-            } else {
-                $nbTopics = $circle->getNbTopics(true);
-                
-                // Topic banner
-                $html = $env->render(
-                    'PolitizrFrontBundle:Document:_topicBannerEdit.html.twig',
-                    array(
-                        'owner' => $owner,
-                        'circle' => $circle,
-                        'topic' => $topic,
-                        'nbTopics' => $nbTopics,
-                    )
-                );
-            }
+            $nbTopics = $circle->getNbTopics(true);
+            
+            // Topic banner
+            $html = $env->render(
+                'PolitizrFrontBundle:Document:_topicBannerEdit.html.twig',
+                array(
+                    'owner' => $owner,
+                    'circle' => $circle,
+                    'topic' => $topic,
+                    'nbTopics' => $nbTopics,
+                )
+            );
         } else {
             // Classic banner
             $html = $env->render(

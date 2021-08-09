@@ -2,9 +2,13 @@
 
 namespace Politizr\Model;
 
-use Politizr\FrontBundle\Lib\Tools\StaticTools;
 
 use Politizr\Model\om\BasePCircle;
+
+use Politizr\Model\PDocumentInterface;
+use Politizr\Model\PDCommentInterface;
+use Politizr\FrontBundle\Lib\Tools\StaticTools;
+use Politizr\Constant\CircleConstants;
 
 class PCircle extends BasePCircle
 {
@@ -21,6 +25,17 @@ class PCircle extends BasePCircle
         }
 
         return 'Pas de titre';
+    }
+
+
+    /**
+     * 
+     * @return boolean
+     */
+    public function isReadOnly()
+    {
+
+        return parent::getReadOnly();
     }
 
     /**
@@ -66,5 +81,74 @@ class PCircle extends BasePCircle
             ->count();
 
         return $nbTopics;
+    }
+
+    /**
+     * Compute if context allows new debate to be create or not
+     *
+     * @return boolean
+     */
+    public function canCreateDebate()
+    {
+        if ($this->isReadOnly()) {
+            return false;
+        } elseif ($this->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_BUDGETPART && ($this->getStep() == CircleConstants::CIRCLE_BUDGETPART_STEP2 || $this->getStep() == CircleConstants::CIRCLE_BUDGETPART_STEP3)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Compute if context allows new reaction to be create or not
+     *
+     * @return boolean
+     */
+    public function canCreateReaction()
+    {
+        if ($this->isReadOnly()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Compute if context allows new comment to be create or not
+     *
+     * @return boolean
+     */
+    public function canCreateComment()
+    {
+        if ($this->isReadOnly()) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Compute if context allows document to be noted
+     *
+     * @param PDocumentInterface|PDCommentInterface $document
+     * @return boolean
+     */
+    public function canNote($document = null)
+    {
+        // document in circle's in read only mode
+        if ($this->getReadOnly()) {
+                return false;
+        }
+
+        if ($document instanceof PDDebate) {
+            if ($this->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_BUDGETPART
+                    && ($this->getStep() == CircleConstants::CIRCLE_BUDGETPART_STEP1 || $this->getStep() == CircleConstants::CIRCLE_BUDGETPART_STEP2)
+            ) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

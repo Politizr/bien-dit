@@ -161,13 +161,11 @@ class PolitizrCircleExtension extends \Twig_Extension
         // $this->logger->info('*** circleDetail');
         // $this->logger->info('$circle = '.print_r($circle, true));
 
-        // get template path > generic or dedicated
+        // get template path
         $templatePath = 'Circle\\standard';
-        // if ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_STANDARD) {
-        //     $templatePath = 'Circle';
-        // } else {
-        //     $templatePath = 'Circle';
-        // }
+        if ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_BUDGETPART) {
+            $templatePath = 'Circle\\budgetpart';
+        }
 
         // Construction du rendu du tag
         $html = $env->render(
@@ -254,8 +252,11 @@ class PolitizrCircleExtension extends \Twig_Extension
         // $this->logger->info('*** circleFooter');
         // $this->logger->info('$circle = '.print_r($circle, true));
 
-        // get template path > generic or dedicated
+        // get template path
         $templatePath = 'Circle\\standard';
+        if ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_BUDGETPART) {
+            $templatePath = 'Circle\\budgetpart';
+        }
 
         // Construction du rendu du tag
         $html = $env->render(
@@ -412,7 +413,7 @@ class PolitizrCircleExtension extends \Twig_Extension
             throw new InconsistentDataException('Class not managed');
         }
 
-        if (! $circle->getReadOnly()) {
+        if (!$circle->getReadOnly()) {
             return null;
         }
 

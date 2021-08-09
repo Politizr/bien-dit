@@ -1,0 +1,74 @@
+    <div class="grpBudgetpartStep">
+        {% if (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP1')) %}
+            <h3>Étape 1 : idées et propositions</h3>
+        {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP2')) %}
+            <h3>Étape 2 : étude des idées et propositions</h3>
+        {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP3')) %}
+            <h3>Étape 3 : vote sur les propositions</h3>
+        {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP4')) %}
+            <h3>Étape 4 : fin de la consultation</h3>
+        {% endif %}
+    </div>
+<div class="grpCard">
+    <div class="grpGlobalIntro">
+        {{ circle.description | raw }}
+    </div>
+    {% if circle | nbAuthorizedReactionUsers() > 0 %}
+        <div class="grpAnswersBy">
+            <div class="grpAnswersByTitle">
+                <h1>Les animateurs en charge de ces sujets</h1>
+                <div class="grpAnswersByTitleNotice">
+                    <i class="icon-info"></i>
+                    <p>Tous les membres ci-contre peuvent répondre à vos questions.</p>
+                </div>
+            </div>
+            {{ circle | authorizedReactionUsers() }}
+        </div>
+    {% endif %}
+
+    {% if topics | length == 1 %}
+        <div class="grpIHaveAQuestion">
+            {% if (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP1')) %}
+                <h2>Vos idées et propositions pour notre budget participatif</h2>
+                <p>Proposez vos idées et propositions pour exploiter notre budget participatif.</p>
+                {% if not circle.readOnly %}<a href="{{ path('DebateDraftNew', { topic: topics[0].uuid }) }}">Je m'exprime</a>{% endif %}<a href="{{ path('TopicDetail', { circleSlug: circle.slug, slug: topics[0].slug }) }}" class="grpAllQuestions">Voir les propositions</a>
+            {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP2')) %}
+                <h2>Vos idées et propositions pour notre budget participatif</h2>
+                <p>En attendant le vote, retrouvez les idées proposées pour notre budget participatif.</p>
+                <a href="{{ path('TopicDetail', { circleSlug: circle.slug, slug: topics[0].slug }) }}" class="grpAllQuestions">Voir les propositions</a>
+            {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP3')) %}
+                <h2>Vos idées et propositions pour notre budget participatif</h2>
+                <p>Votez pour vos propositions préférées dans le cadre de notre budget participatif.</p>
+                <a href="{{ path('TopicDetail', { circleSlug: circle.slug, slug: topics[0].slug }) }}" class="grpAllQuestions">Voir les propositions et votez</a>
+            {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP4')) %}
+                <h2>Vos idées et propositions pour notre budget participatif</h2>
+                <p>Retrouvez les idées proposées et les votes reçus pour notre budget participatif.</p>
+                <a href="{{ path('TopicDetail', { circleSlug: circle.slug, slug: topics[0].slug }) }}" class="grpAllQuestions">Voir les propositions</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="grpChaptersList">
+            <h1>La liste des sujets</h1>
+            <h2>sur lesquels {{ circle.PCOwner }} souhaite connaître vos propositions</h2>
+            {% for topic in topics %}
+                <div class="grpChaptersListItem">
+                    <div class="grpCharterImg">
+                        <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}">
+                            <span>{{ topic.title }}</span>
+                            {% if topic.fileName %}
+                                <img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ topic.fileName) | imagine_filter('topic_list') }}" alt="{{ topic.title }}">
+                            {% else %}
+                                <img src="{{ asset('bundles/politizrfront/images/generic-grpConsult.jpg') }}">
+                            {% endif %}
+                        </a>
+                    </div>
+                    {{ topic | topicStats }}
+                    <p>
+                        {# topic.summary | striptags | truncate(70, true) | purify #}
+                        <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}" class="grpKnowMore">En savoir plus</a>
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

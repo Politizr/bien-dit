@@ -40,6 +40,7 @@ use Politizr\Model\PUser;
  * @method PCircleQuery orderByPrivateAccess($order = Criteria::ASC) Order by the private_access column
  * @method PCircleQuery orderByPublicCircle($order = Criteria::ASC) Order by the public_circle column
  * @method PCircleQuery orderByOpenReaction($order = Criteria::ASC) Order by the open_reaction column
+ * @method PCircleQuery orderByStep($order = Criteria::ASC) Order by the step column
  * @method PCircleQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method PCircleQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method PCircleQuery orderBySlug($order = Criteria::ASC) Order by the slug column
@@ -59,6 +60,7 @@ use Politizr\Model\PUser;
  * @method PCircleQuery groupByPrivateAccess() Group by the private_access column
  * @method PCircleQuery groupByPublicCircle() Group by the public_circle column
  * @method PCircleQuery groupByOpenReaction() Group by the open_reaction column
+ * @method PCircleQuery groupByStep() Group by the step column
  * @method PCircleQuery groupByCreatedAt() Group by the created_at column
  * @method PCircleQuery groupByUpdatedAt() Group by the updated_at column
  * @method PCircleQuery groupBySlug() Group by the slug column
@@ -108,6 +110,7 @@ use Politizr\Model\PUser;
  * @method PCircle findOneByPrivateAccess(boolean $private_access) Return the first PCircle filtered by the private_access column
  * @method PCircle findOneByPublicCircle(boolean $public_circle) Return the first PCircle filtered by the public_circle column
  * @method PCircle findOneByOpenReaction(boolean $open_reaction) Return the first PCircle filtered by the open_reaction column
+ * @method PCircle findOneByStep(int $step) Return the first PCircle filtered by the step column
  * @method PCircle findOneByCreatedAt(string $created_at) Return the first PCircle filtered by the created_at column
  * @method PCircle findOneByUpdatedAt(string $updated_at) Return the first PCircle filtered by the updated_at column
  * @method PCircle findOneBySlug(string $slug) Return the first PCircle filtered by the slug column
@@ -127,6 +130,7 @@ use Politizr\Model\PUser;
  * @method array findByPrivateAccess(boolean $private_access) Return PCircle objects filtered by the private_access column
  * @method array findByPublicCircle(boolean $public_circle) Return PCircle objects filtered by the public_circle column
  * @method array findByOpenReaction(boolean $open_reaction) Return PCircle objects filtered by the open_reaction column
+ * @method array findByStep(int $step) Return PCircle objects filtered by the step column
  * @method array findByCreatedAt(string $created_at) Return PCircle objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return PCircle objects filtered by the updated_at column
  * @method array findBySlug(string $slug) Return PCircle objects filtered by the slug column
@@ -242,7 +246,7 @@ abstract class BasePCircleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `private_access`, `public_circle`, `open_reaction`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_circle` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `private_access`, `public_circle`, `open_reaction`, `step`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_circle` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -768,6 +772,48 @@ abstract class BasePCircleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCirclePeer::OPEN_REACTION, $openReaction, $comparison);
+    }
+
+    /**
+     * Filter the query on the step column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByStep(1234); // WHERE step = 1234
+     * $query->filterByStep(array(12, 34)); // WHERE step IN (12, 34)
+     * $query->filterByStep(array('min' => 12)); // WHERE step >= 12
+     * $query->filterByStep(array('max' => 12)); // WHERE step <= 12
+     * </code>
+     *
+     * @param     mixed $step The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function filterByStep($step = null, $comparison = null)
+    {
+        if (is_array($step)) {
+            $useMinMax = false;
+            if (isset($step['min'])) {
+                $this->addUsingAlias(PCirclePeer::STEP, $step['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($step['max'])) {
+                $this->addUsingAlias(PCirclePeer::STEP, $step['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PCirclePeer::STEP, $step, $comparison);
     }
 
     /**

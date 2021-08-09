@@ -126,6 +126,13 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     protected $open_reaction;
 
     /**
+     * The value for the step field.
+     * Note: this column has a database default value of: 1
+     * @var        int
+     */
+    protected $step;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -186,6 +193,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         $this->private_access = false;
         $this->public_circle = true;
         $this->open_reaction = false;
+        $this->step = 1;
     }
 
     /**
@@ -350,6 +358,17 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     {
 
         return $this->open_reaction;
+    }
+
+    /**
+     * Get the [step] column value.
+     *
+     * @return int
+     */
+    public function getStep()
+    {
+
+        return $this->step;
     }
 
     /**
@@ -829,6 +848,27 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     } // setOpenReaction()
 
     /**
+     * Set the value of [step] column.
+     *
+     * @param  int $v new value
+     * @return PCircleArchive The current object (for fluent API support)
+     */
+    public function setStep($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->step !== $v) {
+            $this->step = $v;
+            $this->modifiedColumns[] = PCircleArchivePeer::STEP;
+        }
+
+
+        return $this;
+    } // setStep()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -961,6 +1001,10 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                 return false;
             }
 
+            if ($this->step !== 1) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -997,11 +1041,12 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             $this->private_access = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
             $this->public_circle = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
             $this->open_reaction = ($row[$startcol + 13] !== null) ? (boolean) $row[$startcol + 13] : null;
-            $this->created_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->updated_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-            $this->slug = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->sortable_rank = ($row[$startcol + 17] !== null) ? (int) $row[$startcol + 17] : null;
-            $this->archived_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->step = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
+            $this->created_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->updated_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->slug = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->sortable_rank = ($row[$startcol + 18] !== null) ? (int) $row[$startcol + 18] : null;
+            $this->archived_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1011,7 +1056,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 19; // 19 = PCircleArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 20; // 20 = PCircleArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PCircleArchive object", $e);
@@ -1261,6 +1306,9 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCircleArchivePeer::OPEN_REACTION)) {
             $modifiedColumns[':p' . $index++]  = '`open_reaction`';
         }
+        if ($this->isColumnModified(PCircleArchivePeer::STEP)) {
+            $modifiedColumns[':p' . $index++]  = '`step`';
+        }
         if ($this->isColumnModified(PCircleArchivePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`created_at`';
         }
@@ -1328,6 +1376,9 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                         break;
                     case '`open_reaction`':
                         $stmt->bindValue($identifier, (int) $this->open_reaction, PDO::PARAM_INT);
+                        break;
+                    case '`step`':
+                        $stmt->bindValue($identifier, $this->step, PDO::PARAM_INT);
                         break;
                     case '`created_at`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1440,18 +1491,21 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                 return $this->getOpenReaction();
                 break;
             case 14:
-                return $this->getCreatedAt();
+                return $this->getStep();
                 break;
             case 15:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 16:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 17:
-                return $this->getSortableRank();
+                return $this->getSlug();
                 break;
             case 18:
+                return $this->getSortableRank();
+                break;
+            case 19:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1496,11 +1550,12 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             $keys[11] => $this->getPrivateAccess(),
             $keys[12] => $this->getPublicCircle(),
             $keys[13] => $this->getOpenReaction(),
-            $keys[14] => $this->getCreatedAt(),
-            $keys[15] => $this->getUpdatedAt(),
-            $keys[16] => $this->getSlug(),
-            $keys[17] => $this->getSortableRank(),
-            $keys[18] => $this->getArchivedAt(),
+            $keys[14] => $this->getStep(),
+            $keys[15] => $this->getCreatedAt(),
+            $keys[16] => $this->getUpdatedAt(),
+            $keys[17] => $this->getSlug(),
+            $keys[18] => $this->getSortableRank(),
+            $keys[19] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1583,18 +1638,21 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                 $this->setOpenReaction($value);
                 break;
             case 14:
-                $this->setCreatedAt($value);
+                $this->setStep($value);
                 break;
             case 15:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 16:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 17:
-                $this->setSortableRank($value);
+                $this->setSlug($value);
                 break;
             case 18:
+                $this->setSortableRank($value);
+                break;
+            case 19:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1635,11 +1693,12 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[11], $arr)) $this->setPrivateAccess($arr[$keys[11]]);
         if (array_key_exists($keys[12], $arr)) $this->setPublicCircle($arr[$keys[12]]);
         if (array_key_exists($keys[13], $arr)) $this->setOpenReaction($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setCreatedAt($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setUpdatedAt($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setSlug($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setSortableRank($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setArchivedAt($arr[$keys[18]]);
+        if (array_key_exists($keys[14], $arr)) $this->setStep($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setCreatedAt($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setUpdatedAt($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setSlug($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setSortableRank($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setArchivedAt($arr[$keys[19]]);
     }
 
     /**
@@ -1665,6 +1724,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCircleArchivePeer::PRIVATE_ACCESS)) $criteria->add(PCircleArchivePeer::PRIVATE_ACCESS, $this->private_access);
         if ($this->isColumnModified(PCircleArchivePeer::PUBLIC_CIRCLE)) $criteria->add(PCircleArchivePeer::PUBLIC_CIRCLE, $this->public_circle);
         if ($this->isColumnModified(PCircleArchivePeer::OPEN_REACTION)) $criteria->add(PCircleArchivePeer::OPEN_REACTION, $this->open_reaction);
+        if ($this->isColumnModified(PCircleArchivePeer::STEP)) $criteria->add(PCircleArchivePeer::STEP, $this->step);
         if ($this->isColumnModified(PCircleArchivePeer::CREATED_AT)) $criteria->add(PCircleArchivePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(PCircleArchivePeer::UPDATED_AT)) $criteria->add(PCircleArchivePeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(PCircleArchivePeer::SLUG)) $criteria->add(PCircleArchivePeer::SLUG, $this->slug);
@@ -1746,6 +1806,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         $copyObj->setPrivateAccess($this->getPrivateAccess());
         $copyObj->setPublicCircle($this->getPublicCircle());
         $copyObj->setOpenReaction($this->getOpenReaction());
+        $copyObj->setStep($this->getStep());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setSlug($this->getSlug());
@@ -1816,6 +1877,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         $this->private_access = null;
         $this->public_circle = null;
         $this->open_reaction = null;
+        $this->step = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->slug = null;

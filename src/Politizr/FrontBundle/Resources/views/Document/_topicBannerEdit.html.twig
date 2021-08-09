@@ -3,7 +3,11 @@
         <div class="txtTopic">
             <div class="txtTopic">
                 <i class="icon-grp"></i>{{ owner.title }}
-                <span>Rédigez ici vos opinions ou questions sur le sujet de <b>{% if nbTopics > 1 %}"{{ topic.title }}"{% else %}"{{ circle.title }}"{% endif %}</b>.</span>
+                {% if (circle.PCircleTypeId == constant('Politizr\\Constant\\CircleConstants::CIRCLE_TYPE_STANDARD')) %}
+                    <span>Rédigez ici vos opinions ou questions sur le sujet de <b>{% if nbTopics > 1 %}"{{ topic.title }}"{% else %}"{{ circle.title }}"{% endif %}</b>.</span>
+                {% elseif (circle.PCircleTypeId == constant('Politizr\\Constant\\CircleConstants::CIRCLE_TYPE_BUDGETPART')) %}
+                    <span>Rédigez ici vos propositions pour le budget participatif{% if nbTopics > 1 %} sur le sujet <b>"{{ topic.title }}"</b>{% endif %}.</span>
+                {% endif %}
             </div>
         </div>
     </div>

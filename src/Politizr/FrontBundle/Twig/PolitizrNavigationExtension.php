@@ -137,7 +137,6 @@ class PolitizrNavigationExtension extends \Twig_Extension
 
     /**
      * Compute & display contextualized link for "je m'exprime"
-     * @todo refactoring manage circle w. 1 topic
      *
      * @param PDocumentInterface|PCTopic $subject
      * @return string
@@ -171,7 +170,7 @@ class PolitizrNavigationExtension extends \Twig_Extension
 
         if ($topic) {
             $circle = $topic->getPCircle();
-            if ($circle->getReadOnly()) {
+            if (!$circle->canCreateDebate()) {
                 $display = false;
             } else {
                 $url = $this->router->generate('DebateDraftNew', array('topic' => $topic->getUuid()));

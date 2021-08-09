@@ -12,3 +12,18 @@
         {% include "PolitizrAdminBundle:Fragment:_dropzoneTemplate.html.twig" %}
     </div>
 {% endblock %}
+
+
+{# Blocs réglages #}
+{% block form_row_open_reaction %}
+    {{ form_row(form['open_reaction']) }}
+    <i class="fa fa-info-circle" aria-hidden="true">&nbsp;Cocher si tous les utilisateurs peuvent publier des réponses.</i><br/><br/>
+{% endblock %}
+{% block form_row_read_only %}
+    {{ form_row(form['read_only']) }}
+    <i class="fa fa-info-circle" aria-hidden="true">&nbsp;Cocher si la consultation est terminée et disponible uniquement en lecture.</i><br/><br/>
+{% endblock %}
+{% block form_row_step %}
+    {{ form_row(form['step']) }}
+    <i class="fa fa-info-circle" aria-hidden="true">&nbsp;Etape du budget participatif.</i><br/><br/>
+{% endblock %}

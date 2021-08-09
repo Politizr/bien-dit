@@ -1,7 +1,22 @@
 {% if not circle.readOnly %}
-    <div class="grpIHaveAQuestion">
-        <h2>Question, avis, remarque, ou opinion...</h2>
-        <p>Engagez la discussion en vous exprimant, que ce soit pour poser une question ou donner votre avis.</p>
-        <a href="{{ path('DebateDraftNew', { topic: topic.uuid }) }}">Je m'exprime!</a>
-    </div>
+    {% if (circle.PCircleTypeId == constant('Politizr\\Constant\\CircleConstants::CIRCLE_TYPE_STANDARD')) %}
+        <div class="grpIHaveAQuestion">
+            <h2>Question, avis, remarque, ou opinion...</h2>
+            <p>Engagez la discussion en vous exprimant, que ce soit pour poser une question ou donner votre avis.</p>
+            <a href="{{ path('DebateDraftNew', { topic: topic.uuid }) }}">Je m'exprime</a>
+        </div>
+    {% elseif (circle.PCircleTypeId == constant('Politizr\\Constant\\CircleConstants::CIRCLE_TYPE_BUDGETPART')) %}
+        {% if (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP1')) %}
+            <div class="grpIHaveAQuestion">
+                <h2>Vos idées et propositions...</h2>
+                <p>Proposez vos idées et propositions pour exploiter notre budget participatif.</p>
+                <a href="{{ path('DebateDraftNew', { topic: topic.uuid }) }}">Je m'exprime</a>
+            </div>
+        {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP3')) %}
+            <div class="grpIHaveAQuestion">
+                <h2>Vos idées et propositions...</h2>
+                <p>Votez pour vos propositions préférées dans le cadre de notre budget participatif.</p>
+            </div>
+        {% endif %}
+    {% endif %}
 {% endif %}

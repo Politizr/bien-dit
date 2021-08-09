@@ -40,6 +40,8 @@ params:
             label:          Accès public
         open_reaction:
             label:          Réactions ouvertes
+        step:
+            label:          Etape
         created_at:
             label:          Création
         updated_at:
@@ -103,7 +105,8 @@ builders:
                     "Offre":                    [ p_circle_type ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
-                    "État":                     [ open_reaction, read_only, online ]
+                    "Réglages":                 [ open_reaction, read_only, step ]
+                    "État":                     [ online ]
                     "Dates":                    [ [ created_at, updated_at ] ]
             fields:
                 block_logo_file_name:
@@ -121,7 +124,9 @@ builders:
                     addFormOptions:
                         attr:                   { class : tinymce }
                 p_circle_type:
-                    credentials:                ROLE_SYSTEM
+                    addFormOptions:
+                        disabled:               true
+                        read_only:              true
                 url:
                     credentials:                ROLE_SYSTEM
                 id:
@@ -130,6 +135,13 @@ builders:
                 uuid:
                     addFormOptions:
                         read_only:              true
+                step:
+                    formType:                   Symfony\Component\Form\Extension\Core\Type\ChoiceType
+                    addFormOptions:
+                        multiple:               false
+                        required:               true
+                        choices:                { 'Consultation': 1, 'Étude': 2, 'Vote': 3 }
+                        choices_as_values:      true
                 created_at:
                     formType:                   datetime
                     addFormOptions:
@@ -151,7 +163,7 @@ builders:
                     "Logo":                     [ block_logo_file_name ]
                     "Texte":                    [ title, summary, description ]
                 "Contexte":
-                    "Organisation":                   [ block_p_c_owner ]
+                    "Organisation":             [ block_p_c_owner ]
                     "Offre":                    [ p_circle_type ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]

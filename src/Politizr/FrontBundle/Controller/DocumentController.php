@@ -283,10 +283,10 @@ class DocumentController extends Controller
             // circle security check
             $this->denyAccessUnlessGranted('topic_detail', $topic);
 
-            // circle read only?
+            // circle can create debate
             $circle = $topic->getPCircle();
-            if ($circle->getReadOnly()) {
-                throw new InconsistentDataException(sprintf('Circle %s in "read only" mode', $circle->getId()));
+            if (! $circle->canCreateDebate()) {
+                throw new InconsistentDataException(sprintf('New subject not allowed in circle %s', $circle->getId()));
             }
         }
 
@@ -413,10 +413,10 @@ class DocumentController extends Controller
             // circle security check
             $this->denyAccessUnlessGranted('topic_detail', $topic);
 
-            // circle read only?
+            // circle can create debate
             $circle = $topic->getPCircle();
-            if ($circle->getReadOnly()) {
-                throw new InconsistentDataException(sprintf('Circle %s in "read only" mode', $circle->getId()));
+            if (! $circle->canCreateReaction()) {
+                throw new InconsistentDataException(sprintf('New reaction not allowed in circle %s', $circle->getId()));
             }
         }
 

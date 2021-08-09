@@ -2,7 +2,12 @@
     <div id="grpBriefHeader">
         <div class="center">
             <h1>{{ topic.summary | raw }}</h1>
-            <div class="grpJeMexprime"><a href="{{ path('DebateDraftNew', { topic: topic.uuid }) }}">Je m'exprime!</a></div>
+            {% if (circle.PCircleTypeId == constant('Politizr\\Constant\\CircleConstants::CIRCLE_TYPE_STANDARD')
+                    or (circle.PCircleTypeId == constant('Politizr\\Constant\\CircleConstants::CIRCLE_TYPE_BUDGETPART') and circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP1'))
+                    ) %}
+            %}
+                <div class="grpJeMexprime"><a href="{{ path('DebateDraftNew', { topic: topic.uuid }) }}">Je m'exprime!</a></div>
+            {% endif %}
             {% if topic.description is not empty %}
                 <div class="showBriefLink" action="showBrief">Afficher</div>
                 <div class="hideBriefLink" action="hideBrief">Masquer</div>

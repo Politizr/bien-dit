@@ -1,0 +1,35 @@
+<div id="grpFooter"{% if app.user %} class="grpFooterLogged"{% endif %}>
+    <h1>Comment participer ?</h1>
+    <div class="grpFooterCol">
+        <img src="{{ asset('bundles/politizrfront/images/grp_footerPost.png') }}">
+        <h2>
+            <b>Étape 1</b>
+            Idées et propositions... La parole est à vous!
+        </h2>
+    </div>
+    <div class="grpFooterCol">
+        <img src="{{ asset('bundles/politizrfront/images/grp_footerComment.png') }}">
+        <h2>
+            <b>Étape 2</b>
+            Consultez l'ensemble des propositions en attendant le vote.
+        </h2>
+    </div>
+    <div class="grpFooterCol">
+        <img src="{{ asset('bundles/politizrfront/images/grp_footerNote.png') }}">
+        <h2>
+            <b>Etape 3</b>
+            Votez pour les propositions les plus pertinentes.
+        </h2>
+    </div>
+    {% if not app.user %}
+        <div class="grpFooterMentions">
+            {% if global.access == 'public' %}
+                La participation à ce groupe est réservée aux utilisateurs inscrits.<br>
+                <a href="{{ path('Inscription') }}">inscrivez-vous</a> pour rejoindre les discussions!
+            {% else %}
+                La participation à ce groupe est réservée aux utilisateurs invités par {{ client.name }}.<br>
+            {% endif %}
+        </div>
+    {% endif %}
+    {% include 'PolitizrFrontBundle:Circle:_footerLinks.html.twig' with { 'circle': circle } only %}
+</div>

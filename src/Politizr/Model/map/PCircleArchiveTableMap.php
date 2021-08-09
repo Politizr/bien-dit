@@ -56,6 +56,7 @@ class PCircleArchiveTableMap extends TableMap
         $this->addColumn('private_access', 'PrivateAccess', 'BOOLEAN', false, 1, false);
         $this->addColumn('public_circle', 'PublicCircle', 'BOOLEAN', false, 1, true);
         $this->addColumn('open_reaction', 'OpenReaction', 'BOOLEAN', false, 1, false);
+        $this->addColumn('step', 'Step', 'INTEGER', false, null, 1);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);

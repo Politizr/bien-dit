@@ -39,7 +39,7 @@ class DocumentConstants
     const NOTATION_REASON_VOTE_NEG_DONE = 3;
     const NOTATION_REASON_DOC_OWNER = 4;
     const NOTATION_REASON_NO_REPUTATION = 5;
-    const NOTATION_REASON_CIRCLE_READ_ONLY = 6;
+    const NOTATION_REASON_CIRCLE_CONTEXT = 6;
 
     // ******************************************************* //
     const PRIVATE_DOC_LENGTH = 150;

@@ -12,6 +12,7 @@ use Politizr\Constant\LocalizationConstants;
 use Politizr\Constant\ReputationConstants;
 use Politizr\Constant\TagConstants;
 use Politizr\Constant\DocumentConstants;
+use Politizr\Constant\CircleConstants;
 
 use Politizr\Model\PUser;
 use Politizr\Model\PDocumentInterface;
@@ -272,8 +273,8 @@ class UserService
             $topic = $debate->getPCTopic();
             $circle = $topic->getPCircle();
 
-            // topic is in a circle which is "read only"
-            if ($circle->getReadOnly()) {
+            // topic is in a circle which is "read only" or step 2 / 3 in budgetpart
+            if (!$circle->canCreateDebate()) {
                 if ($reason) {
                     return DocumentConstants::REASON_CIRCLE_READ_ONLY;
                 } else {
@@ -330,7 +331,7 @@ class UserService
             $circle = $topic->getPCircle();
 
             // topic is in a circle which is "read only"
-            if ($circle->getReadOnly()) {
+            if (!$circle->canCreateReaction()) {
                 if ($reason) {
                     return DocumentConstants::REASON_CIRCLE_READ_ONLY;
                 } else {
@@ -474,7 +475,7 @@ class UserService
             $circle = $topic->getPCircle();
 
             // topic is in a circle which is "read only"
-            if ($circle->getReadOnly()) {
+            if (!$circle->canCreateComment()) {
                 if ($reason) {
                     return DocumentConstants::REASON_CIRCLE_READ_ONLY;
                 } else {
@@ -538,11 +539,11 @@ class UserService
             $minReputationScore = ReputationConstants::ACTION_COMMENT_NOTE_NEG;
         }
 
-        // document in circle's in read only mode
+        // circle context
         $circle = $document->getCircle();
-        if ($circle && $circle->getReadOnly()) {
+        if ($circle && !$circle->canNote($document)) {
             if ($reason) {
-                return DocumentConstants::NOTATION_REASON_CIRCLE_READ_ONLY;
+                return DocumentConstants::NOTATION_REASON_CIRCLE_CONTEXT;
             } else {
                 return false;
             }

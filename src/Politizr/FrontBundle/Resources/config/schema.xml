@@ -1445,6 +1445,7 @@
         <column name="private_access" type="boolean" default="false" />
         <column name="public_circle" type="boolean" default="true" />
         <column name="open_reaction" type="boolean" default="false" />
+        <column name="step" type="integer" default="1" />
 
         <foreign-key foreignTable="p_c_owner" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="p_c_owner_id" foreign="id" />
