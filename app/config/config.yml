@@ -304,8 +304,8 @@ admingenerator_generator:
 
 # Default bundle configuration
 admingenerator_form_extensions:
-    upload_manager:           aucun
-    image_manipulator:        aucun
+    upload_manager:           ~
+    image_manipulator:        ~
     twig:
         use_form_resources:     true
     # collection_upload:
