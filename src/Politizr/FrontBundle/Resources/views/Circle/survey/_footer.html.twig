@@ -1,0 +1,38 @@
+<div id="grpFooter" class="grpFooterLogged">
+    <h1>Comment participer ?</h1>
+    <div class="grpFooterCol">
+        <img src="{{ asset('bundles/politizrfront/images/grp_footerAccount.png') }}">
+        <h2>
+            {% if global.access == 'public' %}
+                <b>Inscrivez-vous</b>
+                Gratuitement et en quelques clics.
+            {% else %}
+                <b>Connectez-vous</b>
+                Contactez {{ client.name }} pour connaître les modalités de participation.
+            {% endif %}
+        </h2>
+    </div>
+    <div class="grpFooterCol">
+        <img src="{{ asset('bundles/politizrfront/images/grp_footerPost.png') }}">
+        <h2>
+            <b>Répondez aux questions</b>
+            Partagez votre point de vue en répondant à notre questionnaire.
+        </h2>
+    </div>
+    <div class="grpFooterCol">
+        <img src="{{ asset('bundles/politizrfront/images/grp_footerComment.png') }}">
+        <h2>
+            <b>Restez informé</b>
+            Dès la fin de la consultation, {{ client.name }} communiquera les résultats aux personnes inscrites.
+        </h2>
+    </div>
+    <div class="grpFooterMentions">
+        {% if global.access == 'public' %}
+            La participation à ce groupe est réservée aux utilisateurs inscrits.<br>
+            <a href="{{ path('Inscription') }}">inscrivez-vous</a> pour rejoindre les discussions!
+        {% else %}
+            La participation à ce groupe est réservée aux utilisateurs invités par {{ client.name }}.<br>
+        {% endif %}
+    </div>
+    {% include 'PolitizrFrontBundle:Circle:_footerLinks.html.twig' with { 'circle': circle } only %}
+</div>

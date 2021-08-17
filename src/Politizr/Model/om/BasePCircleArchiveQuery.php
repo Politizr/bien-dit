@@ -22,6 +22,7 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PCircleArchiveQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PCircleArchiveQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method PCircleArchiveQuery orderByEmbedCode($order = Criteria::ASC) Order by the embed_code column
  * @method PCircleArchiveQuery orderByLogoFileName($order = Criteria::ASC) Order by the logo_file_name column
  * @method PCircleArchiveQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method PCircleArchiveQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -43,6 +44,7 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchiveQuery groupByTitle() Group by the title column
  * @method PCircleArchiveQuery groupBySummary() Group by the summary column
  * @method PCircleArchiveQuery groupByDescription() Group by the description column
+ * @method PCircleArchiveQuery groupByEmbedCode() Group by the embed_code column
  * @method PCircleArchiveQuery groupByLogoFileName() Group by the logo_file_name column
  * @method PCircleArchiveQuery groupByUrl() Group by the url column
  * @method PCircleArchiveQuery groupByOnline() Group by the online column
@@ -70,6 +72,7 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method PCircleArchive findOneByTitle(string $title) Return the first PCircleArchive filtered by the title column
  * @method PCircleArchive findOneBySummary(string $summary) Return the first PCircleArchive filtered by the summary column
  * @method PCircleArchive findOneByDescription(string $description) Return the first PCircleArchive filtered by the description column
+ * @method PCircleArchive findOneByEmbedCode(string $embed_code) Return the first PCircleArchive filtered by the embed_code column
  * @method PCircleArchive findOneByLogoFileName(string $logo_file_name) Return the first PCircleArchive filtered by the logo_file_name column
  * @method PCircleArchive findOneByUrl(string $url) Return the first PCircleArchive filtered by the url column
  * @method PCircleArchive findOneByOnline(boolean $online) Return the first PCircleArchive filtered by the online column
@@ -91,6 +94,7 @@ use Politizr\Model\PCircleArchiveQuery;
  * @method array findByTitle(string $title) Return PCircleArchive objects filtered by the title column
  * @method array findBySummary(string $summary) Return PCircleArchive objects filtered by the summary column
  * @method array findByDescription(string $description) Return PCircleArchive objects filtered by the description column
+ * @method array findByEmbedCode(string $embed_code) Return PCircleArchive objects filtered by the embed_code column
  * @method array findByLogoFileName(string $logo_file_name) Return PCircleArchive objects filtered by the logo_file_name column
  * @method array findByUrl(string $url) Return PCircleArchive objects filtered by the url column
  * @method array findByOnline(boolean $online) Return PCircleArchive objects filtered by the online column
@@ -209,7 +213,7 @@ abstract class BasePCircleArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `private_access`, `public_circle`, `open_reaction`, `step`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_circle_archive` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `embed_code`, `logo_file_name`, `url`, `online`, `read_only`, `private_access`, `public_circle`, `open_reaction`, `step`, `created_at`, `updated_at`, `slug`, `sortable_rank`, `archived_at` FROM `p_circle_archive` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -538,6 +542,35 @@ abstract class BasePCircleArchiveQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCircleArchivePeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the embed_code column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmbedCode('fooValue');   // WHERE embed_code = 'fooValue'
+     * $query->filterByEmbedCode('%fooValue%'); // WHERE embed_code LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $embedCode The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleArchiveQuery The current query, for fluid interface
+     */
+    public function filterByEmbedCode($embedCode = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($embedCode)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $embedCode)) {
+                $embedCode = str_replace('*', '%', $embedCode);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PCircleArchivePeer::EMBED_CODE, $embedCode, $comparison);
     }
 
     /**

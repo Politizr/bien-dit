@@ -1,14 +1,14 @@
-    <div class="grpBudgetpartStep">
-        {% if (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP1')) %}
-            <h3>Étape 1 : idées et propositions</h3>
-        {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP2')) %}
-            <h3>Étape 2 : étude des idées et propositions</h3>
-        {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP3')) %}
-            <h3>Étape 3 : vote sur les propositions</h3>
-        {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP4')) %}
-            <h3>Étape 4 : fin de la consultation</h3>
-        {% endif %}
-    </div>
+<div class="grpBudgetpartStep">
+    {% if (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP1')) %}
+        <h3>Étape 1 : idées et propositions</h3>
+    {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP2')) %}
+        <h3>Étape 2 : étude des idées et propositions</h3>
+    {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP3')) %}
+        <h3>Étape 3 : vote sur les propositions</h3>
+    {% elseif (circle.step == constant('Politizr\\Constant\\CircleConstants::CIRCLE_BUDGETPART_STEP4')) %}
+        <h3>Étape 4 : fin de la consultation</h3>
+    {% endif %}
+</div>
 <div class="grpCard">
     <div class="grpGlobalIntro">
         {{ circle.description | raw }}

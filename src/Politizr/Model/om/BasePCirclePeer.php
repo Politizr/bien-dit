@@ -36,13 +36,13 @@ abstract class BasePCirclePeer
     const TM_CLASS = 'Politizr\\Model\\map\\PCircleTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 19;
+    const NUM_COLUMNS = 20;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 19;
+    const NUM_HYDRATE_COLUMNS = 20;
 
     /** the column name for the id field */
     const ID = 'p_circle.id';
@@ -64,6 +64,9 @@ abstract class BasePCirclePeer
 
     /** the column name for the description field */
     const DESCRIPTION = 'p_circle.description';
+
+    /** the column name for the embed_code field */
+    const EMBED_CODE = 'p_circle.embed_code';
 
     /** the column name for the logo_file_name field */
     const LOGO_FILE_NAME = 'p_circle.logo_file_name';
@@ -132,12 +135,12 @@ abstract class BasePCirclePeer
      * e.g. PCirclePeer::$fieldNames[PCirclePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PCOwnerId', 'PCircleTypeId', 'Title', 'Summary', 'Description', 'LogoFileName', 'Url', 'Online', 'ReadOnly', 'PrivateAccess', 'PublicCircle', 'OpenReaction', 'Step', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pCOwnerId', 'pCircleTypeId', 'title', 'summary', 'description', 'logoFileName', 'url', 'online', 'readOnly', 'privateAccess', 'publicCircle', 'openReaction', 'step', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
-        BasePeer::TYPE_COLNAME => array (PCirclePeer::ID, PCirclePeer::UUID, PCirclePeer::P_C_OWNER_ID, PCirclePeer::P_CIRCLE_TYPE_ID, PCirclePeer::TITLE, PCirclePeer::SUMMARY, PCirclePeer::DESCRIPTION, PCirclePeer::LOGO_FILE_NAME, PCirclePeer::URL, PCirclePeer::ONLINE, PCirclePeer::READ_ONLY, PCirclePeer::PRIVATE_ACCESS, PCirclePeer::PUBLIC_CIRCLE, PCirclePeer::OPEN_REACTION, PCirclePeer::STEP, PCirclePeer::CREATED_AT, PCirclePeer::UPDATED_AT, PCirclePeer::SLUG, PCirclePeer::SORTABLE_RANK, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_C_OWNER_ID', 'P_CIRCLE_TYPE_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'LOGO_FILE_NAME', 'URL', 'ONLINE', 'READ_ONLY', 'PRIVATE_ACCESS', 'PUBLIC_CIRCLE', 'OPEN_REACTION', 'STEP', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_c_owner_id', 'p_circle_type_id', 'title', 'summary', 'description', 'logo_file_name', 'url', 'online', 'read_only', 'private_access', 'public_circle', 'open_reaction', 'step', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Uuid', 'PCOwnerId', 'PCircleTypeId', 'Title', 'Summary', 'Description', 'EmbedCode', 'LogoFileName', 'Url', 'Online', 'ReadOnly', 'PrivateAccess', 'PublicCircle', 'OpenReaction', 'Step', 'CreatedAt', 'UpdatedAt', 'Slug', 'SortableRank', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'uuid', 'pCOwnerId', 'pCircleTypeId', 'title', 'summary', 'description', 'embedCode', 'logoFileName', 'url', 'online', 'readOnly', 'privateAccess', 'publicCircle', 'openReaction', 'step', 'createdAt', 'updatedAt', 'slug', 'sortableRank', ),
+        BasePeer::TYPE_COLNAME => array (PCirclePeer::ID, PCirclePeer::UUID, PCirclePeer::P_C_OWNER_ID, PCirclePeer::P_CIRCLE_TYPE_ID, PCirclePeer::TITLE, PCirclePeer::SUMMARY, PCirclePeer::DESCRIPTION, PCirclePeer::EMBED_CODE, PCirclePeer::LOGO_FILE_NAME, PCirclePeer::URL, PCirclePeer::ONLINE, PCirclePeer::READ_ONLY, PCirclePeer::PRIVATE_ACCESS, PCirclePeer::PUBLIC_CIRCLE, PCirclePeer::OPEN_REACTION, PCirclePeer::STEP, PCirclePeer::CREATED_AT, PCirclePeer::UPDATED_AT, PCirclePeer::SLUG, PCirclePeer::SORTABLE_RANK, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'UUID', 'P_C_OWNER_ID', 'P_CIRCLE_TYPE_ID', 'TITLE', 'SUMMARY', 'DESCRIPTION', 'EMBED_CODE', 'LOGO_FILE_NAME', 'URL', 'ONLINE', 'READ_ONLY', 'PRIVATE_ACCESS', 'PUBLIC_CIRCLE', 'OPEN_REACTION', 'STEP', 'CREATED_AT', 'UPDATED_AT', 'SLUG', 'SORTABLE_RANK', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'uuid', 'p_c_owner_id', 'p_circle_type_id', 'title', 'summary', 'description', 'embed_code', 'logo_file_name', 'url', 'online', 'read_only', 'private_access', 'public_circle', 'open_reaction', 'step', 'created_at', 'updated_at', 'slug', 'sortable_rank', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
     );
 
     /**
@@ -147,12 +150,12 @@ abstract class BasePCirclePeer
      * e.g. PCirclePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PCOwnerId' => 2, 'PCircleTypeId' => 3, 'Title' => 4, 'Summary' => 5, 'Description' => 6, 'LogoFileName' => 7, 'Url' => 8, 'Online' => 9, 'ReadOnly' => 10, 'PrivateAccess' => 11, 'PublicCircle' => 12, 'OpenReaction' => 13, 'Step' => 14, 'CreatedAt' => 15, 'UpdatedAt' => 16, 'Slug' => 17, 'SortableRank' => 18, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pCOwnerId' => 2, 'pCircleTypeId' => 3, 'title' => 4, 'summary' => 5, 'description' => 6, 'logoFileName' => 7, 'url' => 8, 'online' => 9, 'readOnly' => 10, 'privateAccess' => 11, 'publicCircle' => 12, 'openReaction' => 13, 'step' => 14, 'createdAt' => 15, 'updatedAt' => 16, 'slug' => 17, 'sortableRank' => 18, ),
-        BasePeer::TYPE_COLNAME => array (PCirclePeer::ID => 0, PCirclePeer::UUID => 1, PCirclePeer::P_C_OWNER_ID => 2, PCirclePeer::P_CIRCLE_TYPE_ID => 3, PCirclePeer::TITLE => 4, PCirclePeer::SUMMARY => 5, PCirclePeer::DESCRIPTION => 6, PCirclePeer::LOGO_FILE_NAME => 7, PCirclePeer::URL => 8, PCirclePeer::ONLINE => 9, PCirclePeer::READ_ONLY => 10, PCirclePeer::PRIVATE_ACCESS => 11, PCirclePeer::PUBLIC_CIRCLE => 12, PCirclePeer::OPEN_REACTION => 13, PCirclePeer::STEP => 14, PCirclePeer::CREATED_AT => 15, PCirclePeer::UPDATED_AT => 16, PCirclePeer::SLUG => 17, PCirclePeer::SORTABLE_RANK => 18, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_C_OWNER_ID' => 2, 'P_CIRCLE_TYPE_ID' => 3, 'TITLE' => 4, 'SUMMARY' => 5, 'DESCRIPTION' => 6, 'LOGO_FILE_NAME' => 7, 'URL' => 8, 'ONLINE' => 9, 'READ_ONLY' => 10, 'PRIVATE_ACCESS' => 11, 'PUBLIC_CIRCLE' => 12, 'OPEN_REACTION' => 13, 'STEP' => 14, 'CREATED_AT' => 15, 'UPDATED_AT' => 16, 'SLUG' => 17, 'SORTABLE_RANK' => 18, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_c_owner_id' => 2, 'p_circle_type_id' => 3, 'title' => 4, 'summary' => 5, 'description' => 6, 'logo_file_name' => 7, 'url' => 8, 'online' => 9, 'read_only' => 10, 'private_access' => 11, 'public_circle' => 12, 'open_reaction' => 13, 'step' => 14, 'created_at' => 15, 'updated_at' => 16, 'slug' => 17, 'sortable_rank' => 18, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Uuid' => 1, 'PCOwnerId' => 2, 'PCircleTypeId' => 3, 'Title' => 4, 'Summary' => 5, 'Description' => 6, 'EmbedCode' => 7, 'LogoFileName' => 8, 'Url' => 9, 'Online' => 10, 'ReadOnly' => 11, 'PrivateAccess' => 12, 'PublicCircle' => 13, 'OpenReaction' => 14, 'Step' => 15, 'CreatedAt' => 16, 'UpdatedAt' => 17, 'Slug' => 18, 'SortableRank' => 19, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'uuid' => 1, 'pCOwnerId' => 2, 'pCircleTypeId' => 3, 'title' => 4, 'summary' => 5, 'description' => 6, 'embedCode' => 7, 'logoFileName' => 8, 'url' => 9, 'online' => 10, 'readOnly' => 11, 'privateAccess' => 12, 'publicCircle' => 13, 'openReaction' => 14, 'step' => 15, 'createdAt' => 16, 'updatedAt' => 17, 'slug' => 18, 'sortableRank' => 19, ),
+        BasePeer::TYPE_COLNAME => array (PCirclePeer::ID => 0, PCirclePeer::UUID => 1, PCirclePeer::P_C_OWNER_ID => 2, PCirclePeer::P_CIRCLE_TYPE_ID => 3, PCirclePeer::TITLE => 4, PCirclePeer::SUMMARY => 5, PCirclePeer::DESCRIPTION => 6, PCirclePeer::EMBED_CODE => 7, PCirclePeer::LOGO_FILE_NAME => 8, PCirclePeer::URL => 9, PCirclePeer::ONLINE => 10, PCirclePeer::READ_ONLY => 11, PCirclePeer::PRIVATE_ACCESS => 12, PCirclePeer::PUBLIC_CIRCLE => 13, PCirclePeer::OPEN_REACTION => 14, PCirclePeer::STEP => 15, PCirclePeer::CREATED_AT => 16, PCirclePeer::UPDATED_AT => 17, PCirclePeer::SLUG => 18, PCirclePeer::SORTABLE_RANK => 19, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'UUID' => 1, 'P_C_OWNER_ID' => 2, 'P_CIRCLE_TYPE_ID' => 3, 'TITLE' => 4, 'SUMMARY' => 5, 'DESCRIPTION' => 6, 'EMBED_CODE' => 7, 'LOGO_FILE_NAME' => 8, 'URL' => 9, 'ONLINE' => 10, 'READ_ONLY' => 11, 'PRIVATE_ACCESS' => 12, 'PUBLIC_CIRCLE' => 13, 'OPEN_REACTION' => 14, 'STEP' => 15, 'CREATED_AT' => 16, 'UPDATED_AT' => 17, 'SLUG' => 18, 'SORTABLE_RANK' => 19, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'uuid' => 1, 'p_c_owner_id' => 2, 'p_circle_type_id' => 3, 'title' => 4, 'summary' => 5, 'description' => 6, 'embed_code' => 7, 'logo_file_name' => 8, 'url' => 9, 'online' => 10, 'read_only' => 11, 'private_access' => 12, 'public_circle' => 13, 'open_reaction' => 14, 'step' => 15, 'created_at' => 16, 'updated_at' => 17, 'slug' => 18, 'sortable_rank' => 19, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
     );
 
     /**
@@ -233,6 +236,7 @@ abstract class BasePCirclePeer
             $criteria->addSelectColumn(PCirclePeer::TITLE);
             $criteria->addSelectColumn(PCirclePeer::SUMMARY);
             $criteria->addSelectColumn(PCirclePeer::DESCRIPTION);
+            $criteria->addSelectColumn(PCirclePeer::EMBED_CODE);
             $criteria->addSelectColumn(PCirclePeer::LOGO_FILE_NAME);
             $criteria->addSelectColumn(PCirclePeer::URL);
             $criteria->addSelectColumn(PCirclePeer::ONLINE);
@@ -253,6 +257,7 @@ abstract class BasePCirclePeer
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.summary');
             $criteria->addSelectColumn($alias . '.description');
+            $criteria->addSelectColumn($alias . '.embed_code');
             $criteria->addSelectColumn($alias . '.logo_file_name');
             $criteria->addSelectColumn($alias . '.url');
             $criteria->addSelectColumn($alias . '.online');

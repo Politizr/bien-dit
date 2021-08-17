@@ -165,6 +165,8 @@ class PolitizrCircleExtension extends \Twig_Extension
         $templatePath = 'Circle\\standard';
         if ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_BUDGETPART) {
             $templatePath = 'Circle\\budgetpart';
+        } elseif ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_SURVEY) {
+            $templatePath = 'Circle\\survey';
         }
 
         // Construction du rendu du tag
@@ -256,6 +258,8 @@ class PolitizrCircleExtension extends \Twig_Extension
         $templatePath = 'Circle\\standard';
         if ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_BUDGETPART) {
             $templatePath = 'Circle\\budgetpart';
+        } elseif ($circle->getPCircleTypeId() == CircleConstants::CIRCLE_TYPE_SURVEY) {
+            $templatePath = 'Circle\\survey';
         }
 
         // Construction du rendu du tag

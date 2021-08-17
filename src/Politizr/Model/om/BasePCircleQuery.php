@@ -33,6 +33,7 @@ use Politizr\Model\PUser;
  * @method PCircleQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method PCircleQuery orderBySummary($order = Criteria::ASC) Order by the summary column
  * @method PCircleQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method PCircleQuery orderByEmbedCode($order = Criteria::ASC) Order by the embed_code column
  * @method PCircleQuery orderByLogoFileName($order = Criteria::ASC) Order by the logo_file_name column
  * @method PCircleQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method PCircleQuery orderByOnline($order = Criteria::ASC) Order by the online column
@@ -53,6 +54,7 @@ use Politizr\Model\PUser;
  * @method PCircleQuery groupByTitle() Group by the title column
  * @method PCircleQuery groupBySummary() Group by the summary column
  * @method PCircleQuery groupByDescription() Group by the description column
+ * @method PCircleQuery groupByEmbedCode() Group by the embed_code column
  * @method PCircleQuery groupByLogoFileName() Group by the logo_file_name column
  * @method PCircleQuery groupByUrl() Group by the url column
  * @method PCircleQuery groupByOnline() Group by the online column
@@ -103,6 +105,7 @@ use Politizr\Model\PUser;
  * @method PCircle findOneByTitle(string $title) Return the first PCircle filtered by the title column
  * @method PCircle findOneBySummary(string $summary) Return the first PCircle filtered by the summary column
  * @method PCircle findOneByDescription(string $description) Return the first PCircle filtered by the description column
+ * @method PCircle findOneByEmbedCode(string $embed_code) Return the first PCircle filtered by the embed_code column
  * @method PCircle findOneByLogoFileName(string $logo_file_name) Return the first PCircle filtered by the logo_file_name column
  * @method PCircle findOneByUrl(string $url) Return the first PCircle filtered by the url column
  * @method PCircle findOneByOnline(boolean $online) Return the first PCircle filtered by the online column
@@ -123,6 +126,7 @@ use Politizr\Model\PUser;
  * @method array findByTitle(string $title) Return PCircle objects filtered by the title column
  * @method array findBySummary(string $summary) Return PCircle objects filtered by the summary column
  * @method array findByDescription(string $description) Return PCircle objects filtered by the description column
+ * @method array findByEmbedCode(string $embed_code) Return PCircle objects filtered by the embed_code column
  * @method array findByLogoFileName(string $logo_file_name) Return PCircle objects filtered by the logo_file_name column
  * @method array findByUrl(string $url) Return PCircle objects filtered by the url column
  * @method array findByOnline(boolean $online) Return PCircle objects filtered by the online column
@@ -246,7 +250,7 @@ abstract class BasePCircleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `logo_file_name`, `url`, `online`, `read_only`, `private_access`, `public_circle`, `open_reaction`, `step`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_circle` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `uuid`, `p_c_owner_id`, `p_circle_type_id`, `title`, `summary`, `description`, `embed_code`, `logo_file_name`, `url`, `online`, `read_only`, `private_access`, `public_circle`, `open_reaction`, `step`, `created_at`, `updated_at`, `slug`, `sortable_rank` FROM `p_circle` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -579,6 +583,35 @@ abstract class BasePCircleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PCirclePeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the embed_code column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmbedCode('fooValue');   // WHERE embed_code = 'fooValue'
+     * $query->filterByEmbedCode('%fooValue%'); // WHERE embed_code LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $embedCode The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PCircleQuery The current query, for fluid interface
+     */
+    public function filterByEmbedCode($embedCode = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($embedCode)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $embedCode)) {
+                $embedCode = str_replace('*', '%', $embedCode);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PCirclePeer::EMBED_CODE, $embedCode, $comparison);
     }
 
     /**

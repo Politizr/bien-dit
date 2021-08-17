@@ -1435,6 +1435,8 @@
 
         <column name="summary" type="longvarchar" />
         <column name="description" type="clob" />
+        
+        <column name="embed_code" type="longvarchar" />
 
         <column name="logo_file_name" type="varchar" size="150" />
 

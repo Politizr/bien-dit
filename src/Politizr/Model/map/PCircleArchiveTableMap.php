@@ -49,6 +49,7 @@ class PCircleArchiveTableMap extends TableMap
         $this->addColumn('title', 'Title', 'VARCHAR', false, 100, null);
         $this->addColumn('summary', 'Summary', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'CLOB', false, null, null);
+        $this->addColumn('embed_code', 'EmbedCode', 'LONGVARCHAR', false, null, null);
         $this->addColumn('logo_file_name', 'LogoFileName', 'VARCHAR', false, 150, null);
         $this->addColumn('url', 'Url', 'VARCHAR', false, 150, null);
         $this->addColumn('online', 'Online', 'BOOLEAN', false, 1, null);

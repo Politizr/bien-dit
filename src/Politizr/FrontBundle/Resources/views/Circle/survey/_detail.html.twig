@@ -1,0 +1,16 @@
+<div class="grpCard">
+    <div class="grpGlobalIntro">
+        {{ circle.description | raw }}
+    </div>
+</div>
+<div class="grpCard">
+{% if app.user and not circle.readOnly %}
+    <div class="grpSurvey">
+        {{ circle.embedCode | raw }}
+    </div>
+{% elseif not app.user %}
+    <h3>Inscrivez-vous pour participer.</h3>
+{% elseif circle.readOnly %}
+    <h3>Ce questionnaire n'est plus accessible.</h3>
+{% endif %}
+</div>

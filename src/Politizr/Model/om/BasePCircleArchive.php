@@ -81,6 +81,12 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     protected $description;
 
     /**
+     * The value for the embed_code field.
+     * @var        string
+     */
+    protected $embed_code;
+
+    /**
      * The value for the logo_file_name field.
      * @var        string
      */
@@ -281,6 +287,17 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     {
 
         return $this->description;
+    }
+
+    /**
+     * Get the [embed_code] column value.
+     *
+     * @return string
+     */
+    public function getEmbedCode()
+    {
+
+        return $this->embed_code;
     }
 
     /**
@@ -661,6 +678,27 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
     } // setDescription()
 
     /**
+     * Set the value of [embed_code] column.
+     *
+     * @param  string $v new value
+     * @return PCircleArchive The current object (for fluent API support)
+     */
+    public function setEmbedCode($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->embed_code !== $v) {
+            $this->embed_code = $v;
+            $this->modifiedColumns[] = PCircleArchivePeer::EMBED_CODE;
+        }
+
+
+        return $this;
+    } // setEmbedCode()
+
+    /**
      * Set the value of [logo_file_name] column.
      *
      * @param  string $v new value
@@ -1034,19 +1072,20 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             $this->title = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->summary = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->description = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->logo_file_name = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->url = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->online = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-            $this->read_only = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
-            $this->private_access = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
-            $this->public_circle = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
-            $this->open_reaction = ($row[$startcol + 13] !== null) ? (boolean) $row[$startcol + 13] : null;
-            $this->step = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-            $this->created_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-            $this->updated_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->slug = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->sortable_rank = ($row[$startcol + 18] !== null) ? (int) $row[$startcol + 18] : null;
-            $this->archived_at = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->embed_code = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->logo_file_name = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->url = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->online = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
+            $this->read_only = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
+            $this->private_access = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
+            $this->public_circle = ($row[$startcol + 13] !== null) ? (boolean) $row[$startcol + 13] : null;
+            $this->open_reaction = ($row[$startcol + 14] !== null) ? (boolean) $row[$startcol + 14] : null;
+            $this->step = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->created_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->updated_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->slug = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->sortable_rank = ($row[$startcol + 19] !== null) ? (int) $row[$startcol + 19] : null;
+            $this->archived_at = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1056,7 +1095,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 20; // 20 = PCircleArchivePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 21; // 21 = PCircleArchivePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PCircleArchive object", $e);
@@ -1285,6 +1324,9 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCircleArchivePeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
         }
+        if ($this->isColumnModified(PCircleArchivePeer::EMBED_CODE)) {
+            $modifiedColumns[':p' . $index++]  = '`embed_code`';
+        }
         if ($this->isColumnModified(PCircleArchivePeer::LOGO_FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`logo_file_name`';
         }
@@ -1355,6 +1397,9 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`embed_code`':
+                        $stmt->bindValue($identifier, $this->embed_code, PDO::PARAM_STR);
                         break;
                     case '`logo_file_name`':
                         $stmt->bindValue($identifier, $this->logo_file_name, PDO::PARAM_STR);
@@ -1470,42 +1515,45 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                 return $this->getDescription();
                 break;
             case 7:
-                return $this->getLogoFileName();
+                return $this->getEmbedCode();
                 break;
             case 8:
-                return $this->getUrl();
+                return $this->getLogoFileName();
                 break;
             case 9:
-                return $this->getOnline();
+                return $this->getUrl();
                 break;
             case 10:
-                return $this->getReadOnly();
+                return $this->getOnline();
                 break;
             case 11:
-                return $this->getPrivateAccess();
+                return $this->getReadOnly();
                 break;
             case 12:
-                return $this->getPublicCircle();
+                return $this->getPrivateAccess();
                 break;
             case 13:
-                return $this->getOpenReaction();
+                return $this->getPublicCircle();
                 break;
             case 14:
-                return $this->getStep();
+                return $this->getOpenReaction();
                 break;
             case 15:
-                return $this->getCreatedAt();
+                return $this->getStep();
                 break;
             case 16:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 17:
-                return $this->getSlug();
+                return $this->getUpdatedAt();
                 break;
             case 18:
-                return $this->getSortableRank();
+                return $this->getSlug();
                 break;
             case 19:
+                return $this->getSortableRank();
+                break;
+            case 20:
                 return $this->getArchivedAt();
                 break;
             default:
@@ -1543,19 +1591,20 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
             $keys[4] => $this->getTitle(),
             $keys[5] => $this->getSummary(),
             $keys[6] => $this->getDescription(),
-            $keys[7] => $this->getLogoFileName(),
-            $keys[8] => $this->getUrl(),
-            $keys[9] => $this->getOnline(),
-            $keys[10] => $this->getReadOnly(),
-            $keys[11] => $this->getPrivateAccess(),
-            $keys[12] => $this->getPublicCircle(),
-            $keys[13] => $this->getOpenReaction(),
-            $keys[14] => $this->getStep(),
-            $keys[15] => $this->getCreatedAt(),
-            $keys[16] => $this->getUpdatedAt(),
-            $keys[17] => $this->getSlug(),
-            $keys[18] => $this->getSortableRank(),
-            $keys[19] => $this->getArchivedAt(),
+            $keys[7] => $this->getEmbedCode(),
+            $keys[8] => $this->getLogoFileName(),
+            $keys[9] => $this->getUrl(),
+            $keys[10] => $this->getOnline(),
+            $keys[11] => $this->getReadOnly(),
+            $keys[12] => $this->getPrivateAccess(),
+            $keys[13] => $this->getPublicCircle(),
+            $keys[14] => $this->getOpenReaction(),
+            $keys[15] => $this->getStep(),
+            $keys[16] => $this->getCreatedAt(),
+            $keys[17] => $this->getUpdatedAt(),
+            $keys[18] => $this->getSlug(),
+            $keys[19] => $this->getSortableRank(),
+            $keys[20] => $this->getArchivedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1617,42 +1666,45 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
                 $this->setDescription($value);
                 break;
             case 7:
-                $this->setLogoFileName($value);
+                $this->setEmbedCode($value);
                 break;
             case 8:
-                $this->setUrl($value);
+                $this->setLogoFileName($value);
                 break;
             case 9:
-                $this->setOnline($value);
+                $this->setUrl($value);
                 break;
             case 10:
-                $this->setReadOnly($value);
+                $this->setOnline($value);
                 break;
             case 11:
-                $this->setPrivateAccess($value);
+                $this->setReadOnly($value);
                 break;
             case 12:
-                $this->setPublicCircle($value);
+                $this->setPrivateAccess($value);
                 break;
             case 13:
-                $this->setOpenReaction($value);
+                $this->setPublicCircle($value);
                 break;
             case 14:
-                $this->setStep($value);
+                $this->setOpenReaction($value);
                 break;
             case 15:
-                $this->setCreatedAt($value);
+                $this->setStep($value);
                 break;
             case 16:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 17:
-                $this->setSlug($value);
+                $this->setUpdatedAt($value);
                 break;
             case 18:
-                $this->setSortableRank($value);
+                $this->setSlug($value);
                 break;
             case 19:
+                $this->setSortableRank($value);
+                break;
+            case 20:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1686,19 +1738,20 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setTitle($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setSummary($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setDescription($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setLogoFileName($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setUrl($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setOnline($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setReadOnly($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setPrivateAccess($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setPublicCircle($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setOpenReaction($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setStep($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setCreatedAt($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setUpdatedAt($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setSlug($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setSortableRank($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setArchivedAt($arr[$keys[19]]);
+        if (array_key_exists($keys[7], $arr)) $this->setEmbedCode($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setLogoFileName($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setUrl($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setOnline($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setReadOnly($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setPrivateAccess($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setPublicCircle($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setOpenReaction($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setStep($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setCreatedAt($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setUpdatedAt($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setSlug($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setSortableRank($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setArchivedAt($arr[$keys[20]]);
     }
 
     /**
@@ -1717,6 +1770,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         if ($this->isColumnModified(PCircleArchivePeer::TITLE)) $criteria->add(PCircleArchivePeer::TITLE, $this->title);
         if ($this->isColumnModified(PCircleArchivePeer::SUMMARY)) $criteria->add(PCircleArchivePeer::SUMMARY, $this->summary);
         if ($this->isColumnModified(PCircleArchivePeer::DESCRIPTION)) $criteria->add(PCircleArchivePeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(PCircleArchivePeer::EMBED_CODE)) $criteria->add(PCircleArchivePeer::EMBED_CODE, $this->embed_code);
         if ($this->isColumnModified(PCircleArchivePeer::LOGO_FILE_NAME)) $criteria->add(PCircleArchivePeer::LOGO_FILE_NAME, $this->logo_file_name);
         if ($this->isColumnModified(PCircleArchivePeer::URL)) $criteria->add(PCircleArchivePeer::URL, $this->url);
         if ($this->isColumnModified(PCircleArchivePeer::ONLINE)) $criteria->add(PCircleArchivePeer::ONLINE, $this->online);
@@ -1799,6 +1853,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         $copyObj->setTitle($this->getTitle());
         $copyObj->setSummary($this->getSummary());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setEmbedCode($this->getEmbedCode());
         $copyObj->setLogoFileName($this->getLogoFileName());
         $copyObj->setUrl($this->getUrl());
         $copyObj->setOnline($this->getOnline());
@@ -1870,6 +1925,7 @@ abstract class BasePCircleArchive extends BaseObject implements Persistent
         $this->title = null;
         $this->summary = null;
         $this->description = null;
+        $this->embed_code = null;
         $this->logo_file_name = null;
         $this->url = null;
         $this->online = null;
