@@ -159,7 +159,7 @@ class PDDebate extends BasePDDebate implements PDocumentInterface
                 new NotBlank(['message' => 'Le texte de votre document ne doit pas être vide.']),
                 // new Length(['min' => 140, 'minMessage' => 'Le corps de la publication doit contenir au moins {{ limit caractères.']),
             ),
-            'tags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} thématiques.']),
+            'tags' => new Count(['max' => 5, 'maxMessage' => 'Saisissez au maximum {{ limit }} tags.']),
         );
 
         if ($geoActive) {

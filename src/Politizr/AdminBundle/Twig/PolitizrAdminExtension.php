@@ -237,7 +237,7 @@ class PolitizrAdminExtension extends \Twig_Extension
                 }
                 break;
             case ObjectTypeConstants::TYPE_TOPIC:
-                ($displayWithType)?$label = 'Discussions ':$label = '';
+                ($displayWithType)?$label = 'Thématique ':$label = '';
                 if ($idType == 'id') {
                     $subject = PCTopicQuery::create()->findPk($objectId);
                 } elseif ($idType == 'uuid') {

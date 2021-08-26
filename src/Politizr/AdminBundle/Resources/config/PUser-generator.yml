@@ -192,7 +192,7 @@ builders:
                 "Connexion":
                     "Connexion":                [ [ username, plainPassword ] ]
                 "Thématiques":
-                    "Liste des thématiques associées":            [ block_tags_public ]
+                    "Liste des tags associés":  [ block_tags_public ]
                 "Réputation":
                     "Score":                    [ block_reputation ]
                     "Badges":                   [ badges ]

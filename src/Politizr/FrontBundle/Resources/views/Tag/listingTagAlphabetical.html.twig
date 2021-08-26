@@ -5,8 +5,8 @@
 {% endif %}
 {% extends layout %}
 
-{% set metaTitle = 'Toutes les thématiques' %}
-{% set metaDescription = 'Toutes les thématiques contenant des publications sur Politizr.' %}
+{% set metaTitle = 'Tous les tags' %}
+{% set metaDescription = 'Tous les tags contenant des publications sur Politizr.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -20,7 +20,7 @@
 {% block content %}
     <div id="content">
         <div class="list">
-            <div class="pageTitle">Toutes les thématiques abordées</div>
+            <div class="pageTitle">Tous les tags utilisés</div>
             <div class="tagList">
                 {% for tag in tags %}
                     {% include 'PolitizrFrontBundle:Tag:_detail.html.twig' with { 'tag': tag } only %}
