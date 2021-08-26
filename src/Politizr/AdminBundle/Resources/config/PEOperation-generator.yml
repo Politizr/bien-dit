@@ -85,7 +85,7 @@ builders:
                     "Texte":                    [ title, description, editing_description ]
                 "Contexte":
                     "Client":                   [ p_user ]
-                "Thématiques":
+                "Tags":
                     "Tags associés":            [ block_tags ]
                 "Scope":
                     "Villes associés":          [ block_cities ]
@@ -165,7 +165,7 @@ builders:
                     "Texte":                    [ title, description, editing_description ]
                 "Contexte":
                     "Client":                   [ block_p_user ]
-                "Thématiques":
+                "Tags":
                     "Tags associés":            [ block_tags ]
                 "Scope":
                     "Villes associés":          [ block_cities ]
