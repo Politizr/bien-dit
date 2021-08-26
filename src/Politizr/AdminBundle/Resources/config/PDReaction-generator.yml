@@ -210,7 +210,7 @@ builders:
                     "Auteur":                   [ [ p_user, published_by ] ]
                     "Texte":                    [ title, description ]
                 "Contexte":
-                    "Liste des thématiques":    [ block_tags ]
+                    "Liste des tags":           [ block_tags ]
                     "Publications":             [ p_c_topic ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
@@ -320,8 +320,8 @@ builders:
                     "Médias":                   [ block_p_d_medias ]
                 "Contexte":
                     "Publications":             [ [ block_p_c_topic, block_p_d_debate, block_parent ] ]
-                    "Liste des thématiques":    [ block_tags ]
-                    "Réponses":                [ block_reactions ]
+                    "Liste des tags":           [ block_tags ]
+                    "Réponses":                 [ block_reactions ]
                     "Commentaires":             [ block_comments ]
                 "Modération":
                     "Situation":                [ moderated, moderated_partial ]

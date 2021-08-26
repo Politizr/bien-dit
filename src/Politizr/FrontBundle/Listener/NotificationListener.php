@@ -132,7 +132,7 @@ class NotificationListener
      *
      * Notifications associées à gérer:
      * - Un débat ou une réaction a été publié par un utilisateur suivi
-     * - Un débat ou une réaction contenant une thématique suivi a été publié
+     * - Un débat ou une réaction contenant un tag suivi a été publié
      * - Un débat a été publié dans un groupe auquel j'appartiens
      * - Un débat sur ma ville a été publié
      * - Un débat sur mon département (ou une ville du département) a été publié
@@ -230,7 +230,7 @@ class NotificationListener
      * - Une réaction a été publiée sur un de vos débats / une de vos réactions
      * - Une réaction a été publié par un auteur suivi
      * - Une réaction a été publié sur un débat suivi
-     * - Un débat ou une réaction contenant une thématique suivi a été publié
+     * - Un débat ou une réaction contenant un tag suivi a été publié
      * - Une réaction sur ma ville a été publié
      * - Une réaction sur mon département (ou une ville du département) a été publié
      * - Une réaction localisé sur ma région (ou un département de la région ou une ville de la région) a été publié
@@ -541,7 +541,7 @@ class NotificationListener
      * Ajout d'un tag à un profil
      *
      * Notifications associées à gérer:
-     * - Un utilisateur s'est associé une thématique suivi
+     * - Un utilisateur s'est associé un tag suivi
      *
      * @param GenericEvent
      */

@@ -43,7 +43,7 @@ params:
 builders:
     list:
         params:
-            title:                              Liste des discussions
+            title:                              Liste des thématiques
             max_per_page:                       50
             sort:                               [ sortable_rank, ASC ]
             display:                            [ file_name, title, p_circle, online, created_at ]
@@ -63,7 +63,7 @@ builders:
                 new:                            ~
     new:
         params:
-            title:                              "Création d'une discussion"
+            title:                              "Création d'une thématique"
             display:
                 "Champs principaux":            [ p_circle, title ]
             fields:
@@ -80,7 +80,7 @@ builders:
               list:                             ~
     edit:
         params:
-            title:                              "Edition de la discussion '{{ PCTopic.title }}'"
+            title:                              "Edition de la thématique '{{ PCTopic.title }}'"
             tabs:
                 "Contenu":
                     "Bandeau":                  [ block_file_name ]
@@ -125,7 +125,7 @@ builders:
                 delete:                         ~
     show:
         params:
-            title:                              "Visualisation de la discussion '{{ PCTopic.getTitle }}'"
+            title:                              "Visualisation de la thématique '{{ PCTopic.getTitle }}'"
             tabs:
                 "Contenu":
                     "Bandeau":                  [ block_file_name ]

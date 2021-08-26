@@ -106,7 +106,7 @@ class ActionsController extends BaseActionsController
                     $user->save();
                 }
 
-                $this->get('session')->getFlashBag()->add('success', 'La thématique a été modérée avec succès.');
+                $this->get('session')->getFlashBag()->add('success', 'Le tag a été modéré avec succès.');
 
                 return $this->redirect(
                     $this->generateUrl("Politizr_AdminBundle_PTag_list")

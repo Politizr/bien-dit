@@ -102,11 +102,11 @@ class XhrTag
 
         if ($tag) {
             if ($tag->getModerated()) {
-                throw new BoxErrorException('Cette thématique est modérée.');
+                throw new BoxErrorException('Ce tag est modérée.');
             }
 
             if (!$tag->getOnline()) {
-                throw new BoxErrorException('Cette thématique est hors ligne.');
+                throw new BoxErrorException('Ce tag est hors ligne.');
             }
 
             return $tag;
@@ -114,7 +114,7 @@ class XhrTag
 
         if ($newTag) {
             if (!preg_match("/^[\w\-\' ]+$/iu", $tagTitle)) {
-                throw new BoxErrorException('La thématique peut être composée de lettres, chiffres et espaces uniquement.');
+                throw new BoxErrorException('Le tag peut être composée de lettres, chiffres et espaces uniquement.');
             }
 
             $tag = $this->tagManager->createTag($tagTitle, $tagTypeId, $userId, true);
