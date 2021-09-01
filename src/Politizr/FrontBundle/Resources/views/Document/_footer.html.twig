@@ -9,6 +9,10 @@
                 En tant qu'auteur du sujet original, vous pouvez publier une réponse à cette publication.
             </span>
             {% include 'PolitizrFrontBundle:Reaction:_actionNew.html.twig' with { 'document': document, 'checkIfAuthorized': false } only %}
+        {% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_OWNER') %}
+            <span class="withActionAnswer">             
+                &nbsp;
+            </span>
         {% elseif reason == constant('Politizr\\Constant\\DocumentConstants::REASON_CIRCLE_READ_ONLY') %}
             <span class="withActionAnswer">             
                 Les contributions pour ce groupe sont désormais closes.

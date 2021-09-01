@@ -125,6 +125,26 @@ class CircleService
     }
 
     /**
+     * Get first public circle
+     * Used in global_mode "oneshot"
+     *
+     * @return PCircle
+     */
+    public function getOneCircle()
+    {
+        // $this->logger->info('*** getOneCircle');
+
+        $circle = PCircleQuery::create()
+                        ->distinct()
+                        ->filterByOnline(true)
+                        ->filterByPrivateAccess(false)
+                        ->findOne();
+
+        return $circle;
+    }
+
+
+    /**
      * Get authorized circles by user
      *
      * @param PUser $user

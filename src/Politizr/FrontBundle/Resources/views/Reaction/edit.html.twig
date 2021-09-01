@@ -67,9 +67,9 @@
                     {{ reaction | editTagTypeForm }}
                 </div>
                 <div class="docTags">
-                    <h5>3. Thématiques abordées</h5>
+                    <h5>3. Tags</h5>
                     <div class="notice">
-                        <i class="icon-info"></i><b>Option: ajoutez des thématiques de votre choix et/ou cochez parmi les rubriques associées à votre publication (5 thématiques maximum)</b>
+                        <i class="icon-info"></i><b>Option: ajoutez des tags de votre choix et/ou cochez parmi les tags proposés (5 tags maximum)</b>
                     </div>
                     {{ reactionTagsEdit(reaction, constant('Politizr\\Constant\\TagConstants::TAG_TYPE_THEME'), 1, true) }}
                     {{ reaction | editTagFamilyForm }}
@@ -108,7 +108,7 @@
         </div>
         <div class="postTags">
             <div class="formBlockHeader">
-                <label>Thématiques abordées</label>
+                <label>Tags associés</label>
                 {% include 'PolitizrFrontBundle:Navigation\\Helper:_addTagToPublication.html.twig' %}
             </div>
             <div class="tagList">

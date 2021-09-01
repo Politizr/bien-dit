@@ -187,7 +187,7 @@ builders:
                     "Auteur":                   [ [ p_user, published_by ] ]
                     "Texte":                    [ title, description ]
                 "Contexte":
-                    "Liste des thématiques":    [ block_tags ]
+                    "Liste des tags":           [ block_tags ]
                     "Publications":             [ [ p_e_operation, p_c_topic ] ]
                 "Attributs":
                     "Identifiants":             [ [ id, uuid, slug ] ]
@@ -288,7 +288,7 @@ builders:
                     "Texte":                    [ title, description ]
                     "Médias":                   [ block_p_d_medias ]
                 "Contexte":
-                    "Liste des thématiques":    [ block_tags ]
+                    "Liste des tags":           [ block_tags ]
                     "Publications":             [ [ block_p_c_topic, p_e_operation ] ]
                     "Réponses":                 [ block_reactions ]
                     "Commentaires":             [ block_comments ]

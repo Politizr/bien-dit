@@ -6,7 +6,7 @@
 {% extends layout %}
 
 {% set metaTitle = 'Thématique ' ~ tag.title %}
-{% set metaDescription = 'Liste des publications pour la thématique ' ~ tag.title ~ ' disponibles sur Politizr.' %}
+{% set metaDescription = 'Liste des publications pour le tag ' ~ tag.title ~ ' disponibles sur Politizr.' %}
 
 {% block title %}{{ metaTitle }} - {{ parent() }}{% endblock title %}
 {% block description %}{{ metaDescription }}{% endblock description %}
@@ -30,7 +30,7 @@
         <div class="list">
             <div class="listHeaderByTag">
                 <div class="listHeader">
-                    <h5>Les publications abordants la thématique</h5>
+                    <h5>Les publications abordants le tag</h5>
                     <h1>{{ tag.title }}</h1>
                     {% include 'PolitizrFrontBundle:Follow:_actionFollow.html.twig' with { 'subject': tag } only %}
                 </div>

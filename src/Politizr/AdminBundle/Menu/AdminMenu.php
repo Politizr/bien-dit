@@ -134,7 +134,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $circle,
-            'Discussion',
+            'Thématique',
             'Politizr_AdminBundle_PCTopic_list'
         );
 
@@ -389,7 +389,7 @@ class AdminMenu extends AdmingeneratorMenuBuilder
         );
         $this->addLinkRoute(
             $circle,
-            'Discussion',
+            'Thématique',
             'Politizr_AdminBundle_PCTopic_list'
         );
 

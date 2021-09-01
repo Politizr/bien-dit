@@ -122,9 +122,6 @@ parameters:
     top_menu_publications: true # true | false
     top_menu_community: true # true | false
 
-    # Groupes
-    with_group: true
-
     # Libellé du menu "Nos consultations"
     group_label: "Nos consultations"
 

@@ -191,8 +191,8 @@ builders:
                     "Informations":             [ [ biography ], [ website, twitter, facebook ] ]
                 "Connexion":
                     "Connexion":                [ [ username, plainPassword ] ]
-                "Thématiques":
-                    "Liste des thématiques associées":            [ block_tags_public ]
+                "Tags":
+                    "Liste des tags associés":  [ block_tags_public ]
                 "Réputation":
                     "Score":                    [ block_reputation ]
                     "Badges":                   [ badges ]

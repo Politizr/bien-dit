@@ -156,11 +156,11 @@ class PolitizrTagExtension extends \Twig_Extension
         $nbDocuments = $tag->countDocuments();
 
         if (0 === $nbDocuments) {
-            $html = 'Aucune publication n\'aborde cette thématique';
+            $html = 'Aucune publication n\'aborde ce tag';
         } elseif (1 === $nbDocuments) {
-            $html = sprintf('1 publication aborde cette thématique', $nbDocuments);
+            $html = sprintf('1 publication aborde ce tag', $nbDocuments);
         } else {
-            $html = sprintf('%s publications abordent cette thématique', $this->globalTools->readeableNumber($nbDocuments));
+            $html = sprintf('%s publications abordent ce tag', $this->globalTools->readeableNumber($nbDocuments));
         }
 
         return $html;

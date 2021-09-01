@@ -7,13 +7,13 @@
         </div>
     {% else %}
         <div class="startFollowing" action="followTag" uuid="{{ object.uuid }}" way="follow">
-            <div class="actionText">Suivre cette thématique</div>
+            <div class="actionText">Suivre ce tag</div>
             <i class="icon-add"></i>
         </div>
     {% endif %}
 {% else %}
     <div class="startFollowing">
-        <div class="actionText"><a href="{{ path('Inscription') }}">Suivre cette thématique</a></div>
+        <div class="actionText"><a href="{{ path('Inscription') }}">Suivre ce tag</a></div>
         <i class="icon-add"></i>
     </div>
 {% endif %}

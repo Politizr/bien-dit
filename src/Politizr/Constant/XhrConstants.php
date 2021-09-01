@@ -98,6 +98,7 @@ class XhrConstants
     const ROUTE_MODAL_GETTING_STARTED = '-w/getting-started';
     const ROUTE_MODAL_CREATE_ACCOUNT_TO_COMMNET = 'commentaires/creer-un-compte';
     const ROUTE_MODAL_CGU = 'conditions-generales-d-utilisation';
+    const ROUTE_MODAL_POLICIES = 'policies-politizr';
     const ROUTE_MODAL_CGV = 'conditions-generales-de-vente';
     const ROUTE_MODAL_CHARTE = 'charte-politizr';
 
