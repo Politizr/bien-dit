@@ -338,6 +338,15 @@ class UserService
                 }
             }
 
+            // direct reaction to owned online publication
+            if ($document->isOwner($user->getId()) && $document->isActive()) {
+                if ($reason) {
+                    return DocumentConstants::REASON_OWNER;
+                } else {
+                    return false;
+                }
+            }
+
             // circle with open reactions (all users)
             if ($circle->getOpenReaction()) {
                 if ($reason) {
@@ -396,6 +405,15 @@ class UserService
                             return false;
                         }
                     }
+                }
+            }
+
+            // direct reaction to owned online publication
+            if ($document->isOwner($user->getId()) && $document->isActive()) {
+                if ($reason) {
+                    return DocumentConstants::REASON_OWNER;
+                } else {
+                    return false;
                 }
             }
 
