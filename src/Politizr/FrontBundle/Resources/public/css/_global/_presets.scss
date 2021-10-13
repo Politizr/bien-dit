@@ -27,6 +27,9 @@ body.public {
 	-ms-user-select: text;       /* IE/Edge */
 	user-select:  text;
 }
+
+
+
 body.css700 #tawkchat-container html {
 	visibility: hidden; /* hide tawkto widget sur mobile */
 }
@@ -80,6 +83,10 @@ body.css700 .modalRGPD, body.css1060 .modalRGPD { text-align: left; }
 	display: inline-block;
 }
 .modalRGPD a {text-decoration: underline;}
+
+.orejime-ModalOverlay, .orejime-NoticeOverlay {
+	z-index: 25000 !important;
+}
 
 ///// structure /////
 .center {
