@@ -285,6 +285,10 @@ body.css700 .modalRGPD, body.css1060 .modalRGPD {
   text-decoration: underline;
 }
 
+.orejime-ModalOverlay, .orejime-NoticeOverlay {
+  z-index: 25000 !important;
+}
+
 .center {
   width: 1320px;
   margin-left: auto;
