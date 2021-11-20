@@ -48,16 +48,16 @@
 
                         <form id="formLogin" action="{{ path('LoginCheck') }}" method="post">
                             <label for="username">Courriel</label>
-                            <input type="text" id="username" name="_username" value="{{ last_username }}" />
+                            <input type="text" id="username" name="_username" value="{{ last_username }}" tabindex="1" />
 
                             <label for="password">Mot de passe</label>
-                            <input type="password" id="password" name="_password" />
+                            <input type="password" id="password" name="_password" tabindex="2" />
                             <input type="hidden" name="_csrf_token"
                                 value="{{ csrf_token('authenticate') }}"
                             >
 
-                            <a action="login" class="submit nextStepOrange">Connexion</a><br>
-                            <a action="showLostPasswordBox">Mot de passe oublié?</a>
+                            <a action="login" tabindex="3" class="submit nextStepOrange">Connexion</a><br>
+                            <a action="showLostPasswordBox" tabindex="4">Mot de passe oublié?</a>
                         </form>
                     </div>
 

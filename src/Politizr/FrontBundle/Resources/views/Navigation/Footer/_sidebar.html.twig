@@ -4,13 +4,13 @@
         <i class="icon-arrow-up"></i>Retour en haut de page
     </div>
     <div id="footerLinks">
-        <a action="openCgu">Mentions légales</a>
+        <a action="openCgu" href="#">Mentions légales</a>
         {% if document is defined %}
             {{ document | linkCharte }}
         {% else %}
-            <a action="openCharte">Charte</a>
+            <a action="openCharte" href="#">Charte</a>
         {% endif %}
-        <a action="openPolicies">Confidentialité</a>
-        <a action="openCookies">Cookies</a>
+        <a action="openPolicies" href="#">Confidentialité</a>
+        <a action="openCookies" href="#">Cookies</a>
     </div>
 </div>

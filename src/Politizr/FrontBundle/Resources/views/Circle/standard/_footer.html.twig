@@ -2,7 +2,7 @@
     <h1>Comment participer ?</h1>
     {% if not app.user %}
         <div class="grpFooterCol">
-            <img src="{{ asset('bundles/politizrfront/images/grp_footerAccount.png') }}">
+            <img src="{{ asset('bundles/politizrfront/images/grp_footerAccount.png') }}" alt="Inscrivez-vous">
             <h2>
                 {% if global.access == 'public' %}
                     <b>Inscrivez-vous</b>
@@ -15,21 +15,21 @@
         </div>
     {% endif %}
     <div class="grpFooterCol">
-        <img src="{{ asset('bundles/politizrfront/images/grp_footerPost.png') }}">
+        <img src="{{ asset('bundles/politizrfront/images/grp_footerPost.png') }}" alt="Exprimez-vous">
         <h2>
             <b>Exprimez-vous</b>
             Opinions, questions, retours d'expériences... La parole est à vous!
         </h2>
     </div>
     <div class="grpFooterCol">
-        <img src="{{ asset('bundles/politizrfront/images/grp_footerNote.png') }}">
+        <img src="{{ asset('bundles/politizrfront/images/grp_footerNote.png') }}" alt="Notez">
         <h2>
             <b>Notez</b>
             Approuvez (ou pas) les publications des autres utilisateurs.
         </h2>
     </div>
     <div class="grpFooterCol">
-        <img src="{{ asset('bundles/politizrfront/images/grp_footerComment.png') }}">
+        <img src="{{ asset('bundles/politizrfront/images/grp_footerComment.png') }}" alt="Commentez">
         <h2>
             <b>Commentez</b>
             Faites part de vos remarques sur une publication qui vous interpelle.
@@ -46,6 +46,6 @@
         </div>
     {% endif %}
     <div class="grpFooterLinks">
-        <a action="openCgu">Mentions légales</a> • <a action="openPolicies">Politique de confidentialité</a> • <a href="#" action="openCookies">Réglage des cookies</a> • <a action="openCharte" uuid="{{ circle.uuid }}">Charte d’utilisation</a> • <a href="mailto: {{ contact.email }}">Contact</a>{% if global.mode == "oneshot" %} • Propulsé par <a href="https://bien-dit.com" target="_blank">BIEN DIT</a>{% endif %}
+        <a action="openCgu" href="#">Mentions légales</a> • <a action="openPolicies">Politique de confidentialité</a> • <a href="#" action="openCookies">Réglage des cookies</a> • <a action="openCharte" uuid="{{ circle.uuid }}">Charte d’utilisation</a> • <a href="mailto: {{ contact.email }}">Contact</a>{% if global.mode == "oneshot" %} • Propulsé par <a href="https://bien-dit.com" target="_blank">BIEN DIT</a>{% endif %}
     </div>
 </div>

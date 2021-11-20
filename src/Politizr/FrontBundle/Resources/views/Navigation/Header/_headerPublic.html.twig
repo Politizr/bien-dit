@@ -4,6 +4,9 @@
             {% block topLeftMenu %}
                 {% include 'PolitizrFrontBundle:Navigation\\Header:_logo.html.twig' %}
                 <div id="headerMenu">
+                    {% if app.request.get('_route') != 'Homepage' %}
+                        <a href="{{ path('Homepage') }}">Accueil</a>
+                    {% endif %}
                     {{ topLeftMenu() }}
                 </div>
             {% endblock topLeftMenu %}

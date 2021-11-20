@@ -5,6 +5,7 @@
             {% block topLeftMenu %}
                 {% include 'PolitizrFrontBundle:Navigation\\Header:_logo.html.twig' %}
                 <div id="headerMenu">
+                    <a href="{{ path('Homepage'~profileSuffix()) }}">Accueil</a>
                     {{ topLeftMenu() }}
                 </div>
                 {% if algolia.search == true %}                

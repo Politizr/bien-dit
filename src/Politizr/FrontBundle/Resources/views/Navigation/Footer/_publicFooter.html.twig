@@ -8,7 +8,7 @@
                 <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
                 {% if contact.phone is not same as(null)  %}
                     <div id="publicPolitizrPhone">
-                        <img src="{{ asset('bundles/politizrfront/images/f-phone.svg') }}">{{ contact.phone }}
+                        <img src="{{ asset('bundles/politizrfront/images/f-phone.svg') }}" alt="">{{ contact.phone }}
                     </div>
                 {% endif %}
             </div>

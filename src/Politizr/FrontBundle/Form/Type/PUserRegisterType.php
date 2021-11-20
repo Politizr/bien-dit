@@ -38,7 +38,10 @@ class PUserRegisterType extends AbstractType
                 new NotBlank(array('message' => 'E-mail obligatoire.')),
                 new Email(array('message' => 'Le format de l\'e-mail n\'est pas valide.')),
             ),
-            'attr' => array('placeholder' => 'Email')
+            'attr' => array(
+                'placeholder' => 'Email',
+                'tabindex' => 1,
+            )
         ));
 
         $builder->add('plainPassword', 'password', array(
@@ -54,7 +57,10 @@ class PUserRegisterType extends AbstractType
                     )
                 ),
             ),
-            'attr' => array('placeholder' => 'Mot de passe')
+            'attr' => array(
+                'placeholder' => 'Mot de passe',
+                'tabindex' => 2,
+            )
         ));
         
 //         $builder->add('plainPassword', 'repeated', array(
@@ -87,6 +93,9 @@ class PUserRegisterType extends AbstractType
                 array(
                     'message' => 'Vous devez accepter les conditions générales d\'utilisation.'
                 )
+            ),
+            'attr' => array(
+                'tabindex' => 3,
             )
         ));
 
@@ -97,6 +106,9 @@ class PUserRegisterType extends AbstractType
                 array(
                     'message' => 'Vous devez accepter les conditions relatives à vos données personnelles.'
                 )
+            ),
+            'attr' => array(
+                'tabindex' => 6,
             )
         ));
 

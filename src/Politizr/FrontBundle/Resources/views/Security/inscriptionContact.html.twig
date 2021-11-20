@@ -45,7 +45,7 @@
                         {% if (form.cgu is defined) %}
                             <div class="coloredBg">
                                 <div class="control-group">
-                                    {{ form_widget(form.cgu) }}<label>J’accepte les <a action="openCgu">conditions générales d'utilisation</a> et je m'engage à respecter la <a action="openCharte">charte de bonne conduite</a>.</label>
+                                    {{ form_widget(form.cgu) }}<label>J’accepte les <a action="openCgu" href="#">conditions générales d'utilisation</a> et je m'engage à respecter la <a action="openCharte" href="#">charte de bonne conduite</a>.</label>
                                     {% if form.cgu.vars.errors|length %}
                                         <div class="field_error">{{ form_errors(form.cgu) }}</div>
                                     {% endif %}

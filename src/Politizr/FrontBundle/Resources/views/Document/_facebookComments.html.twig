@@ -27,7 +27,7 @@
 {% endif %}
 {% for comment in comments %}
     <div class="commentFB">
-        <div class="commentFB_Avatar"><img src="{{ comment['author']['picture'] }}"></div>
+        <div class="commentFB_Avatar"><img src="{{ comment['author']['picture'] }}" alt=""></div>
         <div class="commentFB_Text"><span>{{ comment['author']['name'] }}</span>{{ comment['message'] }}</div>
     </div>
 {% endfor %}

@@ -5,9 +5,6 @@
             <div class="headerGrpMenuArrow"><i class="icon-arrow-up"></i></div>
             <div class="innerMenu">
                 <div class="primaryMenu">
-                    {% if app.user %}
-                        <a href="{{ path('Homepage') }}">Accueil</a>
-                    {% endif %}
                     {% for route in routes %}
                         <a href="{{ route['url'] }}">{{ route['label'] }}</a>
                     {% endfor %}

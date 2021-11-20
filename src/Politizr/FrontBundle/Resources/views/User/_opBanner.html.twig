@@ -2,7 +2,7 @@
 <div id="op" class="bannerItem miniHeader op-{{ operation.uuid }}">
     <div class="center">
         <div class="imgOp">
-            <img src="{{ asset('/uploads/users/'~operation.fileName) }}" alt="{{ operation.title }}">
+            <img src="{{ asset('/uploads/users/'~operation.fileName) }}" alt="{{ operation.title }}" alt="">
         </div>
         <div class="txtOp">
             {{ operation.description | purify }}

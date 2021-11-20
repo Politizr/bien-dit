@@ -12,9 +12,9 @@
             <div id="grpBriefHeaderImgShadow"></div>
             
             {% if topic.fileName %}
-                <img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ topic.fileName) }}">
+                <img src="{{ asset(constant('Politizr\\Constant\\PathConstants::CIRCLE_UPLOAD_WEB_PATH') ~ topic.fileName) }}" alt="">
             {% else %}
-                <img src="{{ asset('bundles/politizrfront/images/generic-grpHeader.jpg') }}">
+                <img src="{{ asset('bundles/politizrfront/images/generic-grpHeader.jpg') }}" alt="">
             {% endif %}
         </div>
     </div>

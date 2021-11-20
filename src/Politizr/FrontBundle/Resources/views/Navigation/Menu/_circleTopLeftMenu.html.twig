@@ -3,6 +3,7 @@
         {% block topLeftMenu %}
             {% include 'PolitizrFrontBundle:Navigation\\Header:_logo.html.twig' %}
             <div id="headerMenu">
+                <a href="{{ path('Homepage') }}">Accueil</a>
                 <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
             </div>
             {% if algolia.search == true %}
@@ -22,6 +23,7 @@
         {% block topLeftMenu %}
             {% include 'PolitizrFrontBundle:Navigation\\Header:_logo.html.twig' %}
             <div id="headerMenu">
+                <a href="{{ path('Homepage') }}">Accueil</a>
                 <a href="{{ path('CircleDetail', { 'slug': circle.slug }) }}">{{ circle.title }}</a>
             </div>
         {% endblock %}

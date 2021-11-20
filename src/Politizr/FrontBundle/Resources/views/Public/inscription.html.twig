@@ -49,20 +49,20 @@
                         {{ form_row(form.plainPassword) }}
                         <div class="coloredBg">
                             <div class="control-group">
-                                {{ form_widget(form.cgu) }}<label>J’accepte les <a action="openCgu">conditions générales d'utilisation</a> et je m'engage à respecter la <a action="openCharte">charte de bonne conduite</a>.</label>
+                                {{ form_widget(form.cgu) }}<label>J’accepte les <a action="openCgu" href="#" tabindex="4">conditions générales d'utilisation</a> et je m'engage à respecter la <a action="openCharte" href="#" tabindex="5">charte de bonne conduite</a>.</label>
                                 {% if form.cgu.vars.errors|length %}
                                     <div class="field_error">{{ form_errors(form.cgu) }}</div>
                                 {% endif %}
                             </div>
                             <div class="control-group">
-                                {{ form_widget(form.rgpd) }}<label>J’accepte les conditions relatives à l'utilisation de mes <a href="#dataCarefull">données personnelles</a>.</label>
+                                {{ form_widget(form.rgpd) }}<label>J’accepte les conditions relatives à l'utilisation de mes <a href="#dataCarefull" tabindex="7">données personnelles</a>.</label>
                                 {% if form.rgpd.vars.errors|length %}
                                     <div class="field_error">{{ form_errors(form.rgpd) }}</div>
                                 {% endif %}
                             </div>
                         </div>
                         {#<a href="processCreateAccount-citoyen2.php" class="submit nextStepOrange">Valider</a>#}
-                        <button type="submit" class="submit nextStepOrange">Valider</button>
+                        <button type="submit" class="submit nextStepOrange" tabindex="9">Valider</button>
                     {{ form_end(form) }}
                 </div>
                 <div class="cardFooter">
