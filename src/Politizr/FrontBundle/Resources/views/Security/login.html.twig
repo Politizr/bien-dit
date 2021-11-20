@@ -57,7 +57,7 @@
                             >
 
                             <a action="login" tabindex="3" class="submit nextStepOrange">Connexion</a><br>
-                            <a action="showLostPasswordBox" tabindex="4">Mot de passe oublié?</a>
+                            <a action="showLostPasswordBox" tabindex="4" href="">Mot de passe oublié?</a>
                         </form>
                     </div>
 
@@ -71,8 +71,8 @@
                             </div>
 
                             {{ form_rest(formLostPassword) }}
-                            <a action="reinitPassword" class="submit nextStepOrange">Réinitialisation mot de passe</a><br>
-                            <a action="showLoginBox">Connexion</a>
+                            <a action="reinitPassword" class="submit nextStepOrange" href="">Réinitialisation mot de passe</a><br>
+                            <a action="showLoginBox" href="">Connexion</a>
                         </form>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                         <b>Pas encore inscrit-e?<br/><a href="{{ path('Inscription') }}">Inscrivez-vous</a></b>
                         <br/><br/>
                     {% endif %}
-                    <i class="icon-info"></i><b>Un problème?</b><br/><a href="mailto: {{ support.email }}">Contactez-nous!</a>
+                    <i class="icon-info"></i><b>Un problème?</b><br/><a href="mailto:{{ support.email }}">Contactez-nous!</a>
                 </div>
             </div>
         </center>
