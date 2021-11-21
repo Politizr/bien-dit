@@ -49,13 +49,13 @@
                         {{ form_row(form.plainPassword) }}
                         <div class="coloredBg">
                             <div class="control-group">
-                                {{ form_widget(form.cgu) }}<label>J’accepte les <a action="openCgu" href="#" tabindex="4">conditions générales d'utilisation</a> et je m'engage à respecter la <a action="openCharte" href="#" tabindex="5">charte de bonne conduite</a>.</label>
+                                {{ form_widget(form.cgu) }}<label for="user_register_cgu">J’accepte les <a action="openCgu" href="#" tabindex="4">conditions générales d'utilisation</a> et je m'engage à respecter la <a action="openCharte" href="#" tabindex="5">charte de bonne conduite</a>.</label>
                                 {% if form.cgu.vars.errors|length %}
                                     <div class="field_error">{{ form_errors(form.cgu) }}</div>
                                 {% endif %}
                             </div>
                             <div class="control-group">
-                                {{ form_widget(form.rgpd) }}<label>J’accepte les conditions relatives à l'utilisation de mes <a href="#dataCarefull" tabindex="7">données personnelles</a>.</label>
+                                {{ form_widget(form.rgpd) }}<label for="user_register_rgpd">J’accepte les conditions relatives à l'utilisation de mes <a href="#dataCarefull" tabindex="7">données personnelles</a>.</label>
                                 {% if form.rgpd.vars.errors|length %}
                                     <div class="field_error">{{ form_errors(form.rgpd) }}</div>
                                 {% endif %}
