@@ -113,6 +113,17 @@
 	font-family: 'Merriweather Italic';
 	margin-bottom: 20px;
 }
+
+.footerColumn a {
+	color: #fff;
+}
+.footerColumn a:hover {color: $orange;}
+
+.footerColumn a.publicFooterHelpLink {
+	color: $orange;
+}
+.footerColumn a.publicFooterHelpLink:hover {color: #fff;}
+
 #publicFooterLeft {
 	float: left;
 	width: 70%;

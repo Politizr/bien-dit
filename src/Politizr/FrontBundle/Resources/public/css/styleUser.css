@@ -9448,6 +9448,22 @@ a.editMandateDeleteItem:hover {
   margin-bottom: 20px;
 }
 
+.footerColumn a {
+  color: #fff;
+}
+
+.footerColumn a:hover {
+  color: #ea131b;
+}
+
+.footerColumn a.publicFooterHelpLink {
+  color: #ea131b;
+}
+
+.footerColumn a.publicFooterHelpLink:hover {
+  color: #fff;
+}
+
 #publicFooterLeft {
   float: left;
   width: 70%;
