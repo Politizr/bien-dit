@@ -12604,7 +12604,7 @@ body.grp .headerGrp .headerGrpMenu {
 #grpMenuPseudoTabs {
   float: right;
   font-size: 14px;
-  color: rgba(64, 64, 64, 0.7);
+  color: rgba(64, 64, 64, 0.8);
   margin-top: 20px;
 }
 
@@ -12668,7 +12668,7 @@ body.css700 #grpMenuLinks {
   width: 100%;
   clear: both;
   font-size: 14px;
-  color: rgba(64, 64, 64, 0.7);
+  color: rgba(64, 64, 64, 0.8);
   margin-bottom: 25px;
   line-height: 160%;
   margin-top: 20px;
