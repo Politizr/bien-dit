@@ -163,7 +163,7 @@ body {
   font-family: "nerislight";
   color: #2D2D2D;
   overflow-x: hidden;
-  font-size: 16px;
+  font-size: 18px;
   height: 100%;
 }
 
@@ -251,7 +251,7 @@ img {
   border-radius: 20px;
   color: #fff;
   background-color: rgba(128, 128, 140, 0.6);
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 20px;
 }
 
@@ -264,7 +264,7 @@ img {
   z-index: 2000;
   bottom: 0;
   color: #2D2D2D;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
 }
 
@@ -362,7 +362,7 @@ body.css700 .modalRGPD, body.css1060 .modalRGPD {
   border-top: solid 1px rgba(128, 128, 140, 0.5);
   margin-top: 40px;
   padding: 25px 0 50px 0;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 100%;
 }
 
@@ -379,7 +379,7 @@ body.css700 .modalRGPD, body.css1060 .modalRGPD {
 
 #footer #goUp {
   display: inline-block;
-  font-size: 12px;
+  font-size: 14px;
   border: solid 1px rgba(128, 128, 140, 0.5);
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
@@ -410,7 +410,7 @@ h4 {
   font-weight: normal;
   padding: 0;
   margin: 10px 0 20px 0;
-  font-size: 14px;
+  font-size: 16px;
   font-family: "nerisblack";
   color: #2D2D2D;
   text-align: center;
@@ -434,7 +434,7 @@ h5 {
   font-weight: normal;
   padding: 0;
   margin: 0;
-  font-size: 12px;
+  font-size: 14px;
   font-style: italic;
   font-family: "Merriweather Italic";
   color: #80808C;
@@ -461,7 +461,7 @@ h5 {
   float: left;
   width: 100%;
   margin: 0 0 20px 0;
-  font-size: 14px;
+  font-size: 16px;
   font-family: "nerisblack";
   color: #ed1c24;
   text-align: center;
@@ -474,7 +474,7 @@ h5 {
 .citizenIdChecked, .representativeIdChecked, .representativeIdInProgress {
   float: left;
   color: #fff;
-  font-size: 10px;
+  font-size: 12px;
   font-family: "nerislight";
   font-style: normal;
   -webkit-border-radius: 9px;
@@ -492,7 +492,7 @@ h5 {
   position: absolute;
   left: -1px;
   top: 2px;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .citizenIdChecked {
@@ -553,7 +553,7 @@ h5 {
   position: relative;
   float: left;
   margin: 10px 10px 0 0;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .tagList a {
@@ -584,7 +584,7 @@ h5 {
 
 .postBreadcrumb {
   display: inline-block;
-  font-size: 12px;
+  font-size: 14px;
   font-style: italic;
   font-family: "Merriweather Italic";
   line-height: 160%;
@@ -621,7 +621,7 @@ h5 {
   float: left;
   color: #80808C;
   font-family: "nerissemibold";
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .statTime, .statViews, .statComments {
@@ -647,18 +647,18 @@ h5 {
   position: absolute;
   left: -2px;
   top: -2px;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .statComments i {
   position: absolute;
   left: -2px;
   top: -1px;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .statTime i {
-  font-size: 15px;
+  font-size: 17px;
   left: -4px;
   top: -4px;
 }
@@ -674,7 +674,7 @@ h5 {
 
 .statLoc i {
   position: absolute;
-  font-size: 14px;
+  font-size: 16px;
   left: -4px;
   top: -3px;
 }
@@ -703,7 +703,7 @@ h5 {
 
 .statFB i {
   position: absolute;
-  font-size: 14px;
+  font-size: 16px;
   left: -2px;
   top: -3px;
 }
@@ -723,7 +723,7 @@ a.answerCounter span {
   -moz-border-radius: 15px;
   border-radius: 15px;
   position: relative;
-  font-size: 12px;
+  font-size: 14px;
   margin-right: 8px;
 }
 
@@ -754,13 +754,13 @@ a.answerCounter i {
 	padding:6px 14px 0 30px;
 	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
 	position: relative;
-	font-size: 12px;
+	font-size: $s12px;
 }
 a.answerCounter {color: $orange;}
 a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
 .answerCounter i {
 	position: absolute;
-	font-size: 14px;
+	font-size: $s14px;
 	left: 9px;
 	top: 5px;
 }
@@ -834,7 +834,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
 
 .miniProfile .profileName a {
   font-family: "nerisblack" !important;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .miniProfile .profileName a:hover {
@@ -851,7 +851,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
   display: inline-block;
   width: 100%;
   line-height: 160%;
-  font-size: 12px;
+  font-size: 14px;
   margin-top: 2px;
 }
 
@@ -869,7 +869,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
 
 .miniProfile .profileBio a {
   color: #ed1c24;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .miniProfile .profileBio a:hover {
@@ -1011,7 +1011,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
   border-radius: 20px;
   color: #fff;
   background-color: rgba(128, 128, 140, 0.6);
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   text-transform: capitalize;
 }
@@ -1038,7 +1038,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
   margin-bottom: 20px;
   width: 240px;
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerissemibold";
   line-height: 140%;
   position: relative;
@@ -1109,7 +1109,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
   width: 100%;
   border: none;
   background-color: #fff;
-  font-size: 16px;
+  font-size: 18px;
   font-family: "nerislight";
 }
 
@@ -1154,7 +1154,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
   color: #3F9C98;
   font-family: "Merriweather Italic";
   font-style: italic;
-  font-size: 12px;
+  font-size: 14px;
   position: relative;
   left: 50%;
   width: 410px;
@@ -1186,13 +1186,13 @@ a.history {
   height: 30px;
   font-family: "nerislight";
   font-style: normal;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 100%;
   cursor: pointer;
 }
 
 a.history i {
-  font-size: 10px;
+  font-size: 12px;
   margin-right: 4px;
 }
 
@@ -1201,7 +1201,7 @@ a.history:hover {
 }
 
 .deletedAccount {
-  font-size: 14px;
+  font-size: 16px;
   color: #80808C;
 }
 
@@ -1209,7 +1209,7 @@ a.history:hover {
   float: left;
   width: 600px;
   font-family: "nerislight";
-  font-size: 12px;
+  font-size: 14px;
   text-transform: uppercase;
 }
 
@@ -1277,7 +1277,7 @@ a.history:hover {
 }
 
 #searchInput i {
-  font-size: 16px;
+  font-size: 18px;
   color: #80808C;
   position: absolute;
   left: 8px;
@@ -1299,7 +1299,7 @@ a.history:hover {
   vertical-align: middle;
   position: relative;
   z-index: 1;
-  font-size: 12px;
+  font-size: 14px;
   line-height: normal;
 }
 
@@ -1341,7 +1341,7 @@ body.grp.public a.headerCreateAccountLink:hover, body.grp.public #headerRight a.
 }
 
 a.newSubject {
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerissemibold";
   background-color: #ed1c24;
   color: #fff;
@@ -1360,7 +1360,7 @@ a.newSubject:first-letter {
 }
 
 .newSubject i {
-  font-size: 15px;
+  font-size: 17px;
   position: absolute;
   left: 7px;
   top: 3px;
@@ -1379,7 +1379,7 @@ a.newSubject:hover {
 }
 
 #notifCounter i {
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
 }
 
@@ -1389,7 +1389,7 @@ a.newSubject:hover {
 
 span.notifNew {
   position: relative;
-  font-size: 10px;
+  font-size: 12px;
   font-family: "nerissemibold";
   font-style: normal;
   color: #fff;
@@ -1437,7 +1437,7 @@ span.notifNew {
 }
 
 #notifBoxArrow i {
-  font-size: 16px;
+  font-size: 18px;
   color: #faedeb;
   text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
@@ -1445,7 +1445,7 @@ span.notifNew {
 #notifBoxHeader {
   background-color: #faedeb;
   padding: 18px 20px;
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerissemibold";
 }
 
@@ -1464,7 +1464,7 @@ span.notifNew {
   position: absolute;
   left: -4px;
   top: -4px;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .notifItem {
@@ -1472,7 +1472,7 @@ span.notifNew {
   padding: 20px 0;
   width: calc(100% - 40px);
   margin-left: 20px;
-  font-size: 14px;
+  font-size: 16px;
   border-bottom: solid 1px rgba(128, 128, 140, 0.5);
 }
 
@@ -1495,7 +1495,7 @@ span.notifNew {
 }
 
 .notifItemHeader {
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Merriweather Italic";
   font-style: italic;
   margin: -2px 0 0 0;
@@ -1539,13 +1539,13 @@ span.notifNew {
 	margin : 0 4px;
 	top:-1px;
 }
-#reputCounter i { font-size: 16px; }
+#reputCounter i { font-size: $s16px; }
 #reputCounter a:hover i {color: $orange;}
 #reputCounter a:hover .reputPoints {background-color: $orange;}
 
 span.reputPoints {
 	position: relative;
-	font-size: 10px;
+	font-size: $s10px;
 	font-family: 'nerissemibold';
 	color: #fff;
 	background-color: $grey;
@@ -1559,7 +1559,7 @@ span.reputPoints {
 */
 span.badgesCounter {
   position: relative;
-  font-size: 10px;
+  font-size: 12px;
   font-family: "nerissemibold";
   z-index: 1;
   left: -8px;
@@ -1596,7 +1596,7 @@ span.badgesCounter {
 
 .headerGrp {
   display: inline-block;
-  font-size: 12px;
+  font-size: 14px;
   margin: -5px 4px 0 4px;
   vertical-align: middle;
   color: #2D2D2D;
@@ -1645,14 +1645,14 @@ span.badgesCounter {
 }
 
 #menuArrow i {
-  font-size: 16px;
+  font-size: 18px;
   color: #fff;
   margin-right: 6px;
   text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
 
 #userLogged {
-  font-size: 12px;
+  font-size: 14px;
   position: relative;
   padding: 0 32px 0 5px;
   top: -2px;
@@ -1682,7 +1682,7 @@ span.badgesCounter {
 #menuButton:hover {color: $orange;}
 
 #menuButton i {
-	font-size: 16px;
+	font-size: $s16px;
 	position: relative;
 	top: -1px;
 	right: -4px;
@@ -1715,7 +1715,7 @@ span.badgesCounter {
 }
 
 #menuArrow i {
-  font-size: 16px;
+  font-size: 18px;
   color: #fff;
   margin-right: 6px;
   text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
@@ -1726,7 +1726,7 @@ span.badgesCounter {
   background-color: #fff;
   float: left;
   width: 100%;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .primaryMenu a {
@@ -1768,7 +1768,7 @@ span.badgesCounter {
 
 .primaryMenu span {
   display: inline-block;
-  font-size: 12px;
+  font-size: 14px;
   padding-bottom: 10px;
   font-family: "nerisblack";
   border-top: solid 1px rgba(128, 128, 140, 0.5);
@@ -1790,7 +1790,7 @@ span.badgesCounter {
   clear: both;
   float: left;
   color: #80808C;
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 15px;
 }
 
@@ -1834,7 +1834,7 @@ span.badgesCounter {
   border-radius: 15px;
   float: left;
   background-color: #80BAB7;
-  font-size: 13px;
+  font-size: 15px;
   font-family: "nerisblack";
 }
 
@@ -1934,7 +1934,7 @@ span.badgesCounter {
   color: #fff;
   background-color: #ed1c24;
   text-transform: capitalize;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .actionEdit a:hover {
@@ -1966,7 +1966,7 @@ span.badgesCounter {
 
 .miniActions .actionAnswer a i {
   position: absolute;
-  font-size: 16px;
+  font-size: 18px;
   right: 9px;
   top: 11px;
 }
@@ -2016,7 +2016,7 @@ span.badgesCounter {
   color: #fff;
   position: relative;
   z-index: 1000;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .startFollowing, .miniActions .startFollowing {
@@ -2029,28 +2029,28 @@ span.badgesCounter {
 
 .miniActions .startFollowing i, .miniActions .stopFollowing i {
   position: absolute;
-  font-size: 14px;
+  font-size: 16px;
   right: 10px;
   top: 12px;
 }
 
 .startFollowing i, .stopFollowing i {
   position: absolute;
-  font-size: 14px;
+  font-size: 16px;
   left: 10px;
   top: 11px;
 }
 
 .miniActions .actionText {
   padding: 10px 35px 0 17px;
-  font-size: 14px;
+  font-size: 16px;
   display: none;
   line-height: 130%;
 }
 
 .actionText {
   padding: 10px 17px 0 35px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 130%;
   white-space: nowrap;
 }
@@ -2076,7 +2076,7 @@ span.badgesCounter {
 
 .bubblesTag .miniActions .actionText, .bubblesProfile .miniActions .actionText {
   padding: 12px 35px 0 15px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .bubbleContent {
@@ -2096,7 +2096,7 @@ span.badgesCounter {
 }
 
 .bubbArrow i {
-  font-size: 16px;
+  font-size: 18px;
   color: #fff;
   text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
@@ -2133,7 +2133,7 @@ span.badgesCounter {
   -o-box-shadow: 0px 0px 16px 0px rgba(128, 128, 140, 0.8);
   box-shadow: 0px 0px 16px 0px rgba(128, 128, 140, 0.8);
   filter: progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerislight";
   text-align: left;
   font-style: normal;
@@ -2157,7 +2157,7 @@ span.badgesCounter {
   -o-box-shadow: 0px 0px 16px 0px rgba(128, 128, 140, 0.8);
   box-shadow: 0px 0px 16px 0px rgba(128, 128, 140, 0.8);
   filter: progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerislight";
   text-align: left;
   font-style: normal;
@@ -2194,7 +2194,7 @@ span.badgesCounter {
   -o-box-shadow: 0px 0px 16px 0px rgba(128, 128, 140, 0.8);
   box-shadow: 0px 0px 16px 0px rgba(128, 128, 140, 0.8);
   filter: progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerislight";
   text-align: left;
   font-style: normal;
@@ -2229,7 +2229,7 @@ span.badgesCounter {
 .bubblesProfile .miniProfile .profileBio a {
   font-family: "Merriweather Heavy Italic" !important;
   color: #ed1c24;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .bubblesProfile .miniProfile .profileBio a:hover {
@@ -2276,7 +2276,7 @@ span.badgesCounter {
   float: right;
   position: relative;
   width: 22px;
-  font-size: 16px;
+  font-size: 18px;
   display: inline-block;
   vertical-align: text-top;
 }
@@ -2303,7 +2303,7 @@ span.badgesCounter {
   -o-box-shadow: 0px 0px 16px 0px rgba(128, 128, 140, 0.8);
   box-shadow: 0px 0px 16px 0px rgba(128, 128, 140, 0.8);
   filter: progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerislight";
   text-align: left;
   font-style: normal;
@@ -2321,7 +2321,7 @@ span.badgesCounter {
   padding: 10px 10px 0 10px;
   float: left;
   width: 100%;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 100%;
   color: #2D2D2D;
 }
@@ -2366,12 +2366,12 @@ span.badgesCounter {
 
 .helperTitle {
   color: #3F9C98;
-  font-size: 11px;
+  font-size: 13px;
   cursor: pointer;
 }
 
 .helperTitle i {
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .helperTitle:hover {
@@ -2396,7 +2396,7 @@ span.badgesCounter {
   -o-box-shadow: 0px 0px 16px 0px rgba(128, 128, 140, 0.8);
   box-shadow: 0px 0px 16px 0px rgba(128, 128, 140, 0.8);
   filter: progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerislight";
   text-align: left;
   font-style: normal;
@@ -2442,7 +2442,7 @@ body.noScroll {
 .modalClose {
   float: right;
   margin: 20px 20px 0 0;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -2464,12 +2464,12 @@ body.noScroll {
   float: right;
   margin-right: 40px;
   width: 290px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 150%;
 }
 
 .modalText b {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .modalCitizen .modalText {
@@ -2502,7 +2502,7 @@ body.noScroll {
   border-radius: 20px;
   padding: 8px 20px 0 40px;
   height: 40px;
-  font-size: 14px;
+  font-size: 16px;
   color: #fff;
   border: none;
   width: auto;
@@ -2532,7 +2532,7 @@ body.noScroll {
 
 .modalText span.modalCancel {
   font-family: "nerislight";
-  font-size: 10px;
+  font-size: 12px;
   text-transform: capitalize;
   float: left;
   clear: both;
@@ -2569,14 +2569,14 @@ body.noScroll {
   float: left;
   width: 100%;
   font-family: "nerisblack";
-  font-size: 16px;
+  font-size: 18px;
   color: #668000;
   line-height: 140%;
 }
 
 .modalCreateAccount a.modalLinkCreateAccount {
   font-family: "nerisblack";
-  font-size: 16px;
+  font-size: 18px;
   float: left;
   clear: both;
   -webkit-border-radius: 20px;
@@ -2595,7 +2595,7 @@ body.noScroll {
 
 .modalCreateAccount .modalText span {
   font-family: "nerislight";
-  font-size: 12px;
+  font-size: 14px;
   color: #668000;
   line-height: 120%;
   float: left;
@@ -2674,14 +2674,14 @@ body.css700 #searchModalHeader {
 
 #startSearch {
   float: left;
-  font-size: 12px;
+  font-size: 14px;
   color: #ed1c24;
   padding-top: 2px;
   width: calc(100% - 70px);
 }
 
 #startSearch i {
-  font-size: 15px;
+  font-size: 17px;
   float: left;
   margin-right: 3px;
   margin-top: -2px;
@@ -2689,7 +2689,7 @@ body.css700 #searchModalHeader {
 
 #closeModal {
   float: right;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -2783,7 +2783,7 @@ body.css700 #searchModalResults .hit.hitPublication .hitContent {
 }
 
 #searchModalResults .hitContent p {
-  font-size: 13px;
+  font-size: 15px;
   font-family: "Merriweather";
   line-height: 200%;
 }
@@ -2802,7 +2802,7 @@ body.css700 #searchModalResults .hit.hitPublication .hitContent {
   border-radius: 20px;
   color: #fff;
   background-color: rgba(128, 128, 140, 0.6);
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   border: none;
   font-family: "nerislight";
@@ -2820,7 +2820,7 @@ body.css700 #searchModalResults .hit.hitPublication .hitContent {
 #searchModalResults #categories {
   float: right;
   width: 330px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 body.css1060 #searchModalResults #categories {
@@ -2838,7 +2838,7 @@ body.css700 #searchModalResults #categories {
 }
 
 .ais-menu--header {
-  font-size: 12px;
+  font-size: 14px;
   font-style: italic;
   font-family: "Merriweather Italic";
   margin-bottom: 20px;
@@ -2929,12 +2929,12 @@ body.css700 #searchModalResults #categories {
 
 .sidebarFollow .actionText {
   padding: 0 0 0 15px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .sidebarFollow .startFollowing i, .sidebarFollow .stopFollowing i {
   position: absolute;
-  font-size: 12px;
+  font-size: 14px;
   left: 10px;
   top: 7px;
 }
@@ -2963,7 +2963,7 @@ body.css700 #searchModalResults #categories {
   height: 40px;
   background-color: #ed1c24;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
 }
 
@@ -2972,7 +2972,7 @@ body.css700 #searchModalResults #categories {
 }
 
 .sidebarEditProfile a i {
-  font-size: 15px;
+  font-size: 17px;
   margin-right: 4px;
   vertical-align: middle;
 }
@@ -2989,7 +2989,7 @@ body.css700 #searchModalResults #categories {
 
 .share span {
   float: left;
-  font-size: 12px;
+  font-size: 14px;
   width: 100%;
   margin-bottom: 10px;
 }
@@ -2999,7 +2999,7 @@ body.css700 #searchModalResults #categories {
   margin-right: 5px;
   vertical-align: middle;
   font-family: "nerissemibold";
-  font-size: 11px;
+  font-size: 13px;
   padding: 5px 6px 5px 5px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -3024,7 +3024,7 @@ body.css700 #searchModalResults #categories {
 }
 
 .share a.shareFB i {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .share a.shareFB:hover {
@@ -3036,7 +3036,7 @@ body.css700 #searchModalResults #categories {
 }
 
 .share a.shareTW i {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .share a.shareTW:hover {
@@ -3048,7 +3048,7 @@ body.css700 #searchModalResults #categories {
 }
 
 .share a.shareGG i {
-  font-size: 16px;
+  font-size: 18px;
   padding-right: 2px;
 }
 
@@ -3061,7 +3061,7 @@ body.css700 #searchModalResults #categories {
 }
 
 .share a.shareWA i {
-  font-size: 16px;
+  font-size: 18px;
   padding-right: 2px;
 }
 
@@ -3084,7 +3084,7 @@ body.css700 #searchModalResults #categories {
 }
 
 .bookmarkBox a {
-  font-size: 12px;
+  font-size: 14px;
   color: #904380;
   cursor: pointer;
   padding-left: 4px;
@@ -3098,7 +3098,7 @@ body.css700 #searchModalResults #categories {
   font-family: "pltzriconfont";
   content: "";
   margin-right: 6px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .bookmarkBox .ajaxLoaderBg {
@@ -3113,7 +3113,7 @@ body.css700 #searchModalResults #categories {
 }
 
 .linkEditPublication a {
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
   cursor: pointer;
   margin-left: 5px;
@@ -3127,7 +3127,7 @@ body.css700 #searchModalResults #categories {
   font-family: "pltzriconfont";
   content: "";
   margin-right: 7px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .linkEditPublication .ajaxLoaderBg {
@@ -3184,17 +3184,17 @@ body.css700 #searchModalResults #categories {
 }
 
 .profileLinks a.linkFB {
-  font-size: 15px;
+  font-size: 17px;
   margin: 0 0 0 10px;
 }
 
 .profileLinks a.linkTW {
-  font-size: 16px;
+  font-size: 18px;
   margin: 0 -2px 0 10px;
 }
 
 .profileLinks a.linkWeb {
-  font-size: 13px;
+  font-size: 15px;
   margin: 0 0 0 10px;
 }
 
@@ -3261,7 +3261,7 @@ body.css700 #searchModalResults #categories {
   float: left;
   width: 100%;
   border-top: solid 1px rgba(128, 128, 140, 0.5);
-  font-size: 12px;
+  font-size: 14px;
   font-style: italic;
   font-family: "Merriweather Italic";
   color: #80808C;
@@ -3320,7 +3320,7 @@ body.css700 #searchModalResults #categories {
   border-radius: 20px;
   color: #fff;
   background-color: rgba(128, 128, 140, 0.6);
-  font-size: 12px;
+  font-size: 14px;
   margin: 20px 0;
   width: auto;
   border: none;
@@ -3359,7 +3359,7 @@ body.css700 #searchModalResults #categories {
   float: left;
   width: 100%;
   text-align: center;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 100%;
   margin-top: 10px;
 }
@@ -3468,7 +3468,7 @@ body.css700 #searchModalResults #categories {
 }
 
 .sidebarReport .reportButton span {
-  font-size: 12px;
+  font-size: 14px;
   margin: 3px 0 0 2px;
   display: inline-block;
   vertical-align: text-top;
@@ -3493,14 +3493,14 @@ body.css700 #searchModalResults #categories {
 }
 
 .sidebarAskForModification .askForModificationButton span {
-  font-size: 12px;
+  font-size: 14px;
   margin: 3px 0 0 2px;
   display: inline-block;
   vertical-align: text-top;
 }
 
 .sidebarNote {
-  font-size: 10px;
+  font-size: 12px;
   margin-top: 5px;
   margin-bottom: 20px;
   line-height: 140%;
@@ -3519,7 +3519,7 @@ body.css700 #searchModalResults #categories {
   clear: both;
   width: 100%;
   margin-bottom: 40px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .sidebarReportForm .ajaxLoaderBg {
@@ -3530,7 +3530,7 @@ body.css700 #searchModalResults #categories {
 form.formReport, form.formAskForModification {
   float: left;
   width: 100%;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 100%;
   color: #2D2D2D;
 }
@@ -3549,7 +3549,7 @@ form.formReport textarea {
   width: 100%;
   background: transparent;
   border: none;
-  font-size: 12px;
+  font-size: 14px;
   min-height: 100px;
   font-family: "nerislight";
 }
@@ -3559,7 +3559,7 @@ form.formReport input[type="radio"] {
 	float: left;
 	clear: both;
 	margin: 10px 5px 0 0;
-	font-size: 11px;
+	font-size: $s11px;
 }
 form.formReport input:last-of-type[type="radio"] {margin-bottom: 0;}
 form.formReport input[type="radio"]:checked+label{ color: $darkGrey; }
@@ -3578,7 +3578,7 @@ form.formAskForModification textarea {
   padding: 10px 10px 0 10px;
   border: none;
   background-color: rgba(237, 28, 36, 0.1);
-  font-size: 13px;
+  font-size: 15px;
   font-family: "Merriweather";
   height: auto;
   min-height: 60px;
@@ -3617,7 +3617,7 @@ form.formAskForModification textarea input:-moz-placeholder {
 
 form.formReport input[type=button], form.formAskForModification input[type=button] {
   font-family: "nerislight";
-  font-size: 12px;
+  font-size: 14px;
   line-height: 100%;
   color: #fff;
   background-color: #ed1c24;
@@ -3641,7 +3641,7 @@ span.formCancel {
   width: auto;
   display: inline-block;
   margin: 0;
-  font-size: 12px;
+  font-size: 14px;
   color: #ed1c24;
   cursor: pointer;
 }
@@ -3684,7 +3684,7 @@ span.formCancel:hover {
 .sidebarTopPostsItem .sidebarTopPostsCounter {
   position: absolute;
   left: -20px;
-  font-size: 12px;
+  font-size: 14px;
   font-style: italic;
   font-family: "Merriweather Italic";
 }
@@ -3703,7 +3703,7 @@ span.formCancel:hover {
   font-family: "pltzriconfont";
   content: "";
   margin-right: 6px;
-  font-size: 14px;
+  font-size: 16px;
   vertical-align: text-bottom;
   color: #2D2D2D;
 }
@@ -3713,7 +3713,7 @@ span.formCancel:hover {
 }
 
 .sidebarTopPostsItem .profileName a {
-  font-size: 14px;
+  font-size: 16px;
   font-family: "nerissemibold";
   color: #80808C;
 }
@@ -3765,7 +3765,7 @@ span.formCancel:hover {
 .sidebarFollowedTags a.linkListTags {
   float: left;
   clear: both;
-  font-size: 12px;
+  font-size: 14px;
   margin: 20px 0;
   color: #80808C;
 }
@@ -3775,7 +3775,7 @@ span.formCancel:hover {
 }
 
 .sidebarListOrg {
-  font-size: 12px;
+  font-size: 14px;
   width: 100%;
   display: inline-block;
 }
@@ -3845,7 +3845,7 @@ ul.orgList li a .org {
   box-shadow: 0px 0px 4px 0px rgba(128, 128, 140, 0.7);
   filter: progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=4);
   margin-bottom: 40px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .actionPublish {
@@ -3865,7 +3865,7 @@ ul.orgList li a .org {
   height: 40px;
   background-color: #ed1c24;
   color: #fff;
-  font-size: 13px;
+  font-size: 15px;
   cursor: pointer;
 }
 
@@ -3880,7 +3880,7 @@ ul.orgList li a .org {
 .actionPublish .notice {
   float: left;
   padding-left: 10px;
-  font-size: 10px;
+  font-size: 12px;
   color: #ed1c24;
   width: calc(100% - 100px);
   line-height: 130%;
@@ -3902,7 +3902,7 @@ ul.orgList li a .org {
 .cannotPublishReaction:before {
   font-family: "pltzriconfont";
   content: "";
-  font-size: 16px;
+  font-size: 18px;
   position: absolute;
   left: 10px;
 }
@@ -3927,13 +3927,13 @@ ul.orgList li a .org {
   height: 40px;
   background-color: #3F9C98;
   color: #fff;
-  font-size: 13px;
+  font-size: 15px;
   cursor: pointer;
 }
 
 .actionSave a i {
   margin-right: 4px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .actionSave a:hover {
@@ -4027,7 +4027,7 @@ a.preview, a.mydrafts {
 .parentPost .paragraph {
   padding: 15px 0 0 0;
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .parentPost .paragraph h1 {
@@ -4035,17 +4035,17 @@ a.preview, a.mydrafts {
 }
 
 .parentPost .paragraph h2 {
-  font-size: 12px;
+  font-size: 14px;
   padding: 0 0 0 10px;
   border-left-width: 3px;
 }
 
 .parentPost .paragraph blockquote {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .parentPost .paragraph blockquote::before {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .parentPost .medium-insert-images {
@@ -4063,7 +4063,7 @@ a.preview, a.mydrafts {
 }
 
 .sidebarEditTag .notice {
-  font-size: 11px;
+  font-size: 13px;
   color: #80808C;
   line-height: 160%;
 }
@@ -4100,7 +4100,7 @@ a.preview, a.mydrafts {
 }
 
 .sidebarPostType .notice {
-  font-size: 11px;
+  font-size: 13px;
   color: #80808C;
   line-height: 160%;
   margin-bottom: 30px;
@@ -4130,12 +4130,12 @@ a.preview, a.mydrafts {
   height: 30px;
   background-color: #fff;
   color: #80808C;
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 
 .sidebarPostType label i {
-  font-size: 10px;
+  font-size: 12px;
   margin-right: 3px;
 }
 
@@ -4155,7 +4155,7 @@ a.preview, a.mydrafts {
 }
 
 .sidebarSearchMap {
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
 }
 
@@ -4282,7 +4282,7 @@ a.preview, a.mydrafts {
   background-color: #fff;
   color: #668000;
   font-family: "nerisblack";
-  font-size: 16px;
+  font-size: 18px;
   margin-left: 40px;
 }
 
@@ -4298,7 +4298,7 @@ a.preview, a.mydrafts {
   cursor: default;
   line-height: 120%;
   padding-top: 6px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 #mapHolder.outreMer {
@@ -4420,12 +4420,12 @@ a.preview, a.mydrafts {
   height: 30px;
   background-color: #fff;
   color: #80808C;
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 
 .sidebarSearchFilters label i {
-  font-size: 10px;
+  font-size: 12px;
   margin-right: 3px;
 }
 
@@ -4435,7 +4435,7 @@ a.preview, a.mydrafts {
 }
 
 .sidebarAccountEdition {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 140%;
   color: #ed1c24;
 }
@@ -4536,7 +4536,7 @@ a.preview, a.mydrafts {
 .coloredBg .grpBreadcrumbs {
   margin: 5px 0 0 0;
   color: #80808C;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .coloredBg .grpBreadcrumbs a, .coloredBg .grpBreadcrumbs span {
@@ -4572,7 +4572,7 @@ a.preview, a.mydrafts {
 }
 
 .activity {
-  font-size: 14px;
+  font-size: 16px;
   font-family: "nerisblack";
   margin-bottom: 5px;
   color: #ed1c24;
@@ -4596,7 +4596,7 @@ a.preview, a.mydrafts {
 
 .cardInfo {
   margin-top: 20px;
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Merriweather Italic";
   font-style: italic;
   line-height: 180%;
@@ -4633,7 +4633,7 @@ a.preview, a.mydrafts {
 .grpMyFeedHeaderCard {
   padding: 10px 20px;
   background-color: #2D2D2D;
-  font-size: 12px;
+  font-size: 14px;
   color: #fff;
   float: left;
   width: 100%;
@@ -4644,7 +4644,7 @@ body.grp .grpMyFeedHeaderCard {
 }
 
 .grpMyFeedHeaderCard i {
-  font-size: 15px;
+  font-size: 17px;
   margin-right: 4px;
   float: left;
   vertical-align: middle;
@@ -4697,7 +4697,7 @@ body.grp .grpMyFeedHeaderCard {
 .newPost a {
   display: inline-block;
   margin: 20px;
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Merriweather";
   line-height: 180%;
   max-height: 240px;
@@ -4727,7 +4727,7 @@ body.grp .grpMyFeedHeaderCard {
 
 .withFollowedTagText {
   font-family: "nerisblack";
-  font-size: 14px;
+  font-size: 16px;
   line-height: 140%;
 }
 
@@ -4779,7 +4779,7 @@ body.grp .grpMyFeedHeaderCard {
 }
 
 .miniPost a .postTitle.subject:before {
-  font-size: 16px;
+  font-size: 18px;
   margin-right: 6px;
   color: #ed1c24;
   content: "";
@@ -4800,7 +4800,7 @@ body.grp .grpMyFeedHeaderCard {
   padding: 18px 0;
   border-top: solid 1px rgba(128, 128, 140, 0.5);
   font-family: "Merriweather";
-  font-size: 14px;
+  font-size: 16px;
   line-height: 180%;
 }
 
@@ -4857,7 +4857,7 @@ body.grp .grpMyFeedHeaderCard {
   border-left: none;
   border-right: none;
   font-family: "nerissemibold";
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .cardProfile .profileMandats .profileMandatsItem:after {
@@ -4887,7 +4887,7 @@ body.grp .grpMyFeedHeaderCard {
 
 .cardProfile .profileStats {
   width: 60%;
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
 }
 
@@ -4926,20 +4926,20 @@ body.grp .grpMyFeedHeaderCard {
 }
 
 .cardProfile .startFollowing i, .cardProfile .stopFollowing i {
-  font-size: 12px;
+  font-size: 14px;
   left: 10px;
   top: 7px;
 }
 
 .cardProfile .bubblesProfile .miniActions .startFollowing i, .cardProfile .bubblesProfile .miniActions .stopFollowing i {
-  font-size: 14px;
+  font-size: 16px;
   right: 10px;
   top: 11px;
 }
 
 .cardProfile .actionText {
   padding: 0 0 0 15px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .list, #documentListing {
@@ -4977,7 +4977,7 @@ body.grp .grpMyFeedHeaderCard {
 
 .headerFollowers a.goBack, .headerSubscribers a.goBack {
   float: left;
-  font-size: 11px;
+  font-size: 13px;
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
   border-radius: 15px;
@@ -5002,7 +5002,7 @@ body.grp .grpMyFeedHeaderCard {
   width: calc(100% - 80px);
   line-height: 120%;
   color: #ed1c24;
-  font-size: 14px;
+  font-size: 16px;
   margin-top: 0;
 }
 
@@ -5092,12 +5092,12 @@ body.grp .grpMyFeedHeaderCard {
 
 .listHeader .startFollowing .actionText, .listHeader .stopFollowing .actionText {
   padding: 7px 15px 0 28px;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .listHeader .startFollowing i, .listHeader .stopFollowing i {
   position: absolute;
-  font-size: 14px;
+  font-size: 16px;
   left: 10px;
   top: 9px;
   font-size: 9px;
@@ -5107,7 +5107,7 @@ body.grp .grpMyFeedHeaderCard {
   display: inline-block;
   width: 100%;
   border-top: solid 1px rgba(128, 128, 140, 0.5);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 100%;
   margin-bottom: 40px;
 }
@@ -5164,12 +5164,12 @@ body.grp .grpMyFeedHeaderCard {
   display: inline-block;
   margin-top: -1px;
   padding-top: 20px;
-  font-size: 14px;
+  font-size: 16px;
   border-top: solid 2px #80808C;
 }
 
 .listTopNav i {
-  font-size: 10px;
+  font-size: 12px;
   color: #80808C;
   position: absolute;
   cursor: pointer;
@@ -5205,7 +5205,7 @@ body.grp .grpMyFeedHeaderCard {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Merriweather Italic";
   font-style: italic;
   padding-top: 3px;
@@ -5215,7 +5215,7 @@ body.grp .grpMyFeedHeaderCard {
   display: inline-block;
   width: 100%;
   border-top: solid 1px rgba(128, 128, 140, 0.5);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 100%;
   margin-bottom: 40px;
 }
@@ -5244,7 +5244,7 @@ body.grp .grpMyFeedHeaderCard {
   width: 100%;
   background-color: #3F9C98;
   padding: 15px 0 25px 0;
-  font-size: 13px;
+  font-size: 15px;
   color: #fff;
   text-align: center;
   line-height: 150%;
@@ -5292,7 +5292,7 @@ body.grp .grpMyFeedHeaderCard {
 }
 
 .boostChoice a:first-of-type i {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .boostChoice a:hover {
@@ -5370,7 +5370,7 @@ body.grp .grpMyFeedHeaderCard {
   bottom: 20px;
   background-color: #2D2D2D;
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
   border-radius: 15px;
@@ -5396,7 +5396,7 @@ body.grp .grpMyFeedHeaderCard {
   float: left;
   width: 990px;
   position: relative;
-  font-size: 15px;
+  font-size: 17px;
   font-family: "Merriweather";
   line-height: 200%;
 }
@@ -5429,7 +5429,7 @@ body.grp .grpMyFeedHeaderCard {
 }
 
 .paragraph h2 {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: normal;
   font-style: italic;
   margin: 0;
@@ -5448,7 +5448,7 @@ body.grp .grpMyFeedHeaderCard {
   font-family: "Merriweather Bold";
   margin: 0 0 0 0;
   padding: 0;
-  font-size: 15px;
+  font-size: 17px;
   clear: both;
   width: 100%;
   display: inline-block;
@@ -5499,14 +5499,14 @@ body.grp .grpMyFeedHeaderCard {
 
 #cardPostTextFooter .startFollowing i, #cardPostTextFooter .stopFollowing i {
   position: absolute;
-  font-size: 12px;
+  font-size: 14px;
   left: 10px;
   top: 7px;
 }
 
 #cardPostTextFooter .actionFollow .actionText {
   padding: 0 0 0 15px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .noticeBox {
@@ -5515,7 +5515,7 @@ body.grp .grpMyFeedHeaderCard {
   padding: 30px;
   background-color: rgba(237, 28, 36, 0.6);
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .noticeBox .actionAnswer {
@@ -5542,13 +5542,13 @@ body.grp .grpMyFeedHeaderCard {
 
 .noticeBox .actionText {
   padding: 10px 40px 0 17px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 130%;
 }
 
 .noticeBox .actionAnswer a i {
   position: absolute;
-  font-size: 16px;
+  font-size: 18px;
   right: 12px;
   top: 9px;
 }
@@ -5648,7 +5648,7 @@ body.grp .grpMyFeedHeaderCard {
 .postAnswersList .miniPost a {
   float: right;
   width: calc(100% - 170px);
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Merriweather";
   line-height: 180%;
   margin-top: -5px;
@@ -5727,7 +5727,7 @@ body.css700 #cardPost .postAnswersList .coloredBg {
 #addNewGlobalComments form.formCommentNew textarea#comment_description {
   padding: 10px;
   border: solid 1px rgba(128, 128, 140, 0.5);
-  font-size: 12px;
+  font-size: 14px;
   min-height: 90px;
   width: calc(100% - 2px);
 }
@@ -5773,7 +5773,7 @@ body.css700 #cardPost .postAnswersList .coloredBg {
 
 #globalCommentsButton span:last-of-type {
   display: inline-block;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   background-color: #ed1c24;
   color: #fff;
@@ -5807,7 +5807,7 @@ body.css700 #cardPost .postAnswersList .coloredBg {
   border-radius: 15px;
   width: auto;
   float: left;
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 40px;
 }
 
@@ -5827,7 +5827,7 @@ body.css700 #cardPost .postAnswersList .coloredBg {
 }
 
 #globalComments .comment .commentText {
-  font-size: 12px;
+  font-size: 14px;
   padding: 0;
   background-color: transparent;
   line-height: 160%;
@@ -5849,7 +5849,7 @@ body.css700 #cardPost .postAnswersList .coloredBg {
 }
 
 #globalComments .embedFB a {
-  font-size: 12px;
+  font-size: 14px;
   color: #3c5998;
 }
 
@@ -5862,7 +5862,7 @@ body.css700 #cardPost .postAnswersList .coloredBg {
   width: 100%;
   padding: 10px;
   background-color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   color: #3c5998;
 }
 
@@ -5967,7 +5967,7 @@ body.css700 #cardPost .postAnswersList .coloredBg {
 #globalComments .commentFB .commentFB_Text {
   float: right;
   width: calc(100% - 38px);
-  font-size: 14px;
+  font-size: 16px;
   font-family: Helvetica, Arial, sans-serif;
   line-height: 140%;
   color: #363940;
@@ -6099,7 +6099,7 @@ body.css700 #cardPost .postAnswersList .coloredBg {
 
 .bubblesCommentsHeader span {
   color: #fff;
-  font-size: 11px;
+  font-size: 13px;
   font-family: "nerissemibold";
   float: right;
   cursor: pointer;
@@ -6124,7 +6124,7 @@ body.css700 #cardPost .postAnswersList .coloredBg {
 }
 
 .bubbCommArrow i {
-  font-size: 16px;
+  font-size: 18px;
   color: #fff;
   text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
@@ -6159,7 +6159,7 @@ body.css700 #cardPost .postAnswersList .coloredBg {
   margin-left: -10px;
   margin-bottom: 10px;
   padding: 10px;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 140%;
   margin-top: -10px;
   color: #fff;
@@ -6181,7 +6181,7 @@ textarea#comment_description {
   margin: 0;
   padding: 20px 20px 0 20px;
   background-color: transparent;
-  font-size: 14px;
+  font-size: 16px;
   font-family: "Merriweather";
   min-height: 60px;
   line-height: 160%;
@@ -6221,7 +6221,7 @@ textarea#comment_description input:-moz-placeholder {
   position: absolute;
   left: 10px;
   bottom: 10px;
-  font-size: 10px;
+  font-size: 12px;
   font-family: "nerissemibold";
   color: #80808C;
 }
@@ -6232,7 +6232,7 @@ textarea#comment_description input:-moz-placeholder {
 
 .formCommentNew .actionsButtons input[type=button] {
   font-family: "nerissemibold";
-  font-size: 12px;
+  font-size: 14px;
   line-height: 100%;
   color: #fff;
   background-color: #ed1c24;
@@ -6277,7 +6277,7 @@ textarea#comment_description input:-moz-placeholder {
 }
 
 .comment .commentText {
-  font-size: 14px;
+  font-size: 16px;
   font-family: "Merriweather";
   line-height: 180%;
   background-color: rgba(128, 128, 140, 0.1);
@@ -6352,7 +6352,7 @@ textarea#comment_description input:-moz-placeholder {
   width: 100%;
   margin-bottom: 40px;
   font-family: "Merriweather";
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
   line-height: 180%;
 }
@@ -6372,7 +6372,7 @@ textarea#comment_description input:-moz-placeholder {
   font-family: "pltzriconfont";
   content: "";
   margin-right: 4px;
-  font-size: 14px;
+  font-size: 16px;
   vertical-align: text-bottom;
   color: #2D2D2D;
 }
@@ -6380,7 +6380,7 @@ textarea#comment_description input:-moz-placeholder {
 #answerMenu {
   float: left;
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Merriweather Italic";
   font-style: italic;
   color: #fff;
@@ -6434,7 +6434,7 @@ textarea#comment_description input:-moz-placeholder {
   font-style: normal;
   line-height: 90%;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .answerHideMenuAllFamily i {
@@ -6538,7 +6538,7 @@ textarea#comment_description input:-moz-placeholder {
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
-  font-size: 16px;
+  font-size: 18px;
   top: 50%;
   margin-top: -20px;
 }
@@ -6615,7 +6615,7 @@ textarea#comment_description input:-moz-placeholder {
   margin-top: 5px;
   display: inline-block;
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 #answerMenu .profileName a {
@@ -6715,13 +6715,13 @@ textarea#comment_description input:-moz-placeholder {
 }
 
 p.noteEditionHeader {
-  font-size: 14px;
+  font-size: 16px;
   float: left;
   margin-top: 10px;
 }
 
 p.noteEditionHeader i {
-  font-size: 14px;
+  font-size: 16px;
   float: left;
   margin: 0 3px 0 -2px;
 }
@@ -6733,7 +6733,7 @@ p.noteEditionHeader i {
   float: left;
   width: 100%;
   padding: 20px 0;
-  font-size: 13px;
+  font-size: 15px;
   margin-bottom: 20px;
 }
 
@@ -6743,7 +6743,7 @@ p.noteEditionHeader i {
 }
 
 #topic i {
-  font-size: 15px;
+  font-size: 17px;
   margin-right: 4px;
 }
 
@@ -6776,7 +6776,7 @@ p.noteEditionHeader i {
 .formBlockHeader {
   padding: 0 30px;
   margin-bottom: 20px;
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Merriweather Italic";
   font-style: italic;
   color: #ed1c24;
@@ -6849,7 +6849,7 @@ p.noteEditionHeader i {
   float: left;
   width: 100%;
   padding: 20px 30px 0 30px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .uploadIllustration input {
@@ -6885,7 +6885,7 @@ a.photoDelete:hover {
 .uploadIllustration textarea {
   margin: 20px 0 0 0;
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   color: #2D2D2D;
   border: solid 1px rgba(128, 128, 140, 0.3);
 }
@@ -6927,7 +6927,7 @@ a.photoDelete:hover {
   float: left;
   width: 100%;
   padding: 10px;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .editable:focus {
@@ -6997,7 +6997,7 @@ a.photoDelete:hover {
   width: 100%;
   height: 40px;
   padding: 10px;
-  font-size: 14px;
+  font-size: 16px;
   background-color: #2D2D2D;
   color: #fff;
 }
@@ -7019,7 +7019,7 @@ a.photoDelete:hover {
   overflow-x: hidden;
   height: calc(100% - 108px);
   padding: 20px;
-  font-size: 14px;
+  font-size: 16px;
   background-color: #fff;
 }
 
@@ -7032,7 +7032,7 @@ a.photoDelete:hover {
 }
 
 .modalPublishScrollable .notice {
-  font-size: 12px;
+  font-size: 14px;
   margin: 5px 0 20px 0;
   color: #80808C;
 }
@@ -7075,7 +7075,7 @@ a.photoDelete:hover {
 }
 
 .docLocChoice .radio label i {
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .docLocChoice input[type=radio]:checked + label, .docLocChoice .radio label:hover {
@@ -7088,7 +7088,7 @@ a.photoDelete:hover {
   margin-bottom: 15px;
   float: left;
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
 }
 
@@ -7123,7 +7123,7 @@ a.photoDelete:hover {
 }
 
 .docTypes label i {
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .docTypes input:checked + label, .docTypes label:hover {
@@ -7154,7 +7154,7 @@ a.photoDelete:hover {
 }
 
 .docTags label i {
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .docTags input:checked + label, .docTags label:hover {
@@ -7178,7 +7178,7 @@ a.photoDelete:hover {
   height: 40px;
   width: 100%;
   font-family: "nerissemibold";
-  font-size: 12px;
+  font-size: 14px;
   padding: 0 20px 0 14px;
 }
 
@@ -7220,7 +7220,7 @@ a.photoDelete:hover {
   color: rgba(128, 128, 140, 0.8);
   border: solid 1px rgba(128, 128, 140, 0.3);
   text-transform: lowercase;
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerissemibold";
 }
 
@@ -7245,7 +7245,7 @@ a.photoDelete:hover {
 
 .modalPublish .actionPublish .notice {
   margin-top: 13px;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .profileCard {
@@ -7311,7 +7311,7 @@ a.photoDelete:hover {
 }
 
 .profileMandats a {
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Merriweather Italic";
   font-style: italic;
   color: #ed1c24;
@@ -7322,7 +7322,7 @@ a.photoDelete:hover {
 }
 
 .profileMandatsItem {
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Merriweather Italic";
   font-style: italic;
   line-height: 140%;
@@ -7355,7 +7355,7 @@ a.photoDelete:hover {
 
 .profileMandatsItem span {
   text-transform: uppercase;
-  font-size: 11px;
+  font-size: 13px;
   width: 100%;
   float: left;
   font-family: "nerissemibold";
@@ -7372,7 +7372,7 @@ a.photoDelete:hover {
   background-color: rgba(128, 128, 140, 0.2);
   position: relative;
   text-align: left;
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
   margin: 0 0 20px 0;
   padding: 10px 20px;
@@ -7404,14 +7404,14 @@ a.photoDelete:hover {
   color: #80808C;
   font-style: italic;
   font-family: "Merriweather Italic";
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .editionProfileCard input::-moz-placeholder {
   color: #80808C;
   font-style: italic;
   font-family: "Merriweather Italic";
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /* firefox 19+ */
@@ -7419,7 +7419,7 @@ a.photoDelete:hover {
   color: #80808C;
   font-style: italic;
   font-family: "Merriweather Italic";
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /* ie */
@@ -7427,7 +7427,7 @@ a.photoDelete:hover {
   color: #80808C;
   font-style: italic;
   font-family: "Merriweather Italic";
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .editionProfileCard .avatar40 {
@@ -7444,7 +7444,7 @@ a.photoDelete:hover {
 .uploadAvatar {
   float: left;
   padding: 5px 0 0 20px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .uploadAvatar input {
@@ -7493,7 +7493,7 @@ a.photoDelete:hover {
   width: 100%;
   padding: 10px;
   height: 40px;
-  font-size: 14px;
+  font-size: 16px;
   font-family: "nerisblack";
   border: solid 1px rgba(128, 128, 140, 0.3);
 }
@@ -7531,7 +7531,7 @@ a.photoDelete:hover {
   height: 40px;
   padding: 0 10px;
   font-family: "nerissemibold";
-  font-size: 11px;
+  font-size: 13px;
   text-transform: uppercase;
   position: relative;
   background-color: transparent;
@@ -7554,7 +7554,7 @@ a.photoDelete:hover {
 }
 
 .editionProfileCard textarea {
-  font-size: 12px;
+  font-size: 14px;
   border: solid 1px rgba(128, 128, 140, 0.3);
   height: 120px;
   color: #2D2D2D;
@@ -7584,7 +7584,7 @@ a.photoDelete:hover {
   float: left;
   clear: both;
   padding: 10px 0 0 30px;
-  font-size: 10px;
+  font-size: 12px;
   font-family: "nerislight";
   color: #80808C;
 }
@@ -7594,7 +7594,7 @@ a.photoDelete:hover {
   color: #80808C;
   font-style: italic;
   font-family: "Merriweather Italic";
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 5px;
 }
 
@@ -7627,7 +7627,7 @@ a.photoDelete:hover {
   border: solid 1px rgba(128, 128, 140, 0.3);
   font-style: italic;
   font-family: "Merriweather Italic";
-  font-size: 12px;
+  font-size: 14px;
 }
 
 input#mandate_localization {
@@ -7641,7 +7641,7 @@ input#mandate_localization {
 .mandateItem span.dea {
   font-style: italic;
   font-family: "Merriweather Italic";
-  font-size: 12px;
+  font-size: 14px;
   margin: 0 10px;
 }
 
@@ -7657,7 +7657,7 @@ input#mandate_begin_at, input#mandate_end_at {
 }
 
 .mandateActions span {
-  font-size: 10px;
+  font-size: 12px;
   font-family: "nerislight";
   color: #80808C;
 }
@@ -7670,7 +7670,7 @@ input#mandate_begin_at, input#mandate_end_at {
   padding: 6px 14px 0 14px;
   height: 30px;
   background-color: #ed1c24;
-  font-size: 12px;
+  font-size: 14px;
   color: #fff;
   cursor: pointer;
 }
@@ -7691,7 +7691,7 @@ input#mandate_begin_at, input#mandate_end_at {
 
 a.editMandateDeleteItem {
   color: #ed1c24;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -7713,7 +7713,7 @@ a.editMandateDeleteItem:hover {
 .profileSocialLink i {
   float: left;
   margin-top: 11px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .profileSocialLink i.icon-social-gg {
@@ -7727,13 +7727,13 @@ a.editMandateDeleteItem:hover {
   border: solid 1px rgba(128, 128, 140, 0.3);
   font-style: italic;
   font-family: "Merriweather Italic";
-  font-size: 12px;
+  font-size: 14px;
   float: right;
   width: calc(100% - 35px);
 }
 
 .formInfo {
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
 }
 
@@ -7762,7 +7762,7 @@ a.editMandateDeleteItem:hover {
   font-family: "nerislight";
   padding: 10px;
   height: 40px;
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 30px;
   width: 100%;
 }
@@ -7786,7 +7786,7 @@ a.editMandateDeleteItem:hover {
   height: 40px;
   padding: 0 10px;
   font-family: "nerislight";
-  font-size: 14px;
+  font-size: 16px;
   position: relative;
 }
 
@@ -7853,7 +7853,7 @@ a.editMandateDeleteItem:hover {
   width: 100%;
   font-family: "Merriweather Italic";
   font-style: italic;
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
   margin: 0 0 5px 0;
 }
@@ -7874,7 +7874,7 @@ a.editMandateDeleteItem:hover {
 }
 
 #boxPerso1 #idCheck .zlaBox input {
-  font-size: 12px;
+  font-size: 14px;
   padding-left: 25px;
 }
 
@@ -7898,7 +7898,7 @@ a.editMandateDeleteItem:hover {
   margin-bottom: 20px;
   font-family: "Merriweather Italic";
   font-style: italic;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 100%;
 }
 
@@ -7918,14 +7918,14 @@ a.editMandateDeleteItem:hover {
 #boxPerso2 .form-group label {
   font-family: "Merriweather Italic";
   font-style: italic;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 #boxPerso1 button, #boxPerso2 button, #boxPerso3 button, #boxPerso4 button {
   float: left;
   clear: both;
   font-family: "nerislight";
-  font-size: 12px;
+  font-size: 14px;
   line-height: 100%;
   color: #fff;
   background-color: #ed1c24;
@@ -7949,7 +7949,7 @@ a.editMandateDeleteItem:hover {
   width: 100%;
   font-family: "Merriweather Italic";
   font-style: italic;
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
   margin: 0 0 20px 0;
 }
@@ -7965,7 +7965,7 @@ a.editMandateDeleteItem:hover {
 
 .notificationsPrefsItem {
   margin-bottom: 5px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .notificationsPrefs:last-of-type {
@@ -7976,7 +7976,7 @@ a.editMandateDeleteItem:hover {
   float: left;
   clear: both;
   padding-bottom: 50px;
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
   margin-top: -30px;
 }
@@ -8009,7 +8009,7 @@ a.editMandateDeleteItem:hover {
 }
 
 #groupListing h1 {
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Merriweather Italic";
   font-style: italic;
   font-weight: normal;
@@ -8041,7 +8041,7 @@ a.editMandateDeleteItem:hover {
 .groupListingRow h2 {
   margin: 0;
   font-weight: normal;
-  font-size: 14px;
+  font-size: 16px;
   float: left;
   width: 60%;
   font-family: "nerisblack";
@@ -8055,7 +8055,7 @@ a.editMandateDeleteItem:hover {
 }
 
 .circleActions a {
-  font-size: 12px;
+  font-size: 14px;
   margin-left: 30px;
   cursor: pointer;
   color: #80808C;
@@ -8079,7 +8079,7 @@ a.editMandateDeleteItem:hover {
 
 .noResults {
   padding: 30px 0 20px 0;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 160%;
   color: #ed1c24;
   float: left;
@@ -8280,7 +8280,7 @@ a.editMandateDeleteItem:hover {
 }
 .medium-editor-anchor-preview {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   left: 0;
   line-height: 1.4;
   max-width: 280px;
@@ -8325,7 +8325,7 @@ a.editMandateDeleteItem:hover {
   position: absolute;
   top: 10px;
   left: 10px;
-  font-size: 15px;
+  font-size: 17px;
   content: attr(data-placeholder) !important;
   font-style: italic;
   color: rgba(128, 128, 140, 0.5);
@@ -8363,7 +8363,7 @@ a.editMandateDeleteItem:hover {
   left: 0;
   z-index: 21000;
   visibility: hidden;
-  font-size: 16px;
+  font-size: 18px;
   font-family: "Merriweather";
 }
 
@@ -8384,7 +8384,7 @@ a.editMandateDeleteItem:hover {
   margin: 0;
   padding: 10px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.33;
   text-decoration: none;
   box-sizing: border-box;
@@ -8428,7 +8428,7 @@ a.editMandateDeleteItem:hover {
 .medium-editor-toolbar-form .medium-editor-toolbar-input, .medium-editor-toolbar-form label {
   border: none;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 16px;
   margin: 0;
   padding: 6px;
   width: 316px;
@@ -8470,7 +8470,7 @@ a.editMandateDeleteItem:hover {
 .smoke {
   font-family: "nerissemibold";
   text-align: center;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 130%;
   background-color: rgba(255, 255, 255, 0.95);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff,endColorstr=#ffffff);
@@ -8535,7 +8535,7 @@ a.editMandateDeleteItem:hover {
   outline: 0;
   margin: 10px 5px;
   -webkit-background-clip: padding-box;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: normal;
   padding: 9px 12px;
   background-color: #2D2D2D;
@@ -8586,7 +8586,7 @@ a.editMandateDeleteItem:hover {
   color: #2D2D2D;
   min-height: 0;
   /* support: IE7 */
-  font-size: 12px;
+  font-size: 14px;
   text-transform: lowercase;
 }
 
@@ -8706,7 +8706,7 @@ a.editMandateDeleteItem:hover {
 
 .select2-results__option {
   padding: 6px;
-  font-size: 14px;
+  font-size: 16px;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -8787,7 +8787,7 @@ a.editMandateDeleteItem:hover {
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
   color: #444;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 28px;
 }
 
@@ -9211,7 +9211,7 @@ a.editMandateDeleteItem:hover {
 }
 
 .medium-editor-insert-plugin .medium-insert-buttons .medium-insert-buttons-addons li .fa {
-  font-size: 15px;
+  font-size: 17px;
   line-height: 28px;
 }
 
@@ -9324,7 +9324,7 @@ a.editMandateDeleteItem:hover {
 .public #headerRight a.headerCreateAccountLink {
   background-color: #ed1c24;
   color: #fff;
-  font-size: 10px;
+  font-size: 12px;
   font-family: "nerissemibold";
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
@@ -9347,14 +9347,14 @@ a.editMandateDeleteItem:hover {
 .headerGrp span b {
   font-weight: normal;
   font-family: "nerissemibold";
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .public #headerRight a.headerLoginLink {
   text-transform: uppercase;
   background-color: #2D2D2D;
   color: #fff;
-  font-size: 10px;
+  font-size: 12px;
   font-family: "nerissemibold";
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
@@ -9441,7 +9441,7 @@ a.editMandateDeleteItem:hover {
 }
 
 .footerColumnTitle {
-  font-size: 12px;
+  font-size: 14px;
   color: #ed1c24;
   font-style: italic;
   font-family: "Merriweather Italic";
@@ -9453,7 +9453,7 @@ a.editMandateDeleteItem:hover {
   width: 70%;
   position: relative;
   margin-bottom: 100px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 160%;
 }
 
@@ -9530,7 +9530,7 @@ a.editMandateDeleteItem:hover {
 }
 
 .footerColumn #socialLinks {
-  font-size: 12px;
+  font-size: 14px;
   font-style: italic;
   font-family: "Merriweather Italic";
   color: #fff;
@@ -9554,7 +9554,7 @@ a.editMandateDeleteItem:hover {
 .footerColumn #socialLinks i {
   display: inline-block;
   margin-top: -3px;
-  font-size: 13px;
+  font-size: 15px;
   vertical-align: middle;
 }
 
@@ -9563,7 +9563,7 @@ a.editMandateDeleteItem:hover {
 }
 
 .footerColumn #socialLinks i.icon-social-rss {
-  font-size: 11px;
+  font-size: 13px;
   margin-left: -3px;
 }
 
@@ -9617,7 +9617,7 @@ a.editMandateDeleteItem:hover {
 
 #publicPartners {
   float: right;
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
   padding-top: 30px;
 }
@@ -9631,7 +9631,7 @@ a.editMandateDeleteItem:hover {
 a.linkCreateAccount, .public .formAbuseContent a {
   background-color: #668000;
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
   border-radius: 15px;
@@ -9711,7 +9711,7 @@ a.linkCreateAccount:hover, .public .formAbuseContent a:hover {
 }
 
 .publicSidebarCreateAccount span {
-  font-size: 12px;
+  font-size: 14px;
   line-height: 120%;
   float: left;
   margin: 6px 0 0 10px;
@@ -9735,7 +9735,7 @@ body.public #cardPostText {
   padding: 30px;
   background-color: rgba(158, 158, 158, 0.2);
   color: #ed1c24;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 160%;
 }
 
@@ -9747,7 +9747,7 @@ body.public #cardPostText {
 }
 
 .postGetAccount h1 i {
-  font-size: 16px;
+  font-size: 18px;
   margin-right: 5px;
 }
 
@@ -9783,7 +9783,7 @@ body.public #cardPostText {
   padding: 8px 24px;
   background-color: #ed1c24;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .postGetAccount .getAccountActions a.linkPostGetAccount:hover {
@@ -9794,7 +9794,7 @@ body.public #cardPostText {
   float: left;
   clear: both;
   color: #2D2D2D;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .postGetAccount .getAccountActions span a {
@@ -10267,13 +10267,13 @@ body.css700 #op.miniHeader .txtOp a.ctaOp:hover, body.css1060 #op.miniHeader .tx
 }
 
 p.noteOp {
-  font-size: 14px;
+  font-size: 16px;
   float: left;
   margin-top: 5px;
 }
 
 p.noteOp i {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 body.css700 .imgOp, body.css1060 .imgOp {
@@ -10328,7 +10328,7 @@ body.css1060 #bannerPromo.bannerPromoSenatoriales .txtBannerPromo, body.css700 #
 
 .bannerPromoSenatoriales .txtBannerPromo span {
   color: #fff;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .bannerPromoSenatoriales .txtBannerPromo a.ctaBannerPromo {
@@ -10363,7 +10363,7 @@ body.css1060 #bannerPromo.bannerPromoSenatoriales .txtBannerPromo, body.css700 #
   padding: 60px 0 0 0;
   float: right;
   width: 510px;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 140%;
   color: #fff;
 }
@@ -10390,14 +10390,14 @@ body.css1060 #bannerPromo.bannerPromoSenatoriales .txtBannerPromo, body.css700 #
 }
 
 .txtBannerPromo span {
-  font-size: 14px;
+  font-size: 16px;
   color: #3F9C98;
   margin: 0;
   padding: 0;
 }
 
 .txtBannerPromo a.ctaBannerPromo {
-  font-size: 14px;
+  font-size: 16px;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
@@ -10508,14 +10508,14 @@ form#formDirectMessage label {
   clear: both;
   padding: 0;
   text-align: right;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 form#formDirectMessage input, form#formDirectMessage textarea {
   float: right;
   width: calc(85% - 20px);
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
   padding: 10px;
   margin-bottom: 20px;
   font-family: "nerislight";
@@ -10534,7 +10534,7 @@ form#formDirectMessage button {
   -moz-border-radius: 20px;
   border-radius: 20px;
   height: 40px;
-  font-size: 14px;
+  font-size: 16px;
   width: 120px;
   font-family: "nerislight";
   color: #fff;
@@ -10599,7 +10599,7 @@ form#formDirectMessage button {
 	padding: 60px 0 0 0;
 	float: right;
 	width: 510px;
-	font-size: 16px;
+	font-size: $s16px;
 	line-height: 140%;
 	color: #fff;
 }
@@ -10619,13 +10619,13 @@ form#formDirectMessage button {
 	font-family: 'nerisblack';
 }
 .txtCharlotte span {
-	font-size: 14px;
+	font-size: $s14px;
 	color: #7c86b0;
 	margin: 0;
 	padding: 0;
 }
 .txtCharlotte a.ctaCharlotte {
-	font-size: 14px;
+	font-size: $s14px;
 	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
 	padding:8px 20px;
 	display: inline-block;
@@ -10716,7 +10716,7 @@ body.process #header .center, body.demo #header .center, body.configAccount #hea
   width: 100%;
   text-align: center;
   font-family: "nerisblack";
-  font-size: 14px;
+  font-size: 16px;
   top: 20px;
 }
 
@@ -10733,7 +10733,7 @@ body.process #header .center, body.demo #header .center, body.configAccount #hea
 }
 
 body.process #headerRight a, body.demo #headerRight a, body.configAccount #headerRight a {
-  font-size: 10px;
+  font-size: 12px;
   font-family: "nerissemibold";
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -10774,7 +10774,7 @@ body.process .card {
 .column h2 {
   font-size: 20px;
   font-weight: normal;
-  font-size: 14px;
+  font-size: 16px;
   margin: 0;
   color: #ed1c24;
 }
@@ -10795,7 +10795,7 @@ body.process .card {
 .column140 {
   width: 160px;
   text-align: left;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 160%;
 }
 
@@ -10805,7 +10805,7 @@ body.process .card {
   width: 100%;
   margin-top: 30px;
   text-align: left;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 150%;
 }
 
@@ -10827,7 +10827,7 @@ body.process .card {
   margin-top: 60px;
   padding-top: 30px;
   border-top: solid 1px rgba(128, 128, 140, 0.5);
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
 }
 
@@ -10852,7 +10852,7 @@ body.process .card {
   float: left;
   width: 100%;
   margin: 40px 0 40px;
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
   text-align: center;
 }
@@ -10906,7 +10906,7 @@ ul.checkList {
   border-top: solid 1px rgba(128, 128, 140, 0.5);
   list-style: none;
   text-align: left;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 ul.checkList li {
@@ -10947,7 +10947,7 @@ ul.checkList li:before {
 }
 
 .dataCarefull {
-  font-size: 13px;
+  font-size: 15px;
   width: 750px;
   margin-top: 30px;
   text-align: left;
@@ -10980,7 +10980,7 @@ ul.checkList li:before {
 }
 
 .openId {
-  font-size: 14px;
+  font-size: 16px;
   font-family: "nerissemibold";
 }
 
@@ -11077,7 +11077,7 @@ ul.checkList li:before {
   height: calc(100% - 60px);
   overflow: auto;
   font-family: "Merriweather";
-  font-size: 12px;
+  font-size: 14px;
   line-height: 160%;
 }
 
@@ -11142,7 +11142,7 @@ ul.checkList li:before {
 }
 
 .processGreen i {
-  font-size: 14px;
+  font-size: 16px;
   margin-left: -2px;
 }
 
@@ -11165,7 +11165,7 @@ ul.checkList li:before {
 }
 
 .processNav {
-  font-size: 12px;
+  font-size: 14px;
   line-height: normal;
 }
 
@@ -11202,7 +11202,7 @@ ul.checkList li:before {
   height: 20px;
   width: 20px;
   text-align: center;
-  font-size: 10px;
+  font-size: 12px;
   font-family: "nerisblack";
 }
 
@@ -11263,7 +11263,7 @@ ul.checkList li:before {
 
 .process form {
   text-align: left;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .process label {
@@ -11279,7 +11279,7 @@ ul.checkList li:before {
 .process .card .notice {
   float: left;
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   color: #ed1c24;
   line-height: 160%;
   margin: 0 0 20px 0;
@@ -11302,19 +11302,19 @@ ul.checkList li:before {
   line-height: 100%;
   font-family: "nerislight";
   font-style: normal;
-  font-size: 14px;
+  font-size: 16px;
   border: solid 1px rgba(128, 128, 140, 0.5);
 }
 
 .process input::-webkit-input-placeholder {
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerislight";
   padding-top: 3px;
   color: rgba(128, 128, 140, 0.5);
 }
 
 .process input::-moz-placeholder {
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerislight";
   padding-top: 3px;
   color: rgba(128, 128, 140, 0.5);
@@ -11322,7 +11322,7 @@ ul.checkList li:before {
 
 /* firefox 19+ */
 .process input:-ms-input-placeholder {
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerislight";
   padding-top: 3px;
   color: rgba(128, 128, 140, 0.5);
@@ -11330,7 +11330,7 @@ ul.checkList li:before {
 
 /* ie */
 .process input:-moz-placeholder {
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerislight";
   padding-top: 3px;
   color: rgba(128, 128, 140, 0.5);
@@ -11363,7 +11363,7 @@ ul.checkList li:before {
 .process input[type=checkbox], .process input[type=radio] {
   width: 12px;
   float: left;
-  font-size: 12px;
+  font-size: 14px;
   margin: 2px 6px 0 0;
   padding: 0;
 }
@@ -11382,7 +11382,7 @@ ul.checkList li:before {
   padding: 0 10px;
   font-family: "nerislight";
   position: relative;
-  font-size: 14px;
+  font-size: 16px;
   background-color: transparent;
 }
 
@@ -11402,7 +11402,7 @@ ul.checkList li:before {
   margin-left: -30px;
   background-color: rgba(128, 128, 140, 0.2);
   padding: 30px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .process .coloredBg label {
@@ -11523,7 +11523,7 @@ ul.checkList li:before {
 }
 
 .process .myMandate .editMandateDeleteItem {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .hiddenInput {
@@ -11545,7 +11545,7 @@ ul.checkList li:before {
   cursor: pointer;
   font-family: "nerisblack";
   font-style: normal;
-  font-size: 14px;
+  font-size: 16px;
   padding: 12px 15px 0 15px;
   height: 40px;
 }
@@ -11578,7 +11578,7 @@ ul.checkList li:before {
   padding: 6px 14px 0 14px;
   height: 30px;
   background-color: #D25039;
-  font-size: 12px;
+  font-size: 14px;
   color: #fff;
   cursor: pointer;
 }
@@ -11600,7 +11600,7 @@ ul.checkList li:before {
   clear: none;
   font-family: "nerislight";
   font-style: normal;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .checkCgv label a {
@@ -11618,7 +11618,7 @@ ul.checkList li:before {
 
 .taxLine {
   border-top: solid 1px rgba(128, 128, 140, 0.3);
-  font-size: 12px;
+  font-size: 14px;
   color: #80808C;
   margin-top: 30px;
   padding-top: 10px;
@@ -11652,7 +11652,7 @@ body.process .formBlock {
 
 .redAlert {
   text-align: left;
-  font-size: 13px;
+  font-size: 15px;
   color: #ed1c24;
   line-height: 140%;
   position: relative;
@@ -11673,7 +11673,7 @@ body.process .formBlock {
 #idCheck .notice {
   float: left;
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   color: #ed1c24;
   line-height: 160%;
   margin: 20px 0;
@@ -11690,7 +11690,7 @@ body.process .formBlock {
 
 .uploadCNI {
   float: left;
-  font-size: 12px;
+  font-size: 14px;
   margin: 5px 0 30px 0;
 }
 
@@ -11733,7 +11733,7 @@ img.pictoCNI {
 }
 
 .infoUploadCNI {
-  font-size: 13px;
+  font-size: 15px;
   line-height: 140%;
   color: #80808C;
   margin-top: -1px;
@@ -11754,7 +11754,7 @@ img.pictoCNI {
   width: 300px;
   padding-left: 25px;
   padding-right: 5px;
-  font-size: 12px;
+  font-size: 14px;
   text-transform: uppercase;
 }
 
@@ -11899,7 +11899,7 @@ maxIdCheckMsg {
   background-color: #668000;
   padding: 40px 0;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   float: left;
   width: 100%;
   line-height: 150%;
@@ -11940,18 +11940,18 @@ body.user #maxIdCheckMsg {
 
 body.process #maxIdCheckMsg {
   text-align: left;
-  font-size: 13px;
+  font-size: 15px;
   color: #ed1c24;
   margin-bottom: 30px;
 }
 
 #maxIdCheckMsg h1 {
-  font-size: 13px;
+  font-size: 15px;
   text-transform: none;
 }
 
 #maxIdCheckMsg b {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: normal;
   font-family: "nerisblack";
 }
@@ -11988,7 +11988,7 @@ body.process #maxIdCheckMsg {
   position: relative;
   float: right;
   clear: both;
-  font-size: 10px;
+  font-size: 12px;
   background-color: #fff;
   margin: 20px 20px 20px 0;
   color: #668000;
@@ -12016,7 +12016,7 @@ body.process #maxIdCheckMsg {
 #alertIdCheck {
 	background-color: $orange;
 	padding: 40px 0;
-	font-size: 12px;
+	font-size: $s12px;
 	float: left;
 	width: 100%;
 	line-height: 140%;
@@ -12038,7 +12038,7 @@ body.process #maxIdCheckMsg {
   background-color: #668000;
   padding: 40px 0;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   float: left;
   width: 100%;
   line-height: 150%;
@@ -12066,7 +12066,7 @@ body.process #maxIdCheckMsg {
   padding: 0px 15px;
   height: 30px;
   background-color: #2D2D2D;
-  font-size: 12px;
+  font-size: 14px;
   color: #fff;
   cursor: pointer;
   border: none;
@@ -12081,7 +12081,7 @@ a.processNextStep, a.submit, button.submit {
   padding-top: 16px;
   font-family: "nerissemibold";
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
   border: none;
 }
@@ -12116,7 +12116,7 @@ button.buttonMaj {
   padding: 0 14px;
   height: 30px;
   background-color: #D25039;
-  font-size: 12px;
+  font-size: 14px;
   color: #fff;
   cursor: pointer;
   border: none;
@@ -12164,7 +12164,7 @@ body.process .boxError:before {
   content: "";
   position: absolute;
   left: 0;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 body.process .help-block {
@@ -12185,7 +12185,7 @@ body.process .help-block {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 body.process .coloredBg .help-block {
@@ -12219,7 +12219,7 @@ body.process .help-block li:before {
   content: "";
   position: absolute;
   left: 10px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 body.process #infoBoxHolder {
@@ -12236,7 +12236,7 @@ body.process #infoBoxHolder .boxSuccess, body.process #infoBoxHolder .boxError, 
   margin-bottom: 20px;
   width: 240px;
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   font-family: "nerissemibold";
   line-height: 140%;
   position: relative;
@@ -12298,14 +12298,14 @@ body.demo {
   border-color: rgba(128, 128, 140, 0.5);
   background-color: #fff;
   font-family: "nerislight";
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 40px;
 }
 
 #boxLogin #createAccount input[type=checkbox] {
   float: left;
   width: auto;
-  font-size: 14px;
+  font-size: 16px;
   background: aqua;
 }
 
@@ -12314,7 +12314,7 @@ body.demo {
   width: calc(100% - 20px);
   text-align: left;
   font-family: "nerislight";
-  font-size: 14px;
+  font-size: 16px;
   line-height: 130%;
   margin-top: -3px;
 }
@@ -12336,7 +12336,7 @@ body.demo {
   border-radius: 20px;
   padding: 0 30px;
   height: 40px;
-  font-size: 14px;
+  font-size: 16px;
   font-family: "nerislight";
   cursor: pointer;
   float: right;
@@ -12349,7 +12349,7 @@ body.demo {
 .obligatory {
   float: left;
   margin-top: 30px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 body.demo #headerTrigger {
@@ -12361,7 +12361,7 @@ body.demo center {
   margin-left: auto;
   margin-right: auto;
   text-align: left;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 160%;
 }
 
@@ -12435,7 +12435,7 @@ body.demo center h1:first-of-type {
   border-radius: 15px;
   padding: 9px 15px;
   height: 30px;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 100%;
   background-color: #2D2D2D;
   color: #fff;
@@ -12603,7 +12603,7 @@ body.grp .headerGrp .headerGrpMenu {
 
 #grpMenuPseudoTabs {
   float: right;
-  font-size: 12px;
+  font-size: 14px;
   color: rgba(128, 128, 140, 0.7);
   margin-top: 20px;
 }
@@ -12625,7 +12625,7 @@ body.grp .headerGrp .headerGrpMenu {
 #grpMenuLinks {
   float: right;
   width: calc(100% - 100px);
-  font-size: 13px;
+  font-size: 15px;
   text-transform: uppercase;
   color: #ed1c24;
   margin-top: 21px;
@@ -12640,7 +12640,7 @@ body.css700 #grpMenuLinks {
   text-transform: none;
   background-color: #ed1c24;
   color: #fff !important;
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 10px;
   display: inline-block;
   -webkit-border-radius: 15px;
@@ -12667,7 +12667,7 @@ body.css700 #grpMenuLinks {
   float: left;
   width: 100%;
   clear: both;
-  font-size: 12px;
+  font-size: 14px;
   color: rgba(128, 128, 140, 0.7);
   margin-bottom: 25px;
   line-height: 160%;
@@ -12766,7 +12766,7 @@ body.css700 .grpGlobalIntroBigArticle img {
 }
 
 .grpGlobalIntroOneCol p {
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Merriweather";
   line-height: 180%;
 }
@@ -12811,7 +12811,7 @@ body.css1060 .grpGlobalIntroBigArticleSidebar, body.css700 .grpGlobalIntroBigArt
 
 .grpGlobalIntroBigArticleSidebar p {
   color: #80808C;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 140%;
   padding-bottom: 10px;
 }
@@ -12821,7 +12821,7 @@ body.css1060 .grpGlobalIntroBigArticleSidebar, body.css700 .grpGlobalIntroBigArt
   clear: both;
   background-color: #ed1c24;
   color: #fff;
-  font-size: 11px;
+  font-size: 13px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -12859,7 +12859,7 @@ body.css700 .grpGlobalIntroSmallArticles {
 .grpGlobalIntroSmallArticles h1 {
   margin: -5px 0 8px 0;
   font-weight: normal;
-  font-size: 16px;
+  font-size: 18px;
   color: #ed1c24;
   width: 100%;
   float: left;
@@ -12867,7 +12867,7 @@ body.css700 .grpGlobalIntroSmallArticles {
 }
 
 .grpGlobalIntroSmallArticles p {
-  font-size: 10px;
+  font-size: 12px;
   font-family: "Merriweather";
   line-height: 180%;
   width: 100%;
@@ -12880,7 +12880,7 @@ body.css700 .grpGlobalIntroSmallArticles {
 }
 
 body.css700 .grpGlobalIntroSmallArticles p, body.css1060 .grpGlobalIntroSmallArticles p {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .grpGlobalIntroOneCol {
@@ -12944,7 +12944,7 @@ body.css1060 .grpTwitterFeed, body.css700 .grpTwitterFeed {
   float: left;
   width: calc(100% + 20px);
   text-align: center;
-  font-size: 11px;
+  font-size: 13px;
   color: #49aad7;
   padding-bottom: 10px;
 }
@@ -12959,13 +12959,13 @@ body.css1060 .grpTwitterFeed, body.css700 .grpTwitterFeed {
   -moz-border-radius: 20px;
   border-radius: 20px;
   padding: 10px 0 0 0;
-  font-size: 15px;
+  font-size: 17px;
   margin-bottom: 3px;
 }
 
 .grpTwitterLogo span {
   font-family: "nerisblack";
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .grpIntro {
@@ -13052,7 +13052,7 @@ body.css700 .grpAnswersByTitle h1 {
 
 .grpAnswersByTitleNotice {
   float: left;
-  font-size: 12px;
+  font-size: 14px;
   width: 125px;
   border-top: solid 1px rgba(237, 28, 36, 0.5);
   margin-top: 20px;
@@ -13081,7 +13081,7 @@ body.css1060 .grpAnswersByTitleNotice i, body.css700 .grpAnswersByTitleNotice i 
 }
 
 .grpAnswersByTitleNotice i {
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 5px;
   display: inline-block;
 }
@@ -13198,7 +13198,7 @@ body.css700 .grpChaptersList {
   width: 305px;
   margin: 20px 20px 0 0;
   background-color: rgba(237, 28, 36, 0.2);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .grpChaptersListItem:nth-of-type(4n) {
@@ -13268,7 +13268,7 @@ body.css1060 .grpChapterStat, body.css700 .grpChapterStat {
 }
 
 .grpChapterStat a i {
-  font-size: 15px;
+  font-size: 17px;
   width: 22px;
   float: left;
   vertical-align: baseline;
@@ -13279,7 +13279,7 @@ body.css1060 .grpChapterStat, body.css700 .grpChapterStat {
 }
 
 .grpChapterStat a:last-of-type i {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .grpChapterStat a:first-of-type i {
@@ -13308,7 +13308,7 @@ body.css1060 .grpChaptersListItem p, body.css700 .grpChaptersListItem p {
   float: left;
   width: 100%;
   clear: both;
-  font-size: 14px;
+  font-size: 16px;
   margin-top: 60px;
 }
 
@@ -13344,7 +13344,7 @@ body.css700 .grpFooterCol, body.css700 #grpFooter.grpFooterLogged .grpFooterCol 
   font-weight: normal;
   width: 100%;
   color: #80808C;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 140%;
   margin-top: 15px;
 }
@@ -13375,7 +13375,7 @@ body.css700 .grpFooterMentions {
   border-top: solid 1px rgba(45, 45, 45, 0.5);
   padding-top: 30px;
   margin-top: 20px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .grpFooterMentions a {
@@ -13395,7 +13395,7 @@ body.css700 .grpFooterMentions {
   margin-top: 30px;
   text-align: center;
   color: #80808C;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 body.css700 .grpFooterLinks {
@@ -13472,7 +13472,7 @@ body.css700 .grpFooterLinks {
 
 .showBriefLink, .hideBriefLink {
   float: left;
-  font-size: 12px;
+  font-size: 14px;
   background-color: #fff;
   color: #80808C;
   -webkit-border-radius: 15px;
@@ -13559,7 +13559,7 @@ body.css700 #grpBriefCard ul {
   text-align: center;
   font-family: "Merriweather";
   font-style: italic;
-  font-size: 10px;
+  font-size: 12px;
   color: #80808C;
   line-height: 180%;
   border-bottom: solid 1px rgba(128, 128, 140, 0.5);
@@ -13573,7 +13573,7 @@ body.css700 #grpBriefCard ul {
   text-transform: uppercase;
   color: #fff;
   background-color: #ed1c24;
-  font-size: 12px;
+  font-size: 14px;
   padding: 2px 4px;
   margin: 20px 0 35px 0;
 }
@@ -13583,7 +13583,7 @@ body.css700 #grpBriefCard ul {
   margin: 15px 0;
   float: left;
   font-family: "Merriweather";
-  font-size: 12px;
+  font-size: 14px;
   line-height: 190%;
   position: relative;
 }
@@ -13610,7 +13610,7 @@ body.css700 #grpBriefCard ul {
   font-weight: normal;
   font-family: "Merriweather";
   text-align: left;
-  font-size: 12px;
+  font-size: 14px;
   font-style: italic;
   border-left: solid 1px #ed1c24;
   padding-left: 10px;
@@ -13700,7 +13700,7 @@ body.css700 #grpBriefCard p {
 }
 
 .grpBriefImgLegend {
-  font-size: 10px;
+  font-size: 12px;
   color: #80808C;
   font-family: "Merriweather";
   width: 220px;
@@ -13733,7 +13733,7 @@ body.css700 #grpBriefCard p {
   top: 0;
   right: -250px;
   margin: 0;
-  font-size: 13px;
+  font-size: 15px;
   padding: 10px;
   height: 250px;
   overflow: hidden;
@@ -13751,7 +13751,7 @@ body.css700 #grpBriefCard p {
 .grpBriefSidebarLeft .grpIHaveAQuestion {
   width: 220px;
   margin: 0;
-  font-size: 13px;
+  font-size: 15px;
   padding: 10px;
 }
 
@@ -13787,7 +13787,7 @@ body.css700 #grpBriefCard p {
 }
 
 .grpBriefBigNumber {
-  font-size: 10px;
+  font-size: 12px;
   color: #80808C;
   line-height: 200%;
 }
@@ -13835,7 +13835,7 @@ body.css700 #grpBriefCard p {
 }
 
 .grpBriefGraph {
-  font-size: 10px;
+  font-size: 12px;
   color: #80808C;
   line-height: 200%;
 }
@@ -13871,7 +13871,7 @@ body.grp #sidebar .sidebarSearchFilters h5 {
   background-color: #ed1c24;
   color: #fff;
   margin-top: 30px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 160%;
   font-family: "nerislight";
 }
@@ -13893,7 +13893,7 @@ body.grp #sidebar .sidebarSearchFilters h5 {
   padding: 4px 16px;
   height: 30px;
   background-color: #2D2D2D;
-  font-size: 12px;
+  font-size: 14px;
   text-decoration: none;
   color: #fff;
 }
@@ -13914,7 +13914,7 @@ body.grp #sidebar .sidebarSearchFilters h5 {
 }
 
 #miniHowItWork h1 {
-  font-size: 14px;
+  font-size: 16px;
   margin: 0 0 30px 0;
   font-weight: normal;
 }
@@ -13934,7 +13934,7 @@ body.grp #sidebar .sidebarSearchFilters h5 {
   width: calc(100% - 40px);
   margin: -4px 0 30px 0;
   font-weight: normal;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 140%;
 }
 
@@ -13953,7 +13953,7 @@ body.grp #content, body.grp #sidebar {
   background-color: #ed1c24;
   color: #fff;
   padding: 20px;
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 20px;
 }
 
@@ -13973,7 +13973,7 @@ body.css700 #grpClosed {
 
 .grpCMS p, .grpCMS ul {
   font-family: Merriweather;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 30px;
   margin-bottom: 20px;
   display: inline-block;
@@ -14009,7 +14009,7 @@ body.css700 #grpClosed {
 }
 
 .grpCMS h3 {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .grpCMS p a {
@@ -14038,7 +14038,7 @@ body.css700 #grpClosed {
   margin: 0;
   padding: 10px 0;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   border-bottom: solid 1px rgba(128, 128, 140, 0.5);
 }
 
@@ -14059,7 +14059,7 @@ body.css700 .grpCMS #cardPost {
 }
 
 body.css700 .grpCMS p {
-  font-size: 13px;
+  font-size: 15px;
   line-height: 26px;
   display: inline-block;
 }
@@ -14093,7 +14093,7 @@ body.css700 .slideImg {
   text-align: center;
   height: 18px;
   overflow: hidden;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: normal;
 }
 
@@ -14105,7 +14105,7 @@ body.css700 .slideImg {
 }
 
 .slideNav i {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .slidePrev, .slideNext {
@@ -14129,7 +14129,7 @@ body.css700 .slideImg {
 }
 
 .docList a {
-  font-size: 13px;
+  font-size: 15px;
   display: inline-block;
   margin-bottom: 5px;
 }
@@ -14139,7 +14139,7 @@ body.css700 .slideImg {
 }
 
 .docList a i {
-  font-size: 12px;
+  font-size: 14px;
   margin-right: 5px;
 }
 
@@ -14150,7 +14150,7 @@ body.css700 .slideImg {
 .docZoom p {
   display: inline-block;
   margin-bottom: 10px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 160%;
 }
 
@@ -14190,7 +14190,7 @@ body.css700 #homePresentation .center {
 
 #homePresentation p {
   font-family: Merriweather;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 30px;
   margin-bottom: 20px;
 }
@@ -14362,7 +14362,7 @@ body.css1060 .editionPostCard .paragraph {
 }
 
 body.css1060 .medium-editor-placeholder:after {
-  font-size: 13px;
+  font-size: 15px;
 }
 
 body.css1060 .profileCard {
@@ -14912,7 +14912,7 @@ body.css700 .noticeBox a.newSubject span {
 }
 
 body.css700 .noticeBox a.newSubject {
-  font-size: 10px;
+  font-size: 12px;
   text-transform: uppercase;
   font-family: "nerissemibold";
   color: #fff;
@@ -14927,7 +14927,7 @@ body.css700 .noticeBox a.newSubject {
 }
 
 body.css700 .noticeBox a.newSubject i {
-  font-size: 16px;
+  font-size: 18px;
   position: absolute;
   left: 9px;
   top: 8px;
@@ -14964,12 +14964,12 @@ body.css700 #headerLeft #headerMenu a {
   padding: 8px 0 0 0;
   margin: 0 15px 0 0;
   border: none;
-  font-size: 11px;
+  font-size: 13px;
   font-family: "nerissemibold";
 }
 
 body.css700 #headerLeft #headerMenu .primaryMenu a {
-  font-size: 13px;
+  font-size: 15px;
   margin-bottom: 10px;
   padding: 5px;
   font-family: "nerislight";
@@ -14980,7 +14980,7 @@ body.css700 #headerLeft #headerMenu .primaryMenu a:last-of-type {
 }
 
 body.css700 #headerLeft .headerGrp {
-  font-size: 11px;
+  font-size: 13px;
   font-family: "nerissemibold";
   margin: 0 15px 0 0;
   padding: 8px 0 0 0;
@@ -15112,7 +15112,7 @@ body.css700 .noEdition {
 	padding-top: 30px;
 	width: calc(100% - 40px);
 	margin-left: 20px;
-	font-size: 14px;
+	font-size: $s14px;
 }
 
 body.css700 .alertNoEdition {
@@ -15140,7 +15140,7 @@ body.css700 .noEdition a {
 	margin-top: 30px;
 	float: left;
 	clear: both;
-	font-size: 12px;
+	font-size: $s12px;
 	font-family: "nerissemibold";
 	color: $orange;
 	border: solid 1px $lightOrange;
@@ -15283,7 +15283,7 @@ body.css700 #content {
 body.css700 .paragraph {
   width: 100%;
   padding: 15px 45px 0 15px;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 body.css700 .postTitle {
@@ -15445,7 +15445,7 @@ body.css700 .cardProfile .startFollowing .actionText, body.css700 .cardProfile .
 
 body.css700 .sidebarAction .sidebarFollow .startFollowing i, body.css700 .sidebarAction .sidebarFollow .stopFollowing i,
 body.css700 .cardProfile .startFollowing i, body.css700 .cardProfile .stopFollowing i {
-  font-size: 14px;
+  font-size: 16px;
   left: 10px;
   top: 10px;
 }
@@ -15890,7 +15890,7 @@ body.css700 .uploadIllustration {
 body.css700 .formBlock .uploadIllustration textarea {
   margin: 10px 0 0 0;
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 body.css700 .editionPostCard #postText {
@@ -15902,7 +15902,7 @@ body.css700 .editionPostCard .paragraph {
 }
 
 body.css700 .medium-editor-placeholder:after {
-  font-size: 13px;
+  font-size: 15px;
 }
 
 body.css700 .formAddTag button {
@@ -15946,7 +15946,7 @@ body.css700 .editionProfileCard .styledSelect:after {
 }
 
 body.css700 .editionProfileCard textarea {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 body.css700 .editionProfileCard .bioCountWrapper {
@@ -16057,7 +16057,7 @@ body.css700 #videoText h1 {
 body.css700 #videoText h2 {
   width: 96%;
   margin: 0 2% 20px 2%;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 body.css700 #ifNoVideo {
@@ -16070,7 +16070,7 @@ body.css700 #videoFooter {
 
 body.css700 #yellowBlock {
   width: 100%;
-  font-size: 16px;
+  font-size: 18px;
   min-height: 220px;
   padding-bottom: 220px;
   height: auto;
@@ -16085,7 +16085,7 @@ body.css700 #yellowBlock span {
 body.css700 #yellowBlock a {
   float: none;
   display: inline-flex;
-  font-size: 14px;
+  font-size: 16px;
   padding: 9px 15px 0 15px;
 }
 
@@ -16112,7 +16112,7 @@ body.css700 #postSelection h1, body.css700 #profileSelection h1 {
 
 body.css700 #postSelection h2, body.css700 #profileSelection h2 {
   margin: 10px 0 40px 0;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 body.css700 .publicCard {
@@ -16340,7 +16340,7 @@ body.css700 #grpMenuPseudoTabs span {
 
 body.css700 #grpMenuLinksMobile, body.css1060 #grpMenuLinksMobile {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   float: right;
   text-align: right;
   color: #ed1c24;
@@ -16357,7 +16357,7 @@ body.css1060 #grpMenuLinksMobile {
 }
 
 #grpMenuLinksMobile i {
-  font-size: 13px;
+  font-size: 15px;
   margin-left: 2px;
 }
 
@@ -16381,7 +16381,7 @@ body.css700 #grpMenuLinks a, body.css1060 #grpMenuLinks a, body.css700 #grpMenuL
 	text-transform: none;
 	background-color: $orange;
 	color: #fff !important;
-	font-size: 12px;
+	font-size: $s12px;
 	margin-bottom: 10px;
 	display: inline-block;
 	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
@@ -16430,7 +16430,7 @@ body.css700 #grpBrief .grpIHaveAQuestion {
 body.css700 #grpBriefHeader h1 {
   margin-top: 40px;
   width: 100%;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 body.css700 #grpBriefCardTitle {
@@ -16594,7 +16594,7 @@ body.grp.css700 #sidebar .grpIHaveAQuestion p {
 }
 
 body.grp.css700 .grpIHaveAQuestion h2 {
-  font-size: 16px;
+  font-size: 18px;
   width: calc(100% - 130px);
   float: left;
   margin: 0;

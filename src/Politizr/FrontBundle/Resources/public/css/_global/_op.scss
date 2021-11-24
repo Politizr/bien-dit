@@ -229,11 +229,11 @@ body.css700 #op.miniHeader .txtOp a.ctaOp, body.css1060 #op.miniHeader .txtOp a.
 body.css700 #op.miniHeader .txtOp a.ctaOp:hover, body.css1060 #op.miniHeader .txtOp a.ctaOp:hover { color: $darkGrey; background-color: #fff;  }
 
 p.noteOp {
-	font-size: 14px;
+	font-size: $s14px;
 	float: left;
 	margin-top: 5px;
 }
-p.noteOp i {font-size: 12px; }
+p.noteOp i {font-size: $s12px; }
 
 body.css700 .imgOp, body.css1060 .imgOp {display: none;}
 
@@ -283,7 +283,7 @@ body.css1060 #bannerPromo.bannerPromoSenatoriales .txtBannerPromo, body.css700 #
 }
 .bannerPromoSenatoriales .txtBannerPromo span {
 	color: #fff;
-	font-size: 16px;
+	font-size: $s16px;
 }
 .bannerPromoSenatoriales .txtBannerPromo a.ctaBannerPromo { 
 	background-color: $orange;
@@ -315,7 +315,7 @@ body.css1060 #bannerPromo.bannerPromoSenatoriales .txtBannerPromo, body.css700 #
 	padding: 60px 0 0 0;
 	float: right;
 	width: 510px;
-	font-size: 16px;
+	font-size: $s16px;
 	line-height: 140%;
 	color: #fff;
 }
@@ -335,13 +335,13 @@ body.css1060 #bannerPromo.bannerPromoSenatoriales .txtBannerPromo, body.css700 #
 	font-family: 'nerisblack';
 }
 .txtBannerPromo span {
-	font-size: 14px;
+	font-size: $s14px;
 	color: $blue;
 	margin: 0;
 	padding: 0;
 }
 .txtBannerPromo a.ctaBannerPromo {
-	font-size: 14px;
+	font-size: $s14px;
 	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
 	padding:8px 20px;
 	display: inline-block;
@@ -422,14 +422,14 @@ form#formDirectMessage label {
 	clear: both;
 	padding: 0;
 	text-align: right;
-	font-size: 14px;
+	font-size: $s14px;
 }
 
 form#formDirectMessage input, form#formDirectMessage textarea {
 	float: right;
 	width: calc(85% - 20px);
 	margin: 0;
-	font-size: 14px;
+	font-size: $s14px;
 	padding: 10px;
 	margin-bottom: 20px;
 	font-family: 'nerislight';
@@ -446,7 +446,7 @@ form#formDirectMessage button {
 	border:none;
 	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
 	height:40px;
-	font-size: 14px;
+	font-size: $s14px;
 	width: 120px;
 	font-family: 'nerislight';
 	color: #fff;
@@ -507,7 +507,7 @@ form#formDirectMessage button {
 	padding: 60px 0 0 0;
 	float: right;
 	width: 510px;
-	font-size: 16px;
+	font-size: $s16px;
 	line-height: 140%;
 	color: #fff;
 }
@@ -527,13 +527,13 @@ form#formDirectMessage button {
 	font-family: 'nerisblack';
 }
 .txtCharlotte span {
-	font-size: 14px;
+	font-size: $s14px;
 	color: #7c86b0;
 	margin: 0;
 	padding: 0;
 }
 .txtCharlotte a.ctaCharlotte {
-	font-size: 14px;
+	font-size: $s14px;
 	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
 	padding:8px 20px;
 	display: inline-block;

@@ -89,7 +89,7 @@ body.css1060 .paragraphCommentsHolder {left: auto; right: -10px;}
 
 ///// EDITION POST /////
 body.css1060 .editionPostCard .paragraph { padding: 0; }
-body.css1060 .medium-editor-placeholder:after {font-size: 13px;}
+body.css1060 .medium-editor-placeholder:after {font-size: $s13px;}
 
 ///// PROFILE /////
 body.css1060 .profileCard { width: calc(50% - 20px); }
@@ -449,7 +449,7 @@ body.css700 .noticeBox a.newSubject span { display: block; float: left;
 width: 100%;
 line-height: 140%}
 body.css700 .noticeBox a.newSubject {
-	font-size: 10px;
+	font-size: $s10px;
 	text-transform: uppercase;
 	font-family: 'nerissemibold';
 	color: #fff;
@@ -463,7 +463,7 @@ body.css700 .noticeBox a.newSubject {
 	display: inline-block;
 }
 body.css700 .noticeBox a.newSubject i { 
-	font-size: 16px;
+	font-size: $s16px;
 	position: absolute;
 	left: 9px;
 	top: 8px
@@ -496,11 +496,11 @@ body.css700 #headerLeft #headerMenu a {
 	padding: 8px 0 0 0;
 	margin: 0 15px 0 0;
 	border: none;
-	font-size: 11px;
+	font-size: $s11px;
     font-family: 'nerissemibold';
 }
 body.css700 #headerLeft #headerMenu .primaryMenu a {
-	font-size: 13px;
+	font-size: $s13px;
 	margin-bottom: 10px;
 	padding: 5px;
 	font-family: 'nerislight';
@@ -508,7 +508,7 @@ body.css700 #headerLeft #headerMenu .primaryMenu a {
 body.css700 #headerLeft #headerMenu .primaryMenu a:last-of-type {margin-bottom: 0;}
 
 body.css700 #headerLeft .headerGrp {
-	font-size: 11px;
+	font-size: $s11px;
 	font-family: 'nerissemibold';
 	margin: 0 15px 0 0;
 	padding: 8px 0 0 0;
@@ -608,7 +608,7 @@ body.css700 .noEdition {
 	padding-top: 30px;
 	width: calc(100% - 40px);
 	margin-left: 20px;
-	font-size: 14px;
+	font-size: $s14px;
 }
 
 body.css700 .alertNoEdition {
@@ -636,7 +636,7 @@ body.css700 .noEdition a {
 	margin-top: 30px;
 	float: left;
 	clear: both;
-	font-size: 12px;
+	font-size: $s12px;
 	font-family: "nerissemibold";
 	color: $orange;
 	border: solid 1px $lightOrange;
@@ -727,7 +727,7 @@ body.css700 #content {width: 100%; margin-top: 20px;}
 body.css700 .paragraph {
 	width: 100%;
 	padding: 15px 45px 0 15px;
-	font-size: 13px;
+	font-size: $s13px;
 }
 
 // titles
@@ -857,7 +857,7 @@ body.css700 .cardProfile .startFollowing .actionText, body.css700 .cardProfile .
 }
 body.css700 .sidebarAction .sidebarFollow .startFollowing i, body.css700 .sidebarAction .sidebarFollow .stopFollowing i,
 body.css700 .cardProfile .startFollowing i, body.css700 .cardProfile .stopFollowing i {
-	font-size: 14px;
+	font-size: $s14px;
 	left: 10px;
 	top: 10px;
 }
@@ -1180,11 +1180,11 @@ body.css700 .formBlock textarea {
 }
 body.css700 .postIllustration { height: 250px; }
 body.css700 .uploadIllustration {padding: 20px 10px 0 10px;}
-body.css700 .formBlock .uploadIllustration textarea {margin: 10px 0 0 0; width: 100%; font-size: 12px; }
+body.css700 .formBlock .uploadIllustration textarea {margin: 10px 0 0 0; width: 100%; font-size: $s12px; }
 
 body.css700 .editionPostCard #postText {padding: 0 10px;}
 body.css700 .editionPostCard .paragraph { padding: 0; }
-body.css700 .medium-editor-placeholder:after {font-size: 13px;}
+body.css700 .medium-editor-placeholder:after {font-size: $s13px;}
 
 body.css700 .formAddTag button { right: 10px;}
 
@@ -1210,7 +1210,7 @@ body.css700 .editionProfileCard select {
 }
 body.css700 .editionProfileCard .styledSelect:after {right: 24px;}
 
-body.css700 .editionProfileCard textarea { font-size: 12px;	}
+body.css700 .editionProfileCard textarea { font-size: $s12px;	}
 body.css700 .editionProfileCard .bioCountWrapper {padding-left: 10px;}
 
 body.css700 .mandateItem {
@@ -1285,14 +1285,14 @@ body.css700 #videoText h1 {
 body.css700 #videoText h2 {
 	width: 96%;
 	margin: 0 2% 20px 2%;
-	font-size: 16px;
+	font-size: $s16px;
 }
 body.css700 #ifNoVideo {  display: block; }
 
 body.css700 #videoFooter { padding: 20px 0;}
 body.css700 #yellowBlock {
 	width: 100%;
-	font-size: 16px;
+	font-size: $s16px;
 	min-height: 220px;
 	padding-bottom: 220px;
 	height: auto;
@@ -1305,7 +1305,7 @@ body.css700 #yellowBlock span {
 body.css700 #yellowBlock a {
 	float: none;
 	display: inline-flex;
-	font-size: 14px;
+	font-size: $s14px;
 	padding: 9px 15px 0 15px;
 }
 body.css700 #blueBlock { display: none;}
@@ -1321,7 +1321,7 @@ body.css700 #postSelection { padding: 40px 0;}
 body.css700 #postSelection h1, body.css700 #profileSelection h1  { font-size: 20px; }
 body.css700 #postSelection h2, body.css700 #profileSelection h2 {
 	margin: 10px 0 40px 0;
-	font-size: 16px;
+	font-size: $s16px;
 }
 body.css700 .publicCard {margin-bottom: 30px;}
 body.css700 a.publicCardImg { height: 180px; }
@@ -1471,7 +1471,7 @@ body.css700 #grpMenuPseudoTabs span {color: rgba($orange, 0.7);}
 
 body.css700 #grpMenuLinksMobile, body.css1060 #grpMenuLinksMobile {
 	display: block;	
-	font-size: 12px;
+	font-size: $s12px;
 	float: right;
 	text-align: right;
 	color: $orange;
@@ -1481,7 +1481,7 @@ body.css700 #grpMenuLinksMobile, body.css1060 #grpMenuLinksMobile {
 body.css700 #grpMenuLinksMobile { width: calc(100% - 100px);}
 body.css1060 #grpMenuLinksMobile { width: calc(100% - 150px);}
 #grpMenuLinksMobile i {
-	font-size: 13px;
+	font-size: $s13px;
 	margin-left: 2px;
 }
 
@@ -1498,7 +1498,7 @@ body.css700 #grpMenuLinks a, body.css1060 #grpMenuLinks a, body.css700 #grpMenuL
 	text-transform: none;
 	background-color: $orange;
 	color: #fff !important;
-	font-size: 12px;
+	font-size: $s12px;
 	margin-bottom: 10px;
 	display: inline-block;
 	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
@@ -1538,7 +1538,7 @@ body.css700 #grpBrief .grpIHaveAQuestion {display: none;}
 body.css700 #grpBriefHeader h1 {
 	margin-top: 40px;
 	width: 100%;
-	font-size: 16px;
+	font-size: $s16px;
 }
 //body.css700 #grpBriefHeader .showBriefLink, body.css700 #grpBriefHeader .hideBriefLink { bottom: 100px; }
 //body.css700 #grpBriefHeaderImg, body.css700 body.css700 #grpBriefHeaderImgShadow { height: 400px; }
@@ -1662,7 +1662,7 @@ body.grp.css700 #sidebar .grpIHaveAQuestion {
 body.grp.css700 #sidebar .grpIHaveAQuestion p { display: none;}
 
 body.grp.css700 .grpIHaveAQuestion h2 {
-	font-size: 16px;
+	font-size: $s16px;
 	width: calc(100% - 130px);
 	float: left;
 	margin: 0;

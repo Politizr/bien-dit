@@ -4,7 +4,7 @@
 	float: left;
 	width: 600px;
 	font-family: 'nerislight';
-	font-size: 12px;
+	font-size: $s12px;
 	text-transform: uppercase;
 }
 
@@ -53,7 +53,7 @@
 }
 
 #searchInput i {
-	font-size: 16px;
+	font-size: $s16px;
 	color: $grey;
 	position: absolute;
 	left: 8px;
@@ -74,7 +74,7 @@
 	vertical-align: middle;
 	position: relative;
 	z-index: 1;
-	font-size: 12px;
+	font-size: $s12px;
 	line-height: normal;
 }
 #searchInput input::placeholder {
@@ -103,9 +103,9 @@ body.grp.public a.headerCreateAccountLink:hover, body.grp.public #headerRight a.
 }
 
 a.newSubject {
-	//font-size: 10px; = version "nouveau sujet"
+	//font-size: $s10px; = version "nouveau sujet"
 	//text-transform: uppercase; = version "nouveau sujet"
-	font-size: 12px;
+	font-size: $s12px;
 	font-family: 'nerissemibold';
 	background-color: $orange;
 	color: #fff;
@@ -121,7 +121,7 @@ a.newSubject {
 a.newSubject:first-letter { text-transform: uppercase; }
 
 .newSubject i {
-	font-size: 15px;
+	font-size: $s15px;
 	position: absolute;
 	left: 7px;
 	top: 3px;
@@ -138,13 +138,13 @@ a.newSubject:hover {
 	top:-1px;
 	text-align: left;
 }
-#notifCounter i { font-size: 16px; cursor: pointer; }
+#notifCounter i { font-size: $s16px; cursor: pointer; }
 .icon-notif:hover  {color: $orange;}
 
 span.notifNew {
 	//display: inline-block;
 	position: relative;
-	font-size: 10px;
+	font-size: $s10px;
 	font-family: 'nerissemibold';
 	font-style: normal;
 	color: #fff;
@@ -189,7 +189,7 @@ span.notifNew {
 	z-index: -1;
 }
 #notifBoxArrow i {
-	font-size: 16px;
+	font-size: $s16px;
 	color: $softOrange;
 	text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
@@ -197,7 +197,7 @@ span.notifNew {
 #notifBoxHeader {
 	background-color: $softOrange;
 	padding: 18px 20px;
-	font-size: 12px;
+	font-size: $s12px;
 	font-family: 'nerissemibold';
 }
 
@@ -212,7 +212,7 @@ span.notifNew {
 	position: absolute;
 	left:-4px;
 	top:-4px;
-	font-size: 15px;
+	font-size: $s15px;
 }
 
 .notifItem {
@@ -220,7 +220,7 @@ span.notifNew {
 	padding: 20px 0;
 	width: calc(100% - 40px);
 	margin-left: 20px;
-	font-size: 14px;
+	font-size: $s14px;
 	border-bottom: solid 1px rgba($grey, .5);
 }
 .notifItem:last-child {border-bottom: none;}
@@ -236,7 +236,7 @@ span.notifNew {
 }
 .notifItem.noAvatar .notifItemHeader, .notifItem.noAvatar .notifItemContent {width: 100%;}
 
-.notifItemHeader {font-size: 12px; font-family: 'Merriweather Italic'; font-style: italic; margin: -2px 0 0 0;}
+.notifItemHeader {font-size: $s12px; font-family: 'Merriweather Italic'; font-style: italic; margin: -2px 0 0 0;}
 .notifItemHeader i {float: right; color: $lightOrange; cursor: pointer; margin: -2px -4px 0 0;}
 .notifItemHeader i:hover {color: $orange;}
 
@@ -258,13 +258,13 @@ span.notifNew {
 	margin : 0 4px;
 	top:-1px;
 }
-#reputCounter i { font-size: 16px; }
+#reputCounter i { font-size: $s16px; }
 #reputCounter a:hover i {color: $orange;}
 #reputCounter a:hover .reputPoints {background-color: $orange;}
 
 span.reputPoints {
 	position: relative;
-	font-size: 10px;
+	font-size: $s10px;
 	font-family: 'nerissemibold';
 	color: #fff;
 	background-color: $grey;
@@ -279,7 +279,7 @@ span.reputPoints {
 
 span.badgesCounter {
 	position: relative;
-	font-size: 10px;
+	font-size: $s10px;
 	font-family: 'nerissemibold';
 	z-index: 1;
 	left: -8px;
@@ -301,7 +301,7 @@ span.badgesCounter {
 
 .headerGrp {
 	display: inline-block;
-	font-size: 12px;
+	font-size: $s12px;
 	margin: -5px 4px 0 4px;
 	vertical-align: middle;
 	color: $darkGrey;
@@ -348,14 +348,14 @@ span.badgesCounter {
 	z-index: -1;
 }
 #menuArrow i {
-	font-size: 16px;
+	font-size: $s16px;
 	color: #fff;
 	margin-right: 6px;
 	text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
 
 #userLogged {
-	font-size: 12px;
+	font-size: $s12px;
 	position: relative;
 	padding: 0 32px 0 5px;
 	top: -2px;
@@ -379,7 +379,7 @@ span.badgesCounter {
 #menuButton:hover {color: $orange;}
 
 #menuButton i {
-	font-size: 16px;
+	font-size: $s16px;
 	position: relative;
 	top: -1px;
 	right: -4px;
@@ -412,7 +412,7 @@ span.badgesCounter {
 	z-index: -1;
 }
 #menuArrow i {
-	font-size: 16px;
+	font-size: $s16px;
 	color: #fff;
 	margin-right: 6px;
 	text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
@@ -423,7 +423,7 @@ span.badgesCounter {
 	background-color: #fff;
 	float: left;
 	width: 100%;
-	font-size: 14px;
+	font-size: $s14px;
 }
 .primaryMenu a {
 	clear: both;
@@ -450,7 +450,7 @@ span.badgesCounter {
 .headerGrpMenu .primaryMenu { padding-top: 0;}
 .primaryMenu span {
 	display: inline-block;
-	font-size: 12px; 
+	font-size: $s12px; 
 	padding-bottom: 10px;
     font-family: 'nerisblack';
     border-top: solid 1px rgba($grey, 0.5);
@@ -468,7 +468,7 @@ span.badgesCounter {
 	clear: both;
 	float: left;
 	color: $grey;
-	font-size: 12px;
+	font-size: $s12px;
 	margin-bottom: 15px;
 }
 .secondaryMenu a:hover {color: $darkGrey;}

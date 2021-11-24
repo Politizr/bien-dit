@@ -3,7 +3,7 @@
 .smoke {
 	font-family: 'nerissemibold';
 	text-align: center;
-	font-size: 14px;
+	font-size: $s14px;
 	line-height: 130%;
     background-color: rgba(255,255,255,0.95);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff,endColorstr=#ffffff);
@@ -62,7 +62,7 @@
 	outline: 0;
 	margin: 10px 5px;
 	-webkit-background-clip: padding-box;
-	font-size: 11px;
+	font-size: $s11px;
 	font-weight: normal;
 	padding: 9px 12px;
 	background-color: $darkGrey;

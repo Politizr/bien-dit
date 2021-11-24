@@ -18,7 +18,7 @@
 	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
 	float: left;
 	background-color: $lightBlue;
-	font-size: 13px;
+	font-size: $s13px;
     font-family: 'nerisblack';
 }
 
@@ -88,7 +88,7 @@
 	color: #fff;
 	background-color: $orange;
 	text-transform: capitalize;
-	font-size: 12px;
+	font-size: $s12px;
 }
 .actionEdit a:hover {background-color: $darkGrey;}
 
@@ -115,7 +115,7 @@
 }
 .miniActions .actionAnswer a i {
 	position: absolute;
-	font-size: 16px;
+	font-size: $s16px;
 	right: 9px;
 	top:11px;
 }
@@ -159,35 +159,35 @@
 	color: #fff;
 	position: relative;
 	z-index: 1000;
-	font-size: 12px;
+	font-size: $s12px;
 }
 
 .startFollowing, .miniActions .startFollowing { background-color: $purple; }
 .stopFollowing, .miniActions .stopFollowing { background-color: $grey; }
 .miniActions .startFollowing i, .miniActions .stopFollowing i {
 	position: absolute;
-	font-size: 14px;
+	font-size: $s14px;
 	right: 10px;
 	top:12px;	
 }
 
 .startFollowing i, .stopFollowing i {
 	position: absolute;
-	font-size: 14px;
+	font-size: $s14px;
 	left: 10px;
 	top:11px;	
 }
 
 .miniActions .actionText {
 	padding: 10px 35px 0 17px;
-	font-size: 14px;
+	font-size: $s14px;
 	display: none;
 	line-height: 130%;
 }
 
 .actionText {
 	padding: 10px 17px 0 35px;
-	font-size: 14px;
+	font-size: $s14px;
 	line-height: 130%;
 	white-space:  nowrap;
 }
@@ -202,5 +202,5 @@
 // smaller text info in bubbles
 .bubblesTag .miniActions .actionText, .bubblesProfile .miniActions .actionText {
 	padding: 12px 35px 0 15px;
-	font-size: 12px;
+	font-size: $s12px;
 }

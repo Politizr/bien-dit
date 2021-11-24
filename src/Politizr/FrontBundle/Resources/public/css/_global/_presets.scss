@@ -7,7 +7,7 @@ body {
 	font-family: 'nerislight';
 	color: $darkGrey;
 	overflow-x: hidden;
-	font-size: 16px;
+	font-size: $s16px;
 	height: 100%;
 }
 body.edition, body.edition.grp {background-image: url(../images/bgWood.jpg); }
@@ -56,7 +56,7 @@ img {border:none;}
 	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
 	color: #fff;
 	background-color: rgba($grey, .6);
-	font-size: 14px;
+	font-size: $s14px;
 	margin-bottom: 20px;
 }
 
@@ -69,7 +69,7 @@ img {border:none;}
 	z-index: 2000;
 	bottom: 0;
 	color: $darkGrey;
-	font-size: 12px;
+	font-size: $s12px;
 	text-align: center;
 }
 body.css700 .modalRGPD, body.css1060 .modalRGPD { text-align: left; }
@@ -150,7 +150,7 @@ body.css700 .modalRGPD, body.css1060 .modalRGPD { text-align: left; }
 	border-top: solid 1px rgba($grey, .5);
 	margin-top: 40px;
 	padding: 25px 0 50px 0;
-	font-size: 10px;
+	font-size: $s10px;
 	line-height: 100%;
 }
 #footer a { display: inline-block; color: $grey; margin-right: 15px; cursor: pointer;}
@@ -158,7 +158,7 @@ body.css700 .modalRGPD, body.css1060 .modalRGPD { text-align: left; }
 
 #footer #goUp {
 	display: inline-block;
-	font-size: 12px;
+	font-size: $s12px;
 	border: solid 1px rgba($grey, .5);
 	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
 	height: 30px;
@@ -184,7 +184,7 @@ h4 {
 	font-weight: normal;
 	padding: 0;
 	margin: 10px 0 20px 0;
-	font-size: 14px;
+	font-size: $s14px;
 	font-family: 'nerisblack';
 	color: $darkGrey;
 	text-align: center;
@@ -199,7 +199,7 @@ h5 {
 	font-weight: normal;
 	padding: 0;
 	margin: 0;
-	font-size: 12px;
+	font-size: $s12px;
 	font-style: italic;
 	font-family: 'Merriweather Italic';
 	color: $grey;
@@ -225,7 +225,7 @@ h5 {
 	float: left;
 	width: 100%;
 	margin: 0 0 20px 0;
-	font-size: 14px;
+	font-size: $s14px;
 	font-family: 'nerisblack';
 	color: $orange;
 	text-align: center;
@@ -236,7 +236,7 @@ h5 {
 .citizenIdChecked, .representativeIdChecked, .representativeIdInProgress {
 	float: left;
 	color: #fff;
-	font-size: 10px;
+	font-size: $s10px;
 	font-family: 'nerislight';
 	font-style: normal;
 	-webkit-border-radius: 9px; -moz-border-radius: 9px; border-radius: 9px;
@@ -251,7 +251,7 @@ h5 {
 	position: absolute;
 	left: -1px;
 	top:2px;
-	font-size: 15px;
+	font-size: $s15px;
 }
 
 .citizenIdChecked { background-color: darken( $gold, 5% );}
@@ -301,7 +301,7 @@ h5 {
 	position: relative;
 	float: left;
 	margin: 10px 10px 0 0;
-	font-size: 12px;
+	font-size: $s12px;
 }
 .tagList a {
 	float: left;
@@ -331,7 +331,7 @@ h5 {
 ///// post breadcrumb /////
 .postBreadcrumb {
 	display: inline-block;
-	font-size: 12px;
+	font-size: $s12px;
 	font-style: italic;
 	font-family: 'Merriweather Italic';
 	line-height: 160%;
@@ -361,7 +361,7 @@ h5 {
 	float: left;
 	color: $grey;
     font-family: 'nerissemibold';
-    font-size: 12px;
+    font-size: $s12px;
 }
 //.postStats :last-child { margin-right: 0;}
 .statTime, .statViews, .statComments {
@@ -373,9 +373,9 @@ h5 {
 .statComments a {color: $grey;}
 .statComments a:hover {color: $darkGrey;}
 .statViews {display: none;}
-.statTime i, .statViews i {position: absolute; left: -2px; top:-2px; font-size: 13px;}
-.statComments i {position: absolute; left: -2px; top:-1px; font-size: 13px;}
-.statTime i {font-size: 15px; left: -4px; top:-4px;}
+.statTime i, .statViews i {position: absolute; left: -2px; top:-2px; font-size: $s13px;}
+.statComments i {position: absolute; left: -2px; top:-1px; font-size: $s13px;}
+.statTime i {font-size: $s15px; left: -4px; top:-4px;}
 
 .statLoc {
 	float: left;
@@ -385,7 +385,7 @@ h5 {
 	padding-left: 14px;
 	color: $darkGrey;
 }
-.statLoc i {position: absolute; font-size: 14px; left: -4px; top:-3px;}
+.statLoc i {position: absolute; font-size: $s14px; left: -4px; top:-3px;}
 .statLoc a { color: inherit;}
 .statLoc a:hover {color: $darkGrey;}
 
@@ -398,7 +398,7 @@ h5 {
 	font-family: 'nerislight';
 }
 .statFB b {font-family: 'nerissemibold'; font-weight: normal;}
-.statFB i {position: absolute; font-size: 14px; left: -2px; top:-3px;}
+.statFB i {position: absolute; font-size: $s14px; left: -2px; top:-3px;}
 
 ///// reaction counter /////
 a.answerCounter { float: left;}
@@ -411,7 +411,7 @@ a.answerCounter span {
 	padding:6px 10px 0 30px;
 	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
 	position: relative;
-	font-size: 12px;
+	font-size: $s12px;
 	margin-right: 8px;
 }
 a.answerCounter:hover, a.answerCounter:hover span {color: darken( $orange, 10% ); border-color: darken( $orange, 10% );}
@@ -434,13 +434,13 @@ a.answerCounter i {
 	padding:6px 14px 0 30px;
 	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
 	position: relative;
-	font-size: 12px;
+	font-size: $s12px;
 }
 a.answerCounter {color: $orange;}
 a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
 .answerCounter i {
 	position: absolute;
-	font-size: 14px;
+	font-size: $s14px;
 	left: 9px;
 	top: 5px;
 }
@@ -512,7 +512,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
 
 .miniProfile .profileName a {
     font-family: 'nerisblack' !important;
-    font-size: 14px;
+    font-size: $s14px;
 }
 .miniProfile .profileName a:hover {color: $orange;}
 .miniProfile .profileName .org {margin-top: -1px;}
@@ -523,7 +523,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
 	display: inline-block;
 	width: 100%;
 	line-height: 160%; 
-	font-size: 12px;
+	font-size: $s12px;
 	margin-top: 2px;
 }
 
@@ -536,7 +536,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
 .miniProfile .profileBio a {
 	//font-family: 'Merriweather Italic';
 	color: $orange;
-	font-size: 12px;
+	font-size: $s12px;
 }
 .miniProfile .profileBio a:hover { color: $darkGrey;}
 .miniProfile .defaultBio {
@@ -673,7 +673,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
 	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
 	color: #fff;
 	background-color: rgba($grey, .6);
-	font-size: 14px;
+	font-size: $s14px;
 	cursor: pointer;
 	text-transform: capitalize;
 }
@@ -699,7 +699,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
 	margin-bottom: 20px;
 	width: 240px;
 	color: #fff;
-	font-size: 12px;
+	font-size: $s12px;
 	font-family: 'nerissemibold';
 	line-height: 140%;
 	position: relative;
@@ -753,7 +753,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
 	width: 100%;
 	border: none;
 	background-color: #fff;
-	font-size: 16px;
+	font-size: $s16px;
 	font-family: 'nerislight';
 }
 .searchForm input::-webkit-input-placeholder { color: rgba($grey, 0.5);}
@@ -781,7 +781,7 @@ a.answerCounter:hover {color: $darkGrey; border-color: $darkGrey;}
 	color: $blue;
 	font-family: 'Merriweather Italic';
 	font-style: italic;
-	font-size: 12px;
+	font-size: $s12px;
 	position: relative;
 	left: 50%;
 	width: 410px;
@@ -811,16 +811,16 @@ a.history {
 	height:30px;
     font-family: 'nerislight';
 	font-style: normal;
-    font-size: 11px;
+    font-size: $s11px;
     line-height: 100%;
     cursor: pointer;
 }
-a.history i { font-size: 10px; margin-right: 4px;}
+a.history i { font-size: $s10px; margin-right: 4px;}
 a.history:hover { background-color: $darkGrey; }
 
 // deleted account
 
 .deletedAccount {
-	font-size: 14px;
+	font-size: $s14px;
 	color: $grey;
 }

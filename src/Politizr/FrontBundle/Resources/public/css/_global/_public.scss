@@ -8,7 +8,7 @@
 .public #headerRight a.headerCreateAccountLink {
 	background-color: $orange;
 	color: #fff;
-	font-size: 10px;
+	font-size: $s10px;
 	font-family: 'nerissemibold';
 	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
 	padding: 10px 0;
@@ -27,13 +27,13 @@
 .headerGrp span b {
 	font-weight: normal;
 	font-family: 'nerissemibold';	
-	font-size: 11px;
+	font-size: $s11px;
 }
 .public #headerRight a.headerLoginLink {
 	text-transform: uppercase;
 	background-color: $darkGrey;
 	color: #fff;
-	font-size: 10px;
+	font-size: $s10px;
 	font-family: 'nerissemibold';
 	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
 	padding:10px 0;
@@ -107,7 +107,7 @@
 	margin-right: 40px;
 }
 .footerColumnTitle {
-	font-size: 12px;
+	font-size: $s12px;
 	color: $orange;
 	font-style: italic;
 	font-family: 'Merriweather Italic';
@@ -118,7 +118,7 @@
 	width: 70%;
 	position: relative;
 	margin-bottom: 100px;
-	font-size: 14px;
+	font-size: $s14px;
 	line-height: 160%;
 }
 #publicFooterLeft a {
@@ -178,7 +178,7 @@
 }
 
 .footerColumn #socialLinks {
-	font-size: 12px;
+	font-size: $s12px;
 	font-style: italic;
 	font-family: 'Merriweather Italic';
 	color: #fff;
@@ -192,11 +192,11 @@
 .footerColumn #socialLinks i {
 	display: inline-block;
 	margin-top: -3px;
-	font-size: 13px;
+	font-size: $s13px;
 	vertical-align: middle;
 }
 .footerColumn #socialLinks i.icon-social-gg {font-size: 17px;}
-.footerColumn #socialLinks i.icon-social-rss {font-size: 11px; margin-left: -3px;}
+.footerColumn #socialLinks i.icon-social-rss {font-size: $s11px; margin-left: -3px;}
 
 #twitterFeed {
 	float: left;
@@ -242,7 +242,7 @@
 
 #publicPartners {
 	float: right;
-	font-size: 12px;
+	font-size: $s12px;
 	color: $grey;
 	padding-top: 30px;
 }
@@ -257,7 +257,7 @@
 a.linkCreateAccount, .public .formAbuseContent a {
 	background-color: $darkGreen;
 	color:#fff;
-	font-size: 12px;
+	font-size: $s12px;
 	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
 	padding:7px 12px 0 9px;
 	height:30px;
@@ -318,7 +318,7 @@ a.linkCreateAccount:hover, .public .formAbuseContent a:hover {background-color: 
 .publicSidebarCreateAccount a:hover {background-color: $darkGreen; color: #fff;}
 
 .publicSidebarCreateAccount span {
-	font-size: 12px;
+	font-size: $s12px;
 	line-height: 120%;
 	float: left;
 	margin: 6px 0 0 10px;
@@ -345,7 +345,7 @@ body.public #cardPostText {
 	padding: 30px;
 	background-color: rgba($silver, 0.2);
 	color: $orange;
-	font-size: 13px;
+	font-size: $s13px;
 	line-height: 160%;
 }
 .postGetAccount h1 {
@@ -355,7 +355,7 @@ body.public #cardPostText {
 	line-height: 120%;
 }
 .postGetAccount h1 i {
-	font-size: 16px;
+	font-size: $s16px;
 	margin-right: 5px;
 }
 .postGetAccount a {
@@ -385,7 +385,7 @@ body.public #cardPostText {
 	padding: 8px 24px;
 	background-color: $orange;
 	color: #fff;
-	font-size: 14px;
+	font-size: $s14px;
 }
 .postGetAccount .getAccountActions a.linkPostGetAccount:hover {background-color: $darkGrey;}
 
@@ -393,7 +393,7 @@ body.public #cardPostText {
 	float: left;
 	clear: both;
 	color: $darkGrey;
-	font-size: 12px;
+	font-size: $s12px;
 }
 
 .postGetAccount .getAccountActions span  a {

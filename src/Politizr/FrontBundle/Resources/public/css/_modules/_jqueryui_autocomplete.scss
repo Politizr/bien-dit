@@ -33,7 +33,7 @@
 	cursor: pointer;
 	color: $darkGrey;
 	min-height: 0; /* support: IE7 */
-	font-size: 12px;
+	font-size: $s12px;
 	text-transform: lowercase;
 }
 .ui-menu .ui-menu-item:first-letter {text-transform: uppercase;}

@@ -38,7 +38,7 @@ body.noScroll { overflow: hidden;}
 .modalClose {
 	float: right;
 	margin: 20px 20px 0 0;
-	font-size: 12px;
+	font-size: $s12px;
 	cursor: pointer;
 }
 .modalClose:hover {color: $orange;}
@@ -54,10 +54,10 @@ body.noScroll { overflow: hidden;}
 	float: right;
 	margin-right: 40px;
 	width: 290px;
-	font-size: 14px;
+	font-size: $s14px;
 	line-height: 150%;
 }
-.modalText b { font-size: 16px; }
+.modalText b { font-size: $s16px; }
 .modalCitizen .modalText {padding-top: 15px;}
 .modalRepresentatives .modalText {padding-top: 10px;}
 
@@ -75,7 +75,7 @@ body.noScroll { overflow: hidden;}
    	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
 	padding:8px 20px 0 40px;
 	height:40px;
-	font-size: 14px;
+	font-size: $s14px;
 	color: #fff;
 	border: none;
 	width: auto;
@@ -96,7 +96,7 @@ body.noScroll { overflow: hidden;}
 
 .modalText span.modalCancel {
     font-family: 'nerislight';
-    font-size: 10px;
+    font-size: $s10px;
     text-transform: capitalize;
     float: left;
     clear: both;
@@ -120,14 +120,14 @@ body.noScroll { overflow: hidden;}
 	float: left;
 	width: 100%;
 	font-family: 'nerisblack';
-	font-size: 16px;
+	font-size: $s16px;
 	color: $darkGreen;
 	line-height: 140%;
 }
 
 .modalCreateAccount a.modalLinkCreateAccount {
 	font-family: 'nerisblack';
-	font-size: 16px;
+	font-size: $s16px;
 	float: left;
 	clear: both;
 	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
@@ -143,7 +143,7 @@ body.noScroll { overflow: hidden;}
 
 .modalCreateAccount .modalText span {
 	font-family: 'nerislight';
-	font-size: 12px;
+	font-size: $s12px;
 	color: $darkGreen;
 	line-height: 120%;
 	float: left;
@@ -213,15 +213,15 @@ body.css700 #searchModalHeader { margin-bottom: 10px; }
 
 #startSearch {
 	float: left;
-	font-size: 12px;
+	font-size: $s12px;
 	color: $orange;
 	padding-top: 2px;
 	width: calc(100% - 70px);
 }
-#startSearch i {font-size: 15px; float: left; margin-right: 3px; margin-top: -2px;}
+#startSearch i {font-size: $s15px; float: left; margin-right: 3px; margin-top: -2px;}
 #closeModal {
 	float: right;
-	font-size: 12px;
+	font-size: $s12px;
 	cursor: pointer;
 }
 #closeModal i {
@@ -297,7 +297,7 @@ body.css700 #searchModalResults .hit.hitPublication .hitContent {
 	font-size: 18px;
 }
 #searchModalResults .hitContent p {
-	font-size: 13px;
+	font-size: $s13px;
 	font-family: 'Merriweather';
 	line-height: 200%;
 }
@@ -313,7 +313,7 @@ body.css700 #searchModalResults .hit.hitPublication .hitContent {
 	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
 	color: #fff;
 	background-color: rgba($grey, .6);
-	font-size: 14px;
+	font-size: $s14px;
 	cursor: pointer;
 	border: none;
     font-family: 'nerislight';
@@ -325,7 +325,7 @@ body.css700 #searchModalResults .hit.hitPublication .hitContent {
 #searchModalResults #categories {
 	float: right;
 	width: 330px;
-	font-size: 12px;
+	font-size: $s12px;
 }
 body.css1060 #searchModalResults #categories {
 	width: calc(40% - 40px);
@@ -339,7 +339,7 @@ body.css700 #searchModalResults #categories {
 	width: 100%;
 }
 .ais-menu--header {	
-	font-size: 12px;
+	font-size: $s12px;
 	font-style: italic;
 	font-family: 'Merriweather Italic';
 	margin-bottom: 20px;

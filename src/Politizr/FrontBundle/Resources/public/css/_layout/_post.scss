@@ -7,7 +7,7 @@
 	width: 100%;
 	background-color: $blue;
 	padding: 15px 0 25px 0;
-	font-size: 13px;
+	font-size: $s13px;
 	color: #fff;
 	text-align: center;
 	line-height: 150%;
@@ -42,7 +42,7 @@
 	display: inline-block;
 	margin-top: -1px;
 }
-.boostChoice a:first-of-type i { font-size: 10px;}
+.boostChoice a:first-of-type i { font-size: $s10px;}
 .boostChoice a:hover {opacity: 0.8;}
 
 .post {
@@ -113,7 +113,7 @@
 	bottom: 20px;
 	background-color: $darkGrey;
 	color: #fff;
-	font-size: 12px;
+	font-size: $s12px;
 	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
 	padding:8px 12px;
 	min-height:30px;
@@ -129,7 +129,7 @@
 	float: left;
 	width: 990px;
 	position: relative;
-	font-size: 15px;
+	font-size: $s15px;
 	font-family: 'Merriweather';
 	line-height: 200%;
 }
@@ -152,7 +152,7 @@
 }
 
 .paragraph h2 {
-	font-size: 15px;
+	font-size: $s15px;
 	font-weight: normal;
 	font-style: italic;
 	margin: 0;
@@ -171,7 +171,7 @@
 	font-family: 'Merriweather Bold';
 	margin: 0 0 0 0;
 	padding: 0;
-	font-size: 15px;
+	font-size: $s15px;
 	clear: both;
 	width: 100%;
 	display: inline-block;
@@ -212,13 +212,13 @@
 }
 #cardPostTextFooter .startFollowing i, #cardPostTextFooter .stopFollowing i {
 	position: absolute;
-	font-size: 12px;
+	font-size: $s12px;
 	left: 10px;
 	top: 7px;
 }
 #cardPostTextFooter .actionFollow .actionText {
 	padding: 0 0 0 15px;
-	font-size: 12px;
+	font-size: $s12px;
 }
 
 .noticeBox {
@@ -227,7 +227,7 @@
 	padding: 30px;
 	background-color: rgba($orange, 0.6);
 	color: #fff;
-	font-size: 12px;
+	font-size: $s12px;
 }
 
 .noticeBox .actionAnswer {float: right;}
@@ -249,12 +249,12 @@
 
 .noticeBox .actionText {
 	padding: 10px 40px 0 17px;
-	font-size: 14px;
+	font-size: $s14px;
 	line-height: 130%;
 }
 .noticeBox .actionAnswer a i {
 	position: absolute;
-	font-size: 16px;
+	font-size: $s16px;
 	right: 12px;
 	top: 9px;
 }
@@ -324,7 +324,7 @@
 .postAnswersList .miniPost a {
 	float: right;	
 	width: calc(100% - 170px);
-	font-size: 12px;
+	font-size: $s12px;
 	font-family: 'Merriweather';	
 	line-height: 180%;
 	margin-top: -5px;
@@ -382,7 +382,7 @@ body.css700 #cardPost .postAnswersList .coloredBg { padding-top: 0; }
 #addNewGlobalComments form.formCommentNew textarea#comment_description {
 	padding: 10px;
 	border: solid 1px rgba($grey, 0.5);
-	font-size: 12px;
+	font-size: $s12px;
 	min-height: 90px;
 	width: calc(100% - 2px);
 }
@@ -429,7 +429,7 @@ body.css700 #cardPost .postAnswersList .coloredBg { padding-top: 0; }
 
 #globalCommentsButton span:last-of-type {
 	display: inline-block;
-	font-size: 12px;
+	font-size: $s12px;
 	cursor: pointer;
 	background-color: $orange;
 	color: #fff;
@@ -453,7 +453,7 @@ body.css700 #cardPost .postAnswersList .coloredBg { padding-top: 0; }
 	-webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
 	width: auto;
 	float: left;
-	font-size: 12px;
+	font-size: $s12px;
 	margin-bottom: 40px;
 }
 
@@ -473,7 +473,7 @@ body.css700 #cardPost .postAnswersList .coloredBg { padding-top: 0; }
 }
 
 #globalComments .comment .commentText {
-	font-size: 12px;
+	font-size: $s12px;
 	padding: 0;
 	background-color: transparent;
 	line-height: 160%;
@@ -495,7 +495,7 @@ body.css700 #cardPost .postAnswersList .coloredBg { padding-top: 0; }
 }
 
 #globalComments .embedFB a {
-	font-size: 12px;
+	font-size: $s12px;
 	color: $fbColor;
 	//font-family: 'nerissemibold';
 }
@@ -506,7 +506,7 @@ body.css700 #cardPost .postAnswersList .coloredBg { padding-top: 0; }
 	width: 100%;
 	padding: 10px;
 	background-color: #fff;
-	font-size: 12px;
+	font-size: $s12px;
 	color: $fbColor;
 }
 #globalComments .impactFB b {font-weight: normal; font-family: 'nerissemibold';}
@@ -588,7 +588,7 @@ body.css700 #cardPost .postAnswersList .coloredBg { padding-top: 0; }
 #globalComments .commentFB .commentFB_Text {
 	float: right;
 	width: calc(100% - 38px);
-	font-size: 14px;
+	font-size: $s14px;
 	font-family: Helvetica, Arial, sans-serif;
 	line-height: 140%;
 	color: #363940;
@@ -697,7 +697,7 @@ body.css700 #cardPost .postAnswersList .coloredBg { padding-top: 0; }
 }
 .bubblesCommentsHeader span {
 	color: #fff;
-	font-size: 11px;
+	font-size: $s11px;
     font-family: 'nerissemibold';
     float: right;
     cursor: pointer;
@@ -718,7 +718,7 @@ body.css700 #cardPost .postAnswersList .coloredBg { padding-top: 0; }
 }
 
 .bubbCommArrow i {
-	font-size: 16px;
+	font-size: $s16px;
 	color: #fff;
 	text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
@@ -737,7 +737,7 @@ body.css700 #cardPost .postAnswersList .coloredBg { padding-top: 0; }
 	margin-left: -10px;
 	margin-bottom: 10px;
     padding: 10px;
-	font-size: 12px;
+	font-size: $s12px;
 	line-height: 140%;
 	margin-top: -10px;
 	color: #fff;
@@ -760,7 +760,7 @@ textarea#comment_description {
 	margin: 0;
 	padding: 20px 20px 0 20px;
 	background-color: transparent;
-	font-size: 14px;
+	font-size: $s14px;
 	font-family: 'Merriweather';
 	min-height: 60px;
 	line-height: 160%;
@@ -782,7 +782,7 @@ textarea#comment_description input:-moz-placeholder { color:$grey; font-style: i
 	position: absolute;
 	left: 10px;
 	bottom:10px;
-	font-size: 10px;
+	font-size: $s10px;
     font-family: 'nerissemibold';
     color: $grey;
 }
@@ -790,7 +790,7 @@ textarea#comment_description input:-moz-placeholder { color:$grey; font-style: i
 
 .formCommentNew .actionsButtons input[type="button"] {
     font-family: 'nerissemibold';
-   	font-size: 12px;
+   	font-size: $s12px;
 	line-height: 100%;
 	color: #fff;
 	background-color: $orange;
@@ -825,7 +825,7 @@ textarea#comment_description input:-moz-placeholder { color:$grey; font-style: i
 }
 
 .comment .commentText {
-	font-size: 14px;
+	font-size: $s14px;
 	font-family: 'Merriweather';
 	line-height: 180%;
 	background-color: rgba($grey, .1);
@@ -889,7 +889,7 @@ textarea#comment_description input:-moz-placeholder { color:$grey; font-style: i
 	width: 100%;
 	margin-bottom: 40px;
 	font-family: 'Merriweather';
-	font-size: 12px;
+	font-size: $s12px;
 	color: $grey;
 	line-height: 180%;
 }
@@ -908,7 +908,7 @@ textarea#comment_description input:-moz-placeholder { color:$grey; font-style: i
 	//font-style: normal;
 	content: "\e824";
 	margin-right: 4px;
-	font-size: 14px;
+	font-size: $s14px;
 	vertical-align: text-bottom;
 	color: $darkGrey;
 }
@@ -919,7 +919,7 @@ textarea#comment_description input:-moz-placeholder { color:$grey; font-style: i
 #answerMenu {
 	float: left;
 	width: 100%;
-	font-size: 12px;
+	font-size: $s12px;
 	font-family: 'Merriweather Italic';	
 	font-style: italic;
 	color: #fff;
@@ -961,7 +961,7 @@ textarea#comment_description input:-moz-placeholder { color:$grey; font-style: i
 	font-style: normal;
 	line-height: 90%;
 	cursor: pointer;
-	font-size: 14px;
+	font-size: $s14px;
 }
 .answerHideMenuAllFamily i { font-size: 8px; top: 2px; position: relative;}
 .answerShowMenuAllFamily:hover, .answerHideMenuAllFamily:hover { background-color: #fff; color: $orange;}
@@ -1040,7 +1040,7 @@ textarea#comment_description input:-moz-placeholder { color:$grey; font-style: i
 	background-color: rgba(#fff, .3);
 	color: rgba($darkGrey, .3);
 	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
-	font-size: 16px;
+	font-size: $s16px;
 	top: 50%;
 	margin-top: -20px;
 }
@@ -1094,7 +1094,7 @@ textarea#comment_description input:-moz-placeholder { color:$grey; font-style: i
 	margin-top:5px;	
 	display: inline-block;
 	width: 100%;
-	font-size: 12px;
+	font-size: $s12px;
 }
 #answerMenu .profileName a {
     font-family: 'nerissemibold';
@@ -1171,11 +1171,11 @@ textarea#comment_description input:-moz-placeholder { color:$grey; font-style: i
 }
 
 p.noteEditionHeader {
-	font-size: 14px;
+	font-size: $s14px;
 	float: left;
 	margin-top: 10px;
 }
-p.noteEditionHeader i {font-size: 14px; float: left; margin: 0 3px 0 -2px;}
+p.noteEditionHeader i {font-size: $s14px; float: left; margin: 0 3px 0 -2px;}
 
 //grp edition header 
 #topic {
@@ -1185,7 +1185,7 @@ p.noteEditionHeader i {font-size: 14px; float: left; margin: 0 3px 0 -2px;}
 	float: left;
 	width: 100%;
 	padding: 20px 0;
-	font-size: 13px;
+	font-size: $s13px;
 	margin-bottom: 20px;
 }
 #topic b {
@@ -1193,7 +1193,7 @@ p.noteEditionHeader i {font-size: 14px; float: left; margin: 0 3px 0 -2px;}
     font-family: 'nerisblack';
 }
 #topic i {
-	font-size: 15px;
+	font-size: $s15px;
 	margin-right: 4px;
 }
 #topic span {
@@ -1226,7 +1226,7 @@ p.noteEditionHeader i {font-size: 14px; float: left; margin: 0 3px 0 -2px;}
 .formBlockHeader {
 	padding: 0 30px;
 	margin-bottom: 20px;
-	font-size: 12px;
+	font-size: $s12px;
 	font-family: 'Merriweather Italic';
 	font-style: italic;
 	color: $orange;
@@ -1281,7 +1281,7 @@ p.noteEditionHeader i {font-size: 14px; float: left; margin: 0 3px 0 -2px;}
 	float: left;
 	width: 100%;
 	padding: 20px 30px 0 30px;
-	font-size: 12px;
+	font-size: $s12px;
 }
 .uploadIllustration input {display: none;}
 .uploadIllustration label {
@@ -1305,7 +1305,7 @@ a.photoDelete:hover {color: $orange;}
 .uploadIllustration textarea {
 	margin: 20px 0 0 0;
 	width: 100%;
-	font-size: 12px;
+	font-size: $s12px;
 	color: $darkGrey;
 	border: solid 1px rgba($grey, .3);
 }
@@ -1336,7 +1336,7 @@ a.photoDelete:hover {color: $orange;}
 	float: left;
 	width: 100%;
 	padding: 10px;
-	font-size: 15px;
+	font-size: $s15px;
 }
 .editable:focus {outline: 0;}
 
@@ -1392,7 +1392,7 @@ a.photoDelete:hover {color: $orange;}
 	width: 100%;
 	height: 40px;
 	padding: 10px;
-	font-size: 14px;
+	font-size: $s14px;
 	background-color: $darkGrey;
 	color: #fff;
 }
@@ -1406,7 +1406,7 @@ a.photoDelete:hover {color: $orange;}
 	overflow-x: hidden;
 	height: calc(100% - 108px);	
 	padding: 20px;
-	font-size: 14px;
+	font-size: $s14px;
 	background-color: #fff;
 }
 
@@ -1419,7 +1419,7 @@ a.photoDelete:hover {color: $orange;}
 }
 
 .modalPublishScrollable .notice {
-	font-size: 12px;
+	font-size: $s12px;
 	margin: 5px 0 20px 0;
 	color: $grey;
 }
@@ -1451,7 +1451,7 @@ a.photoDelete:hover {color: $orange;}
 	margin-bottom: 15px;
 	font-family: 'nerislight';
 }
-.docLocChoice .radio label i { font-size: 11px;;}
+.docLocChoice .radio label i { font-size: $s11px;;}
 
 .docLocChoice input[type="radio"]:checked+label, .docLocChoice .radio label:hover {
 	background-color: $orange;
@@ -1463,7 +1463,7 @@ a.photoDelete:hover {color: $orange;}
 	margin-bottom: 15px;
 	float: left;
 	width: 100%;
-	font-size: 12px;
+	font-size: $s12px;
 	color: $grey;
 }
 
@@ -1493,7 +1493,7 @@ a.photoDelete:hover {color: $orange;}
 	border: solid 1px rgba($grey, .5);
 	margin-bottom: 10px;
 }
-.docTypes label i { font-size: 11px;;}
+.docTypes label i { font-size: $s11px;;}
 .docTypes input:checked+label, .docTypes label:hover {
 	background-color: $orange;
 	color: #fff;
@@ -1517,7 +1517,7 @@ a.photoDelete:hover {color: $orange;}
 	border: solid 1px rgba($grey, .5);
 	margin-bottom: 10px;
 }
-.docTags label i { font-size: 11px;;}
+.docTags label i { font-size: $s11px;;}
 .docTags input:checked+label, .docTags label:hover {
 	background-color: $orange;
 	color: #fff;
@@ -1537,7 +1537,7 @@ a.photoDelete:hover {color: $orange;}
 	height: 40px;
 	width: 100%;
 	font-family: 'nerissemibold';
-	font-size: 12px;
+	font-size: $s12px;
 	padding: 0 20px 0 14px;
 }
 
@@ -1572,7 +1572,7 @@ a.photoDelete:hover {color: $orange;}
 	color: rgba($grey, .8);
 	border: solid 1px rgba($grey, .3);
 	text-transform: lowercase;
-	font-size: 12px;
+	font-size: $s12px;
 	font-family: 'nerissemibold';
 }
 .tagLabel:first-letter { text-transform: uppercase; }
@@ -1590,5 +1590,5 @@ a.photoDelete:hover {color: $orange;}
 
 .modalPublish .actionPublish .notice {
 	margin-top: 13px;
-	font-size: 11px;
+	font-size: $s11px;
 }

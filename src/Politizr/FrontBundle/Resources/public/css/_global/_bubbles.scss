@@ -18,7 +18,7 @@
 }
 
 .bubbArrow i {
-	font-size: 16px;
+	font-size: $s16px;
 	color: #fff;
 	text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
@@ -55,7 +55,7 @@
 	-o-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
 	box-shadow: 0px 0px 16px 0px rgba($grey, .8);
 	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
-	font-size: 12px;
+	font-size: $s12px;
     font-family: 'nerislight';
     text-align: left;
     font-style: normal;
@@ -79,7 +79,7 @@
 	-o-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
 	box-shadow: 0px 0px 16px 0px rgba($grey, .8);
 	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
-	font-size: 12px;
+	font-size: $s12px;
     font-family: 'nerislight';
     text-align: left;
     font-style: normal;
@@ -117,7 +117,7 @@
 	-o-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
 	box-shadow: 0px 0px 16px 0px rgba($grey, .8);
 	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
-	font-size: 12px;
+	font-size: $s12px;
     font-family: 'nerislight';
     text-align: left;
     font-style: normal;
@@ -147,7 +147,7 @@
 .bubblesProfile .miniProfile .profileBio a {
 	font-family: 'Merriweather Heavy Italic' !important;
 	color: $orange;
-	font-size: 12px;
+	font-size: $s12px;
 }
 .bubblesProfile .miniProfile .profileBio a:hover { color: #fff;}
 
@@ -184,7 +184,7 @@
 	float: right;
 	position: relative;
 	width: 22px;
-	font-size: 16px;
+	font-size: $s16px;
 	display: inline-block;
 	vertical-align: text-top;
 }
@@ -204,7 +204,7 @@
 	-o-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
 	box-shadow: 0px 0px 16px 0px rgba($grey, .8);
 	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
-	font-size: 12px;
+	font-size: $s12px;
     font-family: 'nerislight';
     text-align: left;
     font-style: normal;
@@ -216,7 +216,7 @@
 	padding: 10px 10px 0 10px;
 	float: left;
 	width: 100%;
-	font-size: 14px;
+	font-size: $s14px;
 	line-height: 100%;
 	color: $darkGrey;
 }
@@ -260,10 +260,10 @@
 
 .helperTitle {
 	color: $blue;
-	font-size: 11px;
+	font-size: $s11px;
 	cursor: pointer;
 }
-.helperTitle i {font-size: 13px;}
+.helperTitle i {font-size: $s13px;}
 .helperTitle:hover {
 	color: $darkGrey;
 }
@@ -283,7 +283,7 @@
 	-o-box-shadow: 0px 0px 16px 0px rgba($grey, .8);
 	box-shadow: 0px 0px 16px 0px rgba($grey, .8);
 	filter:progid:DXImageTransform.Microsoft.Shadow(color=$grey, Direction=NaN, Strength=16);
-	font-size: 12px;
+	font-size: $s12px;
     font-family: 'nerislight';
     text-align: left;
     font-style: normal;
