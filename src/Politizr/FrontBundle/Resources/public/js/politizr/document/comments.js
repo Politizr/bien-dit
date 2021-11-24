@@ -1,7 +1,7 @@
 // beta
 // on document ready
 $(function() {
-    var commentMode = $('#commentMode').attr('mode');
+    var commentMode = $('.commentMode').attr('mode');
     // console.log(commentMode);
 
     // inscription popup or preopen comment by paragraph
