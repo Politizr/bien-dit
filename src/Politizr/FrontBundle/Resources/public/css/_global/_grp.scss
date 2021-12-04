@@ -173,7 +173,7 @@ body.css700 .grpGlobalIntroBigArticle img {
 	width: calc(100% + 20px);
 	margin: -10px 0 10px -10px;
 	padding: 5px 10px 10px 3px;
-	background-color: rgba($orange, 0.2);
+	background-color: rgba($orange, 0.1);
 }
 .grpGlobalIntroBigArticle .grpGlobalIntroOneCol {
 	float: left;
@@ -379,7 +379,7 @@ body.css1060 .grpTwitterFeed, body.css700 .grpTwitterFeed { display: none; }
 	float: left;
 	width: 100%;
 	clear: both;
-	background-color: rgba($orange, 0.2);
+	background-color: rgba($orange, 0.1);
 	padding: 30px;
 	margin-top: 40px;
 }
@@ -494,7 +494,7 @@ body.css700 .grpChaptersList {
 	float: left;
 	width: 305px;
 	margin: 20px 20px 0 0;
-	background-color: rgba($orange, 0.2);
+	background-color: rgba($orange, 0.1);
 	font-size: $s12px;
 }
 .grpChaptersListItem:nth-of-type(4n) {margin-right: 0;}

@@ -40,7 +40,7 @@
                     {{ topic | topicStats }}
                     <p>
                         {# topic.summary | striptags | truncate(70, true) | purify #}
-                        <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}" class="grpKnowMore">En savoir plus</a>
+                        <a href="{{ path('TopicDetail', { 'circleSlug': circle.slug, 'slug': topic.slug }) }}" class="grpKnowMore" aria-label="{{ topic.title }}">En savoir plus</a>
                     </p>
                 </div>
             {% endfor %}
