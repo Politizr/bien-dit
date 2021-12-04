@@ -173,7 +173,7 @@ body.css700 .grpGlobalIntroBigArticle img {
 	width: calc(100% + 20px);
 	margin: -10px 0 10px -10px;
 	padding: 5px 10px 10px 3px;
-	background-color: rgba($orange, 0.1);
+	background-color: rgba($orange, 0.05);
 }
 .grpGlobalIntroBigArticle .grpGlobalIntroOneCol {
 	float: left;
@@ -196,8 +196,8 @@ a.grpKnowMore {
     font-style: normal;
     float: left;
     clear: both;
-    color: $orange;
-    border: solid 1px $orange;
+    color: $darkOrange;
+    border: solid 1px $darkOrange;
     -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px;
 	padding:2px 14px;
 	height:30px;
@@ -205,8 +205,8 @@ a.grpKnowMore {
 }
 .grpChaptersListItem a.grpKnowMore {margin-top: 0;}
 a.grpKnowMore:hover {
-	background-color: $orange;
-	border-color: $orange;
+	background-color: $darkOrange;
+	border-color: $darkOrange;
 	color: #fff;
 }
 .grpGlobalIntroBigArticleSidebar {
@@ -379,7 +379,7 @@ body.css1060 .grpTwitterFeed, body.css700 .grpTwitterFeed { display: none; }
 	float: left;
 	width: 100%;
 	clear: both;
-	background-color: rgba($orange, 0.1);
+	background-color: rgba($orange, 0.05);
 	padding: 30px;
 	margin-top: 40px;
 }
@@ -388,7 +388,7 @@ body.css700 .grpAnswersBy {padding: 20px; margin-top: 10px;}
 .grpAnswersByTitle {
 	float: left;
 	width: 235px;
-	color: $orange;
+	color: $darkOrange;
 	margin-right: 30px;
 }
 body.css1060 .grpAnswersByTitle {width: 100%; margin-bottom: 30px; }
@@ -406,7 +406,7 @@ body.css700 .grpAnswersByTitle h1 {
 	float: left;
 	font-size: $s12px;
 	width: 125px;
-	border-top: solid 1px rgba($orange, 0.5);
+	border-top: solid 1px rgba($darkOrange, 0.5);
 	margin-top: 20px;
 	padding-top: 10px;
 }
@@ -494,7 +494,7 @@ body.css700 .grpChaptersList {
 	float: left;
 	width: 305px;
 	margin: 20px 20px 0 0;
-	background-color: rgba($orange, 0.1);
+	background-color: rgba($orange, 0.05);
 	font-size: $s12px;
 }
 .grpChaptersListItem:nth-of-type(4n) {margin-right: 0;}

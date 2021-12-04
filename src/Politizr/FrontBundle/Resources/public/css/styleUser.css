@@ -12765,7 +12765,7 @@ body.css700 .grpGlobalIntroBigArticle img {
   width: calc(100% + 20px);
   margin: -10px 0 10px -10px;
   padding: 5px 10px 10px 3px;
-  background-color: rgba(234, 19, 27, 0.1);
+  background-color: rgba(234, 19, 27, 0.05);
 }
 
 .grpGlobalIntroBigArticle .grpGlobalIntroOneCol {
@@ -12792,8 +12792,8 @@ a.grpKnowMore {
   font-style: normal;
   float: left;
   clear: both;
-  color: #ea131b;
-  border: solid 1px #ea131b;
+  color: #d80008;
+  border: solid 1px #d80008;
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
   border-radius: 15px;
@@ -12807,8 +12807,8 @@ a.grpKnowMore {
 }
 
 a.grpKnowMore:hover {
-  background-color: #ea131b;
-  border-color: #ea131b;
+  background-color: #d80008;
+  border-color: #d80008;
   color: #fff;
 }
 
@@ -13024,7 +13024,7 @@ body.css1060 .grpTwitterFeed, body.css700 .grpTwitterFeed {
   float: left;
   width: 100%;
   clear: both;
-  background-color: rgba(234, 19, 27, 0.1);
+  background-color: rgba(234, 19, 27, 0.05);
   padding: 30px;
   margin-top: 40px;
 }
@@ -13041,7 +13041,7 @@ body.css700 .grpAnswersBy {
 .grpAnswersByTitle {
   float: left;
   width: 235px;
-  color: #ea131b;
+  color: #d80008;
   margin-right: 30px;
 }
 
@@ -13070,7 +13070,7 @@ body.css700 .grpAnswersByTitle h1 {
   float: left;
   font-size: 14px;
   width: 125px;
-  border-top: solid 1px rgba(234, 19, 27, 0.5);
+  border-top: solid 1px rgba(216, 0, 8, 0.5);
   margin-top: 20px;
   padding-top: 10px;
 }
@@ -13213,7 +13213,7 @@ body.css700 .grpChaptersList {
   float: left;
   width: 305px;
   margin: 20px 20px 0 0;
-  background-color: rgba(234, 19, 27, 0.1);
+  background-color: rgba(234, 19, 27, 0.05);
   font-size: 14px;
 }
 
