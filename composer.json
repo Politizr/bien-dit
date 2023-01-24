@@ -1,6 +1,6 @@
 {
     "name": "politizr/biendit",
-    "license": "proprietary",
+    "license": "MIT",
     "type": "project",
     "description": "Bien Dit by Politizr",
     "autoload": {
