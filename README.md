@@ -1,11 +1,63 @@
 BIEN DIT
 =====================
 
-# DESCRIPTION
+# Description
 
-Bien Dit, le Service de Consultations pour les Collectivités et les Associations.
+Bien Dit est un service de consultations en ligne pour les Collectivités et les Associations.
 
 Ce service est destiné aux collectivités désireuses d’ouvrir un canal de discussion adapté, protégé et indépendant avec leurs concitoyen.ne.s. BIEN DIT est tout à la fois simple, constructif et paramétrable! 
+
+# Compatibilité requise
+
+PHP >=7.0 & <= 7.1
+
+# Installation
+
+## Clonage des répos Github
+
+```
+git clone git@github.com:Lionel09/bien-dit.git my-project
+git clone git@github.com:Lionel09/StudioEchoBundles.git my-project/src/StudioEchoBundles
+```
+
+## Création des répertoires & MAJ des droits
+
+```
+mkdir app/cache app/cache/htmlpurifier app/logs app/sessions web/uploads
+```
+
+Décompression & copie des assets par défaut dans web/uploads
+
+
+
+
+```
+sudo setfacl -R -m u:www-data:rwx -m u:'adminwww':rwx app/cache app/logs app/sessions web/uploads
+sudo setfacl -dR -m u:www-data:rwx -m u:'adminwww':rwx app/cache app/logs app/sessions web/uploads
+```
+
+## MAJ du parameters.yml
+
+Fichier à MAJ suivant votre config
+
+```
+app/config/parameters.yml
+```
+
+## Installation des dépendances
+
+```
+composer install
+app/console propel:model:build
+app/console assetic:dump --no-debug
+cd src/Politizr/FrontBundle/Resources/public/css
+sass --update styleUser.scss:styleUser.css
+```
+
+## Plus de détails
+
+Coincé dans l'installation ? Contacter @lionelbzv directement !
+
 
 # LICENCE
 
